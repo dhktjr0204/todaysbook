@@ -1,0 +1,60 @@
+.index-wrap {
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    padding-top: 100px;
+    gap: 50px;
+}
+
+.search-input {
+
+    width: 700px;
+
+    border: none;
+    outline: none;
+
+    background-color: white;
+    color: #252525;
+
+    border-radius: 5px;
+    padding: 10px;
+
+    margin-right: 5px;
+}
+
+.search-button {
+
+    width: 60px;
+
+    background-color: #D54DFE;
+
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.advertise img {
+    width: 800px;
+}
+
+.recommend-list-section article {
+
+    margin-bottom: 50px;
+}
+
+.recommend-list-header {
+
+    display: flex;
+    justify-content: space-between;
+
+    margin: 10px 20px;
+}
+
+.recommend-list {
+
+    display: flex;
+    align-items: center;
+
+    gap : 10px;
+}

@@ -1,0 +1,35 @@
+<link rel="stylesheet" href="/css/common.css">
+<link rel="stylesheet" href="/css/header.css">
+<link rel="stylesheet" href="/css/footer.css">
+<div class="header sticky-element">
+    <ul>
+        <li class="home-button">
+            <a th:href="@{/index}">
+                <img class="logo" th:src="@{/images/logo.png}">
+                <p>오늘의 책
+                </p>
+            </a>
+        </li>
+        <li th:if="${userName == null}">
+            <div class="login-div">
+                <a>
+                    회원 가입
+                </a>
+                <a>
+                    로그인
+                </a>
+            </div>
+        </li>
+        <li th:if="${userName != null}">
+            <p th:text="${userName}+'님 안녕하세요'"></p>
+            <div class="logout-div">
+                <a>
+                    마이페이지
+                </a>
+                <a>
+                    로그아웃
+                </a>
+            </div>
+        </li>
+    </ul>
+</div>
