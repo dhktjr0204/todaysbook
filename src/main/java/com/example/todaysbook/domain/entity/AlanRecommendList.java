@@ -1,5 +1,6 @@
 package com.example.todaysbook.domain.entity;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
 
+@Entity
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
