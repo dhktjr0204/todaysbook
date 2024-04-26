@@ -6,15 +6,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class SearchResponseDto {
-    private Long id;
-    private String title;
-    private String author;
-    private String price;
-    private String image;
+public class RecommendListDto {
+    private Long listId;
+    private String listTitle;
+    private Long userId;
+    private String nickname;
+    private Date date;
 }

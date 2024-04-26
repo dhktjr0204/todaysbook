@@ -18,5 +18,5 @@ public class UserRecommendBook {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private long userRecommendListId;
-    private long userId;
+    private long bookId;
 }
