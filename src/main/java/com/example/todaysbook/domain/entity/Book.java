@@ -22,7 +22,7 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String title;
-    private String price;
+    private long price;
     private String author;
     private String publisher;
     private Timestamp publishDate;

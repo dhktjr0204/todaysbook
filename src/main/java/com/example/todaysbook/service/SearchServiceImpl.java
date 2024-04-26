@@ -1,6 +1,6 @@
 package com.example.todaysbook.service;
 
-import com.example.todaysbook.domain.dto.SearchResponseDto;
+import com.example.todaysbook.domain.dto.BookDto;
 import com.example.todaysbook.domain.entity.Book;
 import com.example.todaysbook.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,18 +14,18 @@ public class SearchServiceImpl implements SearchService{
     private final BookRepository bookRepository;
 
     @Override
-    public Page<SearchResponseDto> searchByKeyword(String keyword, Pageable pageable) {
+    public Page<BookDto> searchByKeyword(String keyword, Pageable pageable) {
         Page<Book> searchResult = bookRepository.findByAuthorContainingOrTitleContaining(keyword, keyword, pageable);
 
         if(searchResult.isEmpty()){
             return Page.empty();
         }
 
-        return searchResult.map(this::convertSearchResponseDto);
+        return searchResult.map(this::convertBookDto);
     }
 
-    private SearchResponseDto convertSearchResponseDto(Book book){
-        SearchResponseDto result=SearchResponseDto.builder()
+    private BookDto convertBookDto(Book book){
+        BookDto result= BookDto.builder()
                 .id(book.getId())
                 .title(book.getTitle())
                 .author(book.getAuthor())

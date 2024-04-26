@@ -1,6 +1,6 @@
 package com.example.todaysbook.controller;
 
-import com.example.todaysbook.domain.dto.SearchResponseDto;
+import com.example.todaysbook.domain.dto.BookDto;
 import com.example.todaysbook.service.SearchService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +25,7 @@ public class SearchController {
     @GetMapping("/search")
     public String search(@PageableDefault(page=0, size=10, sort="id", direction = Sort.Direction.ASC)Pageable pageable,
                          @RequestParam(value = "keyword") String keyword, Model model){
-        Page<SearchResponseDto> result = searchService.searchByKeyword(keyword, pageable);
+        Page<BookDto> result = searchService.searchByKeyword(keyword, pageable);
 
         int startPage=0;
         int endPage=0;
