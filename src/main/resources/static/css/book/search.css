@@ -86,3 +86,12 @@ figure img {
     gap: 20px;
     margin-top: 50px;
 }
+
+.no-content-text{
+    color: white;
+    text-align: center;
+}
+
+.select-button{
+    color: #D54DFE;
+}
