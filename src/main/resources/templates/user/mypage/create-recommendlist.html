@@ -15,6 +15,10 @@
     <aside th:replace="~{fragments/sidebar-user.html}"></aside>
     <div class="mypage-wrap">
         <p class="mypage-title">추천 리스트 만들기</p>
+        <form class="search-form">
+            <input class="search-input" th:placeholder="'검색할 도서를 입력해주세요. (저자, 책 제목)'">
+            <button class="search-button" th:text="'검색'"></button>
+        </form>
         <section class="search-book-list column">
             <ul class="list-group-item" draggable="true" th:each="num : ${#numbers.sequence(1,5)}">
                 <figure>

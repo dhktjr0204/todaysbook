@@ -19,6 +19,35 @@ main {
     margin-bottom: 50px;
 }
 
+.search-form {
+
+    margin-bottom: 30px;
+}
+
+.search-input {
+
+    width: 785px;
+
+    border: none;
+    outline: none;
+
+    background-color: white;
+    color: #252525;
+
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.search-button {
+
+    width: 60px;
+
+    background-color: #D54DFE;
+
+    border-radius: 5px;
+    padding: 10px;
+}
+
 .list-group-item {
 
     display: flex;
