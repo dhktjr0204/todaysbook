@@ -124,4 +124,16 @@ public class ViewController {
 
         return "admin/book-registration";
     }
+
+    @GetMapping("/admin/updateinfo")
+    public String adminUpdateInfo(Model model) {
+
+        return "admin/update-info";
+    }
+
+    @GetMapping("/admin/updatepw")
+    public String adminUpdatePw(Model model) {
+
+        return "admin/update-password";
+    }
 }
