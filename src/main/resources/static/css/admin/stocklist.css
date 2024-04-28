@@ -1,6 +1,6 @@
 .search-input {
 
-    width: 455px;
+    width: 485px;
 
     border: none;
     outline: none;
@@ -12,55 +12,52 @@
     padding: 10px;
 }
 
-.user-list {
+.book-list {
 
     display: flex;
     flex-direction: column;
     align-items: end;
 }
 
-.user-list-header {
+.book-list-header {
 
     border-top: solid 1px white;
 }
 
-.user-list-header, .user-list-body {
+.book-list-header, .book-list-body {
 
     border-bottom: solid 1px white;
 }
 
-.user-list-header li {
+.book-list-header li {
 
     display: flex;
     margin: 10px 0;
 }
 
-.user-list-body li {
+.book-list-body li {
 
     display: flex;
     align-items: baseline;
     margin: 10px 0;
 }
 
-.nickname, .user-grade {
+.price {
 
-    width: 100px;
-}
-
-.nickname, .user-grade {
-
+    width: 150px;
     text-align: center;
 }
 
-.user-email {
+.quantity {
+
+    width: 80px;
+    text-align: center;
+}
+
+.book-name {
 
     width: 300px;
     margin-left: 20px;
-}
-
-.delete-button {
-
-    margin: 20px 10px 0 0;
 }
 
 .page-button-group {

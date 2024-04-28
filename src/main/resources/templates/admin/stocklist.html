@@ -5,37 +5,36 @@
       layout:decorate="~{layout/layout}">
 
 <th:block layout:fragment="head">
-    <title>회원 조회</title>
+    <title>재고 조회</title>
     <link th:href="@{/css/admin/common.css}" rel="stylesheet"/>
-    <link th:href="@{/css/admin/userlist.css}" rel="stylesheet"/>
+    <link th:href="@{/css/admin/stocklist.css}" rel="stylesheet"/>
 </th:block>
 <div th:replace="~{fragments/header.html}"></div>
 <main th:fragment="content">
     <aside th:replace="~{fragments/sidebar-admin.html}"></aside>
     <div class="mypage-wrap">
-        <p class="mypage-title">회원 조회</p>
+        <p class="mypage-title">재고 조회</p>
         <form class="search-form">
-            <input class="search-input" th:placeholder="'검색할 회원을 입력해주세요.'">
+            <input class="search-input" th:placeholder="'검색할 도서를 입력해주세요. (저자, 책 제목)'">
             <button class="search-button" th:text="'검색'"></button>
         </form>
         <section>
-            <div class="user-list">
-                <ul class="user-list-header">
+            <div class="book-list">
+                <ul class="book-list-header">
                     <li>
-                        <p class="user-email">이메일</p>
-                        <p class="nickname">닉네임</p>
-                        <p class="user-grade">회원 등급</p>
+                        <p class="book-name">상품명</p>
+                        <p class="price">가격</p>
+                        <p class="quantity">수량</p>
                     </li>
                 </ul>
-                <ul class="user-list-body">
+                <ul class="book-list-body">
                     <li th:each="dto : ${#numbers.sequence(1,5)}">
-                        <input type="hidden" th:value="'userid'">
-                        <p class="user-email">이메일</p>
-                        <p class="nickname">닉네임</p>
-                        <p class="user-grade">회원 등급</p>
+                        <input type="hidden" th:value="'bookid'">
+                        <p class="book-name">상품명</p>
+                        <p class="price">100000원</p>
+                        <p class="quantity">수량</p>
                     </li>
                 </ul>
-                <button class="delete-button">삭제</button>
             </div>
             <ul class="page-button-group">
                 <li th:each="num : ${#numbers.sequence(1,5)}">

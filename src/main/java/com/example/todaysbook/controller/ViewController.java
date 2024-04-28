@@ -106,4 +106,10 @@ public class ViewController {
 
         return "admin/userlist";
     }
+
+    @GetMapping("/admin/stocklist")
+    public String stockList(Model model) {
+
+        return "admin/stocklist";
+    }
 }

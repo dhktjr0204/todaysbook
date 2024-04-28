@@ -1,0 +1,35 @@
+main {
+
+    display: flex;
+}
+
+.mypage-wrap {
+
+    display: flex;
+    flex-direction: column;
+
+    padding-top: 60px;
+
+    margin: 0 auto;
+}
+
+.mypage-title {
+
+    font-size: 30px;
+    margin-bottom: 50px;
+}
+
+.search-form {
+
+    margin-bottom: 30px;
+}
+
+.search-button {
+
+    width: 60px;
+
+    background-color: #D54DFE;
+
+    border-radius: 5px;
+    padding: 10px;
+}
