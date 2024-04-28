@@ -148,4 +148,10 @@ public class ViewController {
 
         return "payment/info";
     }
+
+    @GetMapping("/payment/success")
+    public String paymentSuccess(Model model) {
+
+        return "payment/success";
+    }
 }
