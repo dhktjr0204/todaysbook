@@ -100,4 +100,10 @@ public class ViewController {
 
         return "user/mypage/create-recommendlist";
     }
+
+    @GetMapping("/admin/userlist")
+    public String userList(Model model) {
+
+        return "admin/userlist";
+    }
 }
