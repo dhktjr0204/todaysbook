@@ -112,4 +112,10 @@ public class ViewController {
 
         return "admin/stocklist";
     }
+
+    @GetMapping("/admin/delivery")
+    public String adminDelivery(Model model) {
+
+        return "admin/delivery";
+    }
 }

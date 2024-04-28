@@ -1,47 +1,52 @@
-.user-list {
+.delivery-list {
 
     display: flex;
     flex-direction: column;
     align-items: end;
 }
 
-.user-list-header {
+.delivery-list-header {
 
     border-top: solid 1px white;
 }
 
-.user-list-header, .user-list-body {
+.delivery-list-header, .delivery-list-body {
 
     border-bottom: solid 1px white;
 }
 
-.user-list-header li {
+.delivery-list-header li {
 
     display: flex;
     margin: 10px 0;
 }
 
-.user-list-body li {
+.delivery-list-body li {
 
     display: flex;
     align-items: baseline;
     margin: 10px 0;
 }
 
-.nickname, .user-grade {
+.delivery-company {
 
     width: 100px;
 }
 
-.nickname, .user-grade {
+.delivery-status {
+
+    width: 80px;
+}
+
+.delivery-company, .delivery-status {
 
     text-align: center;
 }
 
-.user-email {
+.order-id, .delivery-id {
 
     width: 300px;
-    margin-left: 20px;
+    margin-left: 10px;
 }
 
 .delete-button {

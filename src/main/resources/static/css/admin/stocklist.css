@@ -1,17 +1,3 @@
-.search-input {
-
-    width: 485px;
-
-    border: none;
-    outline: none;
-
-    background-color: white;
-    color: #252525;
-
-    border-radius: 5px;
-    padding: 10px;
-}
-
 .book-list {
 
     display: flex;
