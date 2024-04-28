@@ -136,4 +136,10 @@ public class ViewController {
 
         return "admin/update-password";
     }
+
+    @GetMapping("/cart/list")
+    public String cartList(Model model) {
+
+        return "cart/list";
+    }
 }
