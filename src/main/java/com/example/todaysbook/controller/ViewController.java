@@ -29,6 +29,12 @@ public class ViewController {
         return "book/detail";
     }
 
+    @GetMapping("/list")
+    public String listFrom(Model model) {
+
+        return "recommendList/listForm";
+    }
+  
     @GetMapping("/registration")
     public String registration(Model model) {
 

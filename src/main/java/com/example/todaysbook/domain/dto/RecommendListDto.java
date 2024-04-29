@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -18,5 +18,5 @@ public class RecommendListDto {
     private String listTitle;
     private Long userId;
     private String nickname;
-    private Date date;
+    private LocalDateTime date;
 }
