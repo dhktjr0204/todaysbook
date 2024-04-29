@@ -9,7 +9,8 @@
             <p th:text="'6600M'"></p>
         </div>
         <ul>
-            <li th:each="label : ${#strings.arraySplit('주문 내역,내가 쓴 리뷰,내가 찜한 책,추천 리스트,정보 수정',',')}">
+            <li th:each="label : ${#strings.arraySplit('장바구니,주문 내역,내가 쓴 리뷰,내가 찜한 책,추천 리스트,정보 수정',',')}">
+                <a th:if="${label == '장바구니'}" th:href="@{/cart/list}" th:text="${label}"></a>
                 <a th:if="${label == '주문 내역'}" th:href="@{/mypage/orderlist}" th:text="${label}"></a>
                 <a th:if="${label == '내가 쓴 리뷰'}" th:href="@{/mypage/review}" th:text="${label}"></a>
                 <a th:if="${label == '내가 찜한 책'}" th:href="@{/mypage/favoritebook}" th:text="${label}"></a>

@@ -5,37 +5,37 @@
       layout:decorate="~{layout/layout}">
 
 <th:block layout:fragment="head">
-    <title>배송 조회</title>
+    <title>회원 조회</title>
     <link th:href="@{/css/admin/common.css}" rel="stylesheet"/>
-    <link th:href="@{/css/admin/delivery.css}" rel="stylesheet"/>
+    <link th:href="@{/css/admin/userlist.css}" rel="stylesheet"/>
 </th:block>
 <div th:replace="~{fragments/header.html}"></div>
 <main th:fragment="content">
     <aside th:replace="~{fragments/sidebar-admin.html}"></aside>
     <div class="mypage-wrap">
-        <p class="mypage-title" th:text="'배송 조회'"></p>
+        <p class="mypage-title">회원 조회</p>
         <form class="search-form">
-            <input class="search-input" th:placeholder="'검색할 주문 번호를 입력해주세요.'">
+            <input class="search-input" th:placeholder="'검색할 회원을 입력해주세요.'">
             <button class="search-button" th:text="'검색'"></button>
         </form>
         <section>
-            <div class="delivery-list">
-                <ul class="delivery-list-header">
+            <div class="user-list">
+                <ul class="user-list-header">
                     <li>
-                        <p class="order-id">주문 번호</p>
-                        <p class="delivery-id">송장 번호</p>
-                        <p class="delivery-company">택배사</p>
-                        <p class="delivery-status">상태</p>
+                        <p class="user-email">이메일</p>
+                        <p class="nickname">닉네임</p>
+                        <p class="user-grade">회원 등급</p>
                     </li>
                 </ul>
-                <ul class="delivery-list-body">
+                <ul class="user-list-body">
                     <li th:each="dto : ${#numbers.sequence(1,5)}">
-                        <p class="order-id">주문 번호</p>
-                        <p class="delivery-id">송장 번호</p>
-                        <p class="delivery-company">택배사</p>
-                        <p class="delivery-status">상태</p>
+                        <input type="hidden" th:value="'userid'">
+                        <p class="user-email">이메일</p>
+                        <p class="nickname">닉네임</p>
+                        <p class="user-grade">회원 등급</p>
                     </li>
                 </ul>
+                <button class="delete-button">삭제</button>
             </div>
             <ul class="page-button-group">
                 <li th:each="num : ${#numbers.sequence(1,5)}">

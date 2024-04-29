@@ -106,4 +106,46 @@ public class ViewController {
 
         return "user/mypage/create-recommendlist";
     }
+
+    @GetMapping("/admin/userlist")
+    public String userList(Model model) {
+
+        return "admin/userlist";
+    }
+
+    @GetMapping("/admin/stocklist")
+    public String stockList(Model model) {
+
+        return "admin/stocklist";
+    }
+
+    @GetMapping("/admin/delivery")
+    public String adminDelivery(Model model) {
+
+        return "admin/delivery";
+    }
+
+    @GetMapping("/admin/book_registration")
+    public String addBook(Model model) {
+
+        return "admin/book-registration";
+    }
+
+    @GetMapping("/admin/updateinfo")
+    public String adminUpdateInfo(Model model) {
+
+        return "admin/update-info";
+    }
+
+    @GetMapping("/admin/updatepw")
+    public String adminUpdatePw(Model model) {
+
+        return "admin/update-password";
+    }
+
+    @GetMapping("/cart/list")
+    public String cartList(Model model) {
+
+        return "cart/list";
+    }
 }
