@@ -1,6 +1,10 @@
 .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: white;
 
-    padding: 15px 100px;
+    padding: 15px 30px;
 }
 
 .header * {
@@ -13,14 +17,6 @@
 
     z-index: 1000;
     background-color: #252525;
-}
-
-.header ul {
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    color: white;
 }
 
 .home-button a {
@@ -55,7 +51,6 @@ button {
     position: absolute;
     background-color: #252525;
     color: white;
-    min-width: 160px;
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
     overflow: auto;
     z-index: 10;
@@ -70,14 +65,22 @@ button {
 }
 
 .dropdown-options li {
-
     padding: 12px 16px;
 }
 
 .dropdown-options li:hover {
-    background-color: #ddd;
+    background-color: lightgray;
 }
 
-.menu a, .login a, .dropdown p {
+.dropdown-options a {
+    background-color: inherit;
+}
+
+.login a, .dropdown p {
     font-size: 24px;
+}
+
+.login {
+    display: flex;
+    gap: 20px;
 }

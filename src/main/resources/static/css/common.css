@@ -37,8 +37,8 @@ ul,li {
 }
 
 a {
+    color: inherit;
     text-decoration-line: none;
-    text-decoration-color: black;
 }
 
 button {
