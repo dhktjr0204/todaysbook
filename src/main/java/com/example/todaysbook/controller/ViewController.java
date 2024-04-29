@@ -24,4 +24,10 @@ public class ViewController {
 
         return "book/detail";
     }
+
+    @GetMapping("/registration")
+    public String registration(Model model) {
+
+        return "user/registration";
+    }
 }
