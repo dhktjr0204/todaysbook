@@ -29,12 +29,6 @@ public class ViewController {
         return "book/detail";
     }
 
-    @GetMapping("/list")
-    public String listFrom(Model model) {
-
-        return "recommendList/listForm";
-    }
-  
     @GetMapping("/registration")
     public String registration(Model model) {
 
@@ -77,11 +71,11 @@ public class ViewController {
         return "user/mypage/favorite-book";
     }
 
-    @GetMapping("/mypage/my_recommend_list")
-    public String myRecommendList(Model model) {
-
-        return "user/mypage/my-recommendlist";
-    }
+//    @GetMapping("/mypage/my_recommend_list")
+//    public String myRecommendList(Model model) {
+//
+//        return "user/mypage/my-recommendlist";
+//    }
 
     @GetMapping("/mypage/users_recommend_list")
     public String userRecommendList(Model model) {

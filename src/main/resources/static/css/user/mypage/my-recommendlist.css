@@ -10,13 +10,13 @@ main {
     align-items: center;
 
     padding-top: 60px;
-    gap: 150px;
+    gap: 50px;
 
     margin: 0 auto;
 }
 
 .page-title-div {
-
+    width: 850px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -25,7 +25,6 @@ main {
 }
 
 .mypage-title {
-
     font-size: 30px;
     margin-left: 20px;
 }
@@ -40,7 +39,7 @@ main {
     margin-right: 20px;
 }
 
-.recommend-list {
+.recommend-list-container {
 
     margin-bottom: 50px;
 }
@@ -53,14 +52,16 @@ main {
     margin: 10px 20px;
 }
 
-.recommend-list-body {
+/*.recommend-list-body {*/
 
-    display: flex;
-    align-items: center;
+/*    display: flex;*/
+/*    align-items: center;*/
 
-    gap : 10px;
-    margin-bottom: 10px;
-}
+/*    gap : 10px;*/
+/*    margin-bottom: 10px;*/
+
+/*    transition: transform 0.5s ease;*/
+/*}*/
 
 .recommend-list-bottom {
 

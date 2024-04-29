@@ -24,7 +24,7 @@ public class SearchController {
     private final int VISIBLE_PAGE=5;
 
     @GetMapping("/search")
-    public String searchMain(@PageableDefault(page=0, size=10, sort="id", direction = Sort.Direction.ASC)Pageable pageable,
+    public String searchBook(@PageableDefault(page=0, size=10, sort="id", direction = Sort.Direction.ASC)Pageable pageable,
                          @RequestParam(value = "keyword") String keyword, Model model){
         Page<BookDto> result = searchService.searchByKeyword(keyword, pageable);
 
@@ -48,8 +48,6 @@ public class SearchController {
     @GetMapping("/search/list")
     public ResponseEntity<Page<BookDto>> searchBooks(@PageableDefault(page=0, size=5, sort="id", direction = Sort.Direction.ASC)Pageable pageable,
                                       @RequestParam(value = "keyword") String keyword, Model model){
-        log.info("검색어: "+ keyword);
-        log.info("검색된 결과: "+ searchService.searchByKeyword(keyword,pageable).toString());
         return ResponseEntity.ok(searchService.searchByKeyword(keyword, pageable));
     }
 }
