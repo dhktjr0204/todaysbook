@@ -57,7 +57,8 @@ figure {
 }
 
 figure img {
-
+    width:150px;
+    height: 226px;
     margin-bottom: 10px;
 }
 

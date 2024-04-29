@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +24,7 @@ public class SearchController {
     private final int VISIBLE_PAGE=5;
 
     @GetMapping("/search")
-    public String search(@PageableDefault(page=0, size=10, sort="id", direction = Sort.Direction.ASC)Pageable pageable,
+    public String searchMain(@PageableDefault(page=0, size=10, sort="id", direction = Sort.Direction.ASC)Pageable pageable,
                          @RequestParam(value = "keyword") String keyword, Model model){
         Page<BookDto> result = searchService.searchByKeyword(keyword, pageable);
 
@@ -42,5 +43,13 @@ public class SearchController {
         model.addAttribute("keyword",keyword);
 
         return "book/search";
+    }
+
+    @GetMapping("/search/list")
+    public ResponseEntity<Page<BookDto>> searchBooks(@PageableDefault(page=0, size=5, sort="id", direction = Sort.Direction.ASC)Pageable pageable,
+                                      @RequestParam(value = "keyword") String keyword, Model model){
+        log.info("검색어: "+ keyword);
+        log.info("검색된 결과: "+ searchService.searchByKeyword(keyword,pageable).toString());
+        return ResponseEntity.ok(searchService.searchByKeyword(keyword, pageable));
     }
 }
