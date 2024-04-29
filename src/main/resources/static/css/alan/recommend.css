@@ -13,6 +13,11 @@
     padding: 20px;
 }
 
+textarea {
+
+    color: black;
+}
+
 .read-text {
 
     width: 500px;
@@ -21,7 +26,10 @@
     background-color: white;
     border-radius: 10px;
 
+    outline: none;
     resize: none;
+
+    padding: 10px;
 }
 
 .alan-chat, .user-chat, .chatting-write-area {
