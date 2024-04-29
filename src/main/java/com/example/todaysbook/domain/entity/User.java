@@ -1,5 +1,7 @@
 package com.example.todaysbook.domain.entity;
 
+import com.example.todaysbook.domain.dto.UserResponseDto;
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -12,6 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Entity
 public class User {
 
     @Id
@@ -26,4 +29,13 @@ public class User {
     private java.sql.Timestamp expire;
     private String address;
     private String zipcode;
+
+    public UserResponseDto toResponse() {
+        return UserResponseDto
+                .builder()
+                .id(id)
+                .email(email)
+                .nickName(nickName)
+                .build();
+    }
 }
