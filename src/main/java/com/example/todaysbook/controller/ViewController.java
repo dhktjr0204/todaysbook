@@ -148,4 +148,16 @@ public class ViewController {
 
         return "cart/list";
     }
+
+    @GetMapping("/payment/info")
+    public String paymentInfo(Model model) {
+
+        return "payment/info";
+    }
+
+    @GetMapping("/payment/success")
+    public String paymentSuccess(Model model) {
+
+        return "payment/success";
+    }
 }
