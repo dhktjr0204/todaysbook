@@ -19,7 +19,13 @@ import java.sql.Timestamp;
 public class AlanRecommendList {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id; // AlanRecommendList의 id
+
+    private String title; // AlanRecommendList의 제목
+
     private Timestamp date;
+
+
+
 }

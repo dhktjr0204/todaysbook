@@ -1,18 +1,22 @@
 package com.example.todaysbook.domain.entity;
 
-import com.example.todaysbook.domain.dto.AlanRecommendBookDto;
+import com.example.todaysbook.domain.dto.AlanRecommendDataDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 
 @Entity
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AlanRecommendBook {
+public class AlanRecommendData {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -21,12 +25,10 @@ public class AlanRecommendBook {
     private String title;
 
 
-    public AlanRecommendBookDto toDto() {
-        return AlanRecommendBookDto.builder()
+    public AlanRecommendDataDto toDto() {
+        return AlanRecommendDataDto.builder()
                 .id(id)
                 .title(title)
                 .build();
     }
-
-
 }
