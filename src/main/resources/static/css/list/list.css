@@ -1,0 +1,48 @@
+
+.recommend-list-section article {
+
+    margin-bottom: 50px;
+}
+
+.recommend-list-header {
+
+    display: flex;
+    justify-content: space-between;
+
+    margin: 10px 20px;
+}
+
+.list-container{
+    display: flex;
+    align-items: center;
+}
+
+.slider-container{
+    width: 800px;
+    overflow: hidden;
+}
+
+.recommend-list {
+    display: flex;
+    align-items: center;
+    gap : 10px;
+    transition: transform 0.5s ease;
+}
+
+.book-item {
+    /*사진 업로드 시 image-item의 크기가 줄어들 지 않는다.*/
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.book-item img{
+    width: 150px;
+    height: 226px;
+}
+
+.book-item:hover{
+    filter: brightness(70%);
+}
+
