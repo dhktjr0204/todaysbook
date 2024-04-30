@@ -13,6 +13,20 @@
     <div class="index-wrap">
         <article>
             <form class="search-form" action="/book/search" onsubmit="return submitForm()" >
+                <div class="select-box">
+                    <button class="select-box-button">
+                        <img th:src="@{/images/triangle-down.svg}">
+                        <p>선택</p>
+                    </button>
+                    <ul class="select-box-option">
+                        <li>
+                            <button>책</button>
+                        </li>
+                        <li>
+                            <button>리스트</button>
+                        </li>
+                    </ul>
+                </div>
                 <input class="search-input" th:placeholder="'검색할 도서를 입력해주세요. (저자, 책 제목)'" th:name="keyword">
                 <button class="search-button" th:text="'검색'"></button>
             </form>
