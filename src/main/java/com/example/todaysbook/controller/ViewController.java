@@ -154,4 +154,10 @@ public class ViewController {
 
         return "payment/success";
     }
+
+    @GetMapping("/alan/recommend")
+    public String alanRecommend(Model model) {
+
+        return "alan/recommend";
+    }
 }
