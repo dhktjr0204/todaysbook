@@ -44,6 +44,7 @@ h1 {
 .price-info {
 
     display: flex;
+    align-items: center;
     margin-bottom: 30px;
 }
 
@@ -51,11 +52,17 @@ h1 {
 
     display: flex;
     justify-content: space-between;
+    align-items: center;
 
     width: 340px;
 }
 
-.like-img, .star, .review-star, .review-list-star {
+.favorite {
+
+    content: url("../../images/like.png");
+}
+
+.not-favor-img, .star, .review-star, .review-list-star {
 
     width: 20px;
     height: 20px;
