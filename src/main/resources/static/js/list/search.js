@@ -17,7 +17,7 @@ function listSubmitForm(event) {
 
 async function searchBook(keyword, page) {
     try {
-        let response = await fetch("/book/search/list?page=" + page + "&keyword=" + keyword, {
+        let response = await fetch("/book/search/create/list?page=" + page + "&keyword=" + keyword, {
             method: 'GET'
         })
 

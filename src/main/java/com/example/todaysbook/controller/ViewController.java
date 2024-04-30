@@ -7,15 +7,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class ViewController {
 
-    @GetMapping("/index")
-    public String index(Model model) {
-
-        String userName = "테스트";
-
-        model.addAttribute("userName", userName);
-
-        return "index";
-    }
+//    @GetMapping("/index")
+//    public String index(Model model) {
+//
+//        String userName = "테스트";
+//
+//        model.addAttribute("userName", userName);
+//
+//        return "index";
+//    }
 
     @GetMapping("/search")
     public String search(Model model) {

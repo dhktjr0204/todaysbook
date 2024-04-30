@@ -17,9 +17,9 @@ import java.util.List;
 public class MypageController {
     private final RecommendListService recommendListService;
 
-    @GetMapping("/my_recommend_list/{id}")
-    public String myRecommendList(@PathVariable Long id, Model model) {
-        long userId = id;
+    @GetMapping("/my_recommend_list")
+    public String myRecommendList(Model model) {
+        long userId = 1;
 
         List<RecommendListDetailDto> myRecommendListAll = recommendListService.getMyRecommendListAll(userId);
 
@@ -27,5 +27,16 @@ public class MypageController {
         model.addAttribute("recommendLists", myRecommendListAll);
 
         return "user/mypage/my-recommendlist";
+    }
+
+    @GetMapping("/my_book_mark_list")
+    public String myBookMarkList(Model model){
+        long userId=1;
+
+        List<RecommendListDetailDto> myBookMarkListAll = recommendListService.getMyBookMarkListAll(userId);
+
+        model.addAttribute("recommendLists", myBookMarkListAll);
+
+        return "user/mypage/users-recommendlist";
     }
 }

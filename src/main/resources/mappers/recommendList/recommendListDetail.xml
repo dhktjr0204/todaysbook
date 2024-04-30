@@ -28,4 +28,25 @@
         WHERE url.user_id=#{userId}
         GROUP BY listId;
     </select>
+
+    <select id="getRandomRecommendList" resultType="com.example.todaysbook.domain.dto.RandomRecommendListDto">
+        SELECT url.id AS listId, url.title AS listTitle, url.user_id AS userId, u.nick_name AS nickname, url.date AS DATE,
+        IF(EXISTS (SELECT 0 FROM book_mark bm WHERE bm.user_id = #{userId} AND bm.user_recommend_list_id = url.id), TRUE, FALSE) AS isBookmarked
+        FROM user_recommend_list url
+        INNER JOIN user u ON u.id = url.user_id
+        ORDER BY RAND()
+        LIMIT 3;
+    </select>
+
+    <select id="getMyBookMarkListByUserId" resultType="com.example.todaysbook.domain.dto.RecommendListDto">
+        SELECT url.id AS listId, url.user_id AS userId, url.title AS listTitle, u.nick_name AS nickname, url.date
+        FROM book_mark b
+        LEFT JOIN user_recommend_list url
+        ON url.id=b.user_recommend_list_id
+        LEFT JOIN user u
+        ON b.user_id=u.id
+        WHERE b.user_id=#{userId}
+        GROUP BY listId;
+
+    </select>
 </mapper>

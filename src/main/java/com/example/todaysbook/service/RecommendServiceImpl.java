@@ -1,6 +1,8 @@
 package com.example.todaysbook.service;
 
 import com.example.todaysbook.domain.dto.BookDto;
+import com.example.todaysbook.domain.dto.RandomRecommendListDetailDto;
+import com.example.todaysbook.domain.dto.RandomRecommendListDto;
 import com.example.todaysbook.domain.dto.RecommendListCreateRequestDto;
 import com.example.todaysbook.domain.dto.RecommendListUpdateRequestDto;
 import com.example.todaysbook.domain.dto.RecommendListDetailDto;
@@ -59,6 +61,51 @@ public class RecommendServiceImpl implements RecommendListService {
             result.add(build);
         }
 
+        return result;
+    }
+
+    @Override
+    public List<RandomRecommendListDetailDto> getRandomRecommendList(Long userId) {
+        List<RandomRecommendListDetailDto> result=new ArrayList<>();
+
+        List<RandomRecommendListDto> recommendLists = recommendListMapper.getRandomRecommendList(userId);
+
+        for(RandomRecommendListDto list:recommendLists){
+            List<BookDto> bookList = recommendListMapper.getBookDetailByListId(list.getListId());
+
+            RandomRecommendListDetailDto build = RandomRecommendListDetailDto.builder()
+                    .listId(list.getListId())
+                    .listTitle(list.getListTitle())
+                    .userId(list.getUserId())
+                    .nickname(list.getNickname())
+                    .date(list.getDate())
+                    .isBookmarked(list.getIsBookMarked())
+                    .bookList(bookList).build();
+
+            result.add(build);
+        }
+
+        return result;
+    }
+
+    @Override
+    public List<RecommendListDetailDto> getMyBookMarkListAll(Long userId) {
+        List<RecommendListDetailDto> result = new ArrayList<>();
+
+        List<RecommendListDto> recommendLists = recommendListMapper.getMyBookMarkListByUserId(userId);
+
+        for(RecommendListDto recommendList:recommendLists){
+            List<BookDto> bookList = recommendListMapper.getBookDetailByListId(recommendList.getListId());
+            RecommendListDetailDto build = RecommendListDetailDto.builder()
+                    .listId(recommendList.getListId())
+                    .listTitle(recommendList.getListTitle())
+                    .userId(recommendList.getUserId())
+                    .nickname(recommendList.getNickname())
+                    .date(recommendList.getDate())
+                    .bookList(bookList).build();
+
+            result.add(build);
+        }
         return result;
     }
 
