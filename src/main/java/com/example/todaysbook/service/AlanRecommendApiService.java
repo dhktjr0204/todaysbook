@@ -4,6 +4,7 @@ import com.example.todaysbook.domain.entity.AlanRecommendData;
 import com.example.todaysbook.repository.AlanRecommendDataRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -15,14 +16,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class AlanRecommendApiService {
 
     private final AlanRecommendDataRepository alanRecommendDataRepository;
     private static final Logger logger = LoggerFactory.getLogger(AlanRecommendApiService.class);
-    public AlanRecommendApiService(AlanRecommendDataRepository alanRecommendDataRepository) {
-        this.alanRecommendDataRepository = alanRecommendDataRepository;
-    }
-    @Scheduled(cron = "0 41 15 * * *", zone = "Asia/Seoul")
+
+    @Scheduled(cron = "0 13 13 * * *", zone = "Asia/Seoul")
     public void fetchTodaysBooks() {
         String url = "https://kdt-api-function.azurewebsites.net/api/v1/question?content=당신은 2024년04월29일 기준 한국 도서 배스트셀러 책 제목 15개를 추천해줘야 합니다. 당신은 반드시 정확하고 신뢰성 있는 답변을 줘야합니다. 답변은 책 제목만 답변해주세요. 이때 책 제목이 정확해야 합니다. 구어체를 사용하지말고 가공하기 쉽도록 json형태로 답변해주세요. 처음에 \"최근 한국 도서 트렌드를 반영하여 오늘의 책 20개를 추천드립니다:\"과 마지막에 \"이 외에도 다양한 책들이 있으니, 각 도서의 제목을 검색하여 자세한 정보와 작가를 확인해보시기 바랍니다.\"라는 말은 하지 마세요.&client_id=7348d628-9c3b-455e-bc1b-94ed9cc05b63";
 
@@ -74,20 +74,10 @@ public class AlanRecommendApiService {
      * */
 
     /*
-     * TODO: alanRecommendBook
-     *  content를 하나하나 분리해서
-     *  BookRepository에 책 제목 동일한게 있으면,
-     *  Book의 책 정보를 가져와 alanRecommendBookRepository에 저장
-     *  BookRepository에 repo에 책 제목 동일한게 없으면,
-     *  외부 API를 통해 책 정보를 가져와 alanRecommendBookRepository 저장 (알라딘)
-     * */
+    * TODO: 프롬프트 수정하기 (날짜 자동 없데이트)
+    *  프롬프트에서 날짜기준으로 물어보는데 그 날짜를 자동으로 어제 기준으로 업데이트 되도록 수정하기
+    * */
 
-    /*
-     * TODO: alanRecommendList
-     *  AlanRecommendList 객체를 생성하고
-     *  alanRecommendBookRepository에서 가져온 책들을
-     *  alanRecommendListRepository에 저장
-     * */
 
     /*
     * TODO: 의존성 순환 주의하기
