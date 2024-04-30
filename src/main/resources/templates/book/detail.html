@@ -27,7 +27,9 @@
                         <p class="price-label" th:text="'판매가'"></p>
                         <div>
                             <p class="price" th:text="'10,000원'"></p>
-                            <img class="like-img" th:src="@{'/images/dislike.png'}">
+                            <button class="favorite-book-button" onclick="clickFavorite(this)">
+                                <img class="not-favor-img" th:src="@{'/images/dislike.png'}">
+                            </button>
                         </div>
                     </div>
                     <div class="mileage-info">
@@ -123,4 +125,6 @@
     </div>
 </main>
 <div th:replace="~{fragments/footer.html}"></div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script th:src="@{/js/book/detail.js}"></script>
 </html>
