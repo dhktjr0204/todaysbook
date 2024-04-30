@@ -42,8 +42,9 @@
 .select-box-button {
 
     display: flex;
-    justify-content: space-between;
     align-items: center;
+
+    gap: 10px;
 
     width: inherit;
     height: inherit;
@@ -61,15 +62,21 @@
 }
 
 .select-box-option li {
-    padding: 12px 16px;
+
+    width: 85px;
     background-color: white;
     color: black;
 }
 
 .select-box-option button {
 
+    width: inherit;
     background-color: inherit;
     color: inherit;
+
+    text-align: left;
+
+    padding: 10px 12px;
 }
 
 .select-box-option li:hover {
