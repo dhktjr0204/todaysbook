@@ -9,5 +9,6 @@ import java.util.List;
 @Mapper
 public interface RecommendListMapper {
     RecommendListDto getRecommendListByListId(Long listId);
+    List<RecommendListDto> getMyRecommendListAllByUserId(Long userId);
     List<BookDto> getBookDetailByListId(Long listId);
 }

@@ -6,14 +6,14 @@
 </head>
 <th:block layout:fragment="head">
     <title>리스트 만들기</title>
-    <link th:href="@{/css/book/search.css}" rel="stylesheet"/>
-    <link th:href="@{/css/list/list.css}" rel="stylesheet"/>
-    <link th:href="@{/css/list/listForm.css}" rel="stylesheet"/>
+    <link th:href="@{/css/book/search.css}" href="../../static/css/book/search.css" rel="stylesheet"/>
+    <link th:href="@{/css/list/list.css}" href="../../static/css/list/list.css" rel="stylesheet"/>
+    <link th:href="@{/css/list/listForm.css}" href="../../static/css/list/listForm.css" rel="stylesheet"/>
 </th:block>
 <body>
 <div th:replace="~{fragments/header.html}"></div>
 <main th:fragment="content">
-    <input class="user-id" type="hidden" th:name="userId" th:value="${login_user_id}"/>
+    <input class="list-id" type="hidden" th:value="${recommendList.listId}"/>
     <div class="index-wrap">
         <article>
             <form class="search-form" action="/book/search/list" onsubmit="return listSubmitForm(event)">
@@ -32,9 +32,12 @@
             </div>
         </section>
         <form class="list-form" action="" onsubmit="return false;" th:object="${recommendList}">
+            <!--현재 로그인된 유저 아이디-->
+            <input class="user-id" type="hidden" th:name="userId" th:value="${login_user_id}"/>
+
             <section class="user-list-container">
-                <textarea class="user-list-title-input" placeholder="리스트 이름을 작성해주세요" rows="1"
-                          th:field="*{title}"
+                <textarea class="user-list-title-input" placeholder="리스트 이름을 작성해주세요" rows="1" th:name="title"
+                          th:value="*{listTitle}" th:text="*{listTitle}"
                           onchange="wordCount(this);"
                           oninput="wordCount(this);"></textarea>
                 <div class="text-count">0/20</div>
@@ -42,13 +45,25 @@
                 <div class="recommend-list-body">
                     <button class="prev-btn" onclick="listFormPrevSlide(1,this)">&lt;</button>
                     <div class="drag-and-drop-container">
-                        <ul class="user-list"></ul>
+                        <ul class="user-list">
+                            <li class="book-item" th:each="book : *{bookList}" th:value="${book.id}">
+                                <figure class="book-info">
+                                    <img th:src="${book.image}" th:alt="${book.title}">
+                                    <figcaption class="overlay">
+                                        <button class="delete-button" onclick="deleteBook(this)">x</button>
+                                        <p class="book-title" th:text="${book.title}"></p>
+                                        <p class="author" th:text="${book.author}"></p>
+                                        <p class="price" th:text="${book.price}"></p>
+                                    </figcaption>
+                                </figure>
+                            </li>
+                        </ul>
                     </div>
                     <button class="next-btn" onclick="listFormNextSlide(1,this)">&gt;</button>
                 </div>
             </section>
             <section class="button-container">
-                <button class="register-button" onclick="clickCreateButton()">등록하기</button>
+                <button class="register-button" onclick="clickUpdateButton()">수정하기</button>
                 <button class="cancel-button" onclick="clickCancelButton()">취소</button>
             </section>
         </form>
