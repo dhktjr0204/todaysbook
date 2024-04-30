@@ -27,5 +27,8 @@ public class AlanRecommendList {
     private Timestamp date;
 
 
+    /*
+    * TODO: AlanRecommendBook과의 관계 매핑하기
+    * */
 
 }

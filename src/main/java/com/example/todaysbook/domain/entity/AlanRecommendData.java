@@ -9,6 +9,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import java.time.LocalDateTime;
+
 
 
 @Entity
@@ -24,11 +27,15 @@ public class AlanRecommendData {
 
     private String title;
 
+    @CreatedDate
+    private LocalDateTime createdAt; // db에 저장된 날짜시간
+    // saveAlanRecommendBooks()에서 db에 있는지 판별할 때 성능감소 위해 추가
 
     public AlanRecommendDataDto toDto() {
         return AlanRecommendDataDto.builder()
                 .id(id)
                 .title(title)
+                .createdAt(createdAt)
                 .build();
     }
 }

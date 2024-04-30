@@ -2,6 +2,8 @@ package com.example.todaysbook.domain.dto;
 
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -13,5 +15,6 @@ public class AlanRecommendDataDto {
 
     private String title;
 
+    private LocalDateTime createdAt;
 
 }

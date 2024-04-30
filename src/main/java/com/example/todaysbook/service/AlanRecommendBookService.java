@@ -20,6 +20,8 @@ public class AlanRecommendBookService {
 
     public void saveAlanRecommendBooks(List<AlanRecommendData> data) { 
         // List<AlanRecommendData>로 받아오면 나중에 데이터가 많아지면 시간이 많이 걸릴것 같음
+        // TODO: date가 오늘 날짜인 것만 가져오기
+
         for (AlanRecommendData element : data) {
             Optional<Book> existingBook = bookRepository.findByTitle(element.getTitle()); // findby 바꾸기
             if (existingBook.isPresent()) {
@@ -27,6 +29,7 @@ public class AlanRecommendBookService {
                 AlanRecommendBook alanRecommendBook = AlanRecommendBookDto.createFromBook(existingBook.get());
                 alanRecommendBookRepository.save(alanRecommendBook);
                 // TODO: Book 데이터 넣어서 동일한 젝목이 book에 있을때 AlanRecommendBook이 잘 저장되는지 테스트 해보기
+                // TODO: 중복 체크: 이미 DB에 존재하는 AlanRecommendBook을 추가로 저장하는게 맞는지, 아니면 해당 AlanRecommendBook의 날짜만 변경할지, 고민하기
             } else {
                 // TODO: BookRepository에 책이 없는 경우, 외부 API(중앙도서관)를 사용하여 책 정보 가져오기
                 System.out.println("BookRepository에 책이 없는 경우, 외부 API(중앙도서관)를 사용하여 책 정보 가져오기");
