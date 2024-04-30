@@ -17,6 +17,9 @@ spring:
       idle-timeout: 600000
   flyway:
     enabled: false
+  jpa:
+    hibernate:
+      ddl-auto: create
 
 #Mapper Xml location
 mybatis:
