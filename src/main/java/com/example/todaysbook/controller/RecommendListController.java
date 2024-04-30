@@ -24,10 +24,13 @@ public class RecommendListController {
 
     private final RecommendListService recommendListService;
 
-    @GetMapping("/{id}")
-    public RecommendListDetailDto getRecommendListDetail(@PathVariable Long id, Model model) {
+    @GetMapping("/detail/{id}")
+    public String getRecommendListDetail(@PathVariable Long id, Model model) {
+        RecommendListDetailDto result = recommendListService.getRecommendListDetail(id);
 
-        return recommendListService.getRecommendListDetail(id);
+        model.addAttribute("recommendList", result);
+
+        return "recommendList/recommend-list-detail";
     }
 
     @GetMapping("/add")

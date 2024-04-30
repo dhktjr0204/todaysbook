@@ -12,18 +12,18 @@
 <main th:fragment="content">
     <div class="search-wrap">
         <article>
-            <form class="search-form" onsubmit="return submitForm()">
+            <form class="search-form" onsubmit="return submitForm(event)">
                 <div class="select-box">
-                    <button class="select-box-button">
+                    <button type="button" class="select-box-button">
                         <img th:src="@{/images/triangle-down.svg}">
-                        <p>선택</p>
+                        <p>책</p>
                     </button>
                     <ul class="select-box-option">
                         <li>
-                            <button>책</button>
+                            <button type="button">책</button>
                         </li>
                         <li>
-                            <button>리스트</button>
+                            <button type="button">리스트</button>
                         </li>
                     </ul>
                 </div>
@@ -32,13 +32,13 @@
             </form>
         </article>
         <section class="search-list-section">
-            <article>
-                <div class="search-list-header">
-                    <p class="search-list-title" th:text="'검색 결과'"></p>
-                </div>
-                <div class="search-list">
-                    <ul class="row">
-                        <li th:each="book:${books}">
+            <div class="search-list-header">
+                <p class="search-list-title" th:text="'검색 결과'"></p>
+            </div>
+            <div class="search-list">
+                <ul class="row">
+                    <li th:each="book:${books}">
+                        <a th:href="'/book/'+${book.id}">
                             <figure>
                                 <img th:src="${book.image}" th:alt="'책 이름'">
                                 <figcaption>
@@ -47,31 +47,31 @@
                                     <p class="price" th:text="${book.price}"></p>
                                 </figcaption>
                             </figure>
-                        </li>
-                    </ul>
-                </div>
-                <div class="page-button-group" th:if="${books.isEmpty()}">
-                    <p class="no-content-text">콘텐츠가 없습니다.</p>
-                </div>
-                <ul class="page-button-group" th:unless="${books.isEmpty()}">
-                    <li th:if="${books.number>4}">
-                        <button th:onclick="clickPrevPageButton([[${startPage}]], [[${keyword}]])">
-                            &lt;
-                        </button>
-                    </li>
-                    <li th:each="num : ${#numbers.sequence(startPage, endPage)}">
-                        <button th:text="${num}" th:if="${books.number+1 eq num}"
-                                th:class="select-button"></button>
-                        <button th:text="${num}" th:unless="${books.number+1 eq num}"
-                                th:onclick="clickPageButton(this,  [[${keyword}]])"></button>
-                    </li>
-                    <li th:if="${books.totalPages > 5 and endPage != books.totalPages}">
-                        <button th:onclick="clickNextPageButton([[${endPage}]], [[${keyword}]])">
-                            &gt;
-                        </button>
+                        </a>
                     </li>
                 </ul>
-            </article>
+            </div>
+            <div class="page-button-group" th:if="${books.isEmpty()}">
+                <p class="no-content-text">콘텐츠가 없습니다.</p>
+            </div>
+            <ul class="page-button-group" th:unless="${books.isEmpty()}">
+                <li th:if="${books.number>4}">
+                    <button th:onclick="clickPrevPageButton([[${startPage}]], [[${keyword}]])">
+                        &lt;
+                    </button>
+                </li>
+                <li th:each="num : ${#numbers.sequence(startPage, endPage)}">
+                    <button th:text="${num}" th:if="${books.number+1 eq num}"
+                            th:class="select-button"></button>
+                    <button th:text="${num}" th:unless="${books.number+1 eq num}"
+                            th:onclick="clickPageButton(this,  [[${keyword}]])"></button>
+                </li>
+                <li th:if="${books.totalPages > 5 and endPage != books.totalPages}">
+                    <button th:onclick="clickNextPageButton([[${endPage}]], [[${keyword}]])">
+                        &gt;
+                    </button>
+                </li>
+            </ul>
         </section>
     </div>
 </main>

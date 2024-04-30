@@ -28,12 +28,14 @@
                         <ul class="recommend-list">
                             <li class="book-item" th:each="book : ${recommendList.bookList}" th:value="${book.id}">
                                 <figure class="book-info">
-                                    <img th:src="${book.image}" th:alt="${book.title}">
-                                    <figcaption class="overlay">
-                                        <p class="book-title" th:text="${book.title}"></p>
-                                        <p class="author" th:text="${book.author}"></p>
-                                        <p class="price" th:text="${book.price}"></p>
-                                    </figcaption>
+                                    <a th:href="'/book/'+${book.id}">
+                                        <img th:src="${book.image}" th:alt="${book.title}">
+                                        <figcaption class="overlay">
+                                            <p class="book-title" th:text="${book.title}"></p>
+                                            <p class="author" th:text="${book.author}"></p>
+                                            <p class="price" th:text="${book.price}"></p>
+                                        </figcaption>
+                                    </a>
                                 </figure>
                             </li>
                         </ul>
