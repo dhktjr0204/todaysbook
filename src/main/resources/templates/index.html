@@ -48,7 +48,9 @@
                         &lt;
                     </li>
                     <li th:each="num : ${#numbers.sequence(1,5)}">
-                        <img th:src="@{'/images/book/' + ${num} + '.png'}">
+                        <a th:href="'/book/detail/'+${num}">
+                            <img th:src="@{'/images/book/' + ${num} + '.png'}">
+                        </a>
                     </li>
                     <li>
                         &gt;
@@ -65,7 +67,9 @@
                         &lt;
                     </li>
                     <li th:each="num : ${#numbers.sequence(6,10)}">
-                        <img th:src="@{'/images/book/' + ${num} + '.png'}">
+                        <a th:href="'/book/detail/'+${num}">
+                            <img th:src="@{'/images/book/' + ${num} + '.png'}">
+                        </a>
                     </li>
                     <li>
                         &gt;
@@ -82,7 +86,9 @@
                         &lt;
                     </li>
                     <li th:each="num : ${#numbers.sequence(11,15)}">
-                        <img th:src="@{'/images/book/' + ${num} + '.png'}">
+                        <a th:href="'/book/detail/'+${num}">
+                            <img th:src="@{'/images/book/' + ${num} + '.png'}">
+                        </a>
                     </li>
                     <li>
                         &gt;
@@ -95,21 +101,23 @@
                        th:text="${recommendList.nickname}+'님의 추천리스트 | '+${recommendList.listTitle}"
                        th:value="${recommendList.listId}"></p>
 
-<!--                    고쳐야될거-->
+                    <!--                    고쳐야될거-->
                     <p class="book-mark" th:if="${recommendList.isBookmarked}" onclick="clickBookMarkBtn(this)">O</p>
-                    <p class="book-mark" th:unless="${recommendList.isBookmarked}" onclick="clickBookMarkBtn(this)">X</p>
+                    <p class="book-mark" th:unless="${recommendList.isBookmarked}" onclick="clickBookMarkBtn(this)">
+                        X</p>
 
 
                     <a th:href="'/recommend/detail/'+${recommendList.listId}">더보기</a>
                 </div>
                 <div class="recommend-list-body">
                     <button class="prev-btn"
-                            th:onclick="prevSlide([[${recommendList.listId}]],this)">&lt;</button>
+                            th:onclick="prevSlide([[${recommendList.listId}]],this)">&lt;
+                    </button>
                     <div class="slider-container">
                         <ul class="recommend-list">
                             <li class="book-item" th:each="book : ${recommendList.bookList}" th:value="${book.id}">
                                 <figure class="book-info">
-                                    <a th:href="'/book/'+${book.id}">
+                                    <a th:href="'/book/detail/'+${book.id}">
                                         <img th:src="${book.image}" th:alt="${book.title}">
                                         <figcaption class="overlay">
                                             <p class="book-title" th:text="${book.title}"></p>
@@ -122,7 +130,8 @@
                         </ul>
                     </div>
                     <button class="next-btn"
-                            th:onclick="nextSlide([[${recommendList.listId}]],this)">&gt;</button>
+                            th:onclick="nextSlide([[${recommendList.listId}]],this)">&gt;
+                    </button>
                 </div>
             </article>
         </section>

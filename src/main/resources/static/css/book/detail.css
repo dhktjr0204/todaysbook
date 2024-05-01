@@ -18,6 +18,7 @@ h1 {
 .book-detail-header {
 
     border-bottom: solid 1px white;
+    padding: 10px;
     margin-bottom: 20px;
 }
 
@@ -32,13 +33,14 @@ h1 {
 .book-detail-body {
 
     display: flex;
+    justify-content: center;
     gap: 20px;
     margin-bottom: 30px;
 }
 
 .book-img {
 
-    height: 350px;
+    height: 380px;
 }
 
 .price-info {
@@ -54,7 +56,7 @@ h1 {
     justify-content: space-between;
     align-items: center;
 
-    width: 340px;
+    width: 360px;
 }
 
 .favorite {
@@ -62,7 +64,7 @@ h1 {
     content: url("../../images/like.png");
 }
 
-.not-favor-img, .star, .review-star, .review-list-star {
+.favorite-book-button img, .star, .review-star, .review-list-star {
 
     width: 20px;
     height: 20px;
@@ -99,7 +101,7 @@ h1 {
 
 .grade {
 
-    width: 50px;
+    width: 100px;
 }
 
 .discount {
@@ -168,6 +170,12 @@ h1 {
     padding: 10px;
 }
 
+.book-description {
+
+    padding: 5px;
+    margin-bottom: 50px;
+}
+
 .description {
 
     width: 690px;
@@ -176,12 +184,16 @@ h1 {
     flex-wrap: wrap;
 
     margin-top: 10px;
-    margin-bottom: 60px;
 }
 
 hr {
     margin-top: 20px;
     margin-bottom: 20px;
+}
+
+.review-title {
+
+    padding-left: 5px;
 }
 
 .review-form {
@@ -204,7 +216,7 @@ hr {
 
 .review-input {
 
-    width: 630px;
+    width: 680px;
 
     border: none;
     outline: none;
@@ -231,11 +243,17 @@ hr {
     display: flex;
     justify-content: right;
     gap: 20px;
+    margin-right: 10px;
 }
 
 .score-div, .review-top {
 
     display: flex;
+}
+
+.review-form {
+
+    padding: 10px;
 }
 
 .review {
@@ -246,12 +264,14 @@ hr {
 .review-top {
 
     gap: 30px;
-    margin-bottom: 20px;
+    padding: 10px;
+    margin-bottom: 10px;
+    justify-content: space-between;
 }
 
 .review-content {
 
-    width: 570px;
+    width: 580px;
 
     display: flex;
     flex-wrap: wrap;
@@ -261,10 +281,12 @@ hr {
 
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: end;
+
+    padding: 10px;
 }
 
-.like-div {
+.like-button-div {
 
     display: flex;
 }
@@ -275,14 +297,19 @@ hr {
     margin-bottom: 10px;
 }
 
-.like-div {
+.like-button-div {
 
-    width: 220px;
+    display: flex;
+    align-items: baseline;
+    margin-right: 10px;
+    gap: 10px;
+
+    font-size: 16px;
 }
 
 .like {
 
-    width: 40px;
+    width: 60px;
 }
 
 .dislike {
@@ -292,7 +319,7 @@ hr {
 
 .like-count, .dislike-count {
 
-    width: 60px;
+    text-align: center;
 }
 
 .like-count {
@@ -303,4 +330,12 @@ hr {
 .dislike-count {
 
     color: red;
+}
+
+.like-div, .dislike-div {
+
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    gap: 10px;
 }
