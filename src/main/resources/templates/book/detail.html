@@ -76,7 +76,7 @@
                              th:each="num : ${#numbers.sequence(0, bookDetailDto.bookDetail.starScore - 1)}">
                         <img th:if="${bookDetailDto.bookDetail.starScore != 5}" class="review-list-star" th:src="@{'/images/blank_star.png'}"
                              th:each="num : ${#numbers.sequence(0, 5 -bookDetailDto.bookDetail.starScore - 1)}">
-                        <p class="score" th:text="${bookDetailDto.bookDetail.score}"></p>
+                        <p class="score" th:text="${#numbers.formatDecimal(bookDetailDto.bookDetail.score,1,2)}"></p>
                     </div>
                     <div class="count-info">
                         <p class="count-label" th:text="'수량'"></p>
@@ -116,8 +116,12 @@
                     <button th:text="공감순"></button>
                 </div>
                 <hr>
-                <ul>
+                <div class="review-div">
                     <li class="review" th:each="review : ${bookDetailDto.reviews}">
+                        <div class="edit-button-div" th:if="${review.userId == userId}">
+                            <button>수정</button>
+                            <button>삭제</button>
+                        </div>
                         <div class="review-top">
                             <div class="score-div">
                                 <img th:if="${review.score != 0}" class="review-list-star" th:src="@{'/images/star.png'}"
@@ -125,8 +129,8 @@
                                 <img th:if="${review.score != 5}" class="review-list-star" th:src="@{'/images/blank_star.png'}"
                                      th:each="num : ${#numbers.sequence(0, 5 - review.score - 1)}">
                             </div>
-                            <p class="review-content"
-                               th:text="${review.content}"></p>
+                            <pre class="review-content"
+                               th:text="${review.content}"></pre>
                         </div>
                         <div class="review-bottom">
                             <div class="review-info">
@@ -148,7 +152,7 @@
                             </div>
                         </div>
                     </li>
-                </ul>
+                </div>
             </article>
         </section>
     </div>

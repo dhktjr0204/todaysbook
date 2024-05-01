@@ -24,6 +24,7 @@ public class BookDetailController {
 
         model.addAttribute("bookDetailDto", bookDetailDto);
         model.addAttribute("review", new ReviewRequestDto());
+        model.addAttribute("userId", userId);
 
         return "book/detail";
     }

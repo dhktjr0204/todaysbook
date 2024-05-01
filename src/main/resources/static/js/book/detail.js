@@ -42,7 +42,6 @@ function clickLike(button, reviewId) {
         '추천 완료' : '추천 취소 완료';
 
 
-
     $.ajax({
 
         type: type,
@@ -103,46 +102,38 @@ function clickDislike(button, reviewId) {
 
 function clickAddReview() {
 
-    submitHandler("/review/add", "POST");
-}
-
-function submitHandler(url, method) {
+    const url = "/review/add";
+    const method = "POST";
 
     const content = document.querySelector('.review-input').value;
     const bookId = document.querySelector('.book-id').value;
     const score = parseInt(document.querySelector('.review-score').textContent);
 
-    if(content.trim() === "") {
+    if (content.trim() === "") {
         alert("리뷰 내용을 입력해주세요.");
         return false;
     }
 
-    fetch(url, {
-
-        method: method,
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
+    $.ajax({
+        url: url,
+        type: method,
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify({
             content: content,
             bookId: bookId,
             score: score
-        })
-    }).then(response => {
-
-        if(response.ok) {
-            return response.text();
-        } else {
+        }),
+        success: function (data) {
+            alert("리뷰가 등록 되었습니다.");
+            $('.review-div').html(data);
+        },
+        error: function (error) {
             throw new Error('리뷰 등록 실패');
         }
-    }).then(data => {
-        alert("리뷰가 등록되었습니다.");
-    }).catch(error => {
-        console.error(error);
     });
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
 
     const stars = document.querySelectorAll('.review-star');
     const reviewScore = document.querySelector('.review-score');
@@ -150,7 +141,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let previousValue = 0;
 
     stars.forEach(star => {
-        star.addEventListener('mousedown', function() {
+        star.addEventListener('mousedown', function () {
             isClicked = true;
             const value = this.getAttribute('data-value');
             if (value === previousValue) {
@@ -165,7 +156,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        star.addEventListener('mouseover', function() {
+        star.addEventListener('mouseover', function () {
             if (isClicked) {
                 const value = this.getAttribute('data-value');
                 reviewScore.textContent = value;
@@ -173,7 +164,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        star.addEventListener('mouseup', function() {
+        star.addEventListener('mouseup', function () {
             isClicked = false;
         });
     });

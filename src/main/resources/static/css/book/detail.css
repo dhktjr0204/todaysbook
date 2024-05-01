@@ -246,9 +246,17 @@ hr {
     margin-right: 10px;
 }
 
-.score-div, .review-top {
+.score-div {
 
     display: flex;
+}
+
+.edit-button-div {
+
+    display: flex;
+    justify-content: right;
+
+    margin-right: 10px;
 }
 
 .review-form {
@@ -263,6 +271,7 @@ hr {
 
 .review-top {
 
+    display: flex;
     padding: 10px;
     margin-bottom: 10px;
     justify-content: space-between;
@@ -271,10 +280,11 @@ hr {
 .review-content {
 
     width: 580px;
-
-    display: flex;
-    flex-wrap: wrap;
     align-items: center;
+}
+
+pre {
+    white-space: pre-wrap;
 }
 
 .review-bottom {
@@ -286,9 +296,11 @@ hr {
     padding: 10px;
 }
 
-.like-button-div {
+.review-content {
 
-    display: flex;
+    border: 1px solid white;
+    border-radius: 5px;
+    padding: 10px;
 }
 
 .reviewer {
