@@ -263,7 +263,6 @@ hr {
 
 .review-top {
 
-    gap: 30px;
     padding: 10px;
     margin-bottom: 10px;
     justify-content: space-between;
@@ -275,6 +274,7 @@ hr {
 
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
 }
 
 .review-bottom {

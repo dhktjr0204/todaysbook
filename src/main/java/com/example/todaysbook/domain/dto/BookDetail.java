@@ -30,4 +30,5 @@ public class BookDetail {
     private long goldMileage;
     private long diamondMileage;
     private double score;
+    private int starScore;
 }
