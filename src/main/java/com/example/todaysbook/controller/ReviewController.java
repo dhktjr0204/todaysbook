@@ -1,14 +1,12 @@
 package com.example.todaysbook.controller;
 
+import com.example.todaysbook.domain.dto.ReviewRequestDto;
 import com.example.todaysbook.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -16,6 +14,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class ReviewController {
 
     private final ReviewService reviewService;
+
+    @PostMapping("/add")
+    public ResponseEntity<?> addNewReview(@RequestBody ReviewRequestDto requestDto) {
+
+        try {
+
+            requestDto.setUserId(1l);
+
+            return ResponseEntity.ok(reviewService.addReview(requestDto));
+
+        } catch (Exception e) {
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
 
     @GetMapping("/add_like")
     public ResponseEntity<?> addLikeReview(@RequestParam(value = "userId") long userId,

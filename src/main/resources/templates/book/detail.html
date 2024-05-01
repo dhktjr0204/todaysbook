@@ -72,7 +72,10 @@
                     </div>
                     <div class="score-info">
                         <p class="score-label" th:text="'평점'"></p>
-                        <img class="star" th:src="@{'/images/star.png'}" th:each="num : ${#numbers.sequence(1,5)}">
+                        <img th:if="${bookDetailDto.bookDetail.starScore != 0}" class="review-list-star" th:src="@{'/images/star.png'}"
+                             th:each="num : ${#numbers.sequence(0, bookDetailDto.bookDetail.starScore - 1)}">
+                        <img th:if="${bookDetailDto.bookDetail.starScore != 5}" class="review-list-star" th:src="@{'/images/blank_star.png'}"
+                             th:each="num : ${#numbers.sequence(0, 5 -bookDetailDto.bookDetail.starScore - 1)}">
                         <p class="score" th:text="${bookDetailDto.bookDetail.score}"></p>
                     </div>
                     <div class="count-info">
@@ -93,14 +96,20 @@
             <article class="review-area">
                 <p class="review-title" th:text="'리뷰'"></p>
                 <hr>
-                <form class="review-form">
+                <form class="review-form" onsubmit="return false;">
                     <div class="review-score-info">
-                        <img class="review-star" th:src="@{'/images/blank_star.png'}"
-                             th:each="num : ${#numbers.sequence(1,5)}">
-                        <p class="review-score" th:text="'0.0'"></p>
+                        <input type="hidden" class="book-id" th:value="${bookDetailDto.bookDetail.id}">
+                        <div class="score-div">
+                            <img class="review-star" src="/images/blank_star.png" alt="별" data-value="1">
+                            <img class="review-star" src="/images/blank_star.png" alt="별" data-value="2">
+                            <img class="review-star" src="/images/blank_star.png" alt="별" data-value="3">
+                            <img class="review-star" src="/images/blank_star.png" alt="별" data-value="4">
+                            <img class="review-star" src="/images/blank_star.png" alt="별" data-value="5">
+                        </div>
+                        <p class="review-score">0</p>
                     </div>
                     <input class="review-input" th:placeholder="'해당 도서를 다른 사람들에게 추천해주세요.'">
-                    <button class="submit-button" th:text="'등록'"></button>
+                    <button class="submit-button" onclick="clickAddReview()" th:text="'등록'"></button>
                 </form>
                 <div class="order-by">
                     <button th:text="최신순"></button>
@@ -111,8 +120,10 @@
                     <li class="review" th:each="review : ${bookDetailDto.reviews}">
                         <div class="review-top">
                             <div class="score-div">
-                                <img class="review-list-star" th:src="@{'/images/star.png'}"
-                                     th:each="num : ${#numbers.sequence(1,5)}">
+                                <img th:if="${review.score != 0}" class="review-list-star" th:src="@{'/images/star.png'}"
+                                     th:each="num : ${#numbers.sequence(0, review.score - 1)}">
+                                <img th:if="${review.score != 5}" class="review-list-star" th:src="@{'/images/blank_star.png'}"
+                                     th:each="num : ${#numbers.sequence(0, 5 - review.score - 1)}">
                             </div>
                             <p class="review-content"
                                th:text="${review.content}"></p>

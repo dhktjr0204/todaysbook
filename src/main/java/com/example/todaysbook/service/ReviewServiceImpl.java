@@ -1,5 +1,6 @@
 package com.example.todaysbook.service;
 
+import com.example.todaysbook.domain.dto.ReviewRequestDto;
 import com.example.todaysbook.repository.ReviewMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -40,5 +41,11 @@ public class ReviewServiceImpl implements ReviewService {
         reviewMapper.deleteDislikeReview(userId, reviewId);
 
         return reviewMapper.countDislike(reviewId);
+    }
+
+    @Override
+    public int addReview(ReviewRequestDto requestDto) {
+
+        return reviewMapper.addReview(requestDto);
     }
 }

@@ -1,6 +1,7 @@
 package com.example.todaysbook.controller;
 
 import com.example.todaysbook.domain.dto.BookDetailDto;
+import com.example.todaysbook.domain.dto.ReviewRequestDto;
 import com.example.todaysbook.service.BookDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -22,6 +23,7 @@ public class BookDetailController {
         BookDetailDto bookDetailDto = bookDetailService.getBookDetail(bookId, userId);
 
         model.addAttribute("bookDetailDto", bookDetailDto);
+        model.addAttribute("review", new ReviewRequestDto());
 
         return "book/detail";
     }

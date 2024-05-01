@@ -100,3 +100,91 @@ function clickDislike(button, reviewId) {
         }
     });
 }
+
+function clickAddReview() {
+
+    submitHandler("/review/add", "POST");
+}
+
+function submitHandler(url, method) {
+
+    const content = document.querySelector('.review-input').value;
+    const bookId = document.querySelector('.book-id').value;
+    const score = parseInt(document.querySelector('.review-score').textContent);
+
+    if(content.trim() === "") {
+        alert("리뷰 내용을 입력해주세요.");
+        return false;
+    }
+
+    fetch(url, {
+
+        method: method,
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            content: content,
+            bookId: bookId,
+            score: score
+        })
+    }).then(response => {
+
+        if(response.ok) {
+            return response.text();
+        } else {
+            throw new Error('리뷰 등록 실패');
+        }
+    }).then(data => {
+        alert("리뷰가 등록되었습니다.");
+    }).catch(error => {
+        console.error(error);
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+
+    const stars = document.querySelectorAll('.review-star');
+    const reviewScore = document.querySelector('.review-score');
+    let isClicked = false;
+    let previousValue = 0;
+
+    stars.forEach(star => {
+        star.addEventListener('mousedown', function() {
+            isClicked = true;
+            const value = this.getAttribute('data-value');
+            if (value === previousValue) {
+
+                reviewScore.textContent = '0';
+                highlightStars(0);
+                previousValue = 0;
+            } else {
+                reviewScore.textContent = value;
+                highlightStars(value);
+                previousValue = value;
+            }
+        });
+
+        star.addEventListener('mouseover', function() {
+            if (isClicked) {
+                const value = this.getAttribute('data-value');
+                reviewScore.textContent = value;
+                highlightStars(value);
+            }
+        });
+
+        star.addEventListener('mouseup', function() {
+            isClicked = false;
+        });
+    });
+
+    function highlightStars(value) {
+        stars.forEach(star => {
+            if (parseInt(star.getAttribute('data-value')) <= value) {
+                star.src = '/images/star.png';
+            } else {
+                star.src = '/images/blank_star.png';
+            }
+        });
+    }
+});
