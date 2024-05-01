@@ -18,7 +18,7 @@
                     <li th:each="label : ${#strings.arraySplit('이름,이메일,닉네임,비밀번호,비밀번호 확인,주소,우편번호',',')}">
                         <p class="label" th:text="${label}"></p>
                         <input class="input">
-                        <button class="button"
+                        <button type="button" class="button"
                                 th:if="${label == '이메일' or label == '닉네임'}" th:text="'중복 확인'"></button>
                         <button class="button"
                                 th:if="${label == '주소'}" th:text="'검색'"></button>

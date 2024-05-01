@@ -33,8 +33,15 @@ document.addEventListener('DOMContentLoaded', function() {
     const emailButton = document.querySelectorAll('.button')[0];
 
     emailButton.addEventListener('click', function() {
-        const emailInput = document.querySelectorAll('.input')[0];
+        const emailInput = document.querySelectorAll('.input')[1];
         const email = emailInput.value;
+
+        const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+        if(!emailPattern.test(email)){
+            alert('올바른 이메일 주소를 입력하세요.');
+            return;
+        }
 
         checkEmailAvailability(email) // 이메일 중복 확인 함수 호출
             .then(function(data) {
@@ -59,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const nicknameButton = document.querySelectorAll('.button')[1];
 
     nicknameButton.addEventListener('click', function() {
-        const nicknameInput = document.querySelectorAll('.input')[1];
+        const nicknameInput = document.querySelectorAll('.input')[2];
         const nickname = nicknameInput.value;
 
         checkNicknameAvailability(nickname) // 닉네임 중복 확인 함수 호출
@@ -93,13 +100,25 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // 각 입력 필드에서 사용자 입력을 userData 객체에 저장
         formInputs.forEach(function(input, index) {
-            const label = document.querySelectorAll('.label')[index].textContent.trim();
+            const label = ["name", "email", "nickName", "password", "passwordCheck", "address", "zipcode"];
+
             const value = input.value;
-            userData[label] = value;
+            userData[label[index]] = value;
         });
 
+        const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&~]{8,}$/;
+
+        if(!passwordPattern.test(userData['password'])) {
+            alert('비밀번호는 영어, 숫자, 특수문자를 포함하여 8자 이상이어야 합니다.');
+            return;
+        }
+        else if(userData['password'] !== userData['passwordCheck']) {
+            alert('입력된 비밀번호가 같지 않습니다.');
+            return;
+        }
+
         // 서버로 보낼 POST 요청 준비
-        fetch('/registration', {
+        fetch('/user/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -114,9 +133,7 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .then(data => {
                 // 서버로부터 받은 응답 처리
-                console.log(data);
-                // 예: 회원가입 성공 시 다음 페이지로 리다이렉트
-                window.location.href = '/success';
+                window.location.href = '/index';
             })
             .catch(error => {
                 console.error('There was a problem with the fetch operation:', error);

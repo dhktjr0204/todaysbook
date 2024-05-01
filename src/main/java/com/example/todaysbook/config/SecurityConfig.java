@@ -33,26 +33,32 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-        return httpSecurity
-                .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth ->              // 인증, 인가 설정
-                        auth.requestMatchers(
-                                        "/index",
-                                        "/search",
-                                        "/detail",
-                                        "/list",
-                                        "/registration",
-                                        "/mypage/**",
-                                        "/cart/list",
-                                        "/payment/**")
-                                .permitAll()
-                                .requestMatchers("/admin/**").hasRole(Role.ROLE_ADMIN.value())
-                                .anyRequest().permitAll())
-                .formLogin(auth -> auth.loginPage("/login")// 폼 기반 로그인 설정
-                        .defaultSuccessUrl("/index"))
-                .logout(auth -> auth.logoutSuccessUrl("/login") // 로그아웃 설정
-                        .invalidateHttpSession(true))
-                .build();
+        httpSecurity
+            .authorizeHttpRequests(auth ->              // 인증, 인가 설정
+                    auth.requestMatchers(
+                                    "/index",
+                                    "/search",
+                                    "/detail"
+                                    ).permitAll()
+                            .requestMatchers("/list",
+                                    "/registration",
+                                    "/mypage/**",
+                                    "/cart/list",
+                                    "/payment/**").hasAnyRole(Role.ROLE_COMMON_BRONZE.value(), Role.ROLE_COMMON_SILVER.value(), Role.ROLE_COMMON_GOLD.value(), Role.ROLE_COMMON_DIAMOND.value())
+                            .requestMatchers("/admin/**").hasRole(Role.ROLE_ADMIN.value())
+                            .anyRequest().permitAll()
+            );
+
+        httpSecurity
+                .csrf(AbstractHttpConfigurer::disable);
+
+        httpSecurity
+                .formLogin((auth) -> auth.loginPage("/signup")
+                        .loginProcessingUrl("user/registration")
+                        .permitAll()
+                );
+
+        return httpSecurity.build();
     }
 
     @Bean

@@ -8,10 +8,9 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserRequestDto {
-    private Long id;
     private String name;
-    private String nickName;
     private String email;
+    private String nickName;
     private String password;
     private Role role;
     private String address;
