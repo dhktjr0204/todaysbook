@@ -206,36 +206,50 @@ hr {
     display: flex;
     align-items: center;
 
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 
 .review-score {
 
-    margin-left: 30px;
+    margin-left: 10px;
+}
+
+.text-area-div {
+
+    display: flex;
+    align-items: start;
+
+    gap: 10px;
 }
 
 .review-input {
 
-    width: 680px;
-
-    border: none;
-    outline: none;
+    width: 670px;
+    min-height: 50px;
 
     background-color: white;
     color: #252525;
-
     border-radius: 5px;
-    padding: 10px;
 
-    margin-right: 5px;
+    outline: none;
+    resize: none;
+
+    padding: 10px;
 }
 
 .submit-button {
 
     background-color: #D54DFE;
 
+    height: 54px;
+
     padding: 10px;
     border-radius: 5px;
+}
+
+.comment-text-count {
+
+    margin-top: 10px;
 }
 
 .order-by {

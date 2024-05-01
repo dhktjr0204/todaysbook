@@ -108,8 +108,13 @@
                         </div>
                         <p class="review-score">0</p>
                     </div>
-                    <input class="review-input" th:placeholder="'해당 도서를 다른 사람들에게 추천해주세요.'">
-                    <button class="submit-button" onclick="clickAddReview()" th:text="'등록'"></button>
+                    <div class="text-area-div">
+                        <textarea class="review-input"
+                                  onchange="commentWordCount(this)" oninput="commentWordCount(this)"
+                                  th:placeholder="'해당 도서를 다른 사람들에게 추천해주세요.'"></textarea>
+                        <button class="submit-button" onclick="clickAddReview()" th:text="'등록'"></button>
+                    </div>
+                    <div class="comment-text-count">0/500</div>
                 </form>
                 <div class="order-by">
                     <button th:text="최신순"></button>
@@ -161,4 +166,5 @@
 <div th:replace="~{fragments/footer.html}"></div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script th:src="@{/js/book/detail.js}"></script>
+<script th:src="@{/js/review/review.js}"></script>
 </html>
