@@ -1,121 +1,44 @@
 package com.example.todaysbook.service;
 
-import com.example.todaysbook.domain.dto.AlanRecommendBookDto;
-import com.example.todaysbook.domain.dto.AlanRecommendDataDto;
-import com.example.todaysbook.domain.entity.AlanRecommendBook;
-import com.example.todaysbook.domain.entity.AlanRecommendData;
-import com.example.todaysbook.domain.entity.Book;
-import com.example.todaysbook.repository.AlanRecommendDataRepository;
-import com.example.todaysbook.repository.AlanRecommendBookRepository;
-import com.example.todaysbook.repository.BookRepository;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Service
 @RequiredArgsConstructor
 public class AlanRecommendApiService {
 
-    private final AlanRecommendDataRepository alanRecommendDataRepository;
+    private final RestTemplate restTemplate;
+
+    @Value("${alan.api.url}")
+    private String apiUrl;
+
+    @Value("${alan.api.client-id}")
+    private String clientId;
 
     private static final Logger logger = LoggerFactory.getLogger(AlanRecommendApiService.class);
 
-
-    public List<AlanRecommendDataDto> fetchTodaysBooks() {
-
-        /*
-         * TODO: 예외처리하기 (alan ai API 호출이 실패했을때 또는 응답이 예상치 못한 응답을 했을때)
-         *  -> 500응답을 하거나
-         *  -> 횟수(n번) 정해서 retry 하기
-         * */
-
-        /*
-         * TODO: client_id 바꾸는 로직 추가하기 (후순위)
-         *  -> client_id당 대략 100번 제한을 넘어가면 다음 client_id로 바꿔서 요청하기
-         * */
-
-        String url = "https://kdt-api-function.azurewebsites.net/api/v1/question?content=오늘 기준 한국 도서 베스트셀러 책 제목 15개를 추천해 주세요. 신뢰할 수 있는 최신 정보를 바탕으로 정확한 책 제목을 제공해 주세요. 책 제목만 JSON 형식으로 작성해 주시고, 구어체는 사용하지 마세요. 추가적인 설명이나 마크다운은 포함하지 않도록 해 주세요.&client_id=7348d628-9c3b-455e-bc1b-94ed9cc05b63";
-
-        RestTemplate restTemplate = new RestTemplate();
+    public String callApi() {
+        String url = apiUrl + "?content=오늘 기준 한국 도서 베스트셀러 책 제목 15개를 추천해 주세요. 신뢰할 수 있는 최신 정보를 바탕으로 정확한 책 제목을 제공해 주세요. 책 제목만 JSON 형식으로 작성해 주시고, 구어체는 사용하지 마세요. 추가적인 설명이나 마크다운은 포함하지 않도록 해 주세요.&client_id=" + clientId;
         String response = restTemplate.getForObject(url, String.class);
-        logger.info("\nAPI Response: {}", response);
-
-        ObjectMapper responseMapper = new ObjectMapper();
-        JsonNode jsonNode;
-        try {
-            jsonNode = responseMapper.readTree(response);
-        } catch (Exception e) {
-            logger.error("\nAPI response 파싱 실패", e);
-            throw new RuntimeException("API response 파싱 실패", e);
-        }
-
-        String content;
-        if (jsonNode.has("content")) {
-            content = jsonNode.get("content").asText();
-        } else if (jsonNode.has("action") && jsonNode.get("action").has("name") && jsonNode.get("action").get("name").asText().equals("search_web")) {
-            String searchWebContent = jsonNode.get("content").asText();
-            int startIndex = searchWebContent.indexOf("```");
-            int endIndex = searchWebContent.lastIndexOf("```");
-            if (startIndex != -1 && endIndex != -1 && endIndex > startIndex) {
-                content = searchWebContent.substring(startIndex + 3, endIndex).trim();
-            } else {
-                logger.error("\n유효하지 않은 search_web content 형식");
-                throw new RuntimeException("유효하지 않은 search_web content 형식");
-            }
-        } else {
-            logger.error("\n유효하지 않은 API 응답 형식");
-            throw new RuntimeException("유효하지 않은 API 응답 형식");
-        }
-
-        ObjectMapper contentMapper = new ObjectMapper();
-        JsonNode contentNode;
-        try {
-            int jsonStartIndex = content.indexOf("[");
-            int jsonEndIndex = content.lastIndexOf("]");
-            if (jsonStartIndex != -1 && jsonEndIndex != -1 && jsonEndIndex > jsonStartIndex) {
-                String jsonContent = content.substring(jsonStartIndex, jsonEndIndex + 1);
-                contentNode = contentMapper.readTree(jsonContent);
-            } else {
-                logger.error("\n유효하지 않은 JSON 데이터 형식");
-                throw new RuntimeException("유효하지 않은 JSON 데이터 형식");
-            }
-        } catch (JsonProcessingException e) {
-            logger.error("\ncontent 파싱 실패", e);
-            throw new RuntimeException("content 파싱 실패", e);
-        }
-
-        List<AlanRecommendDataDto> alanRecommendDataDtos = StreamSupport.stream(contentNode.spliterator(), false)
-                .map(node -> {
-                    String title = node.get("content").asText()
-                            .replaceFirst("^\\d+\\.\\s*", "")
-                            .replaceAll("^'|'$", "");
-                    return AlanRecommendDataDto.builder()
-                            .title(title)
-                            .createdAt(LocalDateTime.now())
-                            .build();
-                })
-                .toList();
-        logger.info("\n추출한 책 제목: {}", alanRecommendDataDtos.stream().map(AlanRecommendDataDto::getTitle).collect(Collectors.toList()));
-        logger.info("\n책 제목만 추출 완료");
-
-        return alanRecommendDataDtos;
+        logger.debug("API Response: {}", response);
+        return response;
     }
+}
 
+    /*
+     * TODO: 예외처리하기 (alan ai API 호출이 실패했을때 또는 응답이 예상치 못한 응답을 했을때)
+     *  -> 500응답을 하거나
+     *  -> 횟수(n번) 정해서 retry 하기
+     * */
+
+    /*
+     * TODO: client_id 바꾸는 로직 추가하기 (후순위)
+     *  -> client_id당 대략 100번 제한을 넘어가면 다음 client_id로 바꿔서 요청하기
+     * */
 
     /*
     * TODO: 프롬프트 수정하기
@@ -142,4 +65,3 @@ public class AlanRecommendApiService {
     * */
 
 
-}
