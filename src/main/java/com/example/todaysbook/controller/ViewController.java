@@ -1,11 +1,19 @@
 package com.example.todaysbook.controller;
 
+import com.example.todaysbook.domain.entity.CartBook;
+import com.example.todaysbook.service.CartService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.List;
+
 @Controller
+@RequiredArgsConstructor
 public class ViewController {
+
+    private final CartService cartService;
 
 //    @GetMapping("/index")
 //    public String index(Model model) {
@@ -137,14 +145,18 @@ public class ViewController {
         return "admin/update-password";
     }
 
-    @GetMapping("/cart/list")
-    public String cartList(Model model) {
-
-        return "cart/list";
-    }
+//    @GetMapping("/cart/list")
+//    public String cartList(Model model) {
+//
+//        return "cart/list";
+//    }
 
     @GetMapping("/payment/info")
     public String paymentInfo(Model model) {
+        // userId가 1인 사용자의 장바구니 목록 조회
+        List<CartBook> cartBooks = cartService.findCartBooksByUserId(1L);
+        int totalPrice = cartService.calculateTotalPrice(cartBooks); // 총 상품 가격을 계산
+        model.addAttribute("totalPrice", totalPrice); // 모델에 totalPrice를 추가하여 뷰로 전달
 
         return "payment/info";
     }
