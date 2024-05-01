@@ -1,53 +1,85 @@
-.user-list {
+/*.user-list {*/
 
-    display: flex;
-    flex-direction: column;
-    align-items: end;
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*    align-items: end;*/
+/*}*/
+
+/*.user-list-header {*/
+
+/*    border-top: solid 1px white;*/
+/*}*/
+
+/*.user-list-header, .user-list-body {*/
+
+/*    border-bottom: solid 1px white;*/
+/*}*/
+
+/*.user-list-header li {*/
+
+/*    display: flex;*/
+/*    margin: 10px 0;*/
+/*}*/
+
+/*.user-list-body li {*/
+
+/*    display: flex;*/
+/*    align-items: baseline;*/
+/*    margin: 20px 0;*/
+/*}*/
+
+/*.nickname{*/
+
+/*    width: 100px;*/
+/*}*/
+
+/*.nickname{*/
+/*    text-align: center;*/
+/*}*/
+
+/*.user-email {*/
+
+/*    width: 300px;*/
+/*    margin-left: 20px;*/
+/*}*/
+
+/*.user-grade{*/
+/*    width: 150px;*/
+/*}*/
+
+.user-list{
+    border-top: 1px solid white;
+    border-bottom: 1px solid white;
 }
 
-.user-list-header {
-
-    border-top: solid 1px white;
+.user-list tbody tr{
+    height: 50px;
 }
 
-.user-list-header, .user-list-body {
-
-    border-bottom: solid 1px white;
+.user-list thead tr{
+    border-bottom: 1px solid white;
+    height: 50px;
 }
 
-.user-list-header li {
-
-    display: flex;
-    margin: 10px 0;
-}
-
-.user-list-body li {
-
-    display: flex;
-    align-items: baseline;
-    margin: 10px 0;
-}
-
-.nickname, .user-grade {
-
-    width: 100px;
-}
-
-.nickname, .user-grade {
-
-    text-align: center;
-}
-
-.user-email {
-
+/* 이메일 열의 너비를 300px로 설정 */
+.user-list .user-email {
     width: 300px;
-    margin-left: 20px;
 }
 
-.delete-button {
-
-    margin: 20px 10px 0 0;
+/* 닉네임 열의 너비를 150px로 설정 */
+.user-list .nickname {
+    width: 150px;
 }
+
+/* 회원 등급 열의 너비를 150px로 설정 */
+.user-list .user-grade {
+    width: 150px;
+}
+
+.book-list .button-section{
+    width: 50px;
+}
+
 
 .page-button-group {
 
@@ -56,4 +88,13 @@
 
     gap: 20px;
     margin-top: 50px;
+}
+
+.select-button{
+    color: #D54DFE;
+}
+
+.no-content{
+    margin: 20px 0;
+    align-self: center;
 }

@@ -44,6 +44,7 @@ async function searchBook(keyword, page) {
 
         if (bookItems.length === 0) {
             const p = document.createElement('p');
+            p.classList.add("no-content");
             p.textContent = "검색결과가 없습니다.";
             searchList.appendChild(p);
         } else {

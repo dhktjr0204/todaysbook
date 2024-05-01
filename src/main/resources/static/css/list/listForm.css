@@ -72,3 +72,9 @@
 .book-item:hover .delete-button {
     display: inline-block;
 }
+
+.no-content {
+    width: 800px;
+    margin: 20px 0;
+    text-align: center; /* 가운데 정렬 */
+}

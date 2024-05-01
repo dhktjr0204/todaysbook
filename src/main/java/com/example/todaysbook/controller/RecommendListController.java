@@ -49,7 +49,7 @@ public class RecommendListController {
 
         UserRecommendList save = recommendListService.save(userId, request);
 
-        return ResponseEntity.ok("/mypage/my_recommend_list/"+save.getUserId());
+        return ResponseEntity.ok("/mypage/my_recommend_list");
     }
 
     @GetMapping("/update/{id}")
@@ -69,7 +69,7 @@ public class RecommendListController {
 
         recommendListService.update(id, request);
 
-        return ResponseEntity.ok("/mypage/my_recommend_list/"+request.getUserId());
+        return ResponseEntity.ok("/mypage/my_recommend_list");
     }
 
     @DeleteMapping("/remove/{id}")
@@ -77,7 +77,7 @@ public class RecommendListController {
 
         recommendListService.delete(listId);
 
-        return ResponseEntity.ok("/mypage/my_recommend_list/"+loginUserId);
+        return ResponseEntity.ok("/mypage/my_recommend_list");
     }
 
 }

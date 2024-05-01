@@ -7,7 +7,6 @@
 <th:block layout:fragment="head">
     <title>내가 만든 추천 리스트</title>
     <link th:href="@{/css/user/mypage/my-recommendlist.css}" rel="stylesheet"/>
-    <link th:href="@{/css/list/list.css}" rel="stylesheet"/>
 </th:block>
 <div th:replace="~{fragments/header.html}"></div>
 <main th:fragment="content">
@@ -22,26 +21,7 @@
                 <div class="recommend-list-header">
                     <p class="recommend-list-title" th:text="${recommendList.listTitle}"></p>
                 </div>
-                <div class="recommend-list-body">
-                    <button class="prev-btn" th:onclick="prevSlide([[${recommendList.listId}]],this)">&lt;</button>
-                    <div class="slider-container">
-                        <ul class="recommend-list">
-                            <li class="book-item" th:each="book : ${recommendList.bookList}" th:value="${book.id}">
-                                <figure class="book-info">
-                                    <a th:href="'/book/'+${book.id}">
-                                        <img th:src="${book.image}" th:alt="${book.title}">
-                                        <figcaption class="overlay">
-                                            <p class="book-title" th:text="${book.title}"></p>
-                                            <p class="author" th:text="${book.author}"></p>
-                                            <p class="price" th:text="${book.price}"></p>
-                                        </figcaption>
-                                    </a>
-                                </figure>
-                            </li>
-                        </ul>
-                    </div>
-                    <button class="next-btn" th:onclick="nextSlide([[${recommendList.listId}]],this)">&gt;</button>
-                </div>
+                <div th:replace="~{fragments/recommend-list-body.html}"></div>
                 <div class="recommend-list-bottom">
                     <button class="update-button" th:text="'수정'"
                             th:onclick="clickUpdateRecommendListButton([[${recommendList.listId}]],[[${login_user_id}]])"
@@ -54,6 +34,6 @@
     </div>
 </main>
 <div th:replace="~{fragments/footer.html}"></div>
-<script th:src="@{/js/list/page.js}"></script>
 <script th:src="@{/js/mypage/myRecommendList.js}"></script>
+<script th:src="@{/js/list/page.js}"></script>
 </html>

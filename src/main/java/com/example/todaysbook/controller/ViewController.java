@@ -109,17 +109,17 @@ public class ViewController {
         return "user/mypage/create-recommendlist";
     }
 
-    @GetMapping("/admin/userlist")
-    public String userList(Model model) {
+//    @GetMapping("/admin/userlist")
+//    public String userList(Model model) {
+//
+//        return "admin/userlist";
+//    }
 
-        return "admin/userlist";
-    }
-
-    @GetMapping("/admin/stocklist")
-    public String stockList(Model model) {
-
-        return "admin/stocklist";
-    }
+//    @GetMapping("/admin/stocklist")
+//    public String stockList(Model model) {
+//
+//        return "admin/stocklist";
+//    }
 
     @GetMapping("/admin/delivery")
     public String adminDelivery(Model model) {

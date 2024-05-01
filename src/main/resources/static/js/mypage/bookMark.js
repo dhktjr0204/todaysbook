@@ -1,11 +1,7 @@
 function clickBookMarkBtn(button) {
-    const listId = button.closest('.recommend-list-header')
-        .querySelector('.recommend-list-title')
-        .getAttribute("value");
+    const listId = button.value;
 
-    const bookMark = button.textContent;
-
-    if (bookMark === "O") {
+    if (button.classList.contains("redheart")) {
         const url = `/bookmark/cancel?listId=${listId}`;
         cancelBookMark(url, button);
     } else {
@@ -25,7 +21,10 @@ async function cancelBookMark(url, button) {
             return;
         }
 
-        button.textContent = 'X';
+        button.classList.remove("redheart");
+        button.classList.add('emptyheart');
+
+        alert("북마크 해제되었습니다.");
 
     } catch (error) {
         console.error(error);
@@ -43,7 +42,10 @@ async function addBookMark(url, button) {
             return;
         }
 
-        button.textContent = 'O';
+        button.classList.remove('emptyheart');
+        button.classList.add("redheart");
+
+        alert("북마크에 등록되었습니다.");
 
     } catch (error) {
         console.error(error);

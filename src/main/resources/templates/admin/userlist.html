@@ -14,36 +14,57 @@
     <aside th:replace="~{fragments/sidebar-admin.html}"></aside>
     <div class="mypage-wrap">
         <p class="mypage-title">회원 조회</p>
-        <form class="search-form">
-            <input class="search-input" th:placeholder="'검색할 회원을 입력해주세요.'">
+        <form class="search-form" action="/admin/userlist/search" onsubmit="return submitForm()">
+            <input class="search-input" th:placeholder="'검색할 회원을 입력해주세요.'" th:name="keyword">
             <button class="search-button" th:text="'검색'"></button>
         </form>
         <section>
-            <div class="user-list">
-                <ul class="user-list-header">
-                    <li>
-                        <p class="user-email">이메일</p>
-                        <p class="nickname">닉네임</p>
-                        <p class="user-grade">회원 등급</p>
-                    </li>
-                </ul>
-                <ul class="user-list-body">
-                    <li th:each="dto : ${#numbers.sequence(1,5)}">
-                        <input type="hidden" th:value="'userid'">
-                        <p class="user-email">이메일</p>
-                        <p class="nickname">닉네임</p>
-                        <p class="user-grade">회원 등급</p>
-                    </li>
-                </ul>
-                <button class="delete-button">삭제</button>
-            </div>
-            <ul class="page-button-group">
-                <li th:each="num : ${#numbers.sequence(1,5)}">
-                    <button th:text="${num}"></button>
+            <table class="user-list">
+                <thead>
+                <tr class="user-list-header">
+                    <td class="user-email">이메일</td>
+                    <td class="nickname">닉네임</td>
+                    <td class="user-grade">회원 등급</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr class="user-list-body" th:each="user : ${users}">
+                        <input type="hidden" th:value="${user.id}">
+                        <td class="user-email" th:text="${user.email}"></td>
+                        <td class="nickname" th:text="${user.nickName}"></td>
+                        <td class="user-grade" th:text="${user.grade}"></td>
+                        <td><button class="edit-button">수정</button></td>
+                        <td><button class="edit-button">삭제</button></td>
+                    </tr>
+                </tbody>
+                <div class="no-content" th:if="${users.isEmpty()}">
+                    유저가 없습니다.
+                </div>
+            </table>
+            <ul class="page-button-group" th:unless="${users.isEmpty()}">
+                <li th:if="${users.number>4}">
+                    <button th:onclick="clickUserPrevPageButton([[${startPage}]], [[${keyword}]])">
+                        &lt;
+                    </button>
+                </li>
+                <li th:each="num : ${#numbers.sequence(startPage, endPage)}">
+                    <button th:text="${num}" th:if="${users.number+1 eq num}"
+                            th:class="select-button"></button>
+                    <button th:text="${num}" th:unless="${users.number+1 eq num}"
+                            th:onclick="clickUserPageButton(this,  [[${keyword}]])"></button>
+                </li>
+                <li th:if="${users.totalPages > 5 and endPage != users.totalPages}">
+                    <button th:onclick="clickUserNextPageButton([[${endPage}]], [[${keyword}]])">
+                        &gt;
+                    </button>
                 </li>
             </ul>
         </section>
     </div>
 </main>
 <div th:replace="~{fragments/footer.html}"></div>
+<script th:src="@{/js/admin/page.js}"></script>
+<script th:src="@{/js/admin/search.js}"></script>
 </html>
