@@ -1,7 +1,7 @@
 <li class="review" th:each="review : ${reviews}">
     <div class="edit-button-div" th:if="${review.userId == userId}">
         <button>수정</button>
-        <button>삭제</button>
+        <button onclick="deleteReview()">삭제</button>
     </div>
     <div class="review-top">
         <div class="score-div">
@@ -15,6 +15,7 @@
     </div>
     <div class="review-bottom">
         <div class="review-info">
+            <input type="hidden" class="review-id" th:value="${review.id}">
             <p class="reviewer" th:text="'작성자 : '+${review.nickName}"></p>
             <p class="review-date"
                th:text="${#temporals.format(review.createTime, 'yyyy-MM-dd HH:mm')}"></p>

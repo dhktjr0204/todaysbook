@@ -59,6 +59,6 @@
     <delete id="deleteReview">
         DELETE
         FROM review
-        WHERE user_id = #{userId} AND book_id = #{bookId}
+        WHERE id = #{reviewId}
     </delete>
 </mapper>

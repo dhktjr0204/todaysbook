@@ -30,28 +30,35 @@ public class ReviewController {
 
         if(errorHandler(flag)) {
 
-            throw new IllegalStateException("ddd");
+            throw new IllegalStateException();
         }
 
         List<Review> reviews = reviewService.getReviews(requestDto.getBookId(), requestDto.getUserId());
         model.addAttribute("reviews", reviews);
+        model.addAttribute("userId", userId);
 
         return "book/review";
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<?> deleteReview(@RequestParam(value = "bookId") long bookId) {
+    public String deleteReview(@RequestParam(value = "reviewId") long reviewId,
+                               @RequestParam(value = "bookId") long bookId,
+                               Model model) {
 
-        try {
+        long userId = 1l;
 
-            long userId = 1l;
+        int flag = reviewService.deleteReview(reviewId);
 
-            return ResponseEntity.ok(reviewService.deleteReview(userId, bookId));
+        if(errorHandler(flag)) {
 
-        } catch (Exception e) {
-
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+            throw new IllegalStateException();
         }
+
+        List<Review> reviews = reviewService.getReviews(bookId, userId);
+        model.addAttribute("reviews", reviews);
+        model.addAttribute("userId", userId);
+
+        return "book/review";
     }
     @GetMapping("/add_like")
     public ResponseEntity<?> addLikeReview(@RequestParam(value = "userId") long userId,

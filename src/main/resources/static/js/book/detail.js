@@ -133,6 +133,31 @@ function clickAddReview() {
     });
 }
 
+function deleteReview() {
+
+    const url = "/review/delete";
+    const method = "DELETE";
+
+    const bookId = document.querySelector('.book-id').value;
+    const reviewId = document.querySelector('.review-id').value;
+
+    $.ajax({
+        url: url,
+        type: method,
+        data: {
+            bookId: bookId,
+            reviewId: reviewId
+        },
+        success: function (data) {
+            alert("리뷰가 삭제 되었습니다.");
+            $('.review-div').html(data);
+        },
+        error: function (error) {
+            throw new Error('리뷰 삭제 실패');
+        }
+    });
+}
+
 document.addEventListener('DOMContentLoaded', function () {
 
     const stars = document.querySelectorAll('.review-star');

@@ -59,8 +59,8 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public int deleteReview(long userId, long bookId) {
+    public int deleteReview(long reviewId) {
 
-        return reviewMapper.deleteReview(userId, bookId);
+        return reviewMapper.deleteReview(reviewId);
     }
 }

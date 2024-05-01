@@ -120,9 +120,10 @@
                     <li class="review" th:each="review : ${bookDetailDto.reviews}">
                         <div class="edit-button-div" th:if="${review.userId == userId}">
                             <button>수정</button>
-                            <button>삭제</button>
+                            <button onclick="deleteReview()">삭제</button>
                         </div>
                         <div class="review-top">
+                            <input type="hidden" class="review-id" th:value="${review.id}">
                             <div class="score-div">
                                 <img th:if="${review.score != 0}" class="review-list-star" th:src="@{'/images/star.png'}"
                                      th:each="num : ${#numbers.sequence(0, review.score - 1)}">

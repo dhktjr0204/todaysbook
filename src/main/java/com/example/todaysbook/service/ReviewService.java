@@ -13,5 +13,5 @@ public interface ReviewService {
     int deleteLikeReview(long userId, long reviewId);
     int deleteDislikeReview(long userId, long reviewId);
     int addReview(ReviewRequestDto requestDto);
-    int deleteReview(long userId, long bookId);
+    int deleteReview(long reviewId);
 }
