@@ -13,8 +13,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 
 @RestController
 @RequestMapping("/user")
@@ -29,7 +29,15 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody UserRequestDto request) {
-        User user = userService.registerUser(request);
+        if(userService.isExistEmail(request.getEmail())) {
+            return ResponseEntity.badRequest().body("Email already exists : " + request.getEmail());
+        }
+
+        if(userService.isExistNickName(request.getNickName())) {
+            return ResponseEntity.badRequest().body("Nickname already exists : " + request.getNickName());
+        }
+
+        User user = userService.save(request);
         UserResponseDto response = user.toResponse();
 
         return ResponseEntity.ok(response);

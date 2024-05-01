@@ -21,7 +21,7 @@ public class UserService {
         this.encoder = encoder;
     }
 
-    public User registerUser(UserRequestDto request) {
+    public User save(UserRequestDto request) {
         User user = User.builder()
                 .name(request.getName())
                 .nickName(request.getNickName())
@@ -41,6 +41,10 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
+    public boolean isExistEmail(String email) {
+        return userRepository.isExistEmail(email);
+    }
+
     public boolean isExistNickName(String nickName) {
         return userRepository.isExistNickName(nickName);
     }
@@ -52,4 +56,5 @@ public class UserService {
     public Optional<User> findById(Long id) {
         return userRepository.findById(id);
     }
+
 }

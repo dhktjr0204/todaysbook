@@ -15,7 +15,7 @@
             <p class="title">회원 가입</p>
             <form class="registration-form">
                 <ul>
-                    <li th:each="label : ${#strings.arraySplit('이메일,닉네임,비밀번호,비밀번호 확인,주소,우편번호',',')}">
+                    <li th:each="label : ${#strings.arraySplit('이름,이메일,닉네임,비밀번호,비밀번호 확인,주소,우편번호',',')}">
                         <p class="label" th:text="${label}"></p>
                         <input class="input">
                         <button class="button"
@@ -33,4 +33,5 @@
     </div>
 </main>
 <div th:replace="~{fragments/footer.html}"></div>
+<script th:src="@{/js/user/registration.js}"></script>
 </html>

@@ -1,5 +1,6 @@
 package com.example.todaysbook.config;
 
+import com.example.todaysbook.domain.entity.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -45,7 +46,7 @@ public class SecurityConfig {
                                         "/cart/list",
                                         "/payment/**")
                                 .permitAll()
-                                .requestMatchers("/admin/**").hasRole("관리자")
+                                .requestMatchers("/admin/**").hasRole(Role.ROLE_ADMIN.value())
                                 .anyRequest().permitAll())
                 .formLogin(auth -> auth.loginPage("/login")// 폼 기반 로그인 설정
                         .defaultSuccessUrl("/index"))

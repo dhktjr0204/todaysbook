@@ -1,5 +1,6 @@
 package com.example.todaysbook.domain.dto;
 
+import com.example.todaysbook.domain.entity.Role;
 import lombok.*;
 
 @Getter
@@ -12,7 +13,7 @@ public class UserRequestDto {
     private String nickName;
     private String email;
     private String password;
-    private String role;
+    private Role role;
     private String address;
     private String zipcode;
 }
