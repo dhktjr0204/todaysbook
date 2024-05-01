@@ -1,8 +1,6 @@
 package com.example.todaysbook.service;
 
 import com.example.todaysbook.domain.dto.AlanRecommendDataDto;
-import com.example.todaysbook.domain.entity.AlanRecommendData;
-import com.example.todaysbook.repository.AlanRecommendDataRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,7 +10,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -20,12 +20,10 @@ import java.util.stream.StreamSupport;
 @RequiredArgsConstructor
 public class AlanRecommendDataService {
 
-    private final AlanRecommendDataRepository alanRecommendDataRepository;
     private final AlanRecommendApiService alanRecommendApiService;
-
     private static final Logger logger = LoggerFactory.getLogger(AlanRecommendDataService.class);
 
-    public void saveTodaysBooks() {
+    public List<AlanRecommendDataDto> getTodaysBooks() {
         String response = alanRecommendApiService.callApi();
         logger.info("\nAPI 호출 완료");
         String content = parseApiResponse(response);
@@ -33,20 +31,9 @@ public class AlanRecommendDataService {
         List<AlanRecommendDataDto> alanRecommendDataDtos = extractBookTitles(content);
         logger.info("\n책 제목만 추출 완료");
         logger.info("\n추출한 책 제목: {}", alanRecommendDataDtos.stream().map(AlanRecommendDataDto::getTitle).collect(Collectors.toList()));
-
-        List<AlanRecommendData> alanRecommendDataList = alanRecommendDataDtos.stream()
-                .map(dto -> AlanRecommendData.builder()
-                        .title(dto.getTitle())
-                        .createdAt(dto.getCreatedAt())
-                        .build())
-                .collect(Collectors.toList());
-
-        //alanRecommendDataRepository.saveAll(alanRecommendDataList);
-        //logger.info("\nAlanRecommendData 엔티티에 저장 완료");
-
-        //saveAlanRecommendBook호출
-
+        return alanRecommendDataDtos;
     }
+
 
     // API 응답 파싱 메서드
     private String parseApiResponse(String response) {
@@ -90,7 +77,7 @@ public class AlanRecommendDataService {
                                 .createdAt(LocalDateTime.now())
                                 .build())
                         .toList();
-            } else {
+            } else { // 케이스 더 추가해야함. 답변 형식이 자꾸 바뀜
                 int jsonStartIndex = content.indexOf("[");
                 int jsonEndIndex = content.lastIndexOf("]");
                 if (jsonStartIndex != -1 && jsonEndIndex != -1 && jsonEndIndex > jsonStartIndex) {

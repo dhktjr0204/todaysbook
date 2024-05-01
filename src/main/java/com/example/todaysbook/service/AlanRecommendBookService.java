@@ -1,32 +1,37 @@
 package com.example.todaysbook.service;
 
 import com.example.todaysbook.domain.dto.AlanRecommendBookDto;
+import com.example.todaysbook.domain.dto.AlanRecommendDataDto;
 import com.example.todaysbook.domain.entity.AlanRecommendBook;
-import com.example.todaysbook.domain.entity.AlanRecommendData;
 import com.example.todaysbook.domain.entity.Book;
 import com.example.todaysbook.repository.AlanRecommendBookRepository;
-import com.example.todaysbook.repository.AlanRecommendDataRepository;
 import com.example.todaysbook.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class AlanRecommendBookService {
 
-    private final AlanRecommendDataRepository alanRecommendDataRepository;
+    private final AlanRecommendDataService alanRecommendDataService;
     private final AlanRecommendBookRepository alanRecommendBookRepository;
     private final BookRepository bookRepository;
+    private static final Logger logger = LoggerFactory.getLogger(AlanRecommendBookService.class);
+    public void saveAlanRecommendBooks() {
+        List<AlanRecommendDataDto> alanRecommendDataList = alanRecommendDataService.getTodaysBooks();
 
-    public void saveAlanRecommendBooks(List<AlanRecommendData> data) {
-        List<AlanRecommendData> alanRecommendDataList = getTodaysAlanRecommendData();
+        //오늘의 책 추천 데이터 모두 출력
+        logger.info("\n오늘의 책 추천 데이터: {}", alanRecommendDataList.stream().map(AlanRecommendDataDto::getTitle).collect(Collectors.toList()));
 
-        for (AlanRecommendData element : data) {
+        for (AlanRecommendDataDto element : alanRecommendDataList) {
             Optional<Book> existingBook = bookRepository.findByTitle(element.getTitle());
 
             if (existingBook.isPresent()) {
@@ -38,11 +43,6 @@ public class AlanRecommendBookService {
         }
     }
 
-    private List<AlanRecommendData> getTodaysAlanRecommendData() {
-        LocalDate today = LocalDate.now();
-        return alanRecommendDataRepository.findByCreatedAtBetween(
-                today.atStartOfDay(), today.plusDays(1).atStartOfDay());
-    }
 
         public List<AlanRecommendBookDto> getAlanRecommendBooks() {
             List<AlanRecommendBook> alanRecommendBooks = alanRecommendBookRepository.findAll();
@@ -55,8 +55,6 @@ public class AlanRecommendBookService {
 
             return alanRecommendBookDtos;
         }
-
-
 }
 
 /*

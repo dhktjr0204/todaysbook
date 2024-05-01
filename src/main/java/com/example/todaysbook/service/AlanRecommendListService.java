@@ -1,6 +1,4 @@
 package com.example.todaysbook.service;
-import com.example.todaysbook.domain.entity.AlanRecommendBook;
-import com.example.todaysbook.domain.entity.AlanRecommendList;
 import org.springframework.stereotype.Service;
 
 

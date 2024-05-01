@@ -22,9 +22,9 @@ public class AlanRecommendApiService {
     private static final Logger logger = LoggerFactory.getLogger(AlanRecommendApiService.class);
 
     public String callApi() {
-        String url = apiUrl + "?content=오늘 기준 한국 도서 베스트셀러 책 제목 15개를 추천해 주세요. 신뢰할 수 있는 최신 정보를 바탕으로 정확한 책 제목을 제공해 주세요. 책 제목만 JSON 형식으로 작성해 주시고, 구어체는 사용하지 마세요. 추가적인 설명이나 마크다운은 포함하지 않도록 해 주세요.&client_id=" + clientId;
+        String url = apiUrl + "?content=오늘 기준 한국 도서 베스트셀러 책 제목 15개를 추천해 주세요. 신뢰할 수 있는 최신 정보를 바탕으로 정확한 책 제목을 제공해 주세요. 책 제목만 JSON 형식으로 작성해 주세요. 추가적인 설명이나 마크다운은 포함하지 않도록 해 주세요.&client_id=" + clientId;
         String response = restTemplate.getForObject(url, String.class);
-        logger.debug("API Response: {}", response);
+        logger.info("API Response: {}", response);
         return response;
     }
 }
