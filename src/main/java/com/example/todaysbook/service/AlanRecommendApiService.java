@@ -1,8 +1,13 @@
 package com.example.todaysbook.service;
 
+import com.example.todaysbook.domain.dto.AlanRecommendBookDto;
 import com.example.todaysbook.domain.dto.AlanRecommendDataDto;
+import com.example.todaysbook.domain.entity.AlanRecommendBook;
 import com.example.todaysbook.domain.entity.AlanRecommendData;
+import com.example.todaysbook.domain.entity.Book;
 import com.example.todaysbook.repository.AlanRecommendDataRepository;
+import com.example.todaysbook.repository.AlanRecommendBookRepository;
+import com.example.todaysbook.repository.BookRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,10 +17,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -24,14 +32,11 @@ import java.util.stream.StreamSupport;
 public class AlanRecommendApiService {
 
     private final AlanRecommendDataRepository alanRecommendDataRepository;
+
     private static final Logger logger = LoggerFactory.getLogger(AlanRecommendApiService.class);
 
-    @Scheduled(cron = "0 38 21 * * *", zone = "Asia/Seoul")
-    public void scheduleFetchTodaysBooks() {
-        fetchTodaysBooks();
-    }
 
-    public void fetchTodaysBooks() {
+    public List<AlanRecommendDataDto> fetchTodaysBooks() {
 
         /*
          * TODO: 예외처리하기 (alan ai API 호출이 실패했을때 또는 응답이 예상치 못한 응답을 했을때)
@@ -48,19 +53,17 @@ public class AlanRecommendApiService {
 
         RestTemplate restTemplate = new RestTemplate();
         String response = restTemplate.getForObject(url, String.class);
-        logger.info("API Response: {}", response);
+        logger.info("\nAPI Response: {}", response);
 
-        // API 응답 파싱
         ObjectMapper responseMapper = new ObjectMapper();
         JsonNode jsonNode;
         try {
             jsonNode = responseMapper.readTree(response);
         } catch (Exception e) {
-            logger.error("API response 파싱 실패", e);
+            logger.error("\nAPI response 파싱 실패", e);
             throw new RuntimeException("API response 파싱 실패", e);
         }
 
-        // content 분리 (여러가지 형식의 응답을 처리하도록 여러 조건을 추가하기)
         String content;
         if (jsonNode.has("content")) {
             content = jsonNode.get("content").asText();
@@ -71,35 +74,31 @@ public class AlanRecommendApiService {
             if (startIndex != -1 && endIndex != -1 && endIndex > startIndex) {
                 content = searchWebContent.substring(startIndex + 3, endIndex).trim();
             } else {
-                logger.error("유효하지 않은 search_web content 형식");
+                logger.error("\n유효하지 않은 search_web content 형식");
                 throw new RuntimeException("유효하지 않은 search_web content 형식");
             }
         } else {
-            logger.error("유효하지 않은 API 응답 형식");
+            logger.error("\n유효하지 않은 API 응답 형식");
             throw new RuntimeException("유효하지 않은 API 응답 형식");
         }
 
-// content를 JSON 배열로 파싱
         ObjectMapper contentMapper = new ObjectMapper();
         JsonNode contentNode;
         try {
-            // 실제 JSON 데이터 부분 추출
             int jsonStartIndex = content.indexOf("[");
             int jsonEndIndex = content.lastIndexOf("]");
             if (jsonStartIndex != -1 && jsonEndIndex != -1 && jsonEndIndex > jsonStartIndex) {
                 String jsonContent = content.substring(jsonStartIndex, jsonEndIndex + 1);
                 contentNode = contentMapper.readTree(jsonContent);
             } else {
-                logger.error("유효하지 않은 JSON 데이터 형식");
+                logger.error("\n유효하지 않은 JSON 데이터 형식");
                 throw new RuntimeException("유효하지 않은 JSON 데이터 형식");
             }
         } catch (JsonProcessingException e) {
-            logger.error("content 파싱 실패", e);
+            logger.error("\ncontent 파싱 실패", e);
             throw new RuntimeException("content 파싱 실패", e);
         }
 
-
-        // JSON 배열에서 책 제목 추출
         List<AlanRecommendDataDto> alanRecommendDataDtos = StreamSupport.stream(contentNode.spliterator(), false)
                 .map(node -> {
                     String title = node.get("content").asText()
@@ -111,20 +110,10 @@ public class AlanRecommendApiService {
                             .build();
                 })
                 .toList();
-        //추출한 책 제목 모두 출력
-        logger.info("추출한 책 제목: {}", alanRecommendDataDtos.stream().map(AlanRecommendDataDto::getTitle).collect(Collectors.toList()));
-        logger.info("책 제목만 추출 완료");
+        logger.info("\n추출한 책 제목: {}", alanRecommendDataDtos.stream().map(AlanRecommendDataDto::getTitle).collect(Collectors.toList()));
+        logger.info("\n책 제목만 추출 완료");
 
-// 추출한 책 제목을 AlanRecommendData 엔티티에 저장
-        List<AlanRecommendData> alanRecommendDataList = alanRecommendDataDtos.stream()
-                .map(dto -> AlanRecommendData.builder()
-                        .title(dto.getTitle())
-                        .createdAt(dto.getCreatedAt())
-                        .build())
-                .collect(Collectors.toList());
-
-        alanRecommendDataRepository.saveAll(alanRecommendDataList);
-        logger.info("AlanRecommendData 엔티티에 저장 완료");
+        return alanRecommendDataDtos;
     }
 
 
