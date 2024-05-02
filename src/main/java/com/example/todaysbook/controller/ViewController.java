@@ -70,12 +70,6 @@ public class ViewController {
         return "user/mypage/orderlist";
     }
 
-    @GetMapping("/mypage/review")
-    public String review(Model model) {
-
-        return "user/mypage/review";
-    }
-
     @GetMapping("/mypage/mileage")
     public String mileage(Model model) {
 

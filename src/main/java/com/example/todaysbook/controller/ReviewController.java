@@ -67,11 +67,6 @@ public class ReviewController {
 
         int flag = reviewService.deleteReview(reviewId);
 
-        if(errorHandler(flag)) {
-
-            throw new IllegalStateException();
-        }
-
         List<Review> reviews =
                 reviewService.getReviews(bookId, userId, orderBy);
         model.addAttribute("reviews", reviews);

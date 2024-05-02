@@ -18,35 +18,33 @@
             <div class="review-list">
                 <ul class="review-list-header">
                     <li>
-                        <p class="select">선택</p>
                         <p class="product-name">상품명</p>
                         <p class="content">내용</p>
                     </li>
                 </ul>
                 <ul class="review-list-body">
-                    <li th:each="dto : ${#numbers.sequence(1,5)}">
-                        <div class="select">
-                            <input type="checkbox">
-                        </div>
-                        <input type="hidden" th:value="'책id'">
-                        <p class="product-name" onclick="">상품명</p>
-                        <p class="content">내용</p>
+                    <li th:each="review : ${dto}">
+                        <input type="hidden" class="book-id" th:value="${review.id}">
+                        <input type="hidden" class="review-id" th:value="${review.bookId}">
+                        <a class="product-name" th:href="@{/book/detail/{id}(id=${review.bookId})}" th:text="${review.title}"></a>
+                        <pre class="content" th:text="${review.content}"></pre>
                     </li>
+                </ul>
+                <ul th:if="${dto.isEmpty()}">
                     <li>
                         <p class="no-content">
                             작성한 리뷰가 없습니다.
                         </p>
                     </li>
                 </ul>
-                <button class="delete-button">삭제</button>
             </div>
-            <ul class="page-button-group">
-                <li th:each="num : ${#numbers.sequence(1,5)}">
-                    <button th:text="${num}"></button>
-                </li>
-            </ul>
+        </section>
+        <section>
+            <div th:replace="~{fragments/page.html}"></div>
         </section>
     </div>
 </main>
 <div th:replace="~{fragments/footer.html}"></div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script th:src="@{/js/mypage/review.js}"></script>
 </html>
