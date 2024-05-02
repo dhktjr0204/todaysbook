@@ -60,6 +60,24 @@ public class ReviewController {
 
         return "book/review";
     }
+
+    @PutMapping("/update")
+    public String updateReview(@RequestBody ReviewRequestDto requestDto,
+                               Model model) {
+
+        long userId = 1l;
+
+        requestDto.setUserId(userId);
+        int flag = reviewService.updateReview(requestDto);
+
+        List<Review> reviews = reviewService.getReviews(requestDto.getBookId(), requestDto.getUserId());
+
+        model.addAttribute("reviews", reviews);
+        model.addAttribute("userId", userId);
+
+        return "book/review";
+    }
+
     @GetMapping("/add_like")
     public ResponseEntity<?> addLikeReview(@RequestParam(value = "userId") long userId,
                                            @RequestParam(value = "reviewId") long reviewId) {

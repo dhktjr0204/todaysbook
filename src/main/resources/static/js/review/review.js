@@ -1,6 +1,15 @@
-function commentWordCount(textarea){
+function reviewWordCount(textarea){
 
     const commentForm = textarea.closest('.review-form');
+    const commentTextCount = commentForm.querySelector('.comment-text-count');
+
+    countBytes(textarea, commentTextCount, 500);
+}
+
+function editReviewWordCount(textarea){
+
+    const commentForm = textarea.closest('.edit-text-area-div');
+
     const commentTextCount = commentForm.querySelector('.comment-text-count');
     countBytes(textarea, commentTextCount, 500);
 }
@@ -111,14 +120,16 @@ function clickDislike(button, reviewId) {
     });
 }
 
-function clickAddReview() {
+function clickAddReview(button) {
 
     const url = "/review/add";
     const method = "POST";
 
-    const content = document.querySelector('.review-input').value;
-    const bookId = document.querySelector('.book-id').value;
-    const score = parseInt(document.querySelector('.review-score').textContent);
+    const reviewItem = button.closest('.review-form');
+
+    const content = reviewItem.querySelector('.review-input').value;
+    const bookId = reviewItem.querySelector('.book-id').value;
+    const score = parseInt(reviewItem.querySelector('.review-score').textContent);
 
     if (content.trim() === "") {
         alert("리뷰 내용을 입력해주세요.");
@@ -144,13 +155,15 @@ function clickAddReview() {
     });
 }
 
-function deleteReview() {
+function deleteReview(button) {
 
     const url = "/review/delete";
     const method = "DELETE";
 
+    const reviewItem = button.closest('.review');
+
     const bookId = document.querySelector('.book-id').value;
-    const reviewId = document.querySelector('.review-id').value;
+    const reviewId = reviewItem.querySelector('.review-id').value;
 
     $.ajax({
         url: url,
@@ -169,43 +182,151 @@ function deleteReview() {
     });
 }
 
+function editReview(button) {
+
+    const reviewItem = button.closest('.review');
+    const btnDiv = reviewItem.querySelector('.edit-button-div');
+    const reviewContent = reviewItem.querySelector('pre');
+    const reviewScoreDiv = reviewItem.querySelector('.review-score-div');
+    const editScoreDiv = reviewItem.querySelector('.edit-score-div');
+
+    const content = reviewContent.textContent;
+
+    const editTextDiv = reviewItem.querySelector('.edit-text-area-div');
+
+    reviewScoreDiv.style.display = 'none';
+    editScoreDiv.style.display = 'flex';
+
+    reviewContent.style.display = 'none';
+    btnDiv.style.display= 'none';
+    editTextDiv.style.display = 'flex';
+
+    const editTextArea = editTextDiv.querySelector('.edit-review-input');
+    editTextArea.textContent = content;
+    editReviewWordCount(editTextArea);
+}
+
+function editReviewCancel(button) {
+
+    const reviewItem = button.closest('.review');
+    const btnDiv = reviewItem.querySelector('.edit-button-div');
+    const reviewContent = reviewItem.querySelector('pre');
+
+    const reviewScoreDiv = reviewItem.querySelector('.review-score-div');
+    const editScoreDiv = reviewItem.querySelector('.edit-score-div');
+    const editTextDiv = reviewItem.querySelector('.edit-text-area-div');
+
+    reviewScoreDiv.style.display = 'flex';
+    editScoreDiv.style.display = 'none';
+
+    reviewContent.style.display = 'block';
+    btnDiv.style.display= 'flex';
+    editTextDiv.style.display = 'none';
+}
+
+function updateReview(button) {
+
+    const url = "/review/update";
+    const method = "PUT";
+
+    const reviewItem = button.closest('.review');
+
+    const bookId = document.querySelector('.book-id').value;
+    const reviewId = reviewItem.querySelector('.review-id').value;
+    const content = reviewItem.querySelector('.edit-review-input').value;
+    const score = parseInt(reviewItem.querySelector('.edit-review-score').textContent);
+
+    $.ajax({
+        url: url,
+        type: method,
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify({
+            bookId: bookId,
+            content: content,
+            reviewId: reviewId,
+            score: score
+        }),
+        success: function (data) {
+            alert("리뷰가 수정 되었습니다.");
+            $('.review-div').html(data);
+        },
+        error: function (error) {
+            throw new Error('리뷰 수정 실패');
+        }
+    });
+}
+
 document.addEventListener('DOMContentLoaded', function () {
 
-    const stars = document.querySelectorAll('.review-star');
+    // 리뷰 평가
+    const reviewStars = document.querySelectorAll('.review-star');
     const reviewScore = document.querySelector('.review-score');
-    let isClicked = false;
-    let previousValue = 0;
+    let isReviewClicked = false;
+    let previousReviewValue = 0;
 
-    stars.forEach(star => {
+    reviewStars.forEach(star => {
         star.addEventListener('mousedown', function () {
-            isClicked = true;
+            isReviewClicked = true;
             const value = this.getAttribute('data-value');
-            if (value === previousValue) {
-
+            if (value === previousReviewValue) {
                 reviewScore.textContent = '0';
-                highlightStars(0);
-                previousValue = 0;
+                highlightStars(reviewStars, 0);
+                previousReviewValue = 0;
             } else {
                 reviewScore.textContent = value;
-                highlightStars(value);
-                previousValue = value;
+                highlightStars(reviewStars, value);
+                previousReviewValue = value;
             }
         });
 
         star.addEventListener('mouseover', function () {
-            if (isClicked) {
+            if (isReviewClicked) {
                 const value = this.getAttribute('data-value');
                 reviewScore.textContent = value;
-                highlightStars(value);
+                highlightStars(reviewStars, value);
             }
         });
 
         star.addEventListener('mouseup', function () {
-            isClicked = false;
+            isReviewClicked = false;
         });
     });
 
-    function highlightStars(value) {
+    // 리뷰 수정 평가
+    const editReviewStars = document.querySelectorAll('.edit-review-star');
+    const editReviewScore = document.querySelector('.edit-review-score');
+    let isEditClicked = false;
+    let previousEditValue = 0;
+
+    editReviewStars.forEach(star => {
+        star.addEventListener('mousedown', function () {
+            isEditClicked = true;
+            const value = this.getAttribute('data-value');
+            if (value === previousEditValue) {
+                editReviewScore.textContent = '0';
+                highlightStars(editReviewStars, 0);
+                previousEditValue = 0;
+            } else {
+                editReviewScore.textContent = value;
+                highlightStars(editReviewStars, value);
+                previousEditValue = value;
+            }
+        });
+
+        star.addEventListener('mouseover', function () {
+            if (isEditClicked) {
+                const value = this.getAttribute('data-value');
+                editReviewScore.textContent = value;
+                highlightStars(editReviewStars, value);
+            }
+        });
+
+        star.addEventListener('mouseup', function () {
+            isEditClicked = false;
+        });
+    });
+
+    function highlightStars(stars, value) {
         stars.forEach(star => {
             if (parseInt(star.getAttribute('data-value')) <= value) {
                 star.src = '/images/star.png';

@@ -18,4 +18,5 @@ public interface ReviewMapper {
     int countDislike(long reviewId);
     int addReview(ReviewRequestDto requestDto);
     int deleteReview(long reviewId);
+    int updateReview(ReviewRequestDto requestDto);
 }

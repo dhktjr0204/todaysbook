@@ -61,4 +61,14 @@
         FROM review
         WHERE id = #{reviewId}
     </delete>
+
+    <update id="updateReview" parameterType="com.example.todaysbook.domain.dto.ReviewRequestDto">
+        UPDATE review
+        SET
+            score = #{score},
+            content = #{content},
+            create_time = now()
+        WHERE id = #{reviewId}
+    </update>
+
 </mapper>
