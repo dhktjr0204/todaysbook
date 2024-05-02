@@ -1,15 +1,24 @@
 package com.example.todaysbook.service;
 
+import com.example.todaysbook.domain.dto.Review;
 import com.example.todaysbook.domain.dto.ReviewRequestDto;
 import com.example.todaysbook.repository.ReviewMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class ReviewServiceImpl implements ReviewService {
 
     private final ReviewMapper reviewMapper;
+
+    @Override
+    public List<Review> getReviews(long bookId, long userId, String orderBy) {
+
+        return reviewMapper.getReviews(bookId, userId, orderBy);
+    }
 
     @Override
     public int addLikeReview(long userId, long reviewId) {
@@ -47,5 +56,17 @@ public class ReviewServiceImpl implements ReviewService {
     public int addReview(ReviewRequestDto requestDto) {
 
         return reviewMapper.addReview(requestDto);
+    }
+
+    @Override
+    public int deleteReview(long reviewId) {
+
+        return reviewMapper.deleteReview(reviewId);
+    }
+
+    @Override
+    public int updateReview(ReviewRequestDto requestDto) {
+
+        return reviewMapper.updateReview(requestDto);
     }
 }

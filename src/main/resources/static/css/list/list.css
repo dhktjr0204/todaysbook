@@ -28,6 +28,10 @@
     transition: transform 0.5s ease;
 }
 
+.prev-btn-hidden{
+    visibility: hidden;
+}
+
 .book-item {
     /*사진 업로드 시 image-item의 크기가 줄어들 지 않는다.*/
     flex: 0 0 auto;
@@ -77,7 +81,25 @@ figure {
 figure:hover .overlay {
     opacity: 1;
 }
+
 .book-title, .author, .price {
     color: white;
     background-color: transparent;
+}
+
+.recommend-list-title-container{
+    display: flex;
+    gap:10px;
+}
+
+.redheart {
+    width: 25px;
+    background: no-repeat center / cover url(../../images/like.png);
+    background-size: contain;
+}
+
+.emptyheart {
+    width: 25px;
+    background: no-repeat center / cover url(../../images/dislike.png);
+    background-size: contain;
 }

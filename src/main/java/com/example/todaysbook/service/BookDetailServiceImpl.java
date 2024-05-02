@@ -19,8 +19,10 @@ public class BookDetailServiceImpl implements BookDetailService {
     @Override
     public BookDetailDto getBookDetail(long bookId, long userId) {
 
+        String orderBy = "latest";
+
         BookDetail bookDetail = bookDetailMapper.getBookDetail(bookId, userId);
-        List<Review> reviews = reviewMapper.getReviews(bookId, userId);
+        List<Review> reviews = reviewMapper.getReviews(bookId, userId, orderBy);
 
         return new BookDetailDto().builder()
                 .bookDetail(bookDetail)

@@ -137,7 +137,7 @@ figure img {
     margin-bottom: 10px;
 }
 
-.book-title, .author {
+.book-title, .author, .price {
 
     display: flex;
     width: 150px;
@@ -164,6 +164,7 @@ figure img {
 }
 
 .no-content-text{
+    width: 850px;
     color: white;
     text-align: center;
 }

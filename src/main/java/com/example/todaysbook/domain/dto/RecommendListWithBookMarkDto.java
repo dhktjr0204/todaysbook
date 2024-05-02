@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class RandomRecommendListDto {
+public class RecommendListWithBookMarkDto {
     private Long listId;
     private String listTitle;
     private Long userId;

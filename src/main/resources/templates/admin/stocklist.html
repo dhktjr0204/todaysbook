@@ -14,8 +14,9 @@
     <aside th:replace="~{fragments/sidebar-admin.html}"></aside>
     <div class="mypage-wrap">
         <p class="mypage-title">재고 조회</p>
-        <form class="search-form">
-            <input class="search-input" th:placeholder="'검색할 도서를 입력해주세요. (저자, 책 제목)'">
+        <form class="search-form" action="/admin/stocklist/search">
+            <input class="search-input" th:placeholder="'검색할 도서를 입력해주세요. (저자, 책 제목)'"
+                   th:name="keyword">
             <button class="search-button" th:text="'검색'"></button>
         </form>
         <section>
@@ -28,21 +29,26 @@
                     </li>
                 </ul>
                 <ul class="book-list-body">
-                    <li th:each="dto : ${#numbers.sequence(1,5)}">
-                        <input type="hidden" th:value="'bookid'">
-                        <p class="book-name">상품명</p>
-                        <p class="price">100000원</p>
-                        <p class="quantity">수량</p>
+                    <li class="book-item" th:each="book : ${dto}">
+                        <input type="hidden" class="book-id" th:value="${book.id}">
+                        <p class="book-name" th:text="${book.title}"></p>
+                        <p class="price" th:text="${book.price}+'원'" th:value="${book.price}"></p>
+                        <input class="quantity" th:value="${book.stock}">
+                        <button class="edit-button" onclick="clickEditStockButton(this)">수정</button>
+                        <button class="delete-button" onclick="clickDeleteBookButton(this)">삭제</button>
                     </li>
                 </ul>
+                </tbody>
+                <div class="no-content" th:if="${dto.isEmpty()}">
+                    책이 없습니다.
+                </div>
             </div>
-            <ul class="page-button-group">
-                <li th:each="num : ${#numbers.sequence(1,5)}">
-                    <button th:text="${num}"></button>
-                </li>
-            </ul>
+            <div th:replace="~{fragments/page.html}"></div>
         </section>
     </div>
 </main>
 <div th:replace="~{fragments/footer.html}"></div>
+<script th:src="@{/js/admin/stocklist/page.js}"></script>
+<script th:src="@{/js/admin/search.js}"></script>
+<script th:src="@{/js/admin/stocklist/stocklist.js}"></script>
 </html>

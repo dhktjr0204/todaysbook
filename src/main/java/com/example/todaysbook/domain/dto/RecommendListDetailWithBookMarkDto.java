@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class RandomRecommendListDetailDto {
+public class RecommendListDetailWithBookMarkDto {
     private Long listId;
     private String listTitle;
     private Long userId;

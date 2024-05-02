@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class ReviewRequestDto {
 
+    private long reviewId;
     private long bookId;
     private long userId;
     private int score;

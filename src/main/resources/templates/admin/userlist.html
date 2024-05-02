@@ -14,8 +14,8 @@
     <aside th:replace="~{fragments/sidebar-admin.html}"></aside>
     <div class="mypage-wrap">
         <p class="mypage-title">회원 조회</p>
-        <form class="search-form">
-            <input class="search-input" th:placeholder="'검색할 회원을 입력해주세요.'">
+        <form class="search-form" action="/admin/userlist/search" onsubmit="return submitForm()">
+            <input class="search-input" th:placeholder="'검색할 회원을 입력해주세요.'" th:name="keyword">
             <button class="search-button" th:text="'검색'"></button>
         </form>
         <section>
@@ -28,22 +28,32 @@
                     </li>
                 </ul>
                 <ul class="user-list-body">
-                    <li th:each="dto : ${#numbers.sequence(1,5)}">
-                        <input type="hidden" th:value="'userid'">
-                        <p class="user-email">이메일</p>
-                        <p class="nickname">닉네임</p>
-                        <p class="user-grade">회원 등급</p>
+                    <li class="user" th:each="user : ${dto}">
+                        <input type="hidden" class="user-id" th:value="${user.id}">
+                        <p class="user-email" th:text="${user.email}"></p>
+                        <p class="nickname" th:text="${user.nickName}"></p>
+                        <select class="user-grade">
+                            <option value="BRONZE" th:selected="${user.grade == 'BRONZE'}">bronze</option>
+                            <option value="SILVER" th:selected="${user.grade == 'SILVER'}">silver</option>
+                            <option value="GOLD" th:selected="${user.grade == 'GOLD'}">gold</option>
+                            <option value="DIA" th:selected="${user.grade == 'DIA'}">dia</option>
+                            <option value="user" th:selected="${user.grade == 'user'}">user</option>
+                            <option value="ADMIN" th:selected="${user.grade == 'ADMIN'}">admin</option>
+                        </select>
+                        <button class="edit-button" onclick="clickEditRoleButton(this)">수정</button>
+                        <button class="delete-button" onclick="clickDeleteUserButton(this)">삭제</button>
                     </li>
                 </ul>
-                <button class="delete-button">삭제</button>
+                <div class="no-content" th:if="${dto.isEmpty()}">
+                    유저가 없습니다.
+                </div>
             </div>
-            <ul class="page-button-group">
-                <li th:each="num : ${#numbers.sequence(1,5)}">
-                    <button th:text="${num}"></button>
-                </li>
-            </ul>
+            <div th:replace="~{fragments/page.html}"></div>
         </section>
     </div>
 </main>
 <div th:replace="~{fragments/footer.html}"></div>
+<script th:src="@{/js/admin/userlist/page.js}"></script>
+<script th:src="@{/js/admin/search.js}"></script>
+<script th:src="@{/js/admin/userlist/userlist.js}"></script>
 </html>

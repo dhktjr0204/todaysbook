@@ -21,7 +21,7 @@
                 <ul class="recommend-list">
                     <li class="book-item" th:each="book : ${recommendList.bookList}" th:value="${book.id}">
                         <figure class="book-info">
-                            <a th:href="'/book/'+${book.id}">
+                            <a th:href="'/book/detail/'+${book.id}">
                                 <img th:src="${book.image}" th:alt="${book.title}">
                                 <figcaption>
                                     <p class="book-title" th:text="${book.title}"></p>

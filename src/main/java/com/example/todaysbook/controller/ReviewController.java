@@ -1,12 +1,16 @@
 package com.example.todaysbook.controller;
 
+import com.example.todaysbook.domain.dto.Review;
 import com.example.todaysbook.domain.dto.ReviewRequestDto;
 import com.example.todaysbook.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -15,19 +19,84 @@ public class ReviewController {
 
     private final ReviewService reviewService;
 
+    @GetMapping("")
+    public String getReviews(@RequestParam(value = "bookId") long bookId,
+                             @RequestParam(value = "orderBy") String orderBy,
+                             Model model) {
+
+        long userId = 1l;
+
+        List<Review> reviews =
+                reviewService.getReviews(bookId, userId, orderBy);
+        model.addAttribute("reviews", reviews);
+        model.addAttribute("userId", userId);
+
+        return "book/review";
+    }
+
     @PostMapping("/add")
-    public ResponseEntity<?> addNewReview(@RequestBody ReviewRequestDto requestDto) {
+    public String addNewReview(@RequestBody ReviewRequestDto requestDto,
+                               Model model) {
 
-        try {
+        long userId = 1l;
+        String orderBy = "latest";
 
-            requestDto.setUserId(1l);
+        requestDto.setUserId(userId);
+        int flag = reviewService.addReview(requestDto);
 
-            return ResponseEntity.ok(reviewService.addReview(requestDto));
+        if(errorHandler(flag)) {
 
-        } catch (Exception e) {
-
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+            throw new IllegalStateException();
         }
+
+        List<Review> reviews =
+                reviewService.getReviews(requestDto.getBookId(), requestDto.getUserId(), orderBy);
+        model.addAttribute("reviews", reviews);
+        model.addAttribute("userId", userId);
+
+        return "book/review";
+    }
+
+    @DeleteMapping("/delete")
+    public String deleteReview(@RequestParam(value = "reviewId") long reviewId,
+                               @RequestParam(value = "bookId") long bookId,
+                               Model model) {
+
+        long userId = 1l;
+        String orderBy = "latest";
+
+        int flag = reviewService.deleteReview(reviewId);
+
+        if(errorHandler(flag)) {
+
+            throw new IllegalStateException();
+        }
+
+        List<Review> reviews =
+                reviewService.getReviews(bookId, userId, orderBy);
+        model.addAttribute("reviews", reviews);
+        model.addAttribute("userId", userId);
+
+        return "book/review";
+    }
+
+    @PutMapping("/update")
+    public String updateReview(@RequestBody ReviewRequestDto requestDto,
+                               Model model) {
+
+        long userId = 1l;
+        String orderBy = "latest";
+
+        requestDto.setUserId(userId);
+        int flag = reviewService.updateReview(requestDto);
+
+        List<Review> reviews =
+                reviewService.getReviews(requestDto.getBookId(), requestDto.getUserId(), orderBy);
+
+        model.addAttribute("reviews", reviews);
+        model.addAttribute("userId", userId);
+
+        return "book/review";
     }
 
     @GetMapping("/add_like")
@@ -84,5 +153,10 @@ public class ReviewController {
 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
+    }
+
+    private boolean errorHandler(int flag) {
+
+        return flag < 1;
     }
 }

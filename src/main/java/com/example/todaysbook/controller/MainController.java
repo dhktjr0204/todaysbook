@@ -1,6 +1,6 @@
 package com.example.todaysbook.controller;
 
-import com.example.todaysbook.domain.dto.RandomRecommendListDetailDto;
+import com.example.todaysbook.domain.dto.RecommendListDetailWithBookMarkDto;
 import com.example.todaysbook.service.RecommendListService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -18,7 +18,7 @@ public class MainController {
     public String main(Model model){
         long userId=1;
 
-        List<RandomRecommendListDetailDto> randomUserRecommendList =
+        List<RecommendListDetailWithBookMarkDto> randomUserRecommendList =
                 recommendListService.getRandomRecommendList(userId);
 
         model.addAttribute("userRecommendList", randomUserRecommendList);
