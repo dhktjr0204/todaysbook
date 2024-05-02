@@ -48,33 +48,33 @@ public class CartController {
     }
 
     // 총 주문 금액 계산 메소드
-//    private int calculateTotalPrice(List<CartBook> cartBooks) {
-//        int totalPrice = 0;
-//        for (CartBook cartBook : cartBooks) {
-//            totalPrice += cartBook.getBook().getPrice() * cartBook.getBookCount();
-//        }
-//        return totalPrice;
-//    }
-//
-//    // 총 적립 마일리지 계산 메소드 (임시)
-//    private int calculateTotalMileage(List<CartBook> cartBooks) {
-//        return 0; // 일단은 임시로 0으로 설정
-//    }
+    private int calculateTotalPrice(List<CartBook> cartBooks) {
+        int totalPrice = 0;
+        for (CartBook cartBook : cartBooks) {
+            totalPrice += cartBook.getBook().getPrice() * cartBook.getBookCount();
+        }
+        return totalPrice;
+    }
+
+    // 총 적립 마일리지 계산 메소드 (임시)
+    private int calculateTotalMileage(List<CartBook> cartBooks) {
+        return 0; // 일단은 임시로 0으로 설정
+    }
 
 
-//    @PostMapping("/add")
-//    public ResponseEntity<Long> addToCart(@RequestBody CartRequestDto requestDto) {
-//        // 강제로 userId를 1로 설정하여 테스트
-//        requestDto.setUserId(1L);
-//
-//        try {
-//            long cartBookId = cartService.addToCart(requestDto);
-//            return ResponseEntity.ok(cartBookId);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-//        }
-//    }
+    @PostMapping("/add")
+    public ResponseEntity<Long> addToCart(@RequestBody CartRequestDto requestDto) {
+        // 강제로 userId를 1로 설정하여 테스트
+        requestDto.setUserId(1L);
+
+        try {
+            long cartBookId = cartService.addToCart(requestDto);
+            return ResponseEntity.ok(cartBookId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 
 
     // 서버 측 컨트롤러
