@@ -1,6 +1,7 @@
 package com.example.todaysbook.controller;
 
 import com.example.todaysbook.domain.dto.BookDto;
+import com.example.todaysbook.domain.dto.RecommendListDetailDto;
 import com.example.todaysbook.service.SearchService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.HashMap;
+
 @Controller
 @RequiredArgsConstructor
 @Slf4j
@@ -24,17 +27,17 @@ public class SearchController {
     private final int VISIBLE_PAGE=5;
 
     @GetMapping("/search")
-    public String searchMain(@PageableDefault(page=0, size=10, sort="id", direction = Sort.Direction.ASC)Pageable pageable,
-                         @RequestParam(value = "keyword") String keyword, Model model){
-        Page<BookDto> result = searchService.searchByKeyword(keyword, pageable);
+    public String searchBook(@PageableDefault(page=0, size=10, sort="id", direction = Sort.Direction.ASC)Pageable pageable,
+                             @RequestParam(value = "keyword") String keyword, Model model){
+        Page<BookDto> result = searchService.searchBookByKeyword(keyword, pageable);
 
         int startPage=0;
         int endPage=0;
 
         if(!result.isEmpty()){
-            int currentPage=result.getPageable().getPageNumber();
-            startPage=(currentPage/VISIBLE_PAGE)*VISIBLE_PAGE+1;
-            endPage=Math.min(result.getTotalPages(), (currentPage/VISIBLE_PAGE)*VISIBLE_PAGE+VISIBLE_PAGE);
+            HashMap<String, Integer> pages = calculatePage(result.getPageable().getPageNumber(), result.getTotalPages());
+            startPage=pages.get("startPage");
+            endPage=pages.get("endPage");
         }
 
         model.addAttribute("books", result);
@@ -46,10 +49,42 @@ public class SearchController {
     }
 
     @GetMapping("/search/list")
+    public String searchLists(@PageableDefault(page = 0, size = 5, sort="id", direction = Sort.Direction.ASC) Pageable pageable,
+                              @RequestParam(value = "keyword")String keyword, Model model){
+        Page<RecommendListDetailDto> result = searchService.searchListByKeyword(keyword, pageable);
+
+        int startPage=0;
+        int endPage=0;
+
+        if(!result.isEmpty()){
+            HashMap<String, Integer> pages = calculatePage(result.getPageable().getPageNumber(), result.getTotalPages());
+            startPage=pages.get("startPage");
+            endPage=pages.get("endPage");
+        }
+
+        model.addAttribute("recommendLists", result);
+        model.addAttribute("startPage",startPage);
+        model.addAttribute("endPage", endPage);
+        model.addAttribute("keyword",keyword);
+
+        return "book/search_list";
+    }
+
+    @GetMapping("/search/create/list")
     public ResponseEntity<Page<BookDto>> searchBooks(@PageableDefault(page=0, size=5, sort="id", direction = Sort.Direction.ASC)Pageable pageable,
-                                      @RequestParam(value = "keyword") String keyword, Model model){
-        log.info("검색어: "+ keyword);
-        log.info("검색된 결과: "+ searchService.searchByKeyword(keyword,pageable).toString());
-        return ResponseEntity.ok(searchService.searchByKeyword(keyword, pageable));
+                                                     @RequestParam(value = "keyword") String keyword, Model model){
+        return ResponseEntity.ok(searchService.searchBookByKeyword(keyword, pageable));
+    }
+
+    private HashMap<String, Integer> calculatePage(int currentPage, int totalPage){
+        HashMap<String, Integer> result= new HashMap<>();
+
+        int startPage=(currentPage/VISIBLE_PAGE)*VISIBLE_PAGE+1;
+        int endPage=Math.min(totalPage, (currentPage/VISIBLE_PAGE)*VISIBLE_PAGE+VISIBLE_PAGE);
+
+        result.put("startPage", startPage);
+        result.put("endPage", endPage);
+
+        return result;
     }
 }

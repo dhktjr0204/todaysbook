@@ -25,33 +25,34 @@
                     </li>
                 </ul>
                 <ul class="cart-list-body">
-                    <li th:each="dto : ${#numbers.sequence(1,5)}">
+                    <li th:each="cartBook : ${cartBooks}">
                         <div class="select">
-                            <input type="checkbox">
+                            <input type="checkbox" th:value="${cartBook.id}">
                         </div>
-                        <p class="book-name">상품명</p>
-                        <p class="quantity">수량</p>
-                        <p class="price">상품 금액</p>
+                        <p class="book-name" th:text="${cartBook.book.title}"></p>
+                        <p class="quantity" th:text="${cartBook.bookCount}"></p>
+                        <p class="price" th:text="${cartBook.book.price * cartBook.bookCount}"></p>
                         <p class="mileage">적립 마일리지</p>
                     </li>
-                    <li>
+                    <li th:if="${cartBooks.size() == 0}">
                         <p class="no-content">
                             장바구니에 담긴 상품이 없습니다
                         </p>
                     </li>
                 </ul>
                 <ul class="cart-list-bottom">
-                    <p>총 주문 금액  1,000,000원</p>
-                    <p>총 적립 마일리지 100,000M</p>
+                    <p th:text="'총 주문 금액 ' + ${totalPrice} + '원'"></p>
+                    <p th:text="'총 적립 마일리지 ' + ${totalMileage} + 'M'"></p>
                     <p>배송료 3,000원</p>
                 </ul>
                 <div class="button-group">
-                    <button class="submit button" onclick="location.href = '/payment/info'" th:text="'주문 하기'"></button>
-                    <button class="delete button" th:text="'삭제'"></button>
+                    <button class="submit button" onclick="location.href = '/payment/info'">주문 하기</button>
+                    <button class="delete-selected button" onclick="deleteSelectedCartItems()">선택된 상품 삭제</button>
                 </div>
             </div>
         </section>
     </div>
 </main>
 <div th:replace="~{fragments/footer.html}"></div>
+<script th:src="@{/js/cart/list.js}"></script>
 </html>

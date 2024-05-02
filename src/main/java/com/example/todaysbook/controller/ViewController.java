@@ -1,21 +1,29 @@
 package com.example.todaysbook.controller;
 
+import com.example.todaysbook.domain.entity.CartBook;
+import com.example.todaysbook.service.CartService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.List;
+
 @Controller
+@RequiredArgsConstructor
 public class ViewController {
 
-    @GetMapping("/index")
-    public String index(Model model) {
+    private final CartService cartService;
 
-        String userName = "테스트";
-
-        model.addAttribute("userName", userName);
-
-        return "index";
-    }
+//    @GetMapping("/index")
+//    public String index(Model model) {
+//
+//        String userName = "테스트";
+//
+//        model.addAttribute("userName", userName);
+//
+//        return "index";
+//    }
 
     @GetMapping("/search")
     public String search(Model model) {
@@ -29,12 +37,6 @@ public class ViewController {
         return "book/detail";
     }
 
-    @GetMapping("/list")
-    public String listFrom(Model model) {
-
-        return "recommendList/listForm";
-    }
-  
     @GetMapping("/registration")
     public String registration(Model model) {
 
@@ -77,11 +79,11 @@ public class ViewController {
         return "user/mypage/favorite-book";
     }
 
-    @GetMapping("/mypage/my_recommend_list")
-    public String myRecommendList(Model model) {
-
-        return "user/mypage/my-recommendlist";
-    }
+//    @GetMapping("/mypage/my_recommend_list")
+//    public String myRecommendList(Model model) {
+//
+//        return "user/mypage/my-recommendlist";
+//    }
 
     @GetMapping("/mypage/users_recommend_list")
     public String userRecommendList(Model model) {
@@ -143,14 +145,18 @@ public class ViewController {
         return "admin/update-password";
     }
 
-    @GetMapping("/cart/list")
-    public String cartList(Model model) {
-
-        return "cart/list";
-    }
+//    @GetMapping("/cart/list")
+//    public String cartList(Model model) {
+//
+//        return "cart/list";
+//    }
 
     @GetMapping("/payment/info")
     public String paymentInfo(Model model) {
+        // userId가 1인 사용자의 장바구니 목록 조회
+        List<CartBook> cartBooks = cartService.findCartBooksByUserId(1L);
+        int totalPrice = cartService.calculateTotalPrice(cartBooks); // 총 상품 가격을 계산
+        model.addAttribute("totalPrice", totalPrice); // 모델에 totalPrice를 추가하여 뷰로 전달
 
         return "payment/info";
     }
@@ -159,5 +165,11 @@ public class ViewController {
     public String paymentSuccess(Model model) {
 
         return "payment/success";
+    }
+
+    @GetMapping("/alan/recommend")
+    public String alanRecommend(Model model) {
+
+        return "alan/recommend";
     }
 }
