@@ -12,56 +12,78 @@
 <main th:fragment="content">
     <div class="search-wrap">
         <article>
-            <form class="search-form" onsubmit="return submitForm()">
+            <form class="search-form" onsubmit="return submitForm(event)">
+                <div class="select-box">
+                    <button type="button" class="select-box-button">
+                        <img th:src="@{/images/triangle-down.svg}">
+                        <p>책</p>
+                    </button>
+                    <ul class="select-box-option">
+                        <li>
+                            <button type="button">책</button>
+                        </li>
+                        <li>
+                            <button type="button">리스트</button>
+                        </li>
+                    </ul>
+                </div>
                 <input class="search-input" th:placeholder="'검색할 도서를 입력해주세요. (저자, 책 제목)'" th:name="keyword">
                 <button class="search-button" th:text="'검색'"></button>
             </form>
         </article>
         <section class="search-list-section">
-            <article>
-                <div class="search-list-header">
-                    <p class="search-list-title" th:text="'검색 결과'"></p>
-                </div>
-                <div class="search-list">
-                    <ul class="row">
-                        <li th:each="book:${books}">
-                            <figure>
-                                <img th:src="${book.image}" th:alt="'책 이름'">
+            <div class="search-list-header">
+                <p class="search-list-title" th:text="'검색 결과'"></p>
+            </div>
+            <div class="search-list">
+                <ul class="row">
+                    <li th:each="book:${books}">
+                        <figure>
+                            <a th:href="'/book/detail/'+${book.id}">
+                                <img th:src="${book.image}" th:alt="${book.title}">
                                 <figcaption>
                                     <p class="book-title" th:text="${book.title}"></p>
                                     <p class="author" th:text="${book.author}"></p>
                                     <p class="price" th:text="${book.price}"></p>
+                                    <!-- bookCount 정보를 추가 -->
+                                    <input type="number" class="book-count" value="1" min="1">
+                                    <!-- 임시 테스트용 버튼 -->
+                                    <button class="add-to-cart" th:data-book-id="${book.id}" onclick="addToCart(this)">
+                                        장바구니에 담기
+                                    </button>
                                 </figcaption>
-                            </figure>
-                        </li>
-                    </ul>
-                </div>
-                <div class="page-button-group" th:if="${books.isEmpty()}">
-                    <p class="no-content-text">콘텐츠가 없습니다.</p>
-                </div>
-                <ul class="page-button-group" th:unless="${books.isEmpty()}">
-                    <li th:if="${books.number>4}">
-                        <button th:onclick="clickPrevPageButton([[${startPage}]], [[${keyword}]])">
-                            &lt;
-                        </button>
-                    </li>
-                    <li th:each="num : ${#numbers.sequence(startPage, endPage)}">
-                        <button th:text="${num}" th:if="${books.number+1 eq num}"
-                                th:class="select-button"></button>
-                        <button th:text="${num}" th:unless="${books.number+1 eq num}"
-                                th:onclick="clickPageButton(this,  [[${keyword}]])"></button>
-                    </li>
-                    <li th:if="${books.totalPages > 5 and endPage != books.totalPages}">
-                        <button th:onclick="clickNextPageButton([[${endPage}]], [[${keyword}]])">
-                            &gt;
-                        </button>
+                            </a>
+                        </figure>
                     </li>
                 </ul>
-            </article>
+            </div>
+            <div th:if="${books.isEmpty()}">
+                <p class="no-content-text">콘텐츠가 없습니다.</p>
+            </div>
+            <ul class="page-button-group" th:unless="${books.isEmpty()}">
+                <li th:if="${books.number>4}">
+                    <button th:onclick="clickPrevPageButton([[${startPage}]], [[${keyword}]])">
+                        &lt;
+                    </button>
+                </li>
+                <li th:each="num : ${#numbers.sequence(startPage, endPage)}">
+                    <button th:text="${num}" th:if="${books.number+1 eq num}"
+                            th:class="select-button"></button>
+                    <button th:text="${num}" th:unless="${books.number+1 eq num}"
+                            th:onclick="clickPageButton(this,  [[${keyword}]])"></button>
+                </li>
+                <li th:if="${books.totalPages > 5 and endPage != books.totalPages}">
+                    <button th:onclick="clickNextPageButton([[${endPage}]], [[${keyword}]])">
+                        &gt;
+                    </button>
+                </li>
+            </ul>
         </section>
     </div>
 </main>
 <div th:replace="~{fragments/footer.html}"></div>
 <script th:src="@{/js/search/page.js}"></script>
 <script th:src="@{/js/search/search.js}"></script>
+
+
 </html>

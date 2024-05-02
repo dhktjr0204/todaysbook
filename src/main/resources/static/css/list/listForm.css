@@ -30,12 +30,6 @@
     overflow: hidden;
 }
 
-.book-item{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
 .search-list, .user-list {
     display: flex;
     align-items: center;
@@ -47,6 +41,7 @@
     display: flex;
     justify-content: center;
     gap: 30px;
+    margin-top: 30px;
 }
 
 .register-button, .cancel-button{
@@ -61,4 +56,25 @@
 
 .cancel-button{
     background-color: #595959;
+}
+
+/* 삭제 버튼 숨기기 */
+.delete-button {
+    display: none;
+    position: absolute;
+    color: white;
+    font-size: 25px;
+    top: 0;
+    right: 0;
+}
+
+/* 마우스를 올렸을 때 삭제 버튼 표시 */
+.book-item:hover .delete-button {
+    display: inline-block;
+}
+
+.no-content {
+    width: 800px;
+    margin: 20px 0;
+    text-align: center; /* 가운데 정렬 */
 }

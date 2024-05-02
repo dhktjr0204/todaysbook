@@ -1,6 +1,8 @@
 package com.example.todaysbook.service;
 
 import com.example.todaysbook.domain.dto.BookDto;
+import com.example.todaysbook.domain.dto.RecommendListDetailWithBookMarkDto;
+import com.example.todaysbook.domain.dto.RecommendListWithBookMarkDto;
 import com.example.todaysbook.domain.dto.RecommendListCreateRequestDto;
 import com.example.todaysbook.domain.dto.RecommendListUpdateRequestDto;
 import com.example.todaysbook.domain.dto.RecommendListDetailDto;
@@ -14,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -37,13 +40,35 @@ public class RecommendServiceImpl implements RecommendListService {
                 .bookList(bookList).build();
     }
 
+    @Override
+    public List<RecommendListDetailDto> getMyRecommendListAll(Long userId) {
+
+        List<RecommendListDto> recommendLists = recommendListMapper.getMyRecommendListAllByUserId(userId);
+
+        return convertListToDetailDto(recommendLists);
+    }
+
+    @Override
+    public List<RecommendListDetailWithBookMarkDto> getRandomRecommendList(Long userId) {
+        List<RecommendListWithBookMarkDto> recommendLists = recommendListMapper.getRandomRecommendList(userId);
+
+        return convertListToDetailWithBookMarkDto(recommendLists);
+    }
+
+    @Override
+    public List<RecommendListDetailDto> getMyBookMarkListAll(Long userId) {
+        List<RecommendListDto> recommendLists = recommendListMapper.getMyBookMarkListByUserId(userId);
+
+        return convertListToDetailDto(recommendLists);
+    }
+
     @Transactional
     @Override
-    public UserRecommendList save(RecommendListCreateRequestDto request) {
+    public UserRecommendList save(Long userId, RecommendListCreateRequestDto request) {
 
         UserRecommendList userRecommendList = UserRecommendList.builder()
                 .title(request.getTitle())
-                .userId(request.getUserId())
+                .userId(userId)
                 .build();
 
         UserRecommendList saveUserRecommendList = userRecommendListRepository.save(userRecommendList);
@@ -62,11 +87,15 @@ public class RecommendServiceImpl implements RecommendListService {
 
     @Transactional
     @Override
-    public void update(RecommendListUpdateRequestDto request) {
-        UserRecommendList userRecommendList = userRecommendListRepository.findById(request.getListId())
+    public void update(Long listId, RecommendListUpdateRequestDto request) {
+        UserRecommendList userRecommendList = userRecommendListRepository.findById(listId)
                 .orElseThrow(()->new IllegalArgumentException("해당 리스트를 찾을 수 없습니다."));
-        List<UserRecommendBook> userRecommendBooks = userRecommendBookRepository.findByUserRecommendListId(request.getListId())
+        List<UserRecommendBook> userRecommendBooks = userRecommendBookRepository.findByUserRecommendListId(listId)
                 .orElseThrow(() -> new IllegalArgumentException("리스트에 해당되는 책을 찾을 수 없습니다."));
+
+        if(userRecommendList.getUserId()!=request.getUserId()){
+            //예외처리
+        }
 
         //리스트에 저장된 책들 전부 삭제
         userRecommendBookRepository.deleteAll(userRecommendBooks);
@@ -74,7 +103,7 @@ public class RecommendServiceImpl implements RecommendListService {
         //리스트에 새로 추가
         for(Long bookId: request.getBookIdList()){
             UserRecommendBook book = UserRecommendBook.builder()
-                    .userRecommendListId(request.getListId())
+                    .userRecommendListId(listId)
                     .bookId(bookId)
                     .build();
 
@@ -95,5 +124,44 @@ public class RecommendServiceImpl implements RecommendListService {
 
         userRecommendListRepository.delete(userRecommendList);
         userRecommendBookRepository.deleteAll(userRecommendBooks);
+    }
+
+
+    private List<RecommendListDetailDto> convertListToDetailDto(List<RecommendListDto> recommendLists){
+        List<RecommendListDetailDto> result = new ArrayList<>();
+
+        for(RecommendListDto recommendList:recommendLists){
+            List<BookDto> bookList = recommendListMapper.getBookDetailByListId(recommendList.getListId());
+            RecommendListDetailDto build = RecommendListDetailDto.builder()
+                    .listId(recommendList.getListId())
+                    .listTitle(recommendList.getListTitle())
+                    .userId(recommendList.getUserId())
+                    .nickname(recommendList.getNickname())
+                    .date(recommendList.getDate())
+                    .bookList(bookList).build();
+
+            result.add(build);
+        }
+        return result;
+    }
+
+    private List<RecommendListDetailWithBookMarkDto> convertListToDetailWithBookMarkDto(List<RecommendListWithBookMarkDto> recommendLists){
+        List<RecommendListDetailWithBookMarkDto> result=new ArrayList<>();
+
+        for(RecommendListWithBookMarkDto list:recommendLists){
+            List<BookDto> bookList = recommendListMapper.getBookDetailByListId(list.getListId());
+
+            RecommendListDetailWithBookMarkDto build = RecommendListDetailWithBookMarkDto.builder()
+                    .listId(list.getListId())
+                    .listTitle(list.getListTitle())
+                    .userId(list.getUserId())
+                    .nickname(list.getNickname())
+                    .date(list.getDate())
+                    .isBookmarked(list.getIsBookMarked())
+                    .bookList(bookList).build();
+
+            result.add(build);
+        }
+        return result;
     }
 }

@@ -33,7 +33,8 @@
             <ul>
                 <li>
                     <p class="label">총 상품 가격</p>
-                    <p>66,000원</p>
+                    <p th:text="${totalPrice != null} ? ${totalPrice + '원'} : '0원'"></p>
+
                 </li>
                 <li>
                     <p class="label">보유 마일리지</p>
@@ -55,7 +56,7 @@
         </section>
         <div class="total-price-div">
             <p>총 결제 금액</p>
-            <p>69,000원</p>
+            <p th:text="${totalPrice != null} ? (${totalPrice} + 3000 + '원') : '0원'"></p>
         </div>
         <div class="button-group">
             <button class="submit button" onclick="location.href='/payment'">결제 하기</button>

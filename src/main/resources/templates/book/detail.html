@@ -13,40 +13,53 @@
     <div class="detail-wrap">
         <section class="book-detail">
             <div class="book-detail-header">
-                <h1 th:text="'명탐정 코난 104 - (특장판)'"></h1>
+                <h1 th:text="${bookDetailDto.bookDetail.title}"></h1>
                 <div class="book-info">
-                    <p th:text="'아오야마 고쇼'"></p>
-                    <p th:text="'서울 미디어'"></p>
-                    <p th:text="'2024-04-24'"></p>
+                    <p th:text="${bookDetailDto.bookDetail.author}"></p>
+                    <p th:text="${bookDetailDto.bookDetail.publisher}"></p>
+                    <p th:text="${#temporals.format(bookDetailDto.bookDetail.publishDate, 'yyyy-MM-dd')}"></p>
                 </div>
             </div>
             <div class="book-detail-body">
-                <img class="book-img" th:src="@{'/images/book/1.png'}">
+                <img class="book-img" th:src="${bookDetailDto.bookDetail.imagePath}">
                 <div class="book-detail-body-right">
                     <div class="price-info">
                         <p class="price-label" th:text="'판매가'"></p>
                         <div>
-                            <p class="price" th:text="'10,000원'"></p>
-                            <img class="like-img" th:src="@{'/images/dislike.png'}">
+                            <p class="price"
+                               th:text="${#numbers.formatInteger(bookDetailDto.bookDetail.price, 3, 'COMMA') + '원'}"></p>
+                            <button class="favorite-book-button" onclick="clickFavorite(this)">
+                                <img th:class="${bookDetailDto.bookDetail.favorite} ? 'favorite' : 'not-favor-img'"
+                                     th:src="@{'/images/dislike.png'}">
+                            </button>
                         </div>
                     </div>
                     <div class="mileage-info">
                         <p class="mileage-label" th:text="'마일리지'"></p>
                         <ul>
                             <li>
-                                <p class="grade" th:text="'기본'"></p>
+                                <p class="grade" th:text="'BRONZE'"></p>
+                                <p class="discount" th:text="'(3%)'"></p>
+                                <p class="mileage"
+                                   th:text="${#numbers.formatInteger(bookDetailDto.bookDetail.bronzeMileage, 3, 'COMMA') + 'M'}"></p>
+                            </li>
+                            <li>
+                                <p class="grade" th:text="'SILVER'"></p>
                                 <p class="discount" th:text="'(5%)'"></p>
-                                <p class="mileage" th:text="'500M'"></p>
+                                <p class="mileage"
+                                   th:text="${#numbers.formatInteger(bookDetailDto.bookDetail.silverMileage, 3, 'COMMA') + 'M'}"></p>
                             </li>
                             <li>
-                                <p class="grade" th:text="'VIP'"></p>
+                                <p class="grade" th:text="'GOLD'"></p>
+                                <p class="discount" th:text="'(7%)'"></p>
+                                <p class="mileage"
+                                   th:text="${#numbers.formatInteger(bookDetailDto.bookDetail.goldMileage, 3, 'COMMA') + 'M'}"></p>
+                            </li>
+                            <li>
+                                <p class="grade" th:text="'DIAMOND'"></p>
                                 <p class="discount" th:text="'(10%)'"></p>
-                                <p class="mileage" th:text="'1000M'"></p>
-                            </li>
-                            <li>
-                                <p class="grade" th:text="'VVIP'"></p>
-                                <p class="discount" th:text="'(15%)'"></p>
-                                <p class="mileage" th:text="'1500M'"></p>
+                                <p class="mileage"
+                                   th:text="${#numbers.formatInteger(bookDetailDto.bookDetail.diamondMileage, 3, 'COMMA') + 'M'}"></p>
                             </li>
                         </ul>
                     </div>
@@ -59,8 +72,11 @@
                     </div>
                     <div class="score-info">
                         <p class="score-label" th:text="'평점'"></p>
-                        <img class="star" th:src="@{'/images/star.png'}" th:each="num : ${#numbers.sequence(1,5)}">
-                        <p class="score" th:text="'5.0'"></p>
+                        <img th:if="${bookDetailDto.bookDetail.starScore != 0}" class="review-list-star" th:src="@{'/images/star.png'}"
+                             th:each="num : ${#numbers.sequence(0, bookDetailDto.bookDetail.starScore - 1)}">
+                        <img th:if="${bookDetailDto.bookDetail.starScore != 5}" class="review-list-star" th:src="@{'/images/blank_star.png'}"
+                             th:each="num : ${#numbers.sequence(0, 5 -bookDetailDto.bookDetail.starScore - 1)}">
+                        <p class="score" th:text="${#numbers.formatDecimal(bookDetailDto.bookDetail.score,1,2)}"></p>
                     </div>
                     <div class="count-info">
                         <p class="count-label" th:text="'수량'"></p>
@@ -75,52 +91,80 @@
             <div class="book-description">
                 <p th:text="'책 소개'"></p>
                 <p class="description"
-                   th:text="'아오야마 고쇼가 직접 그린 극장판 <명탐정 코난 : 흑철의 어영> 의 환상적인 그림 콘티북과 어나더 커버를 만나보자.'"></p>
+                   th:text="${bookDetailDto.bookDetail.description}"></p>
             </div>
             <article class="review-area">
-                <p th:text="'리뷰'"></p>
+                <p class="review-title" th:text="'리뷰'"></p>
                 <hr>
-                <form class="review-form">
+                <form class="review-form" onsubmit="return false;">
                     <div class="review-score-info">
-                        <img class="review-star" th:src="@{'/images/blank_star.png'}"
-                             th:each="num : ${#numbers.sequence(1,5)}">
-                        <p class="review-score" th:text="'0.0'"></p>
+                        <input type="hidden" class="book-id" th:value="${bookDetailDto.bookDetail.id}">
+                        <div class="score-div">
+                            <img class="review-star" src="/images/blank_star.png" alt="별" data-value="1">
+                            <img class="review-star" src="/images/blank_star.png" alt="별" data-value="2">
+                            <img class="review-star" src="/images/blank_star.png" alt="별" data-value="3">
+                            <img class="review-star" src="/images/blank_star.png" alt="별" data-value="4">
+                            <img class="review-star" src="/images/blank_star.png" alt="별" data-value="5">
+                        </div>
+                        <p class="review-score">0</p>
                     </div>
-                    <input class="review-input" th:placeholder="'해당 도서를 다른 사람들에게 추천해주세요.'">
-                    <button class="submit-button" th:text="'등록'"></button>
+                    <div class="text-area-div">
+                        <textarea class="review-input"
+                                  onchange="commentWordCount(this)" oninput="commentWordCount(this)"
+                                  th:placeholder="'해당 도서를 다른 사람들에게 추천해주세요.'"></textarea>
+                        <button class="submit-button" onclick="clickAddReview()" th:text="'등록'"></button>
+                    </div>
+                    <div class="comment-text-count">0/500</div>
                 </form>
                 <div class="order-by">
-                    <p th:text="최신순"></p>
-                    <p th:text="공감순"></p>
+                    <button th:text="최신순"></button>
+                    <button th:text="공감순"></button>
                 </div>
                 <hr>
-                <ul>
-                    <li class="review" th:each="num : ${#numbers.sequence(1,3)}">
+                <div class="review-div">
+                    <li class="review" th:each="review : ${bookDetailDto.reviews}">
+                        <div class="edit-button-div" th:if="${review.userId == userId}">
+                            <button>수정</button>
+                            <button onclick="deleteReview()">삭제</button>
+                        </div>
                         <div class="review-top">
+                            <input type="hidden" class="review-id" th:value="${review.id}">
                             <div class="score-div">
-                                <img class="review-list-star" th:src="@{'/images/star.png'}"
-                                     th:each="num : ${#numbers.sequence(1,5)}">
+                                <img th:if="${review.score != 0}" class="review-list-star" th:src="@{'/images/star.png'}"
+                                     th:each="num : ${#numbers.sequence(0, review.score - 1)}">
+                                <img th:if="${review.score != 5}" class="review-list-star" th:src="@{'/images/blank_star.png'}"
+                                     th:each="num : ${#numbers.sequence(0, 5 - review.score - 1)}">
                             </div>
-                            <p class="review-content"
-                               th:text="'아오야마 고쇼가 직접 그린 극장판 <명탐정 코난 : 흑철의 어영> 의 환상적인 그림 콘티북과 어나더 커버를 만나보자.'"></p>
+                            <pre class="review-content"
+                               th:text="${review.content}"></pre>
                         </div>
                         <div class="review-bottom">
                             <div class="review-info">
-                                <p class="reviewer" th:text="'작성자 : 레오나르도다빈치'"></p>
-                                <p class="review-date" th:text="'2024-04-26'"></p>
+                                <p class="reviewer" th:text="'작성자 : '+${review.nickName}"></p>
+                                <p class="review-date"
+                                   th:text="${#temporals.format(review.createTime, 'yyyy-MM-dd HH:mm')}"></p>
                             </div>
-                            <div class="like-div">
-                                <p class="like" th:text="'추천'"></p>
-                                <p class="like-count" th:text="'12224'"></p>
-                                <p class="dislike" th:text="'비추천'"></p>
-                                <p class="dislike-count" th:text="'1240'"></p>
+                            <div class="like-button-div">
+                                <div class="like-div">
+                                    <button class="like" th:class="${review.liked} ? 'liked'"
+                                            th:onclick="clickLike(this, [[${review.id}]])" th:text="'추천'"></button>
+                                    <p class="like-count" th:text="${review.likeCount}"></p>
+                                </div>
+                                <div class="dislike-div">
+                                    <button class="dislike" th:class="${review.disliked} ? 'disliked'"
+                                            th:onclick="clickDislike(this, [[${review.id}]])" th:text="'비추천'"></button>
+                                    <p class="dislike-count" th:text="${review.dislikeCount}"></p>
+                                </div>
                             </div>
                         </div>
                     </li>
-                </ul>
+                </div>
             </article>
         </section>
     </div>
 </main>
 <div th:replace="~{fragments/footer.html}"></div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script th:src="@{/js/book/detail.js}"></script>
+<script th:src="@{/js/review/review.js}"></script>
 </html>
