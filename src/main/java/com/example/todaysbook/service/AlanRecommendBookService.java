@@ -29,26 +29,15 @@ public class AlanRecommendBookService {
 
         //AlanRecommendData createdAt이 오늘인 데이터를 가져오기
         List<AlanRecommendDataDto> alanRecommendDataDtos = alanRecommendDataService.getAlanRecommendDataByToday();
-
-        //alanRecommendDataDtos 출력 (각 제목마다 줄바꿈하면서 출력)\
-        for (AlanRecommendDataDto alanRecommendDataDto : alanRecommendDataDtos) {
-            logger.info(alanRecommendDataDto.getTitle());
-        }
-
+        alanRecommendDataDtos.forEach(dto -> logger.info(dto.getTitle()));
     }
 
 
-        public List<AlanRecommendBookDto> getAlanRecommendBooks() {
-            List<AlanRecommendBook> alanRecommendBooks = alanRecommendBookRepository.findAll();
-            List<AlanRecommendBookDto> alanRecommendBookDtos = new ArrayList<>();
-
-            for (AlanRecommendBook alanRecommendBook : alanRecommendBooks) {
-                AlanRecommendBookDto alanRecommendBookDto = alanRecommendBook.toDto();
-                alanRecommendBookDtos.add(alanRecommendBookDto);
-            }
-
-            return alanRecommendBookDtos;
-        }
+    public List<AlanRecommendBookDto> getAlanRecommendBooks() {
+        return alanRecommendBookRepository.findAll().stream()
+                .map(AlanRecommendBook::toDto)
+                .collect(Collectors.toList());
+    }
 }
 
 /*

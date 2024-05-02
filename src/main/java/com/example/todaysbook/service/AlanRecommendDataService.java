@@ -28,8 +28,17 @@ public class AlanRecommendDataService {
     private final AlanRecommendDataRepository alanRecommendDataRepository;
     private static final Logger logger = LoggerFactory.getLogger(AlanRecommendDataService.class);
 
-    public void getTodaysBooks() {
+    // 오늘 날짜에 해당하는 AlanRecommendData 엔티티를 조회하는 메서드
+    public List<AlanRecommendDataDto> getAlanRecommendDataByToday() {
+        saveAlanRecommendPreprocessedData();
+        return alanRecommendDataRepository.findByCreatedAt(LocalDateTime.now()).stream()
+                .map(AlanRecommendData::toDto)
+                .collect(Collectors.toList());
+    }
 
+
+    // AlanRecommendResponsePreprocessor를 통해서 전처리된 데이터를 AlanRecommendData엔티티에 저장하는 메소드
+    public void saveAlanRecommendPreprocessedData() {
         // Alan API 호출
         String response = alanRecommendApiService.callApi();
 
@@ -43,29 +52,12 @@ public class AlanRecommendDataService {
         }
 
         // 책 제목 하나씩 AlanRecommendData 엔티티에 저장
-        logger.info("AlanRecommendData 엔티티에 저장 완료");
-        List<AlanRecommendData> alanRecommendDataList = new ArrayList<>();
-        for (String title : titles) {
-            AlanRecommendData alanRecommendData = AlanRecommendData.builder()
-                    .title(title)
-                    .createdAt(LocalDateTime.now())
-                    .build();
-            alanRecommendDataList.add(alanRecommendData);
-        }
-        alanRecommendDataRepository.saveAll(alanRecommendDataList);
-    }
-
-    public List<AlanRecommendDataDto> getAlanRecommendDataByToday() {
-
-        // getTodaysBooks 메서드 호출
-        getTodaysBooks();
-        // 오늘 날짜로 저장된 AlanRecommendData 엔티티 조회
-        List<AlanRecommendData> alanRecommendDataList = alanRecommendDataRepository.findByCreatedAt(LocalDateTime.now());
-
-        // AlanRecommendDataDto로 변환
-        return alanRecommendDataList.stream()
-                .map(AlanRecommendData::toDto)
+        List<AlanRecommendData> alanRecommendDataList = titles.stream()
+                .map(title -> AlanRecommendData.builder().title(title).createdAt(LocalDateTime.now()).build())
                 .collect(Collectors.toList());
-
+        alanRecommendDataRepository.saveAll(alanRecommendDataList);
+        logger.info("AlanRecommendData 엔티티에 저장 완료");
     }
+
+
 }

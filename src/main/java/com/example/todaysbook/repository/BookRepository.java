@@ -12,6 +12,4 @@ import java.util.Optional;
 public interface BookRepository extends JpaRepository<Book, Long> {
     Page<Book> findByAuthorContainingOrTitleContaining(String author,String title, Pageable pageable);
 
-
-    Optional<Book> findByTitle(String title);
 }

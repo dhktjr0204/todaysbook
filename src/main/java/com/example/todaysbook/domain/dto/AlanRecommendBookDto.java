@@ -24,17 +24,4 @@ public class AlanRecommendBookDto {
     private String description;
     private String imagePath;
 
-    public static AlanRecommendBook createFromBook(Book book) {
-        AlanRecommendBook alanRecommendBook = new AlanRecommendBook();
-        alanRecommendBook.setTitle(book.getTitle());
-        alanRecommendBook.setPrice(book.getPrice());
-        alanRecommendBook.setAuthor(book.getAuthor());
-        alanRecommendBook.setPublisher(book.getPublisher());
-        alanRecommendBook.setPublishDate(book.getPublishDate());
-        alanRecommendBook.setStock(book.getStock());
-        alanRecommendBook.setIsbn(book.getIsbn());
-        alanRecommendBook.setDescription(book.getDescription());
-        alanRecommendBook.setImagePath(book.getImagePath());
-        return alanRecommendBook;
-    }
 }

@@ -8,7 +8,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+
+// Alan API 응답 전처리 전용 클래스
 
 public class AlanRecommendResponsePreprocessor {
     private static final Logger logger = LoggerFactory.getLogger(AlanRecommendResponsePreprocessor.class);
@@ -16,41 +20,30 @@ public class AlanRecommendResponsePreprocessor {
     private static final int EXPECTED_TITLE_COUNT = 10;
 
     public static List<String> extractTitles(String response) throws InvalidAlanResponseException {
-        List<String> titles = new ArrayList<>();
-
         try {
             JsonNode responseJson = objectMapper.readTree(response);
             String content = responseJson.get("content").asText();
 
-            // 개행 문자를 기준으로 문자열 분리
-            String[] lines = content.split("\\n");
+            List<String> titles = Arrays.stream(content.split("\\n"))
+                    .map(line -> line.replaceAll("^\\d+\\.\\s*", "").trim())
+                    .collect(Collectors.toList());
 
-            for (String line : lines) {
-                // 각 줄에서 숫자와 마침표를 제거하고 제목만 추출
-                String title = line.replaceAll("^\\d+\\.\\s*", "").trim();
-
-                // 비어있는 책 제목이 있는지 검사
-                if (title.isEmpty()) {
-                    throw new InvalidAlanResponseException("Empty title found in the response");
-                }
-
-                titles.add(title);
+            if (titles.stream().anyMatch(String::isEmpty)) {
+                throw new InvalidAlanResponseException("Empty title found in the response");
             }
 
-            // 책 제목이 총 10개인지 확인
             if (titles.size() != EXPECTED_TITLE_COUNT) {
                 throw new InvalidAlanResponseException("Expected " + EXPECTED_TITLE_COUNT + " titles, but found " + titles.size());
             }
+
+            logger.info("책 제목만 추출 완료");
+            return titles;
         } catch (JsonProcessingException e) {
             logger.error("api 응답 형식이 예상과 다릅니다.", e);
             throw new InvalidAlanResponseException("API response format is not as expected", e);
         }
-
-        logger.info("\n책 제목만 추출 완료");
-        return titles;
     }
 }
-
 
 
 /*
