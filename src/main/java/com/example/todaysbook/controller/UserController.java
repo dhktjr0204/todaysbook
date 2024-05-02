@@ -1,29 +1,38 @@
 package com.example.todaysbook.controller;
 
-import com.example.todaysbook.domain.dto.UserRequestDto;
-import com.example.todaysbook.domain.dto.UserResponseDto;
+import com.example.todaysbook.domain.dto.*;
 import com.example.todaysbook.domain.entity.User;
 import com.example.todaysbook.service.UserService;
+import com.example.todaysbook.service.CustomUserDetailsService;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
-import org.springframework.ui.Model;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
+import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/user")
 public class UserController {
     private final UserService userService;
+    private final CustomUserDetailsService customUserDetailsService;
     private final AuthenticationManager authenticationManager;
 
-    public UserController (UserService userService, AuthenticationManager authenticationManager) {
+    public UserController (UserService userService, CustomUserDetailsService customUserDetailsService,AuthenticationManager authenticationManager) {
         this.userService = userService;
+        this.customUserDetailsService = customUserDetailsService;
         this.authenticationManager = authenticationManager;
     }
 
@@ -44,17 +53,41 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody UserRequestDto request) {
-        // 사용자 인증을 시도
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
-        );
+    public ResponseEntity<?> login(HttpServletRequest request, HttpServletResponse response,
+                                   @RequestBody LoginRequestDto loginRequestDto){
+        UserDetails userDetails = customUserDetailsService.loadUserByUsername(loginRequestDto.getEmail());
 
-        // 인증 정보를 SecurityContextHolder에 저장
+        System.out.println("getEmail() : " + loginRequestDto.getEmail());
+        System.out.println("getPassword() : " + loginRequestDto.getPassword());
+
+        // 인증 객체 생성
+        Authentication authentication
+                = new UsernamePasswordAuthenticationToken(userDetails, loginRequestDto.getPassword(), new ArrayList<>());
+
+        if(!userDetails.isEnabled()) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
+        try {
+            authenticationManager.authenticate(authentication);
+        } catch (AuthenticationException e) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+        // SecurityContextHolder : Authentication을 감싸는 객체
         SecurityContextHolder.getContext().setAuthentication(authentication);
+        HttpSession session = request.getSession();
+        session.setAttribute
+                (HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
+                        SecurityContextHolder.getContext());
+        Cookie cookie = new Cookie("JSESSIONID", session.getId());
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        cookie.setDomain("localhost");
+        cookie.setMaxAge(30000 * 60);
+        response.addCookie(cookie);
 
-        // 로그인 성공 시 빈 응답 반환
-        return ResponseEntity.ok().build();
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 

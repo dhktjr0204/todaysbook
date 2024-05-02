@@ -102,8 +102,7 @@ document.addEventListener('DOMContentLoaded', function() {
         formInputs.forEach(function(input, index) {
             const label = ["name", "email", "nickName", "password", "passwordCheck", "address", "zipcode"];
 
-            const value = input.value;
-            userData[label[index]] = value;
+            userData[label[index]] = input.value;
         });
 
         const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&~]{8,}$/;
@@ -132,8 +131,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 return response.json();
             })
             .then(data => {
-                // 서버로부터 받은 응답 처리
-                window.location.href = '/index';
+                // 회원가입이 완료되면 로그인페이지로 이동
+                alert('회원가입이 완료되었습니다.');
+                window.location.href = '/login';
             })
             .catch(error => {
                 console.error('There was a problem with the fetch operation:', error);
@@ -141,7 +141,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 alert('오류가 발생했습니다: ' + error.message);
             });
     });
+
+    const cancelButton = document.querySelector('.cancel');
+    cancelButton.addEventListener('click', () => {
+        window.location.href = '/index';
+    });
 });
+
+
 
 
 

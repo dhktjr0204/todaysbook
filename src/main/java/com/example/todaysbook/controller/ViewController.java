@@ -1,8 +1,10 @@
 package com.example.todaysbook.controller;
 
+import com.example.todaysbook.domain.dto.CustomUserDetails;
 import com.example.todaysbook.domain.entity.CartBook;
 import com.example.todaysbook.service.CartService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,15 +17,16 @@ public class ViewController {
 
     private final CartService cartService;
 
-//    @GetMapping("/index")
-//    public String index(Model model) {
-//
-//        String userName = "테스트";
-//
-//        model.addAttribute("userName", userName);
-//
-//        return "index";
-//    }
+    @GetMapping("/index")
+    public String index(@AuthenticationPrincipal CustomUserDetails customUserDetails, Model model) {
+
+        String nickname = customUserDetails.getNickname();
+        System.out.println("nickname : " + nickname);
+
+        model.addAttribute("userName", nickname);
+
+        return "index";
+    }
 
     @GetMapping("/search")
     public String search(Model model) {
@@ -35,6 +38,12 @@ public class ViewController {
     public String detail(Model model) {
 
         return "book/detail";
+    }
+
+    @GetMapping("/login")
+    public String login(Model model) {
+
+        return "user/login";
     }
 
     @GetMapping("/registration")

@@ -1,6 +1,7 @@
 package com.example.todaysbook.config;
 
 import com.example.todaysbook.domain.entity.Role;
+import com.example.todaysbook.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -20,7 +21,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     @Autowired
-    private UserDetailService userDetailService;
+    private CustomUserDetailsService userDetailService;
 
     @Bean
     public WebSecurityCustomizer configure() {

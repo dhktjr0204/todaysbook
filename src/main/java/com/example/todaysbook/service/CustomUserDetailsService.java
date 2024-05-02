@@ -1,5 +1,6 @@
-package com.example.todaysbook.config;
+package com.example.todaysbook.service;
 
+import com.example.todaysbook.domain.dto.CustomUserDetails;
 import com.example.todaysbook.domain.entity.User;
 import com.example.todaysbook.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,10 +9,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserDetailService implements UserDetailsService {
+public class CustomUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
 
-    public UserDetailService(UserRepository userRepository) {
+    public CustomUserDetailsService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

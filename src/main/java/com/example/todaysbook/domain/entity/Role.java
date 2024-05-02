@@ -1,11 +1,11 @@
 package com.example.todaysbook.domain.entity;
 
 public enum Role {
-    ROLE_COMMON_BRONZE("브론즈"),
-    ROLE_COMMON_SILVER("실버"),
-    ROLE_COMMON_GOLD("골드"),
-    ROLE_COMMON_DIAMOND("다이아"),
-    ROLE_ADMIN("관리자");
+    ROLE_COMMON_BRONZE("BRONZE"),
+    ROLE_COMMON_SILVER("SILVER"),
+    ROLE_COMMON_GOLD("COLD"),
+    ROLE_COMMON_DIAMOND("DIA"),
+    ROLE_ADMIN("ADMIN");
 
     String role;
 

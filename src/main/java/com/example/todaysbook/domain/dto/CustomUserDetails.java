@@ -1,8 +1,7 @@
-package com.example.todaysbook.config;
+package com.example.todaysbook.domain.dto;
 
 import com.example.todaysbook.domain.entity.User;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
@@ -11,17 +10,26 @@ import java.util.Collection;
 public class CustomUserDetails implements UserDetails {
 
     private User user;
-
     public CustomUserDetails(User user) {
         this.user = user;
     }
 
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        ArrayList<GrantedAuthority> auth = new ArrayList<>();
-        auth.add(new SimpleGrantedAuthority(user.getRole()));
-        return auth;
+
+        Collection<GrantedAuthority> collection = new ArrayList<>();
+        collection.add(new GrantedAuthority() {
+            @Override
+            public String getAuthority() {
+                return user.getRole();
+            }
+        });
+
+        return collection;
+    }
+
+    public String getNickname() {
+        return user.getNickName();
     }
 
     @Override

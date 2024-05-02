@@ -18,11 +18,6 @@ public class UserViewController {
         this.userService = userService;
     }
 
-    @GetMapping("/signup")
-    public String registration() {
-        return "user/registration";
-    }
-
     @GetMapping("/checkEmailAvailability")
     @ResponseBody
     public ResponseEntity<?> checkEmailAvailability(@RequestParam String email) {
