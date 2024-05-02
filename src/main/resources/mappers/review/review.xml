@@ -55,4 +55,10 @@
         INSERT INTO review (book_id, user_id, score, content, create_time)
         VALUES (#{bookId}, #{userId}, #{score}, #{content}, now())
     </insert>
+
+    <delete id="deleteReview">
+        DELETE
+        FROM review
+        WHERE id = #{reviewId}
+    </delete>
 </mapper>

@@ -1,12 +1,16 @@
 package com.example.todaysbook.controller;
 
+import com.example.todaysbook.domain.dto.Review;
 import com.example.todaysbook.domain.dto.ReviewRequestDto;
 import com.example.todaysbook.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -16,20 +20,46 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     @PostMapping("/add")
-    public ResponseEntity<?> addNewReview(@RequestBody ReviewRequestDto requestDto) {
+    public String addNewReview(@RequestBody ReviewRequestDto requestDto,
+                               Model model) {
 
-        try {
+        long userId = 1l;
 
-            requestDto.setUserId(1l);
+        requestDto.setUserId(userId);
+        int flag = reviewService.addReview(requestDto);
 
-            return ResponseEntity.ok(reviewService.addReview(requestDto));
+        if(errorHandler(flag)) {
 
-        } catch (Exception e) {
-
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+            throw new IllegalStateException();
         }
+
+        List<Review> reviews = reviewService.getReviews(requestDto.getBookId(), requestDto.getUserId());
+        model.addAttribute("reviews", reviews);
+        model.addAttribute("userId", userId);
+
+        return "book/review";
     }
 
+    @DeleteMapping("/delete")
+    public String deleteReview(@RequestParam(value = "reviewId") long reviewId,
+                               @RequestParam(value = "bookId") long bookId,
+                               Model model) {
+
+        long userId = 1l;
+
+        int flag = reviewService.deleteReview(reviewId);
+
+        if(errorHandler(flag)) {
+
+            throw new IllegalStateException();
+        }
+
+        List<Review> reviews = reviewService.getReviews(bookId, userId);
+        model.addAttribute("reviews", reviews);
+        model.addAttribute("userId", userId);
+
+        return "book/review";
+    }
     @GetMapping("/add_like")
     public ResponseEntity<?> addLikeReview(@RequestParam(value = "userId") long userId,
                                            @RequestParam(value = "reviewId") long reviewId) {
@@ -84,5 +114,10 @@ public class ReviewController {
 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
+    }
+
+    private boolean errorHandler(int flag) {
+
+        return flag < 1;
     }
 }
