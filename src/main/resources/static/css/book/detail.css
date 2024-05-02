@@ -64,7 +64,7 @@ h1 {
     content: url("../../images/like.png");
 }
 
-.favorite-book-button img, .star, .review-star, .review-list-star {
+.favorite-book-button img, .star, .review-star, .review-list-star, .edit-review-star {
 
     width: 20px;
     height: 20px;
@@ -209,7 +209,7 @@ hr {
     margin-bottom: 20px;
 }
 
-.review-score {
+.review-score, .edit-review-score {
 
     margin-left: 10px;
 }
@@ -237,7 +237,7 @@ hr {
     padding: 10px;
 }
 
-.submit-button {
+.submit-button, .edit-button, .cancel-button {
 
     background-color: #D54DFE;
 
@@ -245,6 +245,11 @@ hr {
 
     padding: 10px;
     border-radius: 5px;
+}
+
+.cancel-button {
+
+    background-color: #595959;
 }
 
 .comment-text-count {
@@ -260,9 +265,14 @@ hr {
     margin-right: 10px;
 }
 
-.score-div {
+.score-div, .review-score-div {
 
     display: flex;
+}
+
+.edit-score-div {
+
+    display: none;
 }
 
 .edit-button-div {
@@ -291,14 +301,40 @@ hr {
     justify-content: space-between;
 }
 
-.review-content {
+pre {
+    white-space: pre-wrap;
 
     width: 580px;
     align-items: center;
+
+    border-radius: 5px;
+    border: 1px solid white;
+    padding: 10px;
 }
 
-pre {
-    white-space: pre-wrap;
+.edit-text-area-div {
+
+    display: none;
+
+    align-items: start;
+    gap: 5px;
+
+    padding-left: 20px;
+}
+
+.edit-review-input {
+
+    width: 480px;
+    min-height: 50px;
+
+    background-color: black;
+    color: white;
+    border-radius: 5px;
+
+    outline: none;
+    resize: none;
+
+    padding: 10px;
 }
 
 .review-bottom {
@@ -307,13 +343,6 @@ pre {
     justify-content: space-between;
     align-items: end;
 
-    padding: 10px;
-}
-
-.review-content {
-
-    border: 1px solid white;
-    border-radius: 5px;
     padding: 10px;
 }
 

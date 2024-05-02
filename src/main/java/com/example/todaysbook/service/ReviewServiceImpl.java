@@ -15,9 +15,9 @@ public class ReviewServiceImpl implements ReviewService {
     private final ReviewMapper reviewMapper;
 
     @Override
-    public List<Review> getReviews(long bookId, long userId) {
+    public List<Review> getReviews(long bookId, long userId, String orderBy) {
 
-        return reviewMapper.getReviews(bookId, userId);
+        return reviewMapper.getReviews(bookId, userId, orderBy);
     }
 
     @Override
@@ -62,5 +62,11 @@ public class ReviewServiceImpl implements ReviewService {
     public int deleteReview(long reviewId) {
 
         return reviewMapper.deleteReview(reviewId);
+    }
+
+    @Override
+    public int updateReview(ReviewRequestDto requestDto) {
+
+        return reviewMapper.updateReview(requestDto);
     }
 }
