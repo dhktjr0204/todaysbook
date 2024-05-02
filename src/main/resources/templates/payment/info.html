@@ -6,7 +6,7 @@
 
 <th:block layout:fragment="head">
     <title>결제 하기</title>
-    <link th:href="@{/css/payment/info.css}" rel="stylesheet"/>
+    <link href="../../static/css/payment/info.css" th:href="@{/css/payment/info.css}" rel="stylesheet"/>
 </th:block>
 <div th:replace="~{fragments/header.html}"></div>
 <main th:fragment="content">
@@ -58,7 +58,7 @@
             <p>69,000원</p>
         </div>
         <div class="button-group">
-            <button class="submit button" th:text="'결제 하기'"></button>
+            <button class="submit button" onclick="location.href='/payment'">결제 하기</button>
             <button class="cancel button" th:text="'취소'"></button>
         </div>
     </div>

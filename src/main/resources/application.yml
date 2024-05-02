@@ -4,9 +4,9 @@ spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:mysql://localhost:11802/today_book
+    url: jdbc:mysql://localhost:3306/today_book
     username: root
-    password: root
+    password: 1234
     #find tuning
     hikari:
       minimum-idle: 1

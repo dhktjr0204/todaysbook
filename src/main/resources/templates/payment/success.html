@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
@@ -5,44 +6,130 @@
       layout:decorate="~{layout/layout}">
 
 <th:block layout:fragment="head">
-    <title>결제 완료</title>
-    <link th:href="@{/css/payment/success.css}" rel="stylesheet"/>
+  <title>결제 완료</title>
+  <link th:href="@{/css/payment/success.css}" rel="stylesheet"/>
 </th:block>
 <div th:replace="~{fragments/header.html}"></div>
 <main th:fragment="content">
-    <div class="payment-wrap">
-        <section class="payment-info">
-            <p class="title">결제 완료</p>
-            <ul class="payment-info-body">
-                <li th:each="dto : ${#numbers.sequence(1,5)}">
-                    <p class="book-name">상품명</p>
-                    <p class="quantity">수량</p>
-                    <p class="price">상품 금액</p>
-                    <p class="mileage">적립 마일리지</p>
-                </li>
-            </ul>
-            <ul class="payment-info-bottom">
-                <li>
-                    <p class="total-price">총 상품 금액</p>
-                    <p class="total-price">66,000원</p>
-                    <p class="operand">-</p>
-                    <p class="mileage">사용 마일리지</p>
-                    <p class="mileage">6,600M</p>
-                    <p class="operand">+</p>
-                    <p class="delivery">배송료</p>
-                    <p class="delivery">3,000원</p>
-                </li>
-                <li class="total-price-div">
-                    <p>합계</p>
-                    <p>62,400원</p>
-                </li>
-            </ul>
-            <ul class="button-group">
-                <button onclick="location.href = '/index'" class="main-button" th:text="'메인으로'"></button>
-                <button onclick="location.href = '/mypage/user/delivery'" class="delivery-button" th:text="'배송 조회'"></button>
-            </ul>
-        </section>
-    </div>
+  <div class="payment-wrap">
+    <section class="payment-info">
+      <p class="title">결제 완료</p>
+      <ul class="payment-info-body">
+        <li th:each="dto : ${#numbers.sequence(1,5)}">
+          <p class="book-name">상품명</p>
+          <p class="quantity">수량</p>
+          <p class="price">상품 금액</p>
+          <p class="mileage">적립 마일리지</p>
+        </li>
+      </ul>
+      <ul class="payment-info-bottom">
+        <li>
+          <p class="total-price">총 상품 금액</p>
+          <p class="total-price">66,000원</p>
+          <p class="operand">-</p>
+          <p class="mileage">사용 마일리지</p>
+          <p class="mileage">6,600M</p>
+          <p class="operand">+</p>
+          <p class="delivery">배송료</p>
+          <p class="delivery">3,000원</p>
+        </li>
+        <li class="total-price-div">
+          <p>합계</p>
+          <p>62,400원</p>
+        </li>
+      </ul>
+      <ul class="button-group">
+        <button onclick="location.href = '/index'" class="main-button" th:text="'메인으로'"></button>
+        <button onclick="location.href = '/mypage/user/delivery'" class="delivery-button" th:text="'배송 조회'"></button>
+      </ul>
+    </section>
+  </div>
 </main>
-<div th:replace="~{fragments/footer.html}"></div>
+<body>
+  <div class="box_section" style="width: 600px">
+    <img width="100px" src="https://static.toss.im/illusts/check-blue-spot-ending-frame.png" />
+    <h2>결제를 완료했어요</h2>
+
+    <div class="p-grid typography--p" style="margin-top: 50px">
+      <div class="p-grid-col text--left"><b>결제금액</b></div>
+      <div class="p-grid-col text--right" id="amount"></div>
+    </div>
+    <div class="p-grid typography--p" style="margin-top: 10px">
+      <div class="p-grid-col text--left"><b>주문번호</b></div>
+      <div class="p-grid-col text--right" id="orderId"></div>
+    </div>
+    <div class="p-grid typography--p" style="margin-top: 10px">
+      <div class="p-grid-col text--left"><b>paymentKey</b></div>
+      <div class="p-grid-col text--right" id="paymentKey" style="white-space: initial; width: 250px"></div>
+    </div>
+    <div class="p-grid" style="margin-top: 30px">
+      <button class="button p-grid-col5" onclick="location.href='https://docs.tosspayments.com/guides/payment/integration';">연동 문서</button>
+      <button class="button p-grid-col5" onclick="location.href='https://discord.gg/A4fRFXQhRu';" style="background-color: #e8f3ff; color: #1b64da">실시간 문의</button>
+    </div>
+  </div>
+
+  <div class="box_section" style="width: 600px; text-align: left">
+    <b>Response Data :</b>
+    <div id="response" style="white-space: initial"></div>
+  </div>
+
+    <script>
+<!-- 쿼리 파라미터 값이 결제 요청할 때 보낸 데이터와 동일한지 반드시 확인하세요.-->
+<!-- 쿼리 파라미터의 amount 값과 renderPaymentMethods()의 amount 파라미터의 값이 같은지 반드시 확인하세요. -->
+<!-- 클라이언트에서 결제 금액을 조작하는 행위를 방지할 수 있습니다.-->
+<!-- 만약 값이 다르다면 결제를 취소하고 구매자에게 알려주세요.-->
+<!-- 클라이언트에서 결제 금액을 조작하는 행위를 방지할 수 있습니다.-->
+
+<!-- window.location.search는 현재 페이지 URL에서 쿼리 문자열을 나타내는 JavaScript의 속성입니다.-->
+<!-- 쿼리 문자열은 물음표(?)로 시작하며, 그 뒤에는 키/값 쌍이 '&'로 구분되어 연결됩니다. -->
+<!-- 예를 들어, http://www.example.com/page?name=John&age=30와 같은 URL에서, -->
+<!-- window.location.search는 ?name=John&age=30을 반환합니다. -->
+<!-- 이를 통해 JavaScript에서 현재 페이지의 쿼리 매개변수에 접근할 수 있습니다.-->
+<!-- console.log(window.location.search);
+<!-- 위의 결과는 => ?paymentType=NORMAL&orderId=MC4zMzg3ODUyNDgwNjE5&paymentKey=tgen_20240429142416eOwc6&amount=50000
+
+      const urlParams = new URLSearchParams(window.location.search);
+
+      // 서버로 결제 승인에 필요한 결제 정보를 보내세요.
+      async function confirm() {
+        var requestData = {
+          paymentKey: urlParams.get("paymentKey"),
+          orderId: urlParams.get("orderId"),
+          amount: urlParams.get("amount"),
+        };
+
+        const response = await fetch("/payment/confirm", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(requestData),
+        });
+
+        const json = await response.json();
+
+        if (!response.ok) {
+          // TODO: 결제 실패 비즈니스 로직을 구현하세요.
+          console.log(json);
+          window.location.href = `/fail?message=${json.message}&code=${json.code}`;
+        }
+
+        // TODO: 결제 성공 비즈니스 로직을 구현하세요.
+<!--        console.log(json);-->
+        return json;
+      }
+
+      confirm().then(function (data) {
+        document.getElementById("response").innerHTML = `<pre>${JSON.stringify(data, null, 4)}</pre>`;
+      });
+
+      const paymentKeyElement = document.getElementById("paymentKey");
+      const orderIdElement = document.getElementById("orderId");
+      const amountElement = document.getElementById("amount");
+
+      orderIdElement.textContent = urlParams.get("orderId");
+      amountElement.textContent = urlParams.get("amount") + "원";
+      paymentKeyElement.textContent = urlParams.get("paymentKey");
+    </script>
+  </body>
 </html>
