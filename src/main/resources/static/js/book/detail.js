@@ -5,7 +5,7 @@ function clickFavorite(button) {
     image.classList.toggle('favorite');
 
     let url = image.classList.contains('favorite') ? '/favorite_book/add' : '/favorite_book/delete';
-    let bookId = 1;
+    let bookId = document.querySelector('.book-id').value;
 
     let type = image.classList.contains('favorite') ? 'GET' : 'DELETE';
     let message = image.classList.contains('favorite') ?

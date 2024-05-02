@@ -1,3 +1,5 @@
+document.addEventListener('DOMContentLoaded', starEvents);
+
 function reviewWordCount(textarea){
 
     const commentForm = textarea.closest('.review-form');
@@ -77,6 +79,8 @@ function clickLike(button, reviewId) {
             let newLikeCount = response;
             let likeCountElement = button.parentElement.querySelector('.like-count');
             likeCountElement.innerHTML = newLikeCount;
+
+            starEvents();
         },
         error: function (error) {
 
@@ -112,6 +116,8 @@ function clickDislike(button, reviewId) {
             let newDislikeCount = response;
             let dislikeCountElement = button.parentElement.querySelector('.dislike-count');
             dislikeCountElement.innerHTML = newDislikeCount;
+
+            starEvents();
         },
         error: function (error) {
 
@@ -128,7 +134,7 @@ function clickAddReview(button) {
     const reviewItem = button.closest('.review-form');
 
     const content = reviewItem.querySelector('.review-input').value;
-    const bookId = reviewItem.querySelector('.book-id').value;
+    const bookId = document.querySelector('.book-id').value;
     const score = parseInt(reviewItem.querySelector('.review-score').textContent);
 
     if (content.trim() === "") {
@@ -147,7 +153,9 @@ function clickAddReview(button) {
         }),
         success: function (data) {
             alert("리뷰가 등록 되었습니다.");
-            $('.review-div').html(data);
+            $('.review-area').html(data);
+
+            starEvents();
         },
         error: function (error) {
             throw new Error('리뷰 등록 실패');
@@ -174,7 +182,9 @@ function deleteReview(button) {
         },
         success: function (data) {
             alert("리뷰가 삭제 되었습니다.");
-            $('.review-div').html(data);
+            $('.review-area').html(data);
+
+            starEvents();
         },
         error: function (error) {
             throw new Error('리뷰 삭제 실패');
@@ -248,7 +258,9 @@ function updateReview(button) {
         }),
         success: function (data) {
             alert("리뷰가 수정 되었습니다.");
-            $('.review-div').html(data);
+            $('.review-area').html(data);
+
+            starEvents();
         },
         error: function (error) {
             throw new Error('리뷰 수정 실패');
@@ -256,7 +268,32 @@ function updateReview(button) {
     });
 }
 
-document.addEventListener('DOMContentLoaded', function () {
+function reviewOrderBy(orderBy) {
+
+    const url = "/review";
+    const method = "GET";
+
+    const bookId = document.querySelector('.book-id').value;
+
+    $.ajax({
+        url: url,
+        type: method,
+        data: {
+            bookId: bookId,
+            orderBy: orderBy
+        },
+        success: function (data) {
+            $('.review-area').html(data);
+
+            starEvents();
+        },
+        error: function (error) {
+            throw new Error('불러오기 실패');
+        }
+    });
+}
+
+function starEvents() {
 
     // 리뷰 평가
     const reviewStars = document.querySelectorAll('.review-star');
@@ -327,7 +364,7 @@ document.addEventListener('DOMContentLoaded', function () {
             isEditClicked = false;
         });
     });
-});
+}
 
 function highlightStars(stars, value) {
     stars.forEach(star => {

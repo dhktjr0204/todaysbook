@@ -19,11 +19,27 @@ public class ReviewController {
 
     private final ReviewService reviewService;
 
+    @GetMapping("")
+    public String getReviews(@RequestParam(value = "bookId") long bookId,
+                             @RequestParam(value = "orderBy") String orderBy,
+                             Model model) {
+
+        long userId = 1l;
+
+        List<Review> reviews =
+                reviewService.getReviews(bookId, userId, orderBy);
+        model.addAttribute("reviews", reviews);
+        model.addAttribute("userId", userId);
+
+        return "book/review";
+    }
+
     @PostMapping("/add")
     public String addNewReview(@RequestBody ReviewRequestDto requestDto,
                                Model model) {
 
         long userId = 1l;
+        String orderBy = "latest";
 
         requestDto.setUserId(userId);
         int flag = reviewService.addReview(requestDto);
@@ -33,7 +49,8 @@ public class ReviewController {
             throw new IllegalStateException();
         }
 
-        List<Review> reviews = reviewService.getReviews(requestDto.getBookId(), requestDto.getUserId());
+        List<Review> reviews =
+                reviewService.getReviews(requestDto.getBookId(), requestDto.getUserId(), orderBy);
         model.addAttribute("reviews", reviews);
         model.addAttribute("userId", userId);
 
@@ -46,6 +63,7 @@ public class ReviewController {
                                Model model) {
 
         long userId = 1l;
+        String orderBy = "latest";
 
         int flag = reviewService.deleteReview(reviewId);
 
@@ -54,7 +72,8 @@ public class ReviewController {
             throw new IllegalStateException();
         }
 
-        List<Review> reviews = reviewService.getReviews(bookId, userId);
+        List<Review> reviews =
+                reviewService.getReviews(bookId, userId, orderBy);
         model.addAttribute("reviews", reviews);
         model.addAttribute("userId", userId);
 
@@ -66,11 +85,13 @@ public class ReviewController {
                                Model model) {
 
         long userId = 1l;
+        String orderBy = "latest";
 
         requestDto.setUserId(userId);
         int flag = reviewService.updateReview(requestDto);
 
-        List<Review> reviews = reviewService.getReviews(requestDto.getBookId(), requestDto.getUserId());
+        List<Review> reviews =
+                reviewService.getReviews(requestDto.getBookId(), requestDto.getUserId(), orderBy);
 
         model.addAttribute("reviews", reviews);
         model.addAttribute("userId", userId);

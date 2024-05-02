@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ReviewService {
 
-    List<Review> getReviews(long bookId, long userId);
+    List<Review> getReviews(long bookId, long userId, String orderBy);
     int addLikeReview(long userId, long reviewId);
     int addDislikeReview(long userId, long reviewId);
     int deleteLikeReview(long userId, long reviewId);

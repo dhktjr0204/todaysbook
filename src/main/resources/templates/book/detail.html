@@ -14,6 +14,7 @@
         <section class="book-detail">
             <div class="book-detail-header">
                 <h1 th:text="${bookDetailDto.bookDetail.title}"></h1>
+                <input type="hidden" class="book-id" th:value="${bookDetailDto.bookDetail.id}">
                 <div class="book-info">
                     <p th:text="${bookDetailDto.bookDetail.author}"></p>
                     <p th:text="${bookDetailDto.bookDetail.publisher}"></p>
@@ -100,7 +101,6 @@
                 <hr>
                 <form class="review-form" onsubmit="return false;">
                     <div class="review-score-info">
-                        <input type="hidden" class="book-id" th:value="${bookDetailDto.bookDetail.id}">
                         <div class="score-div">
                             <img class="review-star" src="/images/blank_star.png" alt="별" data-value="1">
                             <img class="review-star" src="/images/blank_star.png" alt="별" data-value="2">
@@ -119,8 +119,8 @@
                     <div class="comment-text-count">0/500</div>
                 </form>
                 <div class="order-by">
-                    <button th:text="최신순"></button>
-                    <button th:text="공감순"></button>
+                    <button th:text="최신순" onclick="reviewOrderBy('latest')"></button>
+                    <button th:text="공감순" onclick="reviewOrderBy('popular')"></button>
                 </div>
                 <hr>
                 <div class="review-div">
