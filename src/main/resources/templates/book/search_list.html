@@ -35,38 +35,21 @@
             <div class="search-list-header">
                 <p class="search-list-title" th:text="'검색 결과'"></p>
             </div>
-            <article class="recommend-list-container" th:each="recommendList : ${recommendLists}">
+            <article class="recommend-list-container" th:each="recommendList : ${dto}">
                 <div th:replace="~{fragments/recommend-list-header.html}"></div>
                 <div th:replace="~{fragments/recommend-list-body.html}"></div>
             </article>
-            <div th:if="${recommendLists.isEmpty()}">
+            <div th:if="${dto.isEmpty()}">
                 <p class="no-content-text">콘텐츠가 없습니다.</p>
             </div>
         </section>
         <section>
-            <ul class="page-button-group" th:unless="${recommendLists.isEmpty()}">
-                <li th:if="${recommendLists.number>4}">
-                    <button th:onclick="clickListPrevPageButton([[${startPage}]], [[${keyword}]])">
-                        &lt;
-                    </button>
-                </li>
-                <li th:each="num : ${#numbers.sequence(startPage, endPage)}">
-                    <button th:text="${num}" th:if="${recommendLists.number+1 eq num}"
-                            th:class="select-button"></button>
-                    <button th:text="${num}" th:unless="${recommendLists.number+1 eq num}"
-                            th:onclick="clickListPageButton(this,  [[${keyword}]])"></button>
-                </li>
-                <li th:if="${recommendLists.totalPages > 5 and endPage != recommendLists.totalPages}">
-                    <button th:onclick="clickListNextPageButton([[${endPage}]], [[${keyword}]])">
-                        &gt;
-                    </button>
-                </li>
-            </ul>
+            <div th:replace="~{fragments/page.html}"></div>
         </section>
     </div>
 </main>
 <div th:replace="~{fragments/footer.html}"></div>
-<script th:src="@{/js/search/page.js}"></script>
+<script th:src="@{/js/search/list/page.js}"></script>
 <script th:src="@{/js/search/search.js}"></script>
 <script th:src="@{/js/list/page.js}"></script>
 <script th:src="@{/js/mypage/bookMark.js}"></script>
