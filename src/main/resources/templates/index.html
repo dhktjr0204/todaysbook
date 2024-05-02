@@ -7,7 +7,6 @@
 <th:block layout:fragment="head">
     <title>오늘의 책</title>
     <link th:href="@{/css/index.css}" href="../static/css/index.css" rel="stylesheet"/>
-    <link th:href="@{/css/list/list.css}" rel="stylesheet"/>
 </th:block>
 <div th:replace="~{fragments/header.html}"></div>
 <main th:fragment="content">
@@ -96,43 +95,8 @@
                 </ul>
             </article>
             <article class="recommend-list-container" th:each="recommendList : ${userRecommendList}">
-                <div class="recommend-list-header">
-                    <p class="recommend-list-title"
-                       th:text="${recommendList.nickname}+'님의 추천리스트 | '+${recommendList.listTitle}"
-                       th:value="${recommendList.listId}"></p>
-
-                    <!--                    고쳐야될거-->
-                    <p class="book-mark" th:if="${recommendList.isBookmarked}" onclick="clickBookMarkBtn(this)">O</p>
-                    <p class="book-mark" th:unless="${recommendList.isBookmarked}" onclick="clickBookMarkBtn(this)">
-                        X</p>
-
-
-                    <a th:href="'/recommend/detail/'+${recommendList.listId}">더보기</a>
-                </div>
-                <div class="recommend-list-body">
-                    <button class="prev-btn"
-                            th:onclick="prevSlide([[${recommendList.listId}]],this)">&lt;
-                    </button>
-                    <div class="slider-container">
-                        <ul class="recommend-list">
-                            <li class="book-item" th:each="book : ${recommendList.bookList}" th:value="${book.id}">
-                                <figure class="book-info">
-                                    <a th:href="'/book/detail/'+${book.id}">
-                                        <img th:src="${book.image}" th:alt="${book.title}">
-                                        <figcaption class="overlay">
-                                            <p class="book-title" th:text="${book.title}"></p>
-                                            <p class="author" th:text="${book.author}"></p>
-                                            <p class="price" th:text="${book.price}"></p>
-                                        </figcaption>
-                                    </a>
-                                </figure>
-                            </li>
-                        </ul>
-                    </div>
-                    <button class="next-btn"
-                            th:onclick="nextSlide([[${recommendList.listId}]],this)">&gt;
-                    </button>
-                </div>
+                <div th:replace="~{fragments/recommend-list-header.html}"></div>
+                <div th:replace="~{fragments/recommend-list-body.html}"></div>
             </article>
         </section>
     </div>

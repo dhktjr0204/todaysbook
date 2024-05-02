@@ -1,8 +1,8 @@
 package com.example.todaysbook.service;
 
 import com.example.todaysbook.domain.dto.BookDto;
-import com.example.todaysbook.domain.dto.RecommendListDetailDto;
-import com.example.todaysbook.domain.dto.RecommendListDto;
+import com.example.todaysbook.domain.dto.RecommendListDetailWithBookMarkDto;
+import com.example.todaysbook.domain.dto.RecommendListWithBookMarkDto;
 import com.example.todaysbook.domain.entity.Book;
 import com.example.todaysbook.repository.BookRepository;
 import com.example.todaysbook.repository.RecommendListMapper;
@@ -34,17 +34,17 @@ public class SearchServiceImpl implements SearchService{
         return searchResult.map(this::convertBookDto);
     }
     @Override
-    public Page<RecommendListDetailDto> searchListByKeyword(String keyword, Pageable pageable) {
-        Page<RecommendListDto> searchResult= userRecommendListRepository.findUserRecommendListByKeyword(keyword, pageable);
+    public Page<RecommendListDetailWithBookMarkDto> searchListByKeyword(String keyword, Long userId, Pageable pageable) {
+        Page<RecommendListWithBookMarkDto> searchResult= userRecommendListRepository.findUserRecommendListByKeyword(keyword, userId, pageable);
 
         if(searchResult.isEmpty()){
             return Page.empty();
         }
 
-        List<RecommendListDetailDto> resultList = new ArrayList<>();
-        for(RecommendListDto list:searchResult){
+        List<RecommendListDetailWithBookMarkDto> resultList = new ArrayList<>();
+        for(RecommendListWithBookMarkDto list:searchResult){
             List<BookDto> bookList = recommendListMapper.getBookDetailByListId(list.getListId());
-            RecommendListDetailDto recommendListDetailDto = convertListDetailDto(list, bookList);
+            RecommendListDetailWithBookMarkDto recommendListDetailDto = convertListDetailDto(list, bookList);
             resultList.add(recommendListDetailDto);
         }
 
@@ -61,13 +61,14 @@ public class SearchServiceImpl implements SearchService{
                 .build();
     }
 
-    private RecommendListDetailDto convertListDetailDto(RecommendListDto list, List<BookDto> book){
-        return RecommendListDetailDto.builder()
+    private RecommendListDetailWithBookMarkDto convertListDetailDto(RecommendListWithBookMarkDto list, List<BookDto> book){
+        return RecommendListDetailWithBookMarkDto.builder()
                 .listId(list.getListId())
                 .listTitle(list.getListTitle())
                 .userId(list.getUserId())
                 .nickname(list.getNickname())
                 .date(list.getDate())
+                .isBookmarked(list.getIsBookMarked())
                 .bookList(book)
                 .build();
     }

@@ -39,24 +39,25 @@
                 <ul class="row">
                     <li th:each="book:${books}">
                         <figure>
-                            <img th:src="${book.image}" th:alt="'책 이름'">
-                            <figcaption>
-                                <a th:href="'/book/'+${book.id}">
-                                <p class="book-title" th:text="${book.title}"></p>
-                                <p class="author" th:text="${book.author}"></p>
-                                <p class="price" th:text="${book.price}"></p>
-                                </a>
-
-                                <!-- bookCount 정보를 추가 -->
-                                <input type="number" class="book-count" value="1" min="1">
-                                <!-- 임시 테스트용 버튼 -->
-                                <button class="add-to-cart" th:data-book-id="${book.id}" onclick="addToCart(this)">장바구니에 담기</button>
-                            </figcaption>
+                            <a th:href="'/book/detail/'+${book.id}">
+                                <img th:src="${book.image}" th:alt="${book.title}">
+                                <figcaption>
+                                    <p class="book-title" th:text="${book.title}"></p>
+                                    <p class="author" th:text="${book.author}"></p>
+                                    <p class="price" th:text="${book.price}"></p>
+                                    <!-- bookCount 정보를 추가 -->
+                                    <input type="number" class="book-count" value="1" min="1">
+                                    <!-- 임시 테스트용 버튼 -->
+                                    <button class="add-to-cart" th:data-book-id="${book.id}" onclick="addToCart(this)">
+                                        장바구니에 담기
+                                    </button>
+                                </figcaption>
+                            </a>
                         </figure>
                     </li>
                 </ul>
             </div>
-            <div class="page-button-group" th:if="${books.isEmpty()}">
+            <div th:if="${books.isEmpty()}">
                 <p class="no-content-text">콘텐츠가 없습니다.</p>
             </div>
             <ul class="page-button-group" th:unless="${books.isEmpty()}">

@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
     Page<Book> findByAuthorContainingOrTitleContaining(String author,String title, Pageable pageable);
+    Page<Book> findAll(Pageable pageable);
 }
