@@ -296,7 +296,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const editReviewStars = document.querySelectorAll('.edit-review-star');
     const editReviewScore = document.querySelector('.edit-review-score');
     let isEditClicked = false;
-    let previousEditValue = 0;
+    let previousEditValue = editReviewScore.textContent;
+
+    highlightStars(editReviewStars, previousEditValue);
 
     editReviewStars.forEach(star => {
         star.addEventListener('mousedown', function () {
@@ -325,14 +327,14 @@ document.addEventListener('DOMContentLoaded', function () {
             isEditClicked = false;
         });
     });
-
-    function highlightStars(stars, value) {
-        stars.forEach(star => {
-            if (parseInt(star.getAttribute('data-value')) <= value) {
-                star.src = '/images/star.png';
-            } else {
-                star.src = '/images/blank_star.png';
-            }
-        });
-    }
 });
+
+function highlightStars(stars, value) {
+    stars.forEach(star => {
+        if (parseInt(star.getAttribute('data-value')) <= value) {
+            star.src = '/images/star.png';
+        } else {
+            star.src = '/images/blank_star.png';
+        }
+    });
+}
