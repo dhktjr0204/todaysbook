@@ -10,6 +10,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -51,6 +54,68 @@ public class AdminServiceImpl implements AdminService {
         }
 
         return bookList.map(this::convertBookToDto);
+    }
+
+    @Override
+    public BookDto findBookById(Long bookId) {
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow();
+
+        return BookDto.builder()
+                .id(book.getId())
+                .title(book.getTitle())
+                .author(book.getAuthor())
+                .price(book.getPrice())
+                .publisher(book.getPublisher())
+                .publishDate(book.getPublishDate())
+                .stock(book.getStock())
+                .description(book.getDescription())
+                .image(book.getImagePath())
+                .build();
+    }
+
+    @Transactional
+    @Override
+    public void updateUserRole(Long userId, String role) {
+        User user = userRepository.findById(userId)
+                .orElseThrow();
+
+        user.updateRole(role);
+    }
+
+    @Transactional
+    @Override
+    public void deleteUser(Long userId) {
+
+        userRepository.deleteById(userId);
+
+    }
+
+    @Transactional
+    @Override
+    public void updateBookStock(Long bookId, Long stock) {
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow();
+
+        book.updateStock(stock);
+    }
+
+    @Transactional
+    @Override
+    public void deleteBook(Long bookId) {
+
+        bookRepository.deleteById(bookId);
+
+    }
+
+    @Transactional
+    @Override
+    public void updateBook(BookDto bookDto) {
+        Book book = bookRepository.findById(bookDto.getId())
+                .orElseThrow();
+
+        book.updateBook(bookDto.getTitle(), bookDto.getPrice(), bookDto.getAuthor(),
+                bookDto.getPublisher(), bookDto.getStock(), bookDto.getDescription());
     }
 
     private AdminUserDto convertUserToDto(User user){

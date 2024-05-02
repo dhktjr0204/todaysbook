@@ -40,7 +40,7 @@ public class SearchController {
             endPage = pages.get("endPage");
         }
 
-        model.addAttribute("books", result);
+        model.addAttribute("dto", result);
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
         model.addAttribute("keyword", keyword);
@@ -64,7 +64,7 @@ public class SearchController {
             endPage = pages.get("endPage");
         }
 
-        model.addAttribute("recommendLists", result);
+        model.addAttribute("dto", result);
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
         model.addAttribute("keyword", keyword);

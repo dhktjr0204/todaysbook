@@ -1,25 +1,3 @@
-function clickUserNextPageButton(endPage, keyword) {
-    const currentUrl = window.location.href;
-
-    if (currentUrl.includes("keyword=")) {
-        location.href="/admin/userlist/search?keyword="+ keyword + "&page=" + endPage;
-    }else{
-        location.href = "/admin/userlist?page=" + endPage;
-
-    }
-}
-
-function clickUserPrevPageButton(startPage, keyword) {
-    const currentUrl = window.location.href;
-
-    if (currentUrl.includes("keyword=")) {
-        location.href="/admin/userlist/search?keyword="+ keyword + "&page=" + (startPage - 6);
-    }else{
-        location.href = "/admin/userlist?page=" + (startPage - 6);
-
-    }
-}
-
 function clickUserPageButton(button, keyword) {
 
 
@@ -35,7 +13,7 @@ function clickUserPageButton(button, keyword) {
     }
 }
 
-function clickStockNextPageButton(endPage, keyword) {
+function clickNextPageButton(endPage, keyword) {
     const currentUrl = window.location.href;
 
     if (currentUrl.includes("keyword=")) {
@@ -46,7 +24,7 @@ function clickStockNextPageButton(endPage, keyword) {
     }
 }
 
-function clickStockPrevPageButton(startPage, keyword) {
+function clickPrevPageButton(startPage, keyword) {
     const currentUrl = window.location.href;
 
     if (currentUrl.includes("keyword=")) {
@@ -57,7 +35,7 @@ function clickStockPrevPageButton(startPage, keyword) {
     }
 }
 
-function clickStockPageButton(button, keyword) {
+function clickPageButton(button, keyword) {
 
     const page = button.textContent;
 

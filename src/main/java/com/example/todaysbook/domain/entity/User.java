@@ -25,4 +25,8 @@ public class User {
     private java.sql.Timestamp expire;
     private String address;
     private String zipcode;
+
+    public void updateRole(String role){
+        this.role=role;
+    }
 }

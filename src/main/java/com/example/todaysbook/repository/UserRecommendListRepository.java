@@ -3,6 +3,7 @@ package com.example.todaysbook.repository;
 import com.example.todaysbook.domain.dto.RecommendListDto;
 import com.example.todaysbook.domain.dto.RecommendListWithBookMarkDto;
 import com.example.todaysbook.domain.entity.UserRecommendList;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,6 +18,6 @@ public interface UserRecommendListRepository extends JpaRepository<UserRecommend
             "from UserRecommendList url " +
             "inner join User u " +
             "on u.id=url.userId " +
-            "where url.title like %:keyword%")
+            "where url.title like %:keyword% and u.id = :userId")
     Page<RecommendListWithBookMarkDto> findUserRecommendListByKeyword(String keyword, Long userId, Pageable pageable);
 }
