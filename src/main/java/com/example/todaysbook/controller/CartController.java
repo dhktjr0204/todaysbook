@@ -48,7 +48,7 @@ public class CartController {
     }
 
     // 총 주문 금액 계산 메소드
-    private int calculateTotalPrice(List<CartBook> cartBooks) {
+    /*private int calculateTotalPrice(List<CartBook> cartBooks) {
         int totalPrice = 0;
         for (CartBook cartBook : cartBooks) {
             totalPrice += cartBook.getBook().getPrice() * cartBook.getBookCount();
@@ -59,7 +59,7 @@ public class CartController {
     // 총 적립 마일리지 계산 메소드 (임시)
     private int calculateTotalMileage(List<CartBook> cartBooks) {
         return 0; // 일단은 임시로 0으로 설정
-    }
+    }*/
 
 
     @PostMapping("/add")
