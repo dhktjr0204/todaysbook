@@ -49,48 +49,48 @@ public class CartService {
         }
     }
 
-//    @Transactional
-//    public long addToCart(CartRequestDto requestDto) {
-//        // 로그 추가
-//        System.out.println("Adding book to cart...");
-//
-//        // 장바구니에 담을 책 엔티티 조회
-//        Book book = bookRepository.findById(requestDto.getBookId())
-//                .orElseThrow(EntityNotFoundException::new);
-//        //예시로 아이디가 1인 사용자를 조회
-//        User user = userRepository.findById(1L);
-//
-//        // 로그 추가
-//        System.out.println("Book retrieved: " + book.getTitle());
-//
-//        // 장바구니 조회
-//        Cart cart = cartRepository.findByUserId(user.getId());
-//
-//        // 장바구니가 없으면 새로 생성
-//        if (cart == null) {
-//            cart = Cart.createCart(user);
-//            cartRepository.save(cart);
-//        }
-//
-//        // 장바구니에 해당 도서가 이미 존재하는지 확인
-//        CartBook savedCartBook = cartBookRepository.findByCartIdAndBookId(cart.getId(), book.getId());
-//
-//        // 이미 존재하는 도서라면 수량만 증가
-//        if (savedCartBook != null) {
-//            savedCartBook.addCount(requestDto.getBookCount());
-//            cartBookRepository.save(savedCartBook);
-//            // 로그 추가
-//            System.out.println("Book quantity updated in cart.");
-//            return savedCartBook.getId();
-//        } else {
-//            // 장바구니에 새로운 도서 추가
-//            CartBook cartBook = CartBook.createCartBook(cart, book, requestDto.getBookCount());
-//            cartBookRepository.save(cartBook);
-//            // 로그 추가
-//            System.out.println("New book added to cart.");
-//            return cartBook.getId();
-//        }
-//    }
+    @Transactional
+    public long addToCart(CartRequestDto requestDto) {
+        // 로그 추가
+        System.out.println("Adding book to cart...");
+
+        // 장바구니에 담을 책 엔티티 조회
+        Book book = bookRepository.findById(requestDto.getBookId())
+                .orElseThrow(EntityNotFoundException::new);
+        //예시로 아이디가 1인 사용자를 조회
+        User user = userRepository.findById(1L);
+
+        // 로그 추가
+        System.out.println("Book retrieved: " + book.getTitle());
+
+        // 장바구니 조회
+        Cart cart = cartRepository.findByUserId(user.getId());
+
+        // 장바구니가 없으면 새로 생성
+        if (cart == null) {
+            cart = Cart.createCart(user);
+            cartRepository.save(cart);
+        }
+
+        // 장바구니에 해당 도서가 이미 존재하는지 확인
+        CartBook savedCartBook = cartBookRepository.findByCartIdAndBookId(cart.getId(), book.getId());
+
+        // 이미 존재하는 도서라면 수량만 증가
+        if (savedCartBook != null) {
+            savedCartBook.addCount(requestDto.getBookCount());
+            cartBookRepository.save(savedCartBook);
+            // 로그 추가
+            System.out.println("Book quantity updated in cart.");
+            return savedCartBook.getId();
+        } else {
+            // 장바구니에 새로운 도서 추가
+            CartBook cartBook = CartBook.createCartBook(cart, book, requestDto.getBookCount());
+            cartBookRepository.save(cartBook);
+            // 로그 추가
+            System.out.println("New book added to cart.");
+            return cartBook.getId();
+        }
+    }
 
     @Transactional
     public List<CartBook> findCartBooksByUserId(Long userId) {
