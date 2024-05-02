@@ -26,21 +26,15 @@ public class AlanRecommendBookService {
     private final BookRepository bookRepository;
     private static final Logger logger = LoggerFactory.getLogger(AlanRecommendBookService.class);
     public void saveAlanRecommendBooks() {
-        List<AlanRecommendDataDto> alanRecommendDataList = alanRecommendDataService.getTodaysBooks();
 
-        //오늘의 책 추천 데이터 모두 출력
-        logger.info("\n오늘의 책 추천 데이터: {}", alanRecommendDataList.stream().map(AlanRecommendDataDto::getTitle).collect(Collectors.toList()));
+        //AlanRecommendData createdAt이 오늘인 데이터를 가져오기
+        List<AlanRecommendDataDto> alanRecommendDataDtos = alanRecommendDataService.getAlanRecommendDataByToday();
 
-        for (AlanRecommendDataDto element : alanRecommendDataList) {
-            Optional<Book> existingBook = bookRepository.findByTitle(element.getTitle());
-
-            if (existingBook.isPresent()) {
-                AlanRecommendBook alanRecommendBook = AlanRecommendBookDto.createFromBook(existingBook.get());
-                alanRecommendBookRepository.save(alanRecommendBook);
-            } else {
-                // TODO: BookRepository에 책이 없는 경우, 외부 API(중앙도서관)를 사용하여 책 정보 가져오기
-            }
+        //alanRecommendDataDtos 출력 (각 제목마다 줄바꿈하면서 출력)\
+        for (AlanRecommendDataDto alanRecommendDataDto : alanRecommendDataDtos) {
+            logger.info(alanRecommendDataDto.getTitle());
         }
+
     }
 
 

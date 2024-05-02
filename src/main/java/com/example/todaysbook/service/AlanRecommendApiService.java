@@ -22,9 +22,10 @@ public class AlanRecommendApiService {
     private static final Logger logger = LoggerFactory.getLogger(AlanRecommendApiService.class);
 
     public String callApi() {
-        String url = apiUrl + "?content=오늘 기준 한국 도서 베스트셀러 책 제목 15개를 추천해 주세요. 신뢰할 수 있는 최신 정보를 바탕으로 정확한 책 제목을 제공해 주세요. 책 제목만 JSON 형식으로 작성해 주세요. 추가적인 설명이나 마크다운은 포함하지 않도록 해 주세요.&client_id=" + clientId;
+        String url = apiUrl + "?content=오늘 기준 한국 도서 베스트셀러 책 제목 10개를 추천해 주세요. 신뢰할 수 있는 최신 정보를 바탕으로 정확한 책 제목을 제공해 주세요. 책 제목만 나열하여 주세요. 정확한 답변만을 원합니다. 저자는 포함하여 답변하지 마세요. 존재하지 않는 책 제목은 추천하지 마세요. 답변의 처음과 끝에 추가적인 설명이나 마크다운은 포함하지 않도록 해 주세요. 절대 json형태로 답변하지 마세요.&client_id=" + clientId;
         String response = restTemplate.getForObject(url, String.class);
-        logger.info("API Response: {}", response);
+        logger.info("\nAPI 호출 완료");
+        logger.info("\nAPI Response: {}", response);
         return response;
     }
 }
@@ -60,7 +61,7 @@ public class AlanRecommendApiService {
      * */
 
     /*
-    * TODO: 프롬프트 수정하기 (날짜 자동 없데이트)
+    * TODO: 프롬프트 수정하기 (날짜 자동 없데이트)(후순위)
     *  프롬프트에서 날짜기준으로 물어보는데 그 날짜를 자동으로 어제 기준으로 업데이트되어서 물어보도록 수정하기
     * */
 

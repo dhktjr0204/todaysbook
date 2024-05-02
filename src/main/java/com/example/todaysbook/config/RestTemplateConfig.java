@@ -10,4 +10,6 @@ public class RestTemplateConfig {
     public RestTemplate restTemplate() {
         return new RestTemplate();
     }
+
+    // 재시도 횟수를 정해서 retry
 }

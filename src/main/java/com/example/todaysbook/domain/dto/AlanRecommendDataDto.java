@@ -17,4 +17,8 @@ public class AlanRecommendDataDto {
 
     private LocalDateTime createdAt;
 
+    public AlanRecommendDataDto(String title) {
+        this.title = title;
+    }
+
 }
