@@ -46,7 +46,6 @@ document.addEventListener('DOMContentLoaded', function() {
         checkEmailAvailability(email) // 이메일 중복 확인 함수 호출
             .then(function(data) {
                 if (data.hasOwnProperty('available')) {
-                    console.log(data.available);
                     if (data.available) {
                         alert('사용 가능한 이메일입니다.');
                     } else {
@@ -72,7 +71,6 @@ document.addEventListener('DOMContentLoaded', function() {
         checkNicknameAvailability(nickname) // 닉네임 중복 확인 함수 호출
             .then(function(data) {
                 if (data.hasOwnProperty('available')) {
-                    console.log(data.available);
                     if (data.available) {
                         alert('사용 가능한 닉네임입니다.');
                     } else {
@@ -144,7 +142,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const cancelButton = document.querySelector('.cancel');
     cancelButton.addEventListener('click', () => {
-        window.location.href = '/index';
+        window.location.href = '/';
     });
 });
 

@@ -26,12 +26,13 @@ public class UserService {
             System.out.println("request is null");
             return null;
         }
-        System.out.println(request.getPassword());
+
         User user = User.builder()
                 .name(request.getName())
                 .nickName(request.getNickName())
                 .email(request.getEmail())
                 .password(encoder.encode(request.getPassword()))
+                .mileage("0")
                 .expire(null)
                 .address(request.getAddress())
                 .zipcode(request.getZipcode())

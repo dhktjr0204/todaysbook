@@ -20,10 +20,10 @@ public class ViewController {
     @GetMapping("/index")
     public String index(@AuthenticationPrincipal CustomUserDetails customUserDetails, Model model) {
 
-        String nickname = customUserDetails.getNickname();
-        System.out.println("nickname : " + nickname);
-
-        model.addAttribute("userName", nickname);
+        if(customUserDetails != null) {
+            String nickname = customUserDetails.getNickname();
+            model.addAttribute("userName", nickname);
+        }
 
         return "index";
     }
@@ -46,7 +46,7 @@ public class ViewController {
         return "user/login";
     }
 
-    @GetMapping("/registration")
+    @GetMapping("/signup")
     public String registration(Model model) {
 
         return "user/registration";

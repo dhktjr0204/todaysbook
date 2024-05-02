@@ -37,21 +37,22 @@ public class SecurityConfig {
         httpSecurity
             .authorizeHttpRequests(auth ->              // 인증, 인가 설정
                     auth.requestMatchers(
-                                    "/index",
-                                    "/search",
-                                    "/detail"
+                                    "/**"
                                     ).permitAll()
-                            .requestMatchers("/list",
-                                    "/registration",
+                            .requestMatchers(
+                                    "/signup",
+                                    "/book/**",
                                     "/mypage/**",
-                                    "/cart/list",
-                                    "/payment/**").hasAnyRole(Role.ROLE_COMMON_BRONZE.value(), Role.ROLE_COMMON_SILVER.value(), Role.ROLE_COMMON_GOLD.value(), Role.ROLE_COMMON_DIAMOND.value())
-                            .requestMatchers("/admin/**").hasRole(Role.ROLE_ADMIN.value())
+                                    "/cart/**",
+                                    "/payment/**",
+                                    "/alan/**"
+                            ).hasAnyAuthority("BRONZE", "SILVER", "GOLD", "DIAMOND")
+                            .requestMatchers("/admin/**").hasRole("ADMIN")
                             .anyRequest().permitAll()
             );
 
         httpSecurity
-                .csrf(AbstractHttpConfigurer::disable);
+                .csrf(auth -> auth.disable());
 
         httpSecurity
                 .formLogin((auth) -> auth.loginPage("/signup")

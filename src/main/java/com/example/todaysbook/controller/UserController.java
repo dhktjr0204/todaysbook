@@ -20,7 +20,6 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 @RestController
@@ -57,9 +56,6 @@ public class UserController {
                                    @RequestBody LoginRequestDto loginRequestDto){
         UserDetails userDetails = customUserDetailsService.loadUserByUsername(loginRequestDto.getEmail());
 
-        System.out.println("getEmail() : " + loginRequestDto.getEmail());
-        System.out.println("getPassword() : " + loginRequestDto.getPassword());
-
         // 인증 객체 생성
         Authentication authentication
                 = new UsernamePasswordAuthenticationToken(userDetails, loginRequestDto.getPassword(), new ArrayList<>());
@@ -90,11 +86,23 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-
     @GetMapping("/logout")
     public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response) {
-        new SecurityContextLogoutHandler().logout(request, response, SecurityContextHolder.getContext().getAuthentication());
-        return new ResponseEntity<>(HttpStatus.OK);
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate(); // 세션 무효화
+        }
+
+        // 클라이언트에게 쿠키 삭제 요청
+        Cookie cookie = new Cookie("JSESSIONID", null);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        cookie.setDomain("localhost");
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+
+        System.out.println("logout success");
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping ("/update/{id}")
@@ -119,5 +127,4 @@ public class UserController {
 
         return ResponseEntity.ok().build();
     }
-
 }

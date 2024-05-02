@@ -62,19 +62,19 @@ public class CartController {
 //    }
 
 
-    @PostMapping("/add")
-    public ResponseEntity<Long> addToCart(@RequestBody CartRequestDto requestDto) {
-        // 강제로 userId를 1로 설정하여 테스트
-        requestDto.setUserId(1L);
-
-        try {
-            long cartBookId = cartService.addToCart(requestDto);
-            return ResponseEntity.ok(cartBookId);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
+//    @PostMapping("/add")
+//    public ResponseEntity<Long> addToCart(@RequestBody CartRequestDto requestDto) {
+//        // 강제로 userId를 1로 설정하여 테스트
+//        requestDto.setUserId(1L);
+//
+//        try {
+//            long cartBookId = cartService.addToCart(requestDto);
+//            return ResponseEntity.ok(cartBookId);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+//        }
+//    }
 
 
     // 서버 측 컨트롤러
