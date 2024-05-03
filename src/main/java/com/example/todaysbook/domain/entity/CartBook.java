@@ -27,16 +27,16 @@ public class CartBook {
     private long count;
 
 
-    public static CartBook createCartBook(Cart cart,Book book,long bookCount){
+    public static CartBook createCartBook(Cart cart,Book book,long count){
         CartBook cartBook = new CartBook();
         cartBook.setCart(cart);
         cartBook.setBook(book);
-        cartBook.setCount(bookCount);
+        cartBook.setCount(count);
         return cartBook;
     }
 
-    public void addCount(long bookCount) {
-        this.count += bookCount;
+    public void addCount(long count) {
+        this.count += count;
     }
 
 }

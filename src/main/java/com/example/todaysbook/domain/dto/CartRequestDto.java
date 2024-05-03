@@ -15,7 +15,7 @@ public class CartRequestDto {
     private long userId;
     private long cartId;
     private long bookId;
-    private long bookCount;
+    private long count;
     private String author;
     private String publisher;
     private long price;

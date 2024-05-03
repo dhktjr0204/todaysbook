@@ -32,22 +32,7 @@ public class CartService {
     private final UserRepository userRepository;
 
 
-//
 
-    @Transactional
-    public void removeFromCart(long cartId, long bookId) {
-        Cart cart = cartRepository.findById(cartId).orElse(null);
-        if (cart != null) {
-            CartBook cartBook = cartBookRepository.findByCartIdAndBookId(cartId, bookId);
-            if (cartBook != null) {
-                long bookCount = cartBook.getCount();
-                long totalPrice = bookRepository.findById(bookId).map(book -> book.getPrice() * bookCount).orElse(0L);
-                cartBookRepository.delete(cartBook);
-//                cart.setTotalPrice(cart.getTotalPrice() - totalPrice);
-                cartRepository.save(cart);
-            }
-        }
-    }
 
     @Transactional
     public long addToCart(CartRequestDto requestDto) {
@@ -77,14 +62,14 @@ public class CartService {
 
         // 이미 존재하는 도서라면 수량만 증가
         if (savedCartBook != null) {
-            savedCartBook.addCount(requestDto.getBookCount());
+            savedCartBook.addCount(requestDto.getCount());
             cartBookRepository.save(savedCartBook);
             // 로그 추가
             System.out.println("Book quantity updated in cart.");
             return savedCartBook.getId();
         } else {
             // 장바구니에 새로운 도서 추가
-            CartBook cartBook = CartBook.createCartBook(cart, book, requestDto.getBookCount());
+            CartBook cartBook = CartBook.createCartBook(cart, book, requestDto.getCount());
             cartBookRepository.save(cartBook);
             // 로그 추가
             System.out.println("New book added to cart.");
