@@ -1,10 +1,12 @@
 package com.example.todaysbook.controller;
 
 
+import com.example.todaysbook.domain.dto.CustomUserDetails;
 import com.example.todaysbook.service.FavoriteBookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,11 +18,12 @@ public class FavoriteBookController {
     private final FavoriteBookService favoriteBookService;
 
     @GetMapping("/add")
-    public ResponseEntity<?> addFavoriteBook(@RequestParam(value = "bookId") long bookId) {
+    public ResponseEntity<?> addFavoriteBook(@RequestParam(value = "bookId") long bookId,
+                                             @AuthenticationPrincipal CustomUserDetails userDetails) {
 
         try {
 
-            long userId = 1l;
+            long userId = userDetails.getUserId();
 
             return ResponseEntity.ok(favoriteBookService.addFavoriteBook(userId, bookId));
         } catch (Exception e) {
@@ -30,11 +33,12 @@ public class FavoriteBookController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<?> deleteFavoriteBook(@RequestParam(value = "bookId") long bookId) {
+    public ResponseEntity<?> deleteFavoriteBook(@RequestParam(value = "bookId") long bookId,
+                                                @AuthenticationPrincipal CustomUserDetails userDetails) {
 
         try {
 
-            long userId = 1l;
+            long userId = userDetails.getUserId();
 
             return ResponseEntity.ok(favoriteBookService.deleteFavoriteBook(userId, bookId));
         } catch (Exception e) {

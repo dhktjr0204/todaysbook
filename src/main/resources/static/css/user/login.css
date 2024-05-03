@@ -44,7 +44,6 @@
 
 .button {
 
-    width: 80px;
     background-color: #D54DFE;
 
     border-radius: 5px;
@@ -56,6 +55,7 @@
     display: flex;
     justify-content: center;
     gap: 10px;
+    margin-top: 50px;
 }
 
 .login {

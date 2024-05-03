@@ -17,7 +17,7 @@ public class ViewController {
 
     private final CartService cartService;
 
-    @GetMapping("/index")
+    /*@GetMapping("/index")
     public String index(@AuthenticationPrincipal CustomUserDetails customUserDetails, Model model) {
 
         if(customUserDetails != null) {
@@ -26,7 +26,7 @@ public class ViewController {
         }
 
         return "index";
-    }
+    }*/
 
     @GetMapping("/search")
     public String search(Model model) {
@@ -74,12 +74,6 @@ public class ViewController {
     public String mileage(Model model) {
 
         return "user/mypage/mileage";
-    }
-
-    @GetMapping("/mypage/favoritebook")
-    public String favoritebook(Model model) {
-
-        return "user/mypage/favorite-book";
     }
 
 //    @GetMapping("/mypage/my_recommend_list")

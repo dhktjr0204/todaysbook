@@ -16,27 +16,26 @@
             <p class="mypage-title">내가 찜한 책</p>
             <div class="favorite-book-list">
                 <ul class="row">
-                    <li th:each="num : ${#numbers.sequence(1,9)}">
+                    <li th:each="book : ${dto}">
                         <figure>
-                            <a th:href="@{/detail}">
-                                <img class="book-img" th:src="@{'/images/book/' + ${num} + '.png'}" th:alt="'책 이름'">
+                            <a th:href="@{/book/detail/{id}(id=${book.id})}">
+                                <img class="book-img" th:src="${book.imagePath}" th:alt="${book.title}">
                                 <figcaption class="overlay">
-                                    <p class="book-title" th:text="'마흔에 읽는 쇼펜하우어'"></p>
-                                    <p class="author" th:text="'저자'"></p>
-                                    <p class="price" th:text="'15000'"></p>
+                                    <p class="book-title" th:text="${book.title}"></p>
+                                    <p class="author" th:text="${book.author}"></p>
+                                    <p class="price" th:text="${book.price}"></p>
                                 </figcaption>
                             </a>
                         </figure>
                     </li>
                 </ul>
             </div>
-            <ul class="page-button-group">
-                <li th:each="num : ${#numbers.sequence(1,5)}">
-                    <button th:text="${num}"></button>
-                </li>
-            </ul>
+        </section>
+        <section>
+            <div th:replace="~{fragments/page.html}"></div>
         </section>
     </div>
 </main>
 <div th:replace="~{fragments/footer.html}"></div>
+<script th:src="@{/js/mypage/page.js}"></script>
 </html>

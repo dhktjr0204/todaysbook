@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
         })
             .then(response => {
                 if (response.ok) {
-                    window.location.href = '/index';
+                    window.location.href = '/';
                 } else if (response.status === 401) {
                     alert("이메일 또는 비밀번호를 다시 확인해주세요.");
                     window.location.href = '/login';

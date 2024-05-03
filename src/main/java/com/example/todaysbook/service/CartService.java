@@ -40,7 +40,7 @@ public class CartService {
         if (cart != null) {
             CartBook cartBook = cartBookRepository.findByCartIdAndBookId(cartId, bookId);
             if (cartBook != null) {
-                long bookCount = cartBook.getBookCount();
+                long bookCount = cartBook.getCount();
                 long totalPrice = bookRepository.findById(bookId).map(book -> book.getPrice() * bookCount).orElse(0L);
                 cartBookRepository.delete(cartBook);
 //                cart.setTotalPrice(cart.getTotalPrice() - totalPrice);
@@ -109,7 +109,7 @@ public class CartService {
     public int calculateTotalPrice(List<CartBook> cartBooks) {
         int totalPrice = 0;
         for (CartBook cartBook : cartBooks) {
-            totalPrice += cartBook.getBook().getPrice() * cartBook.getBookCount();
+            totalPrice += cartBook.getBook().getPrice() * cartBook.getCount();
         }
         return totalPrice;
     }
