@@ -1,6 +1,7 @@
 package com.example.todaysbook.controller;
 
 import com.example.todaysbook.domain.dto.CartRequestDto;
+import com.example.todaysbook.domain.dto.CustomUserDetails;
 import com.example.todaysbook.domain.entity.Book;
 import com.example.todaysbook.domain.entity.Cart;
 
@@ -12,6 +13,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -30,9 +32,12 @@ public class CartController {
     private final CartService cartService;
 
     @GetMapping("/list")
-    public String showMyCartList(Model model) {
-        // userId가 1인 사용자의 장바구니 목록 조회
-        List<CartBook> cartBooks = cartService.findCartBooksByUserId(1L);
+    public String showMyCartList(Model model, @AuthenticationPrincipal CustomUserDetails userDetails) {
+        // userId로 사용자의 장바구니 목록 조회
+        //0503수정
+        long userId = userDetails.getUserId();
+        List<CartBook> cartBooks = cartService.findCartBooksByUserId(userId);
+
         // 총 주문 금액 및 적립 마일리지 계산
         int totalPrice = cartService.calculateTotalPrice(cartBooks);
         int totalMileage = cartService.calculateTotalMileage(cartBooks);
@@ -46,12 +51,14 @@ public class CartController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Long> addToCart(@RequestBody CartRequestDto requestDto) {
-        // 강제로 userId를 1로 설정하여 테스트
-        requestDto.setUserId(1L);
+    public ResponseEntity<Long> addToCart(@RequestBody CartRequestDto requestDto,@AuthenticationPrincipal CustomUserDetails userDetails) {
+        // userId로 수정실험
+        //0503수정
+        long userId = userDetails.getUserId();
+        requestDto.setUserId(userId);
 
         try {
-            long cartBookId = cartService.addToCart(requestDto);
+            long cartBookId = cartService.addToCart(requestDto,userDetails);
             return ResponseEntity.ok(cartBookId);
         } catch (Exception e) {
             e.printStackTrace();
@@ -64,6 +71,30 @@ public class CartController {
     public ResponseEntity<?> deleteSelectedCartItems(@RequestBody List<Long> selectedIds) {
         try {
             cartService.deleteSelectedCartItems(selectedIds);
+            return ResponseEntity.ok().body(Map.of("success", true));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("success", false));
+        }
+    }
+
+////0503~ 구현중
+
+    @PutMapping("/increase-quantity/{cartBookId}")
+    public ResponseEntity<?> increaseQuantity(@PathVariable Long cartBookId) {
+        try {
+            cartService.increaseCartBookQuantity(cartBookId);
+            return ResponseEntity.ok().body(Map.of("success", true));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("success", false));
+        }
+    }
+
+    @PutMapping("/decrease-quantity/{cartBookId}")
+    public ResponseEntity<?> decreaseQuantity(@PathVariable Long cartBookId) {
+        try {
+            cartService.decreaseCartBookQuantity(cartBookId);
             return ResponseEntity.ok().body(Map.of("success", true));
         } catch (Exception e) {
             e.printStackTrace();

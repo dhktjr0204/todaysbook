@@ -97,3 +97,59 @@ function deleteSelectedCartItemsIfNotChecked() {
     // 모든 아이템이 선택되었을 경우에는 바로 주문 페이지로 이동
     location.href = '/payment/info';
 }
+
+
+
+
+////수량 증가 감소
+
+function increaseQuantity(cartBookId) {
+    fetch('/cart/increase-quantity/' + cartBookId, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                window.location.reload(); // 페이지 새로고침
+            } else {
+                alert('수량 증가 중 오류가 발생했습니다.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('서버 오류가 발생했습니다.');
+        });
+}
+
+// 감소 버튼 클릭 시
+function decreaseQuantity(cartBookId) {
+    fetch('/cart/decrease-quantity/' + cartBookId, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                window.location.reload(); // 페이지 새로고침
+            } else {
+                alert('수량 감소 중 오류가 발생했습니다.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('서버 오류가 발생했습니다.');
+        });
+}
+
+
+
+
+
+
+
+
