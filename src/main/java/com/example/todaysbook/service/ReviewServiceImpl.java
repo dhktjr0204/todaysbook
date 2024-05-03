@@ -1,9 +1,13 @@
 package com.example.todaysbook.service;
 
+import com.example.todaysbook.domain.dto.MyReview;
 import com.example.todaysbook.domain.dto.Review;
 import com.example.todaysbook.domain.dto.ReviewRequestDto;
 import com.example.todaysbook.repository.ReviewMapper;
+import com.example.todaysbook.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,11 +17,17 @@ import java.util.List;
 public class ReviewServiceImpl implements ReviewService {
 
     private final ReviewMapper reviewMapper;
-
+    private final ReviewRepository reviewRepository;
     @Override
     public List<Review> getReviews(long bookId, long userId, String orderBy) {
 
         return reviewMapper.getReviews(bookId, userId, orderBy);
+    }
+
+    @Override
+    public Page<MyReview> getMyReviews(long userId, Pageable pageable) {
+
+        return reviewRepository.findReviewsByUserId(userId, pageable);
     }
 
     @Override

@@ -28,6 +28,10 @@ public class CustomUserDetails implements UserDetails {
         return collection;
     }
 
+    public long getUserId() {
+
+        return user.getId();
+    }
     public String getNickname() {
         return user.getNickName();
     }

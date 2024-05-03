@@ -52,6 +52,10 @@ public class SecurityConfig {
             );
 
         httpSecurity
+                .formLogin(auth -> auth.loginPage("/login")
+                        .defaultSuccessUrl("/",true))
+                .logout(auth -> auth.logoutSuccessUrl("/login")
+                        .invalidateHttpSession(true))
                 .csrf(auth -> auth.disable());
 
         httpSecurity

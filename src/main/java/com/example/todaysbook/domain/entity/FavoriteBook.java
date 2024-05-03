@@ -13,13 +13,11 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Builder
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-public class Review {
+public class FavoriteBook {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private long bookId;
     private long userId;
-    private String content;
-    private long score;
+    private long bookId;
 }
