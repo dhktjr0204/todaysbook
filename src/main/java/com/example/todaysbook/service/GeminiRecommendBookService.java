@@ -1,13 +1,24 @@
 package com.example.todaysbook.service;
-
+import com.example.todaysbook.domain.dto.BookDto;
 import com.example.todaysbook.domain.dto.GeminiRecommendApiRequest;
 import com.example.todaysbook.domain.dto.GeminiRecommendApiResponse;
+import com.example.todaysbook.domain.entity.Book;
+import com.example.todaysbook.domain.entity.GeminiRecommendBook;
+import com.example.todaysbook.repository.BookRepository;
+import com.example.todaysbook.repository.GeminiRecommendBookRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +43,8 @@ public class GeminiRecommendBookService { // 설명: GeminiService 클래스는 
     @Value("${gemini.generationConfig.temperature}")
     private double temperature;
 
+    private final BookRepository bookRepository;
+    private final GeminiRecommendBookRepository geminiRecommendBookRepository;
 
     public String getContents(String prompt) {
         String requestUrl = apiUrl + "?key=" + geminiApiKey;
@@ -41,6 +54,53 @@ public class GeminiRecommendBookService { // 설명: GeminiService 클래스는 
 
         String message = response.getCandidates().get(0).getContent().getParts().get(0).getText().toString();
 
+        System.out.println("-----------------응답 message-----------------\n" + message);
+
+        saveGeminiRecommendBook(message);
         return message;
     }
+
+    public void saveGeminiRecommendBook(String message) {
+        // 책 제목 추출
+        List<String> bookTitles = extractBookTitles(message);
+
+
+        System.out.println("-----------------책 제목 DB 저장 시작-----------------");
+        for (String bookTitle : bookTitles) {
+            // 책 제목으로 DB 검색
+            Optional<Book> bookOptional = bookRepository.findByTitle(bookTitle);
+            long bookId;
+            if (bookOptional.isPresent()) {
+                // DB에 책이 있으면 해당 bookId 가져오기
+                bookId = bookOptional.get().getId();
+
+                System.out.println(bookTitle + "  : bookId(" + bookId + ") GeminiRecommendBook에 저장 완료");
+
+                // 가져온 bookId를 GeminiRecommendBook 엔티티에 저장
+                GeminiRecommendBook geminiRecommendBook = GeminiRecommendBook.builder()
+                        .bookId(bookId) // variable 'bookId' is not initialized
+                        .date(LocalDateTime.now())
+                        .build();
+                geminiRecommendBookRepository.save(geminiRecommendBook);
+            } else {
+                // DB에 책이 없으면 외부 API에서 데이터 가져와서 저장
+                System.out.println(bookTitle + ":  해당 책이 DB에 없습니다. 외부 API에서 데이터를 book에 저장후 해당 Bookid를 가져옵니다.***");
+                // 가져온 bookId를 GeminiRecommendBook 엔티티에 저장
+            }
+
+        }
+
+        System.out.println("가져온 Bookid를 GeminiRecommendBook에 모두 저장 완료.");
+    }
+
+    private List<String> extractBookTitles(String message) {
+        System.out.println("---------------책 제목 추출 시작---------------");
+        List<String> bookTitles = Arrays.stream(message.split("\n"))
+                .map(line -> line.replaceAll("^\\d+\\.\\s*", "").trim())
+                .peek(System.out::println)
+                .collect(Collectors.toList());
+        System.out.println("책 제목 추출 완료");
+        return bookTitles;
+    }
+
 }
