@@ -149,9 +149,11 @@ public class ViewController {
 //    }
 
     @GetMapping("/payment/info")
-    public String paymentInfo(Model model) {
-        // userId가 1인 사용자의 장바구니 목록 조회
-        List<CartBook> cartBooks = cartService.findCartBooksByUserId(1L);
+    public String paymentInfo(Model model,@AuthenticationPrincipal CustomUserDetails userDetails) {
+        // userId로 사용자의 장바구니 목록 조회
+        //0503수정
+        long userId = userDetails.getUserId();
+        List<CartBook> cartBooks = cartService.findCartBooksByUserId(userId);
         int totalPrice = cartService.calculateTotalPrice(cartBooks); // 총 상품 가격을 계산
         model.addAttribute("totalPrice", totalPrice); // 모델에 totalPrice를 추가하여 뷰로 전달
 
