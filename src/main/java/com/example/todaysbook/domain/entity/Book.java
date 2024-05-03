@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
@@ -24,7 +25,7 @@ public class Book {
     private long price;
     private String author;
     private String publisher;
-    private Timestamp publishDate;
+    private LocalDateTime publishDate;
     private long stock;
     private String isbn;
     private String description;

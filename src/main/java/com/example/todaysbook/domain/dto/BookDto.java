@@ -24,4 +24,5 @@ public class BookDto {
     private long stock;
     private String isbn;
     private String description;
+    private String imagePath;
 }

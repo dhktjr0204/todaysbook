@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -101,6 +102,25 @@ public class GeminiRecommendBookService { // 설명: GeminiService 클래스는 
                 .collect(Collectors.toList());
         System.out.println("책 제목 추출 완료");
         return bookTitles;
+    }
+
+
+    // GeminiRecommendBook 목록에서 date가 오늘에 해당하는 booid를 이용해 해당 book을 반환하는 메소드
+    public List<BookDto> getTodayRecommendBooks() {
+        LocalDate today = LocalDate.now();
+
+        List<GeminiRecommendBook> todayRecommendBooks = geminiRecommendBookRepository.findByDateBetween(
+                today.atStartOfDay(), today.plusDays(1).atStartOfDay());
+
+        List<Book> books = todayRecommendBooks.stream()
+                .map(recommendBook -> bookRepository.findById(recommendBook.getBookId()))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.toList());
+
+        return books.stream()
+                .map(book -> new BookDto(book.getId(), book.getTitle(), book.getAuthor(), book.getPrice(), book.getImagePath(), book.getPublisher(), book.getPublishDate(), book.getStock(), book.getIsbn(), book.getDescription(), book.getImagePath()))
+                .collect(Collectors.toList());
     }
 
 }
