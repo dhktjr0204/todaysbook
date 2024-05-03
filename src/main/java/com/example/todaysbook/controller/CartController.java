@@ -29,8 +29,6 @@ public class CartController {
 
     private final CartService cartService;
 
-
-
     @GetMapping("/list")
     public String showMyCartList(Model model) {
         // userId가 1인 사용자의 장바구니 목록 조회
@@ -47,21 +45,6 @@ public class CartController {
         return "cart/list"; // 템플릿 이름 리턴
     }
 
-    // 총 주문 금액 계산 메소드
-    /*private int calculateTotalPrice(List<CartBook> cartBooks) {
-        int totalPrice = 0;
-        for (CartBook cartBook : cartBooks) {
-            totalPrice += cartBook.getBook().getPrice() * cartBook.getBookCount();
-        }
-        return totalPrice;
-    }
-
-    // 총 적립 마일리지 계산 메소드 (임시)
-    private int calculateTotalMileage(List<CartBook> cartBooks) {
-        return 0; // 일단은 임시로 0으로 설정
-    }*/
-
-
     @PostMapping("/add")
     public ResponseEntity<Long> addToCart(@RequestBody CartRequestDto requestDto) {
         // 강제로 userId를 1로 설정하여 테스트
@@ -76,9 +59,8 @@ public class CartController {
         }
     }
 
-
     // 서버 측 컨트롤러
-    @PostMapping("/delete-selected")
+    @PostMapping("/delete-unselected")
     public ResponseEntity<?> deleteSelectedCartItems(@RequestBody List<Long> selectedIds) {
         try {
             cartService.deleteSelectedCartItems(selectedIds);
@@ -88,8 +70,4 @@ public class CartController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("success", false));
         }
     }
-
 }
-
-
-
