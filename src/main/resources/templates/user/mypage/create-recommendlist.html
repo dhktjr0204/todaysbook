@@ -13,7 +13,7 @@
 <body>
 <div th:replace="~{fragments/header.html}"></div>
 <main th:fragment="content">
-    <input class="user-id" type="hidden" th:name="userId" th:value="${login_user_id}"/>
+    <input class="user-id" type="hidden" th:name="userId" th:value="${loginUserId}"/>
     <div class="index-wrap">
         <article>
             <form class="search-form" action="/book/search/list" onsubmit="return listSubmitForm(event)">

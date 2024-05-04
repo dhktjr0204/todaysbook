@@ -9,6 +9,7 @@ import com.example.todaysbook.domain.dto.RecommendListDetailDto;
 import com.example.todaysbook.domain.dto.RecommendListDto;
 import com.example.todaysbook.domain.entity.UserRecommendBook;
 import com.example.todaysbook.domain.entity.UserRecommendList;
+import com.example.todaysbook.exception.user.UserValidateException;
 import com.example.todaysbook.repository.RecommendListMapper;
 import com.example.todaysbook.repository.UserRecommendBookRepository;
 import com.example.todaysbook.repository.UserRecommendListRepository;
@@ -93,8 +94,9 @@ public class RecommendServiceImpl implements RecommendListService {
         List<UserRecommendBook> userRecommendBooks = userRecommendBookRepository.findByUserRecommendListId(listId)
                 .orElseThrow(() -> new IllegalArgumentException("리스트에 해당되는 책을 찾을 수 없습니다."));
 
+        //list 만든 사용자 id와 응답으로 받은 사용자 id(현재 로그인된 유저)가 다를 때
         if(userRecommendList.getUserId()!=request.getUserId()){
-            //예외처리
+            throw new UserValidateException();
         }
 
         //리스트에 저장된 책들 전부 삭제

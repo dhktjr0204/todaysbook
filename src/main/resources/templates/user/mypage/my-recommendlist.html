@@ -24,10 +24,10 @@
                 <div th:replace="~{fragments/recommend-list-body.html}"></div>
                 <div class="recommend-list-bottom">
                     <button class="update-button" th:text="'수정'"
-                            th:onclick="clickUpdateRecommendListButton([[${recommendList.listId}]],[[${login_user_id}]])"
+                            th:onclick="clickUpdateRecommendListButton([[${recommendList.listId}]])"
                     ></button>
                     <button class="delete-button" th:text="'삭제'"
-                            th:onclick="clickDeleteRecommendListButton([[${recommendList.listId}]],[[${login_user_id}]])"></button>
+                            th:onclick="clickDeleteRecommendListButton([[${recommendList.listId}]],[[${recommendList.userId}]])"></button>
                 </div>
             </article>
         </section>
