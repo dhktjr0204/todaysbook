@@ -42,6 +42,7 @@ public class SearchServiceImpl implements SearchService{
         }
 
         List<RecommendListDetailWithBookMarkDto> resultList = new ArrayList<>();
+
         for(RecommendListWithBookMarkDto list:searchResult){
             List<BookDto> bookList = recommendListMapper.getBookDetailByListId(list.getListId());
             RecommendListDetailWithBookMarkDto recommendListDetailDto = convertListDetailDto(list, bookList);

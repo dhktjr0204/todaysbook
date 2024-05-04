@@ -32,20 +32,29 @@ public class MypageController {
     private final FavoriteBookService favoriteBookService;
 
     @GetMapping("/my_recommend_list")
-    public String myRecommendList(Model model) {
-        long userId = 1;
+    public String myRecommendList(@AuthenticationPrincipal CustomUserDetails userDetails, Model model) {
+
+        long userId = 0;
+
+        if(userDetails != null) {
+            userId = userDetails.getUserId();
+        }
 
         List<RecommendListDetailDto> myRecommendListAll = recommendListService.getMyRecommendListAll(userId);
 
-        model.addAttribute("login_user_id", userId);
         model.addAttribute("recommendLists", myRecommendListAll);
 
         return "user/mypage/my-recommendlist";
     }
 
     @GetMapping("/my_book_mark_list")
-    public String myBookMarkList(Model model){
-        long userId=1;
+    public String myBookMarkList(@AuthenticationPrincipal CustomUserDetails userDetails, Model model){
+
+        long userId = 0;
+
+        if(userDetails != null) {
+            userId = userDetails.getUserId();
+        }
 
         List<RecommendListDetailDto> myBookMarkListAll = recommendListService.getMyBookMarkListAll(userId);
 

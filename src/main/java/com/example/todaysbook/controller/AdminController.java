@@ -79,7 +79,6 @@ public class AdminController {
         return ResponseEntity.ok("삭제되었습니다.");
     }
 
-
     //수량 관리
     @GetMapping("/stocklist")
     public String allStockList(@PageableDefault(page = 0, size = 5, sort="id", direction = Sort.Direction.ASC) Pageable pageable,
