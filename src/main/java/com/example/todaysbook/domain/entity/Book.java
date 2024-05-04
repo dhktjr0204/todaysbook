@@ -18,13 +18,13 @@ public class Book {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private String title;
-    private long price;
+    private Long price;
     private String author;
     private String publisher;
     private LocalDateTime publishDate;
-    private long stock;
+    private Long stock;
     private String isbn;
     private String description;
     private String imagePath;
