@@ -8,6 +8,7 @@ import com.example.todaysbook.service.FavoriteBookService;
 import com.example.todaysbook.service.RecommendListService;
 import com.example.todaysbook.service.ReviewService;
 import com.example.todaysbook.util.Pagination;
+import com.example.todaysbook.util.UserChecker;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -59,7 +60,7 @@ public class MypageController {
                                @AuthenticationPrincipal CustomUserDetails userDetails,
                                Model model) {
 
-        long userId = userDetails.getUserId();
+        long userId = UserChecker.getUserId(userDetails);
 
         Page<MyReview> reviews = reviewService.getMyReviews(userId, pageable);
 
@@ -84,7 +85,7 @@ public class MypageController {
                                @AuthenticationPrincipal CustomUserDetails userDetails,
                                Model model) {
 
-        long userId = userDetails.getUserId();
+        long userId = UserChecker.getUserId(userDetails);
 
         Page<FavoriteBookDTO> favoriteBooks = favoriteBookService.getFavoriteBooks(userId, pageable);
         int startPage = 0;

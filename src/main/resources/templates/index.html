@@ -37,24 +37,36 @@
             </a>
         </article>
         <section class="recommend-list-section">
-            <article>
+            <article th:unless="${favoriteBooks.isEmpty()}">
                 <div class="recommend-list-header">
-                    <p class="recommend-list-title" th:text="'내가 찜한 책'"></p>
-                    <p class="more-button" th:text="'더보기'"></p>
+                    <div class="recommend-list-title-container">
+                        <p class="recommend-list-title"
+                           th:text="'내가 찜한 책'"></p>
+                    </div>
+                    <a th:href="'/mypage/favoritebook'">더보기</a>
                 </div>
-                <ul class="recommend-list">
-                    <li>
-                        &lt;
-                    </li>
-                    <li th:each="num : ${#numbers.sequence(1,5)}">
-                        <a th:href="'/book/detail/'+${num}">
-                            <img th:src="@{'/images/book/' + ${num} + '.png'}">
-                        </a>
-                    </li>
-                    <li>
-                        &gt;
-                    </li>
-                </ul>
+                <div class="recommend-list-body">
+                    <button th:class="${favoriteBooks.size()}>5 ? 'prev-btn' : 'prev-btn-hidden'" th:onclick="prevSlide('favorite',this)">&lt;</button>
+                    <div class="slider-container">
+                        <ul class="recommend-list">
+                            <li class="book-item" th:each="book : ${favoriteBooks}" th:value="${book.id}">
+                                <figure class="book-info">
+                                    <a th:href="'/book/detail/'+${book.id}">
+                                        <img th:src="${book.imagePath}" th:alt="${book.title}">
+                                        <figcaption class="overlay">
+                                            <p class="book-title" th:if="${book.title.length() > 25}" th:text="${#strings.substring(book.title, 0, 25)} + '...'"></p>
+                                            <p class="book-title" th:unless="${book.title.length() > 25}" th:text="${book.title}"></p>
+                                            <p class="author" th:if="${book.author.length() > 25}" th:text="${#strings.substring(book.author, 0, 25)} + '...'"></p>
+                                            <p class="author" th:unless="${book.author.length() > 25}" th:text="${book.author}"></p>
+                                            <p class="price" th:text="${book.price}"></p>
+                                        </figcaption>
+                                    </a>
+                                </figure>
+                            </li>
+                        </ul>
+                    </div>
+                    <button th:if="${favoriteBooks.size()}>5" class="next-btn" th:onclick="nextSlide('favorite',this)">&gt;</button>
+                </div>
             </article>
             <article>
                 <div class="recommend-list-header">

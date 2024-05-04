@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class FavoriteBookServiceImpl implements FavoriteBookService {
@@ -18,6 +20,12 @@ public class FavoriteBookServiceImpl implements FavoriteBookService {
     public Page<FavoriteBookDTO> getFavoriteBooks(long userId, Pageable pageable) {
 
         return favoriteBookRepository.findFavoriteBooksByUserId(userId, pageable);
+    }
+
+    @Override
+    public List<FavoriteBookDTO> getFavoriteBooks(long userId) {
+
+        return favoriteBookRepository.findFavoriteBooksByUserId(userId);
     }
 
     @Override
