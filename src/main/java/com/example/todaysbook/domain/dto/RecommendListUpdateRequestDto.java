@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class RecommendListUpdateRequestDto {
-    private Long listId;
+    private Long userId;
     private String title;
     private List<Long> bookIdList;
 }

@@ -15,6 +15,5 @@ import java.util.List;
 @Builder
 public class RecommendListCreateRequestDto {
     private String title;
-    private long userId;
     private List<Long> bookIdList;
 }

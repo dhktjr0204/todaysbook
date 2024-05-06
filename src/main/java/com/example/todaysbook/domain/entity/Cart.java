@@ -1,23 +1,28 @@
 package com.example.todaysbook.domain.entity;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Entity
 public class Cart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
     private long userId;
-    private long bookId;
-    private long bookCount;
+
+
+    public static Cart createCart(User user){
+        Cart cart = new Cart();
+        cart.setUserId(user.getId());
+        return cart;
+
+    }
+
 }

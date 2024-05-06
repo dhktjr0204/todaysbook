@@ -17,11 +17,11 @@ public class BookDto {
     private Long id;
     private String title;
     private String author;
-    private long price;
+    private Long price;
     private String image;
     private String publisher;
     private LocalDateTime publishDate;
-    private long stock;
+    private Long stock;
     private String isbn;
     private String description;
     private String imagePath;
