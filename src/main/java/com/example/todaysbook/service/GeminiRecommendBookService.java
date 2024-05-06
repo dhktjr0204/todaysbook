@@ -100,7 +100,6 @@ public class GeminiRecommendBookService { // 설명: GeminiService 클래스는 
                 .map(line -> line.replaceAll("^\\d+\\.\\s*", "").trim())
                 .peek(System.out::println)
                 .collect(Collectors.toList());
-        System.out.println("책 제목 추출 완료");
         return bookTitles;
     }
 
