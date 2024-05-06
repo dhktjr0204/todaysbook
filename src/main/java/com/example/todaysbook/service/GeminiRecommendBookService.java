@@ -90,8 +90,6 @@ public class GeminiRecommendBookService { // 설명: GeminiService 클래스는 
             }
 
         }
-
-        System.out.println("가져온 Bookid를 GeminiRecommendBook에 모두 저장 완료.");
     }
 
     private List<String> extractBookTitles(String message) {
@@ -108,15 +106,21 @@ public class GeminiRecommendBookService { // 설명: GeminiService 클래스는 
     public List<BookDto> getTodayRecommendBooks() {
         LocalDate today = LocalDate.now();
 
+        // 오늘 날짜에 해당하는 GeminiRecommendBook 목록 가져오기
         List<GeminiRecommendBook> todayRecommendBooks = geminiRecommendBookRepository.findByDateBetween(
                 today.atStartOfDay(), today.plusDays(1).atStartOfDay());
 
+
+        // 오늘 날짜에 해당하는 bookId 목록 가져오기
         List<Book> books = todayRecommendBooks.stream()
-                .map(recommendBook -> bookRepository.findById(recommendBook.getBookId()))
+                .map(GeminiRecommendBook::getBookId)
+                .distinct()
+                .map(bookRepository::findById)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
-                .collect(Collectors.toList());
+                .toList();
 
+        // book 목록을 BookDto 목록으로 변환
         return books.stream()
                 .map(book -> new BookDto(book.getId(), book.getTitle(), book.getAuthor(), book.getPrice(), book.getImagePath(), book.getPublisher(), book.getPublishDate(), book.getStock(), book.getIsbn(), book.getDescription(), book.getImagePath()))
                 .collect(Collectors.toList());
