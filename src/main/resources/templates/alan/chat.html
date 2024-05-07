@@ -10,13 +10,11 @@
 </th:block>
 <div th:replace="~{fragments/header.html}"></div>
 <main th:fragment="content">
+
+
     <div class="alan-recommend-wrap">
         <section class="chatting-read-area">
             <p class="title">앨런에게 책 추천 받기</p>
-            <div class="alan-chat">
-                <img th:src="@{/images/alan_chat.png}">
-                <textarea class="read-text" readonly></textarea>
-            </div>
             <div class="user-chat">
                 <textarea class="read-text" readonly></textarea>
                 <img th:src="@{/images/user_chat.png}">
@@ -25,25 +23,15 @@
                 <img th:src="@{/images/alan_chat.png}">
                 <textarea class="read-text" readonly></textarea>
             </div>
-            <div class="user-chat">
-                <textarea class="read-text" readonly></textarea>
-                <img th:src="@{/images/user_chat.png}">
-            </div>
-            <div class="alan-chat">
-                <img th:src="@{/images/alan_chat.png}">
-                <textarea class="read-text" readonly></textarea>
-            </div>
-            <div class="user-chat">
-                <textarea class="read-text" readonly></textarea>
-                <img th:src="@{/images/user_chat.png}">
-            </div>
+
         </section>
         <section class="chatting-write-area">
-            <textarea class="write-text"
+            <textarea class="write-text" type="text" id="questionInput"
                       placeholder="앨런에게 책을 추천 받아보세요"></textarea>
-            <button class="submit">입력</button>
+            <button class="submit" onclick="sendQuestion()">입력</button>
         </section>
     </div>
 </main>
 <div th:replace="~{fragments/footer.html}"></div>
+<script th:src="@{/js/alan/alan-chat.js}"></script>
 </html>
