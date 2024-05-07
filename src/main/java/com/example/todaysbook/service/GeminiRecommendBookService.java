@@ -7,14 +7,26 @@ import com.example.todaysbook.domain.entity.GeminiRecommendBook;
 import com.example.todaysbook.repository.BookRepository;
 import com.example.todaysbook.repository.GeminiRecommendBookRepository;
 import lombok.RequiredArgsConstructor;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -47,7 +59,7 @@ public class GeminiRecommendBookService { // 설명: GeminiService 클래스는 
     private final BookRepository bookRepository;
     private final GeminiRecommendBookRepository geminiRecommendBookRepository;
 
-    public String getContents(String prompt) {
+    public String getContents(String prompt) throws UnsupportedEncodingException {
         String requestUrl = apiUrl + "?key=" + geminiApiKey;
 
         GeminiRecommendApiRequest request = new GeminiRecommendApiRequest(prompt, candidateCount, maxOutputTokens, temperature);
@@ -61,7 +73,7 @@ public class GeminiRecommendBookService { // 설명: GeminiService 클래스는 
         return message;
     }
 
-    public void saveGeminiRecommendBook(String message) {
+    public void saveGeminiRecommendBook(String message) throws UnsupportedEncodingException {
         // 책 제목 추출
         List<String> bookTitles = extractBookTitles(message);
 
@@ -86,11 +98,51 @@ public class GeminiRecommendBookService { // 설명: GeminiService 클래스는 
             } else {
                 // DB에 책이 없으면 외부 API에서 데이터 가져와서 저장
                 System.out.println(bookTitle + ":  해당 책이 DB에 없습니다. 외부 API에서 데이터를 book에 저장후 해당 Bookid를 가져옵니다.***");
-                // 가져온 bookId를 GeminiRecommendBook 엔티티에 저장
+
+                String encodedTitle = URLEncoder.encode(bookTitle, "UTF-8");
+                String apiUrl = "http://www.aladin.co.kr/ttb/api/ItemSearch.aspx?Query=" + encodedTitle + "&ttbkey=ttbcorsair171312001&MaxResults=1&start=1&SearchTarget=Book&Version=20131101&output=js&QueryType=Title&sort=Accuracy";
+                // 외부 API 호출 (알라딘 API 예시)
+
+                // API 호출 결과를 파싱하여 BookDto 객체에 저장
+                BookDto bookDto = parseBookData(apiUrl);
+
+                if (bookDto != null) {
+                    Optional<Book> existingBook = bookRepository.findByIsbn(bookDto.getIsbn());
+                    if (existingBook.isPresent()) {
+                        bookId = existingBook.get().getId();
+                        System.out.println(bookTitle + " : 이미 존재하는 책입니다. bookId(" + bookId + ")");
+                    } else {
+                        // BookDto를 Book 엔티티로 변환하여 DB에 저장
+                        Book book = Book.builder()
+                                .title(bookDto.getTitle())
+                                .price(bookDto.getPrice())
+                                .author(bookDto.getAuthor())
+                                .publisher(bookDto.getPublisher())
+                                .publishDate(bookDto.getPublishDate())
+                                .stock(bookDto.getStock())
+                                .isbn(bookDto.getIsbn())
+                                .description(bookDto.getDescription())
+                                .imagePath(bookDto.getImagePath())
+                                .build();
+                        Book savedBook = bookRepository.save(book);
+                        System.out.println(bookTitle + " : 책 정보를 DB에 저장했습니다. bookId(" + savedBook.getId() + ")");
+                        // 저장된 Book의 id를 가져와서 GeminiRecommendBook 엔티티에 저장
+                        bookId = savedBook.getId();
+                        GeminiRecommendBook geminiRecommendBook = GeminiRecommendBook.builder()
+                                .bookId(bookId)
+                                .date(LocalDateTime.now())
+                                .build();
+                        geminiRecommendBookRepository.save(geminiRecommendBook);
+                    }
+                } else {
+                    System.out.println("API 호출 결과가 없습니다.");
+                }
             }
 
         }
     }
+
+
 
     private List<String> extractBookTitles(String message) {
         System.out.println("---------------책 제목 추출 시작---------------");
@@ -126,4 +178,51 @@ public class GeminiRecommendBookService { // 설명: GeminiService 클래스는 
                 .collect(Collectors.toList());
     }
 
+
+    // 외부 API 호출 결과를 파싱하여 BookDto 객체로 변환하는 메소드
+    private BookDto parseBookData(String apiUrl) {
+        try {
+            // API 호출
+            URL url = new URL(apiUrl);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Content-Type", "application/json");
+
+            // 응답 읽기
+            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            String line;
+            StringBuilder result = new StringBuilder();
+            while ((line = br.readLine()) != null) {
+                result.append(line);
+            }
+            br.close();
+
+            // JSON 파싱
+            JSONObject json = new JSONObject(result.toString());
+            JSONArray items = json.getJSONArray("item");
+            if (items.length() > 0) {
+                JSONObject item = items.getJSONObject(0);
+
+                // BookDto 객체에 데이터 저장
+                return BookDto.builder()
+                        .title(item.getString("title"))
+                        .price(item.getLong("priceSales"))
+                        .author(item.getString("author"))
+                        .publisher(item.getString("publisher"))
+                        .publishDate(LocalDate.parse(item.getString("pubDate"))) // LocalDate로 변경
+                        .isbn(item.getString("isbn13"))
+                        .description(item.getString("description"))
+                        .imagePath(item.getString("cover"))
+                        .build();
+            }
+        } catch (IOException e) {
+            System.out.println("API 호출 중 오류가 발생했습니다: " + e.getMessage());
+            return null;
+        } catch (JSONException e) {
+            System.out.println("JSON 파싱 중 오류가 발생했습니다: " + e.getMessage());
+            return null;
+        }
+
+        return null;
+    }
 }

@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -20,7 +21,7 @@ public class BookDto {
     private Long price;
     private String image;
     private String publisher;
-    private LocalDateTime publishDate;
+    private LocalDate publishDate;
     private Long stock;
     private String isbn;
     private String description;
