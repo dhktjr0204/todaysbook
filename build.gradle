@@ -42,6 +42,8 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test'
 
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+    implementation group: 'org.apache.mahout', name: 'mahout-core', version: '0.9'
+    implementation group: 'org.apache.mahout', name: 'mahout-math', version: '0.13.0'
 }
 
 tasks.named('test') {

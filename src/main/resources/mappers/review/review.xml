@@ -22,6 +22,11 @@
         </if>
     </select>
 
+    <select id="getSimpleReviews" resultType="com.example.todaysbook.domain.dto.SimpleReview">
+        SELECT r.book_id as bookId, r.user_id as userId, r.score as score
+        FROM review r
+    </select>
+
     <insert id="addLikeReview">
         INSERT INTO `like` (user_id, review_id)
         VALUES (#{userId}, #{reviewId})
