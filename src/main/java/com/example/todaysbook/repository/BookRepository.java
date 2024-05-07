@@ -4,6 +4,7 @@ import com.example.todaysbook.domain.entity.Book;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -12,6 +13,7 @@ import java.util.Optional;
 public interface BookRepository extends JpaRepository<Book, Long> {
     Page<Book> findByAuthorContainingOrTitleContaining(String author,String title, Pageable pageable);
     Page<Book> findAll(Pageable pageable);
+    Page<Book> findAllByCategoryId(String categoryId, Pageable pageable);
     Optional<Book> findByTitle(String bookTitle);
     Optional<Book> findByIsbn(String isbn);
 }

@@ -1,15 +1,20 @@
 package com.example.todaysbook.service;
 
+import com.example.todaysbook.domain.CategoryEnum;
 import com.example.todaysbook.domain.dto.AdminUserDto;
 import com.example.todaysbook.domain.dto.BookDto;
 import com.example.todaysbook.domain.entity.Book;
 import com.example.todaysbook.domain.entity.User;
 import com.example.todaysbook.exception.aladinApi.NotValidBook;
+import com.example.todaysbook.exception.book.DuplicateBookException;
+import com.example.todaysbook.exception.recommendList.BookNotFoundException;
+import com.example.todaysbook.exception.user.UserNotFoundException;
 import com.example.todaysbook.repository.BookRepository;
 import com.example.todaysbook.repository.UserRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.apache.ibatis.javassist.bytecode.DuplicateMemberException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -76,7 +81,7 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public BookDto findBookById(Long bookId) {
         Book book = bookRepository.findById(bookId)
-                .orElseThrow();
+                .orElseThrow(BookNotFoundException::new);
 
         return BookDto.builder()
                 .id(book.getId())
@@ -95,7 +100,7 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void updateUserRole(Long userId, String role) {
         User user = userRepository.findById(userId)
-                .orElseThrow();
+                .orElseThrow(UserNotFoundException::new);
 
         user.updateRole(role);
     }
@@ -112,7 +117,7 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void updateBookStock(Long bookId, Long stock) {
         Book book = bookRepository.findById(bookId)
-                .orElseThrow();
+                .orElseThrow(BookNotFoundException::new);
 
         book.updateStock(stock);
     }
@@ -129,7 +134,7 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void updateBook(BookDto bookDto) {
         Book book = bookRepository.findById(bookDto.getId())
-                .orElseThrow();
+                .orElseThrow(BookNotFoundException::new);
 
         book.updateBook(bookDto.getTitle(), bookDto.getPrice(), bookDto.getAuthor(),
                 bookDto.getPublisher(), bookDto.getStock(), bookDto.getDescription());
@@ -175,9 +180,14 @@ public class AdminServiceImpl implements AdminService {
         return map;
     }
 
+    @Transactional
     @Override
     public void addNewBook(List<BookDto> bookList) {
         for (BookDto book : bookList) {
+            if(bookRepository.findByIsbn(book.getIsbn()).isPresent()){
+                throw new DuplicateBookException();
+            }
+
             Book newBook = Book.builder()
                     .title(book.getTitle())
                     .price(book.getPrice())
@@ -246,52 +256,15 @@ public class AdminServiceImpl implements AdminService {
         String[] splitCategory = category.split(">");
 
         String categoryName = splitCategory[1];
-        if (categoryName.equals("자기계발")) {
-            return "101";
-        } else if (categoryName.equals("어린이")) {
-            return "102";
-        } else if (categoryName.equals("외국어")) {
-            return "103";
-        } else if (categoryName.equals("인문학")) {
-            return "104";
-        } else if (categoryName.equals("유아")) {
-            return "105";
-        } else if (categoryName.equals("만화")) {
-            return "106";
-        } else if (categoryName.equals("경제경영")) {
-            return "107";
-        } else if (categoryName.equals("소설/시/희곡")) {
-            return "108";
-        } else if (categoryName.equals("에세이")) {
-            return "109";
-        } else if (categoryName.equals("수험서/자격증")) {
-            return "110";
-        } else if (categoryName.equals("예술/대중문화")) {
-            return "111";
-        } else if (categoryName.equals("컴퓨터/모바일")) {
-            return "112";
-        } else if (categoryName.equals("청소년")) {
-            return "113";
-        } else if (categoryName.equals("과학")) {
-            return "114";
-        } else if (categoryName.equals("사회과학")) {
-            return "115";
-        } else if (categoryName.equals("좋은부모")) {
-            return "116";
-        } else if (categoryName.equals("건강/취미")) {
-            return "117";
-        } else if (categoryName.equals("역사")) {
-            return "118";
-        } else if (categoryName.equals("종교/역학")) {
-            return "119";
-        } else if (categoryName.equals("요리/살림")) {
-            return "120";
-        } else if (categoryName.equals("여행")) {
-            return "121";
-        } else if (categoryName.equals("대학교재/전문서적")) {
-            return "122";
-        } else {
-            return "123";
+
+        // CategoryEnum에서 해당하는 카테고리를 찾아서 key를 반환
+        for (CategoryEnum categoryEnum : CategoryEnum.values()) {
+            if (categoryEnum.getTitle().equals(categoryName)) {
+                return categoryEnum.getKey();
+            }
         }
+
+        // 일치하는 카테고리가 없을 경우 기타로 반환
+        return CategoryEnum.ETC.getKey();
     }
 }

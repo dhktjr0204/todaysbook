@@ -3,14 +3,20 @@ function clickEditBookButton() {
 
     if (confirmation) {
 
-        const formData=new FormData(document.querySelector('.book-form'))
+        const formData = new FormData(document.querySelector('.book-form'))
 
         fetch("/admin/booklist/edit", {
             method: "PUT",
             body: formData,
         }).then(response => {
             if (!response.ok) {
-                console.log("실패");
+                return response.text().then(msg => {
+                    if (response.status === 401) {
+                        alert(msg);
+                    } else if (response.status === 404) {
+                        alert(msg);
+                    }
+                });
             } else {
                 return response.text();
             }
@@ -22,6 +28,6 @@ function clickEditBookButton() {
     }
 }
 
-function clickCancelButton(){
+function clickCancelButton() {
     window.location.replace(document.referrer);
 }

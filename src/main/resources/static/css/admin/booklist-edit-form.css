@@ -6,6 +6,8 @@
 
 .title{
     width: 100%;
+    height: auto;
+    resize: none;
     font-size: 25px;
 }
 
