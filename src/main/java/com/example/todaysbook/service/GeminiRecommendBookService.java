@@ -104,7 +104,6 @@ public class GeminiRecommendBookService { // 설명: GeminiService 클래스는 
 
                 String encodedTitle = URLEncoder.encode(bookTitle, "UTF-8");
                 String apiUrl = "http://www.aladin.co.kr/ttb/api/ItemSearch.aspx?Query=" + encodedTitle + "&ttbkey=" + ttbkey + "&MaxResults=1&start=1&SearchTarget=Book&Version=20131101&output=js&QueryType=Title&sort=Accuracy";
-                // 외부 API 호출 (알라딘 API 예시)
 
                 // API 호출 결과를 파싱하여 BookDto 객체에 저장
                 BookDto bookDto = parseBookData(apiUrl);
@@ -130,7 +129,7 @@ public class GeminiRecommendBookService { // 설명: GeminiService 클래스는 
                                 .author(bookDto.getAuthor())
                                 .publisher(bookDto.getPublisher())
                                 .publishDate(bookDto.getPublishDate())
-                                .stock(bookDto.getStock())
+                                .stock(-1L)
                                 .isbn(bookDto.getIsbn())
                                 .description(bookDto.getDescription())
                                 .imagePath(bookDto.getImagePath())
