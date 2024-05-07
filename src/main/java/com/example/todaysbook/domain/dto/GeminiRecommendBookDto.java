@@ -2,16 +2,15 @@ package com.example.todaysbook.domain.dto;
 
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Data
-public class MyReview {
-
+public class GeminiRecommendBookDto {
     private long id;
     private long bookId;
-    private long userId;
-    private String title;
-    private String content;
-    private int score;
+    private LocalDateTime date;
+
 }

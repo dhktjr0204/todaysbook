@@ -17,7 +17,6 @@ import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.javassist.bytecode.DuplicateMemberException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cglib.core.Local;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -26,12 +25,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -243,10 +240,11 @@ public class AdminServiceImpl implements AdminService {
         return book;
     }
 
-    private LocalDateTime dateFomatter(String date) {
+    private LocalDate dateFomatter(String date) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate localDate = LocalDate.parse(date, formatter);
-        return localDate.atStartOfDay(); //날짜 + 00:00:00.00000000을 의미
+        return localDate;
+        //날짜 + 00:00:00.00000000을 의미
     }
 
     private String convertCategoryToCategoryId(String category) {
