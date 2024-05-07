@@ -29,6 +29,7 @@ public class Book {
     private String isbn;
     private String description;
     private String imagePath;
+    private String categoryId;
 
     public void updateStock(Long stock){
         this.stock=stock;

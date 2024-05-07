@@ -174,7 +174,7 @@ public class GeminiRecommendBookService { // 설명: GeminiService 클래스는 
 
         // book 목록을 BookDto 목록으로 변환
         return books.stream()
-                .map(book -> new BookDto(book.getId(), book.getTitle(), book.getAuthor(), book.getPrice(), book.getImagePath(), book.getPublisher(), book.getPublishDate(), book.getStock(), book.getIsbn(), book.getDescription(), book.getImagePath()))
+                .map(book -> new BookDto(book.getId(), book.getTitle(), book.getAuthor(), book.getPrice(), book.getImagePath(), book.getPublisher(), book.getPublishDate(), book.getStock(), book.getIsbn(), book.getDescription(), book.getImagePath(), book.getCategoryId()))
                 .collect(Collectors.toList());
     }
 
@@ -213,6 +213,7 @@ public class GeminiRecommendBookService { // 설명: GeminiService 클래스는 
                         .isbn(item.getString("isbn13"))
                         .description(item.getString("description"))
                         .imagePath(item.getString("cover"))
+                        .category(item.getString("categoryName"))
                         .build();
             }
         } catch (IOException e) {
