@@ -9,6 +9,8 @@ import com.example.todaysbook.domain.dto.RecommendListDetailDto;
 import com.example.todaysbook.domain.dto.RecommendListDto;
 import com.example.todaysbook.domain.entity.UserRecommendBook;
 import com.example.todaysbook.domain.entity.UserRecommendList;
+import com.example.todaysbook.exception.recommendList.BookNotFoundException;
+import com.example.todaysbook.exception.recommendList.RecommendListNotFoundException;
 import com.example.todaysbook.exception.user.UserValidateException;
 import com.example.todaysbook.repository.RecommendListMapper;
 import com.example.todaysbook.repository.UserRecommendBookRepository;
@@ -90,12 +92,12 @@ public class RecommendServiceImpl implements RecommendListService {
     @Override
     public void update(Long listId, RecommendListUpdateRequestDto request) {
         UserRecommendList userRecommendList = userRecommendListRepository.findById(listId)
-                .orElseThrow(()->new IllegalArgumentException("해당 리스트를 찾을 수 없습니다."));
+                .orElseThrow(RecommendListNotFoundException::new);
         List<UserRecommendBook> userRecommendBooks = userRecommendBookRepository.findByUserRecommendListId(listId)
-                .orElseThrow(() -> new IllegalArgumentException("리스트에 해당되는 책을 찾을 수 없습니다."));
+                .orElseThrow(BookNotFoundException::new);
 
         //list 만든 사용자 id와 응답으로 받은 사용자 id(현재 로그인된 유저)가 다를 때
-        if(userRecommendList.getUserId()!=request.getUserId()){
+        if(request.getUserId()==null || userRecommendList.getUserId()!=request.getUserId()){
             throw new UserValidateException();
         }
 
@@ -120,9 +122,9 @@ public class RecommendServiceImpl implements RecommendListService {
     @Override
     public void delete(Long listId) {
         UserRecommendList userRecommendList = userRecommendListRepository.findById(listId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 리스트를 찾을 수 없습니다."));
+                .orElseThrow(RecommendListNotFoundException::new);
         List<UserRecommendBook> userRecommendBooks = userRecommendBookRepository.findByUserRecommendListId(listId)
-                .orElseThrow(() -> new IllegalArgumentException("리스트에 해당되는 책을 찾을 수 없습니다."));
+                .orElseThrow(BookNotFoundException::new);
 
         userRecommendListRepository.delete(userRecommendList);
         userRecommendBookRepository.deleteAll(userRecommendBooks);
