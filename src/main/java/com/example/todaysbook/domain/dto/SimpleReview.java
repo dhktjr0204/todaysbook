@@ -1,17 +1,17 @@
 package com.example.todaysbook.domain.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Data
-public class MyReview {
+public class SimpleReview {
 
-    private long id;
     private long bookId;
     private long userId;
-    private String title;
-    private String content;
     private int score;
 }

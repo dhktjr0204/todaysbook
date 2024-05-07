@@ -23,7 +23,6 @@
     <button th:text="최신순" onclick="reviewOrderBy('latest')"></button>
     <button th:text="공감순" onclick="reviewOrderBy('popular')"></button>
 </div>
-<hr>
 <div class="review-div">
     <li class="review" th:each="review : ${reviews}">
         <div class="edit-button-div" th:if="${review.userId == userId}">
