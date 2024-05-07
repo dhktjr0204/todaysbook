@@ -33,7 +33,7 @@
         </section>
         <form class="list-form" action="" onsubmit="return false;" th:object="${recommendList}">
             <!--현재 로그인된 유저 아이디-->
-            <input class="user-id" type="hidden" th:name="userId" th:value="${login_user_id}"/>
+            <input class="user-id" type="hidden" th:name="userId" th:value="${loginUserId}"/>
 
             <section class="user-list-container">
                 <textarea class="user-list-title-input" placeholder="리스트 이름을 작성해주세요" rows="1" th:name="title"

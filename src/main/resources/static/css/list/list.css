@@ -87,6 +87,11 @@ figure:hover .overlay {
     background-color: transparent;
 }
 
+.book-title, .author {
+
+    margin-bottom: 10px;
+}
+
 .recommend-list-title-container{
     display: flex;
     gap:10px;

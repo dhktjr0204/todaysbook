@@ -1,23 +1,23 @@
 package com.example.todaysbook.domain.entity;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.sql.Timestamp;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AlanRecommendList {
+@Entity
+@EntityListeners(AuditingEntityListener.class)
+public class FavoriteBook {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private Timestamp date;
+    private long userId;
+    private long bookId;
 }

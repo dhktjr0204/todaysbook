@@ -1,11 +1,16 @@
 package com.example.todaysbook.controller;
 
+<<<<<<< HEAD
 import com.example.todaysbook.domain.dto.PaymentBookInfoDto;
+=======
+import com.example.todaysbook.domain.dto.CustomUserDetails;
+>>>>>>> 357f89b67e50ef3cc0490f77ba9f1fdc642c38f2
 import com.example.todaysbook.domain.entity.CartBook;
 import com.example.todaysbook.service.CartService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,15 +23,16 @@ public class ViewController {
 
     private final CartService cartService;
 
-//    @GetMapping("/index")
-//    public String index(Model model) {
-//
-//        String userName = "테스트";
-//
-//        model.addAttribute("userName", userName);
-//
-//        return "index";
-//    }
+    /*@GetMapping("/index")
+    public String index(@AuthenticationPrincipal CustomUserDetails customUserDetails, Model model) {
+
+        if(customUserDetails != null) {
+            String nickname = customUserDetails.getNickname();
+            model.addAttribute("userName", nickname);
+        }
+
+        return "index";
+    }*/
 
     @GetMapping("/search")
     public String search(Model model) {
@@ -40,7 +46,13 @@ public class ViewController {
         return "book/detail";
     }
 
-    @GetMapping("/registration")
+    @GetMapping("/login")
+    public String login(Model model) {
+
+        return "user/login";
+    }
+
+    @GetMapping("/signup")
     public String registration(Model model) {
 
         return "user/registration";
@@ -64,22 +76,10 @@ public class ViewController {
         return "user/mypage/orderlist";
     }
 
-    @GetMapping("/mypage/review")
-    public String review(Model model) {
-
-        return "user/mypage/review";
-    }
-
     @GetMapping("/mypage/mileage")
     public String mileage(Model model) {
 
         return "user/mypage/mileage";
-    }
-
-    @GetMapping("/mypage/favoritebook")
-    public String favoritebook(Model model) {
-
-        return "user/mypage/favorite-book";
     }
 
 //    @GetMapping("/mypage/my_recommend_list")
@@ -130,11 +130,11 @@ public class ViewController {
         return "admin/delivery";
     }
 
-    @GetMapping("/admin/book_registration")
-    public String addBook(Model model) {
-
-        return "admin/book-registration";
-    }
+//    @GetMapping("/admin/book_registration")
+//    public String addBook(Model model) {
+//
+//        return "admin/book-registration";
+//    }
 
     @GetMapping("/admin/updateinfo")
     public String adminUpdateInfo(Model model) {
@@ -154,6 +154,23 @@ public class ViewController {
 //        return "cart/list";
 //    }
 
+    @GetMapping("/payment/info")
+    public String paymentInfo(Model model,@AuthenticationPrincipal CustomUserDetails userDetails) {
+        // userId로 사용자의 장바구니 목록 조회
+        //0503수정
+        long userId = userDetails.getUserId();
+        List<CartBook> cartBooks = cartService.findCartBooksByUserId(userId);
+        int totalPrice = cartService.calculateTotalPrice(cartBooks); // 총 상품 가격을 계산
+        model.addAttribute("totalPrice", totalPrice); // 모델에 totalPrice를 추가하여 뷰로 전달
+
+        return "payment/info";
+    }
+
+    @GetMapping("/payment/success")
+    public String paymentSuccess(Model model) {
+
+        return "payment/success";
+    }
 
     @GetMapping("/alan/recommend")
     public String alanRecommend(Model model) {

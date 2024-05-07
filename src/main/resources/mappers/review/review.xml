@@ -14,7 +14,17 @@
         LEFT JOIN user u
         ON u.id = r.user_id
         WHERE r.book_id = #{bookId}
-        ORDER BY createTime DESC;
+        <if test="orderBy == 'latest'">
+            ORDER BY createTime DESC;
+        </if>
+        <if test="orderBy == 'popular'">
+            ORDER BY likeCount DESC;
+        </if>
+    </select>
+
+    <select id="getSimpleReviews" resultType="com.example.todaysbook.domain.dto.SimpleReview">
+        SELECT r.book_id as bookId, r.user_id as userId, r.score as score
+        FROM review r
     </select>
 
     <insert id="addLikeReview">
@@ -61,4 +71,14 @@
         FROM review
         WHERE id = #{reviewId}
     </delete>
+
+    <update id="updateReview" parameterType="com.example.todaysbook.domain.dto.ReviewRequestDto">
+        UPDATE review
+        SET
+            score = #{score},
+            content = #{content},
+            create_time = now()
+        WHERE id = #{reviewId}
+    </update>
+
 </mapper>

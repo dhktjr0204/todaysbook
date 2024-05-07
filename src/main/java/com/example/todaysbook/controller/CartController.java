@@ -1,6 +1,7 @@
 package com.example.todaysbook.controller;
 
 import com.example.todaysbook.domain.dto.CartRequestDto;
+import com.example.todaysbook.domain.dto.CustomUserDetails;
 import com.example.todaysbook.domain.entity.Book;
 import com.example.todaysbook.domain.entity.Cart;
 
@@ -12,6 +13,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -30,9 +32,12 @@ public class CartController {
     private final CartService cartService;
 
     @GetMapping("/list")
-    public String showMyCartList(Model model) {
-        // userId가 1인 사용자의 장바구니 목록 조회
-        List<CartBook> cartBooks = cartService.findCartBooksByUserId(1L);
+    public String showMyCartList(Model model, @AuthenticationPrincipal CustomUserDetails userDetails) {
+        // userId로 사용자의 장바구니 목록 조회
+        //0503수정
+        long userId = userDetails.getUserId();
+        List<CartBook> cartBooks = cartService.findCartBooksByUserId(userId);
+
         // 총 주문 금액 및 적립 마일리지 계산
         int totalPrice = cartService.calculateTotalPrice(cartBooks);
         int totalMileage = cartService.calculateTotalMileage(cartBooks);
@@ -45,28 +50,15 @@ public class CartController {
         return "cart/list"; // 템플릿 이름 리턴
     }
 
-    // 총 주문 금액 계산 메소드
-//    private int calculateTotalPrice(List<CartBook> cartBooks) {
-//        int totalPrice = 0;
-//        for (CartBook cartBook : cartBooks) {
-//            totalPrice += cartBook.getBook().getPrice() * cartBook.getBookCount();
-//        }
-//        return totalPrice;
-//    }
-//
-//    // 총 적립 마일리지 계산 메소드 (임시)
-//    private int calculateTotalMileage(List<CartBook> cartBooks) {
-//        return 0; // 일단은 임시로 0으로 설정
-//    }
-
-
     @PostMapping("/add")
-    public ResponseEntity<Long> addToCart(@RequestBody CartRequestDto requestDto) {
-        // 강제로 userId를 1로 설정하여 테스트
-        requestDto.setUserId(1L);
+    public ResponseEntity<Long> addToCart(@RequestBody CartRequestDto requestDto,@AuthenticationPrincipal CustomUserDetails userDetails) {
+        // userId로 수정실험
+        //0503수정
+        long userId = userDetails.getUserId();
+        requestDto.setUserId(userId);
 
         try {
-            long cartBookId = cartService.addToCart(requestDto);
+            long cartBookId = cartService.addToCart(requestDto,userDetails);
             return ResponseEntity.ok(cartBookId);
         } catch (Exception e) {
             e.printStackTrace();
@@ -74,9 +66,8 @@ public class CartController {
         }
     }
 
-
     // 서버 측 컨트롤러
-    @PostMapping("/delete-selected")
+    @PostMapping("/delete-unselected")
     public ResponseEntity<?> deleteSelectedCartItems(@RequestBody List<Long> selectedIds) {
         try {
             cartService.deleteSelectedCartItems(selectedIds);
@@ -87,7 +78,27 @@ public class CartController {
         }
     }
 
+////0503~ 구현중
+
+    @PutMapping("/increase-quantity/{cartBookId}")
+    public ResponseEntity<?> increaseQuantity(@PathVariable Long cartBookId) {
+        try {
+            cartService.increaseCartBookQuantity(cartBookId);
+            return ResponseEntity.ok().body(Map.of("success", true));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("success", false));
+        }
+    }
+
+    @PutMapping("/decrease-quantity/{cartBookId}")
+    public ResponseEntity<?> decreaseQuantity(@PathVariable Long cartBookId) {
+        try {
+            cartService.decreaseCartBookQuantity(cartBookId);
+            return ResponseEntity.ok().body(Map.of("success", true));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("success", false));
+        }
+    }
 }
-
-
-

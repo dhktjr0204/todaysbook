@@ -5,7 +5,7 @@ function clickFavorite(button) {
     image.classList.toggle('favorite');
 
     let url = image.classList.contains('favorite') ? '/favorite_book/add' : '/favorite_book/delete';
-    let bookId = 1;
+    let bookId = document.querySelector('.book-id').value;
 
     let type = image.classList.contains('favorite') ? 'GET' : 'DELETE';
     let message = image.classList.contains('favorite') ?
@@ -27,4 +27,36 @@ function clickFavorite(button) {
             console.error(error);
         }
     });
+}
+
+
+
+///업데이트 부분
+
+function addCart(button) {
+    // 클릭된 버튼에서 bookId 값 가져오기
+    const bookId = button.dataset.id;
+
+    // bookCount 값을 가져오기
+    const count = document.querySelector('.count-input').value;
+
+
+    console.log('장바구니에 담을 도서의 ID:', bookId);
+    console.log('도서 개수:', count);
+    // AJAX를 사용하여 서버로 장바구니 추가 요청 전송
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', '/cart/add', true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                // 장바구니 추가 성공 시 알림창 띄우기
+                alert('장바구니에 상품이 추가되었습니다.');
+            } else {
+                // 에러 발생 시 알림창 띄우기
+                alert('장바구니 추가에 실패했습니다. 다시 시도해주세요.');
+            }
+        }
+    };
+    xhr.send(JSON.stringify({ bookId: bookId ,count: count}));
 }

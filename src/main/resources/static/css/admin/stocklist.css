@@ -1,86 +1,61 @@
-/*.book-list {*/
+.book-list {
 
-/*    display: flex;*/
-/*    flex-direction: column;*/
-/*    align-items: end;*/
-/*}*/
-
-/*.book-list-header {*/
-
-/*    border-top: solid 1px white;*/
-/*}*/
-
-/*.book-list-header, .book-list-body {*/
-
-/*    border-bottom: solid 1px white;*/
-/*}*/
-
-/*.book-list-header li {*/
-
-/*    display: flex;*/
-/*    margin: 10px 0;*/
-/*}*/
-
-/*.book-list-body li {*/
-
-/*    display: flex;*/
-/*    align-items: baseline;*/
-/*    margin: 20px 0;*/
-/*}*/
-
-/*.price {*/
-
-/*    width: 150px;*/
-/*    text-align: center;*/
-/*}*/
-
-/*.quantity {*/
-
-/*    width: 80px;*/
-/*    text-align: center;*/
-/*}*/
-
-/*.book-name {*/
-
-/*    width: 300px;*/
-/*    margin-left: 20px;*/
-/*}*/
-
-
-.book-list{
-    border-top: 1px solid white;
-    border-bottom: 1px solid white;
+    display: flex;
+    flex-direction: column;
+    align-items: end;
 }
 
-.book-list tbody tr{
-    height: 50px;
+.book-list-header {
+
+    border-top: solid 1px white;
 }
 
-.book-list thead tr{
-    border-bottom: 1px solid white;
-    height: 50px;
+.book-list-header, .book-list-body {
+
+    border-bottom: solid 1px white;
 }
 
-/* 이메일 열의 너비를 300px로 설정 */
-.book-list .book-name {
-    width: 300px;
+.book-list-header li {
+
+    display: flex;
+    margin: 10px 0;
 }
 
-/* 닉네임 열의 너비를 150px로 설정 */
-.book-list .price {
+.book-list-body li {
+
+    display: flex;
+    align-items: center;
+    min-height: 50px;
+    margin: 20px 0;
+}
+
+.price {
+
     width: 150px;
+
 }
 
-/* 회원 등급 열의 너비를 150px로 설정 */
-.book-list .quantity {
-    width: 100px;
+.book-item .quantity {
+    border: 1px solid white;
+    border-radius: 5px;
+    text-align: center;
+    width: 80px;
+
 }
 
-.book-list .button-section{
+.book-list-header .quantity{
+    width: 180px;
+}
+
+.book-name {
+
+    width: 300px;
+    margin: 0 20px;
+}
+
+.edit-button, .delete-button{
     width: 50px;
 }
-
-
 
 .page-button-group {
 

@@ -1,6 +1,7 @@
 package com.example.todaysbook.service;
 
 import com.example.todaysbook.domain.dto.CartRequestDto;
+import com.example.todaysbook.domain.dto.CustomUserDetails;
 import com.example.todaysbook.domain.entity.Book;
 import com.example.todaysbook.domain.entity.Cart;
 import com.example.todaysbook.domain.entity.CartBook;
@@ -11,6 +12,8 @@ import com.example.todaysbook.repository.CartRepository;
 import com.example.todaysbook.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,33 +35,23 @@ public class CartService {
     private final UserRepository userRepository;
 
 
-//
+
 
     @Transactional
-    public void removeFromCart(long cartId, long bookId) {
-        Cart cart = cartRepository.findById(cartId).orElse(null);
-        if (cart != null) {
-            CartBook cartBook = cartBookRepository.findByCartIdAndBookId(cartId, bookId);
-            if (cartBook != null) {
-                long bookCount = cartBook.getBookCount();
-                long totalPrice = bookRepository.findById(bookId).map(book -> book.getPrice() * bookCount).orElse(0L);
-                cartBookRepository.delete(cartBook);
-//                cart.setTotalPrice(cart.getTotalPrice() - totalPrice);
-                cartRepository.save(cart);
-            }
-        }
-    }
-
-    @Transactional
-    public long addToCart(CartRequestDto requestDto) {
+    public long addToCart(CartRequestDto requestDto,@AuthenticationPrincipal CustomUserDetails userDetails) {
+        // 현재 로그인한 사용자의 아이디를 가져옴
+        // userId로 수정실험
+        //0503수정
+        long userId = userDetails.getUserId();
+        requestDto.setUserId(userId);
         // 로그 추가
         System.out.println("Adding book to cart...");
 
         // 장바구니에 담을 책 엔티티 조회
         Book book = bookRepository.findById(requestDto.getBookId())
                 .orElseThrow(EntityNotFoundException::new);
-        //예시로 아이디가 1인 사용자를 조회
-        User user = userRepository.findById(1L);
+        //userId를 통해 사용자를 조회
+        User user = userRepository.findById(requestDto.getUserId());
 
         // 로그 추가
         System.out.println("Book retrieved: " + book.getTitle());
@@ -77,14 +70,14 @@ public class CartService {
 
         // 이미 존재하는 도서라면 수량만 증가
         if (savedCartBook != null) {
-            savedCartBook.addCount(requestDto.getBookCount());
+            savedCartBook.addCount(requestDto.getCount());
             cartBookRepository.save(savedCartBook);
             // 로그 추가
             System.out.println("Book quantity updated in cart.");
             return savedCartBook.getId();
         } else {
             // 장바구니에 새로운 도서 추가
-            CartBook cartBook = CartBook.createCartBook(cart, book, requestDto.getBookCount());
+            CartBook cartBook = CartBook.createCartBook(cart, book, requestDto.getCount());
             cartBookRepository.save(cartBook);
             // 로그 추가
             System.out.println("New book added to cart.");
@@ -109,7 +102,7 @@ public class CartService {
     public int calculateTotalPrice(List<CartBook> cartBooks) {
         int totalPrice = 0;
         for (CartBook cartBook : cartBooks) {
-            totalPrice += cartBook.getBook().getPrice() * cartBook.getBookCount();
+            totalPrice += cartBook.getBook().getPrice() * cartBook.getCount();
         }
         return totalPrice;
     }
@@ -120,6 +113,27 @@ public class CartService {
     }
 
 
+    ///0503~구현중
+    @Transactional
+    public void increaseCartBookQuantity(Long cartBookId) {
+        CartBook cartBook = cartBookRepository.findById(cartBookId)
+                .orElseThrow(EntityNotFoundException::new);
+        cartBook.addCount(1); // 수량 증가
+        cartBookRepository.save(cartBook);
+    }
+
+    @Transactional
+    public void decreaseCartBookQuantity(Long cartBookId) {
+        CartBook cartBook = cartBookRepository.findById(cartBookId)
+                .orElseThrow(EntityNotFoundException::new);
+        if (cartBook.getCount() > 1) {
+            cartBook.addCount(-1); // 수량 감소
+            cartBookRepository.save(cartBook);
+        } else {
+            // 수량이 1인 경우 삭제
+            cartBookRepository.deleteById(cartBookId);
+        }
+    }
 
 }
 

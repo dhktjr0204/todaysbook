@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="/css/header.css">
 <link rel="stylesheet" href="/css/footer.css">
 <div class="header sticky-element">
-    <ul>
+    <ul class="home-container">
         <li class="home-button">
             <a th:href="@{/}">
                 <img class="logo" th:src="@{/images/logo.png}">
@@ -10,11 +10,50 @@
                 </p>
             </a>
         </li>
+        <li class="category">
+            <div class="category-dropdown">
+                <p>분야 보기</p>
+                <div class="category-dropdown-option">
+                    <ul class="category-item">
+                        <li><a th:href="@{/category/101}">자기계발</a></li>
+                        <li><a th:href="@{/category/102}">어린이</a></li>
+                        <li><a th:href="@{/category/103}">외국어</a></li>
+                        <li><a th:href="@{/category/104}">인문학</a></li>
+                        <li><a th:href="@{/category/105}">유아</a></li>
+                    </ul>
+                    <ul class="category-item">
+                        <li><a th:href="@{/category/106}">만화</a></li>
+                        <li><a th:href="@{/category/107}">경제경영</a></li>
+                        <li><a th:href="@{/category/108}">소설/시/희곡</a></li>
+                        <li><a th:href="@{/category/109}">에세이</a></li>
+                        <li><a th:href="@{/category/110}">수험서/자격증</a></li>
+                    </ul>
+                    <ul class="category-item">
+                        <li><a th:href="@{/category/111}">예술/대중문화</a></li>
+                        <li><a th:href="@{/category/112}">컴퓨터/모바일</a></li>
+                        <li><a th:href="@{/category/113}">청소년</a></li>
+                        <li><a th:href="@{/category/114}">과학</a></li>
+                        <li><a th:href="@{/category/115}">사회과학</a></li>
+                    </ul>
+                    <ul class="category-item">
+                        <li><a th:href="@{/category/116}">좋은부모</a></li>
+                        <li><a th:href="@{/category/117}">건강/취미</a></li>
+                        <li><a th:href="@{/category/118}">역사</a></li>
+                        <li><a th:href="@{/category/119}">종교/역학</a></li>
+                        <li><a th:href="@{/category/120}">요리/살림</a></li>
+                    </ul>
+                    <ul class="category-item">
+                        <li><a th:href="@{/category/121}">여행</a></li>
+                        <li><a th:href="@{/category/122}">대학교재/전문서적</a></li>
+                    </ul>
+                </div>
+            </div>
+        </li>
     </ul>
     <ul>
         <li>
-            <div class="dropdown" th:if="${userName != null}">
-                <p th:text="${userName}+'님 안녕하세요'"></p>
+            <div class="dropdown" th:if="${nickName != null}">
+                <p th:text="${nickName}+'님 안녕하세요'"></p>
                 <ul class="dropdown-options">
                     <li>
                         <a th:href="@{/mypage/orderlist}">마이페이지</a>
@@ -27,9 +66,9 @@
                     </li>
                 </ul>
             </div>
-            <div class="login" th:unless="${userName != null}">
+            <div class="login" th:unless="${nickName != null}">
                 <a th:href="@{/login}">로그인</a>
-                <a th:href="@{/registration}">회원가입</a>
+                <a th:href="@{/signup}">회원가입</a>
             </div>
         </li>
     </ul>

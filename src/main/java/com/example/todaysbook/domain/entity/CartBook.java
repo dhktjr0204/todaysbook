@@ -24,19 +24,19 @@ public class CartBook {
     @JoinColumn(name = "book_id")
     private Book book; // Book 엔티티와의 관계
 
-    private long bookCount;
+    private long count;
 
 
-    public static CartBook createCartBook(Cart cart,Book book,long bookCount){
+    public static CartBook createCartBook(Cart cart,Book book,long count){
         CartBook cartBook = new CartBook();
         cartBook.setCart(cart);
         cartBook.setBook(book);
-        cartBook.setBookCount(bookCount);
+        cartBook.setCount(count);
         return cartBook;
     }
 
-    public void addCount(long bookCount) {
-        this.bookCount += bookCount;
+    public void addCount(long count) {
+        this.count += count;
     }
 
 }

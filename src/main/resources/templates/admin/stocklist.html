@@ -20,52 +20,35 @@
             <button class="search-button" th:text="'검색'"></button>
         </form>
         <section>
-            <table class="book-list">
-                <thead>
-                <tr class="book-list-header">
-                    <td class="book-name">상품명</td>
-                    <td class="price">가격</td>
-                    <td class="quantity">수량</td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                </thead>
-                <tbody>
-                <tr class="book-list-body" th:each="book : ${books}">
-                    <input type="hidden" th:value="${book.id}">
-                    <td class="book-name" th:text="${book.title}"></td>
-                    <td class="price" th:text="${book.price}+'원'" th:value="${book.price}"></td>
-                    <td class="quantity" th:text="${book.stock}"></td>
-                    <td class="button-section"><button class="edit-button">수정</button></td>
-                    <td class="button-section"><button class="delete-button">삭제</button></td>
-                </tr>
+            <div class="book-list">
+                <ul class="book-list-header">
+                    <li>
+                        <p class="book-name">상품명</p>
+                        <p class="price">가격</p>
+                        <p class="quantity">수량</p>
+                    </li>
+                </ul>
+                <ul class="book-list-body">
+                    <li class="book-item" th:each="book : ${dto}">
+                        <input type="hidden" class="book-id" th:value="${book.id}">
+                        <p class="book-name" th:text="${book.title}"></p>
+                        <p class="price" th:text="${book.price}+'원'" th:value="${book.price}"></p>
+                        <input class="quantity" th:value="${book.stock}">
+                        <button class="edit-button" onclick="clickEditStockButton(this)">수정</button>
+                        <button class="delete-button" onclick="clickDeleteBookButton(this)">삭제</button>
+                    </li>
+                </ul>
                 </tbody>
-                <div class="no-content" th:if="${books.isEmpty()}">
+                <div class="no-content" th:if="${dto.isEmpty()}">
                     책이 없습니다.
                 </div>
-            </table>
-            <ul class="page-button-group" th:unless="${books.isEmpty()}">
-                <li th:if="${books.number>4}">
-                    <button th:onclick="clickStockPrevPageButton([[${startPage}]], [[${keyword}]])">
-                        &lt;
-                    </button>
-                </li>
-                <li th:each="num : ${#numbers.sequence(startPage, endPage)}">
-                    <button th:text="${num}" th:if="${books.number+1 eq num}"
-                            th:class="select-button"></button>
-                    <button th:text="${num}" th:unless="${books.number+1 eq num}"
-                            th:onclick="clickStockPageButton(this,  [[${keyword}]])"></button>
-                </li>
-                <li th:if="${books.totalPages > 5 and endPage != books.totalPages}">
-                    <button th:onclick="clickStockNextPageButton([[${endPage}]], [[${keyword}]])">
-                        &gt;
-                    </button>
-                </li>
-            </ul>
+            </div>
+            <div th:replace="~{fragments/page.html}"></div>
         </section>
     </div>
 </main>
 <div th:replace="~{fragments/footer.html}"></div>
-<script th:src="@{/js/admin/page.js}"></script>
+<script th:src="@{/js/admin/stocklist/page.js}"></script>
 <script th:src="@{/js/admin/search.js}"></script>
+<script th:src="@{/js/admin/stocklist/stocklist.js}"></script>
 </html>

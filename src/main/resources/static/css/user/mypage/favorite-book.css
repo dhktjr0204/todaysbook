@@ -10,7 +10,6 @@ main {
     align-items: center;
 
     padding-top: 60px;
-    gap: 150px;
 
     margin: 0 auto;
 }
@@ -48,6 +47,8 @@ figure {
 .book-img {
 
     object-fit: cover;
+    width: 150px;
+    height: 226px;
 }
 
 .overlay {
@@ -83,5 +84,8 @@ figure:hover .overlay {
     justify-content: center;
 
     gap: 20px;
-    margin-top: 50px;
+}
+
+.select-button{
+    color: #D54DFE;
 }
