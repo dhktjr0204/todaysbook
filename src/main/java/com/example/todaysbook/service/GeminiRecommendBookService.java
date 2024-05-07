@@ -27,10 +27,7 @@ import java.net.URLEncoder;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -61,6 +58,14 @@ public class GeminiRecommendBookService { // 설명: GeminiService 클래스는 
 
     private final BookRepository bookRepository;
     private final GeminiRecommendBookRepository geminiRecommendBookRepository;
+    private AdminServiceImpl adminService;
+
+    @Autowired
+    public GeminiRecommendBookService(BookRepository bookRepository, GeminiRecommendBookRepository geminiRecommendBookRepository, AdminServiceImpl adminService) {
+        this.bookRepository = bookRepository;
+        this.geminiRecommendBookRepository = geminiRecommendBookRepository;
+        this.adminService = adminService;
+    }
 
     public String getContents(String prompt) throws UnsupportedEncodingException {
         String requestUrl = apiUrl + "?key=" + geminiApiKey;
@@ -91,58 +96,29 @@ public class GeminiRecommendBookService { // 설명: GeminiService 클래스는 
                 bookId = bookOptional.get().getId();
 
                 // 가져온 bookId를 GeminiRecommendBook 엔티티에 저장
-                GeminiRecommendBook geminiRecommendBook = GeminiRecommendBook.builder()
-                        .bookId(bookId) // variable 'bookId' is not initialized
-                        .date(LocalDateTime.now())
-                        .build();
-                geminiRecommendBookRepository.save(geminiRecommendBook);
+                saveGeminiRecommendBookEntity(bookId);
                 System.out.println(bookTitle + "  : bookId(" + bookId + ") GeminiRecommendBook에 저장 완료");
 
             } else {
                 // DB에 책이 없으면 외부 API에서 데이터 가져와서 저장
                 System.out.println(bookTitle + ":  title로 검색해본 결과 DB에 없습니다. 외부 API에서 검색후 isbn을 가져와 다시 DB에 검색합니다.");
 
-                String encodedTitle = URLEncoder.encode(bookTitle, "UTF-8");
-                String apiUrl = "http://www.aladin.co.kr/ttb/api/ItemSearch.aspx?Query=" + encodedTitle + "&ttbkey=" + ttbkey + "&MaxResults=1&start=1&SearchTarget=Book&Version=20131101&output=js&QueryType=Title&sort=Accuracy";
+                HashMap<String, ?> response = adminService.getNewBook(bookTitle, 1);
+                List<BookDto> bookList = (List<BookDto>) response.get("books");
 
-                // API 호출 결과를 파싱하여 BookDto 객체에 저장
-                BookDto bookDto = parseBookData(apiUrl);
-
-                if (bookDto != null) {
+                if (!bookList.isEmpty()) {
+                    BookDto bookDto = bookList.get(0);
                     Optional<Book> existingBook = bookRepository.findByIsbn(bookDto.getIsbn());
                     if (existingBook.isPresent()) {
                         bookId = existingBook.get().getId();
-                        System.out.println("    " + bookTitle + ": isbn으로 검색해본 결과 DB에 존재하는 책입니다. bookId(" + bookId + ")");
-                        // 저장된 Book의 id를 가져와서 GeminiRecommendBook 엔티티에 저장
-                        GeminiRecommendBook geminiRecommendBook = GeminiRecommendBook.builder()
-                                .bookId(bookId)
-                                .date(LocalDateTime.now())
-                                .build();
-                        geminiRecommendBookRepository.save(geminiRecommendBook);
-                        System.out.println("        " + bookTitle + ": bookId("+ bookId + ") GeminiRecommendBook에 저장 완료");
+                        saveGeminiRecommendBookEntity(bookId);
                     } else {
-                        System.out.println("    " + bookTitle + ": isbn으로 검색해본 결과 DB에 없는 책입니다. DB에 저장합니다.");
-                        // BookDto를 Book 엔티티로 변환하여 DB에 저장
-                        Book book = Book.builder()
-                                .title(bookDto.getTitle())
-                                .price(bookDto.getPrice())
-                                .author(bookDto.getAuthor())
-                                .publisher(bookDto.getPublisher())
-                                .publishDate(bookDto.getPublishDate())
-                                .stock(-1L)
-                                .isbn(bookDto.getIsbn())
-                                .description(bookDto.getDescription())
-                                .imagePath(bookDto.getImagePath())
-                                .build();
-                        Book savedBook = bookRepository.save(book);
-                        System.out.println("    " + bookTitle + ": 책 정보를 DB에 저장했습니다. bookId(" + savedBook.getId() + ")");
-                        // 저장된 Book의 id를 가져와서 GeminiRecommendBook 엔티티에 저장
-                        bookId = savedBook.getId();
-                        GeminiRecommendBook geminiRecommendBook = GeminiRecommendBook.builder()
-                                .bookId(bookId)
-                                .date(LocalDateTime.now())
-                                .build();
-                        geminiRecommendBookRepository.save(geminiRecommendBook);
+                        adminService.addNewBook(List.of(bookDto));
+                        Optional<Book> savedBook = bookRepository.findByIsbn(bookDto.getIsbn());
+                        if (savedBook.isPresent()) {
+                            bookId = savedBook.get().getId();
+                            saveGeminiRecommendBookEntity(bookId);
+                        }
                     }
                 } else {
                     System.out.println("    API 호출 결과가 없습니다.");
@@ -152,6 +128,14 @@ public class GeminiRecommendBookService { // 설명: GeminiService 클래스는 
         }
     }
 
+    private void saveGeminiRecommendBookEntity(long bookId) {
+        GeminiRecommendBook geminiRecommendBook = GeminiRecommendBook.builder()
+                .bookId(bookId)
+                .date(LocalDateTime.now())
+                .build();
+        geminiRecommendBookRepository.save(geminiRecommendBook);
+        System.out.println("bookId(" + bookId + ") GeminiRecommendBook에 저장 완료");
+    }
 
 
     private List<String> extractBookTitles(String message) {
@@ -226,7 +210,7 @@ public class GeminiRecommendBookService { // 설명: GeminiService 클래스는 
                         .isbn(item.getString("isbn13"))
                         .description(item.getString("description"))
                         .imagePath(item.getString("cover"))
-                        .category(item.getString("categoryName"))
+                        .category(adminService.convertCategoryToCategoryId(item.getString("categoryName")))
                         .build();
             }
         } catch (IOException e) {
