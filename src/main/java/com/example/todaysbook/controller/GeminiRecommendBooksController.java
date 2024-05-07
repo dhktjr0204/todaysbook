@@ -1,7 +1,6 @@
 package com.example.todaysbook.controller;
 
 import com.example.todaysbook.domain.dto.BookDto;
-import com.example.todaysbook.domain.entity.Book;
 import com.example.todaysbook.service.GeminiRecommendBookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
