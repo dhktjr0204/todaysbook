@@ -37,6 +37,10 @@
             </a>
         </article>
         <section class="recommend-list-section">
+
+
+
+
             <article th:unless="${favoriteBooks.isEmpty()}">
                 <div class="recommend-list-header">
                     <div class="recommend-list-title-container">
@@ -70,16 +74,16 @@
             </article>
             <article>
                 <div class="recommend-list-header">
-                    <p class="recommend-list-title" th:text="'앨런의 추천 리스트'"></p>
+                    <p class="recommend-list-title" th:text="'AI 오늘의 추천 리스트'"></p>
                     <p class="more-button" th:text="'더보기'"></p>
                 </div>
                 <ul class="recommend-list">
                     <li>
                         &lt;
                     </li>
-                    <li th:each="num : ${#numbers.sequence(6,10)}">
-                        <a th:href="'/book/detail/'+${num}">
-                            <img th:src="@{'/images/book/' + ${num} + '.png'}">
+                    <li th:each="book : ${todayRecommendBooks}">
+                        <a th:href="@{'/book/detail/' + ${book.id}}">
+                            <img th:src="${book.imagePath}">
                         </a>
                     </li>
                     <li>
@@ -87,6 +91,8 @@
                     </li>
                 </ul>
             </article>
+
+
             <article>
                 <div class="recommend-list-header">
                     <p class="recommend-list-title" th:text="'개발자들이 많이 찾는 책'"></p>
