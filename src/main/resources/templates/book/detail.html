@@ -13,12 +13,12 @@
     <div class="detail-wrap">
         <section class="book-detail">
             <div class="book-detail-header">
-                <h1 th:text="${bookDetailDto.bookDetail.title}"></h1>
+                <pre class="title" th:text="${bookDetailDto.bookDetail.title}"></pre>
                 <input type="hidden" class="book-id" th:value="${bookDetailDto.bookDetail.id}">
                 <div class="book-info">
-                    <p class="author" th:text="${bookDetailDto.bookDetail.author}"></p>
-                    <p class="publisher" th:text="${bookDetailDto.bookDetail.publisher}"></p>
-                    <p class="price"
+                    <pre class="author" th:text="${bookDetailDto.bookDetail.author}"></pre>
+                    <pre class="publisher" th:text="${bookDetailDto.bookDetail.publisher}"></pre>
+                    <p class="publish-date"
                        th:text="${#temporals.format(bookDetailDto.bookDetail.publishDate, 'yyyy-MM-dd')}"></p>
                 </div>
             </div>

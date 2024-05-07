@@ -7,18 +7,22 @@
     padding-top: 100px;
 }
 
-h1 {
+.title {
 
-    width: 690px;
-
-    display: flex;
-    flex-wrap: wrap;
+    font-size: 24px;
 }
 
-.author, .publisher {
+.title, .author, .publisher, .description {
 
-    display: flex;
-    flex-wrap: wrap;
+    white-space: pre-wrap;
+    width: 770px;
+
+    margin-top: 10px;
+}
+
+.publish-date {
+
+    margin-top: 10px;
 }
 
 .book-detail-header {
@@ -173,19 +177,6 @@ h1 {
 
     padding: 10px;
     margin-bottom: 50px;
-}
-
-.description {
-
-    display: flex;
-    flex-wrap: wrap;
-
-    white-space: pre-wrap;
-
-    width: 740px;
-    align-items: center;
-
-    margin-top: 10px;
 }
 
 .recommend-list {
