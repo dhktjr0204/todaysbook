@@ -56,6 +56,9 @@ public class GeminiRecommendBookService { // 설명: GeminiService 클래스는 
     @Value("${gemini.generationConfig.temperature}")
     private double temperature;
 
+    @Value("${aladin.ttbkey}")
+    private String ttbkey;
+
     private final BookRepository bookRepository;
     private final GeminiRecommendBookRepository geminiRecommendBookRepository;
 
@@ -100,7 +103,7 @@ public class GeminiRecommendBookService { // 설명: GeminiService 클래스는 
                 System.out.println(bookTitle + ":  title로 검색해본 결과 DB에 없습니다. 외부 API에서 검색후 isbn을 가져와 다시 DB에 검색합니다.");
 
                 String encodedTitle = URLEncoder.encode(bookTitle, "UTF-8");
-                String apiUrl = "http://www.aladin.co.kr/ttb/api/ItemSearch.aspx?Query=" + encodedTitle + "&ttbkey=ttbcorsair171312001&MaxResults=1&start=1&SearchTarget=Book&Version=20131101&output=js&QueryType=Title&sort=Accuracy";
+                String apiUrl = "http://www.aladin.co.kr/ttb/api/ItemSearch.aspx?Query=" + encodedTitle + "&ttbkey=" + ttbkey + "&MaxResults=1&start=1&SearchTarget=Book&Version=20131101&output=js&QueryType=Title&sort=Accuracy";
                 // 외부 API 호출 (알라딘 API 예시)
 
                 // API 호출 결과를 파싱하여 BookDto 객체에 저장
