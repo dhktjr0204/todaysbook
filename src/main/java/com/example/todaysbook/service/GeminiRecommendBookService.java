@@ -7,6 +7,7 @@ import com.example.todaysbook.domain.entity.GeminiRecommendBook;
 import com.example.todaysbook.repository.BookRepository;
 import com.example.todaysbook.repository.GeminiRecommendBookRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,6 +31,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class GeminiRecommendBookService { // 설명: GeminiService 클래스는 Gemini API를 호출하는 서비스 클래스입니다.
@@ -75,7 +77,7 @@ public class GeminiRecommendBookService { // 설명: GeminiService 클래스는 
 
         String message = response.getCandidates().get(0).getContent().getParts().get(0).getText().toString();
 
-        System.out.println("-----------------응답 message-----------------\n" + message);
+        log.info("-----------------응답 message-----------------\n" + message);
 
         saveGeminiRecommendBook(message);
         return message;
@@ -86,7 +88,7 @@ public class GeminiRecommendBookService { // 설명: GeminiService 클래스는 
         List<String> bookTitles = extractBookTitles(message);
 
 
-        System.out.println("-----------------책 제목 DB 저장 시작-----------------");
+        log.info("-----------------책 제목 DB 저장 시작-----------------");
         for (String bookTitle : bookTitles) {
             // 책 제목으로 DB 검색
             Optional<Book> bookOptional = bookRepository.findByTitle(bookTitle);
@@ -94,14 +96,13 @@ public class GeminiRecommendBookService { // 설명: GeminiService 클래스는 
             if (bookOptional.isPresent()) {
                 // DB에 책이 있으면 해당 bookId 가져오기
                 bookId = bookOptional.get().getId();
-
+                log.info(bookTitle + ": bookId(" + bookId + ") DB에 있습니다.");
                 // 가져온 bookId를 GeminiRecommendBook 엔티티에 저장
                 saveGeminiRecommendBookEntity(bookId);
-                System.out.println(bookTitle + "  : bookId(" + bookId + ") GeminiRecommendBook에 저장 완료");
 
             } else {
                 // DB에 책이 없으면 외부 API에서 데이터 가져와서 저장
-                System.out.println(bookTitle + ":  title로 검색해본 결과 DB에 없습니다. 외부 API에서 검색후 isbn을 가져와 다시 DB에 검색합니다.");
+                log.info(bookTitle + ":  title로 검색해본 결과 DB에 없습니다. 외부 API에서 검색후 isbn을 가져와 다시 DB에 검색합니다.");
 
                 HashMap<String, ?> response = adminService.getNewBook(bookTitle, 1);
                 List<BookDto> bookList = (List<BookDto>) response.get("books");
@@ -121,10 +122,9 @@ public class GeminiRecommendBookService { // 설명: GeminiService 클래스는 
                         }
                     }
                 } else {
-                    System.out.println("    API 호출 결과가 없습니다.");
+                    log.info("API 호출 결과가 없습니다.");
                 }
             }
-            System.out.println(" ");
         }
     }
 
@@ -134,15 +134,15 @@ public class GeminiRecommendBookService { // 설명: GeminiService 클래스는 
                 .date(LocalDateTime.now())
                 .build();
         geminiRecommendBookRepository.save(geminiRecommendBook);
-        System.out.println("bookId(" + bookId + ") GeminiRecommendBook에 저장 완료");
+        log.info("bookId(" + bookId + ") GeminiRecommendBook에 저장 완료");
     }
 
 
     private List<String> extractBookTitles(String message) {
-        System.out.println("---------------책 제목 추출 시작---------------");
+        log.info("---------------책 제목 추출 시작---------------");
         return Arrays.stream(message.split("\n"))
                 .map(line -> line.replaceAll("^\\d+\\.\\s*", "").trim())
-                .peek(System.out::println)
+                .peek(log::info)
                 .collect(Collectors.toList());
     }
 
@@ -214,10 +214,10 @@ public class GeminiRecommendBookService { // 설명: GeminiService 클래스는 
                         .build();
             }
         } catch (IOException e) {
-            System.out.println("API 호출 중 오류가 발생했습니다: " + e.getMessage());
+            log.error("API 호출 중 오류가 발생했습니다: " + e.getMessage());
             return null;
         } catch (JSONException e) {
-            System.out.println("JSON 파싱 중 오류가 발생했습니다: " + e.getMessage());
+            log.error("JSON 파싱 중 오류가 발생했습니다: " + e.getMessage());
             return null;
         }
 
