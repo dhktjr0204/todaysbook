@@ -29,8 +29,6 @@ public class CartController {
 
     private final CartService cartService;
 
-
-
     @GetMapping("/list")
     public String showMyCartList(Model model) {
         // userId가 1인 사용자의 장바구니 목록 조회

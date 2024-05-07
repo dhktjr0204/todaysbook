@@ -5,65 +5,47 @@
       layout:decorate="~{layout/layout}">
 <th:block layout:fragment="head">
     <link rel="stylesheet" type="text/css" href="css/payment/pay.css" th:href="@{/css/payment/pay.css}" />
-    <script src="https://js.tosspayments.com/v1/payment-widget"></script>
+    <script src="https://js.tosspayments.com/v1/payment"></script>
 </th:block>
 <div th:replace="~{fragments/header.html}"></div>
 <main th:fragment="content">
-<!-- 주문서 영역 -->
-<div class="wrapper">
-    <div class="box_section" style="padding: 40px 30px 50px 30px; margin-top: 30px; margin-bottom: 50px">
-        <!-- 결제 UI -->
-        <div id="payment-method"></div>
-        <!-- 이용약관 UI -->
-        <div id="agreement"></div>
-        <!-- 결제하기 버튼 -->
-        <button class="button" id="payment-button" style="margin-top: 30px" disabled>결제하기</button>
-    </div>
-</div>
-<div th:replace="~{fragments/footer.html}"></div>
-<script>
-    const button = document.getElementById("payment-button");
-    const generateRandomString = () => window.btoa(Math.random()).slice(0, 20);
-    var amount = 50000;
-    // ------  결제위젯 초기화 ------
-    // TODO: clientKey는 개발자센터의 결제위젯 연동 키 > 클라이언트 키로 바꾸세요.
-    // TODO: 구매자의 고유 아이디를 불러와서 customerKey로 설정하세요. 이메일・전화번호와 같이 유추가 가능한 값은 안전하지 않습니다.
-    // @docs https://docs.tosspayments.com/reference/widget-sdk#sdk-설치-및-초기화
-    const clientKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm";
-    const customerKey = generateRandomString();
-    const paymentWidget = PaymentWidget(clientKey, customerKey); // 회원 결제
 
-    // ------  결제 UI 렌더링 ------
-    paymentMethodWidget = paymentWidget.renderPaymentMethods(
-      "#payment-method",
-      { value: amount },
-      { variantKey: "DEFAULT" }
-    );
-
-    // ------  이용약관 UI 렌더링 ------
-    paymentWidget.renderAgreement("#agreement", { variantKey: "AGREEMENT" });
-
-    //  ------  결제 UI 렌더링 완료 이벤트 ------
-    paymentMethodWidget.on("ready", function () {
-      button.disabled = false;
-    });
-
-    // ------ '결제하기' 버튼 누르면 결제창 띄우기 ------
-    // @docs https://docs.tosspayments.com/reference/widget-sdk#requestpayment결제-정보
-
-    button.addEventListener("click", function () {
-      // 결제를 요청하기 전에 orderId, amount를 서버에 저장하세요.
-      // 결제 과정에서 악의적으로 결제 금액이 바뀌는 것을 확인하는 용도입니다.
-      paymentWidget.requestPayment({
-        orderId: generateRandomString(),
-        orderName: "토스 티셔츠 외 2개",
-        successUrl: window.location.origin + "/payment/success",
-        failUrl: window.location.origin + "/payment/fail",
-        customerEmail: "customer123@gmail.com",
-        customerName: "김토스",
-        customerMobilePhone: "01012341234",
-      });
-    });
-</script>
 </main>
+<script th:inline="javascript">
+    // ------ 클라이언트 키로 객체 초기화 ------
+    var clientKey = 'test_ck_GePWvyJnrKQPBK1zYk2O3gLzN97E'
+    var tossPayments = TossPayments(clientKey)
+    const generateRandomString = () => window.btoa(Math.random()).slice(0, 20);
+
+    // ------ 결제창 띄우기 ------
+    tossPayments
+      .requestPayment('가상계좌', {
+        // 결제수단 파라미터
+        // 결제 정보 파라미터
+        // 더 많은 결제 정보 파라미터는 결제창 Javascript SDK에서 확인하세요.
+        // https://docs.tosspayments.com/reference/js-sdk
+        amount: [[${totalPrice}+3000]],
+        orderId: generateRandomString(), // 주문번호(주문번호는 상점에서 직접 만들어주세요.)
+        orderName: [[${orderName}]],
+        customerName: '박토스',
+        successUrl: window.location.origin + '/payment/success', // 결제 성공 시 이동할 페이지(이 주소는 예시입니다. 상점에서 직접 만들어주세요.)
+        failUrl: window.location.origin + '/payment/fail', // 결제 실패 시 이동할 페이지(이 주소는 예시입니다. 상점에서 직접 만들어주세요.)
+        validHours: 24, // 입금 기한
+        cashReceipt: {
+          // 현금영수증 발행
+          type: '소득공제',
+        },
+      })
+      // ------ 결제창을 띄울 수 없는 에러 처리 ------
+      // 메서드 실행에 실패해서 reject 된 에러를 처리하는 블록입니다.
+      // 결제창에서 발생할 수 있는 에러를 확인하세요.
+      // https://docs.tosspayments.com/reference/error-codes#결제창공통-sdk-에러
+      .catch(function (error) {
+        if (error.code === 'USER_CANCEL') {
+          // 결제 고객이 결제창을 닫았을 때 에러 처리
+        } else if (error.code === 'INVALID_CARD_COMPANY') {
+          // 유효하지 않은 카드 코드에 대한 에러 처리
+        }
+      })
+</script>
 </html>

@@ -1,36 +1,75 @@
 package com.example.todaysbook.controller;
 
+import com.example.todaysbook.domain.dto.PaymentBookInfoDto;
+import com.example.todaysbook.service.CartService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.Reader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
+@RequiredArgsConstructor
 @Controller
 public class PayController {
 
+    private final CartService cartService;
+
+    public static int getTotalPrice(List<PaymentBookInfoDto> bookDtoList) {
+        int totalPrice = 0;
+        for (PaymentBookInfoDto paymentBookInfoDto : bookDtoList) {
+            totalPrice += paymentBookInfoDto.getPrice() * paymentBookInfoDto.getQuantity();
+        }
+        return totalPrice;
+    }
+
+//    private static int getTotalMileage(List<PaymentBookInfoDto> bookDtoList) {
+//        int totalMileage = 0;
+//        for (PaymentBookInfoDto paymentBookInfoDto : bookDtoList) {
+//            totalMileage += paymentBookInfoDto.getMileage();
+//        }
+//        return totalMileage;
+//    }
     @GetMapping("/payment")
-    public String index(Model model) {
+    public String index(HttpServletRequest request, HttpServletResponse response, Model model) {
+        HttpSession session = request.getSession(false);
+
+        if (session == null) {
+            return "redirect:/";
+        }
+
+        List<PaymentBookInfoDto> bookDtoList = (List<PaymentBookInfoDto>)session.getAttribute("user1_1");
+
+        String orderName = "";
+
+        for (PaymentBookInfoDto book : bookDtoList) {
+            orderName += (book.getBookName() + " (" + book.getQuantity() + "권)\n");
+        }
+        orderName = orderName.substring(0, orderName.length()-1);
+        model.addAttribute("totalPrice", getTotalPrice(bookDtoList));
+        model.addAttribute("orderName", orderName);
         return "payment/pay";
     }
 
     @RequestMapping(value = "/payment/success", method = RequestMethod.GET)
     public String paymentRequest(HttpServletRequest request, Model model) throws Exception {
+        HttpSession session = request.getSession(false);
+        List<PaymentBookInfoDto> bookDtoList = (List<PaymentBookInfoDto>)session.getAttribute("user1_1");
+        model.addAttribute("bookDtoList", bookDtoList);
+        model.addAttribute("totalPrice", getTotalPrice(bookDtoList));
         return "payment/success";
     }
 
@@ -44,7 +83,6 @@ public class PayController {
 
         return "payment/fail";
     }
-
 
     @RequestMapping(value = "/payment/confirm")
     public ResponseEntity<JSONObject> confirmPayment(@RequestBody String jsonBody) throws Exception {
@@ -104,5 +142,29 @@ public class PayController {
         responseStream.close();
 
         return ResponseEntity.status(code).body(jsonObject);
+    }
+
+    @GetMapping("/payment/info")
+    public String paymentInfo(HttpServletRequest req, Model model) {
+        // userId가 1인 사용자의 장바구니 목록 조회
+//        List<CartBook> cartBooks = cartService.findCartBooksByUserId(1L);
+//        int totalPrice = cartService.calculateTotalPrice(cartBooks); // 총 상품 가격을 계산
+        HttpSession session = req.getSession(false);
+        List<PaymentBookInfoDto> bookDtoList = (List<PaymentBookInfoDto>)session.getAttribute("user1_1");
+        model.addAttribute("totalPrice", PayController.getTotalPrice(bookDtoList)); // 모델에 totalPrice를 추가하여 뷰로 전달
+        return "payment/info";
+    }
+
+    @PostMapping("/payment/info")
+    public ResponseEntity<String> paymentInfo(HttpServletRequest request, @RequestBody List<PaymentBookInfoDto> books) throws Exception {
+        HttpSession session = request.getSession(true);
+        session.setAttribute("user1_1", books);
+        return ResponseEntity.ok("/payment/info");
+    }
+
+    @PostMapping("/payment/webhook")
+    public String webhook() {
+        System.out.println("webhook");
+        return "redirect:/";
     }
 }

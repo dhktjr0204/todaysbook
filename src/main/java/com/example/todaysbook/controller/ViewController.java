@@ -1,7 +1,10 @@
 package com.example.todaysbook.controller;
 
+import com.example.todaysbook.domain.dto.PaymentBookInfoDto;
 import com.example.todaysbook.domain.entity.CartBook;
 import com.example.todaysbook.service.CartService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -151,21 +154,6 @@ public class ViewController {
 //        return "cart/list";
 //    }
 
-    @GetMapping("/payment/info")
-    public String paymentInfo(Model model) {
-        // userId가 1인 사용자의 장바구니 목록 조회
-        List<CartBook> cartBooks = cartService.findCartBooksByUserId(1L);
-        int totalPrice = cartService.calculateTotalPrice(cartBooks); // 총 상품 가격을 계산
-        model.addAttribute("totalPrice", totalPrice); // 모델에 totalPrice를 추가하여 뷰로 전달
-
-        return "payment/info";
-    }
-
-    @GetMapping("/payment/success")
-    public String paymentSuccess(Model model) {
-
-        return "payment/success";
-    }
 
     @GetMapping("/alan/recommend")
     public String alanRecommend(Model model) {

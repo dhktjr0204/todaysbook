@@ -13,29 +13,38 @@
 <main th:fragment="content">
   <div class="payment-wrap">
     <section class="payment-info">
-      <p class="title">결제 완료</p>
-      <ul class="payment-info-body">
-        <li th:each="dto : ${#numbers.sequence(1,5)}">
+      <p class="title">결제 중 입니다</p>
+      <p class="description">설명</p>
+      <ul class="cart-list-header">
+        <li>
           <p class="book-name">상품명</p>
           <p class="quantity">수량</p>
           <p class="price">상품 금액</p>
           <p class="mileage">적립 마일리지</p>
         </li>
       </ul>
+      <ul class="payment-info-body">
+        <li th:each="dto : ${bookDtoList}">
+          <p class="book-name" th:text="${dto.bookName}">상품명</p>
+          <p class="quantity" th:text="${dto.quantity}">수량</p>
+          <p class="price" th:text="${dto.price}">상품 금액</p>
+          <p class="mileage" th:text="${dto.mileage}">적립 마일리지</p>
+        </li>
+      </ul>
       <ul class="payment-info-bottom">
         <li>
           <p class="total-price">총 상품 금액</p>
-          <p class="total-price">66,000원</p>
+          <p class="total-price" th:text="${totalPrice}">66,000원</p>
           <p class="operand">-</p>
           <p class="mileage">사용 마일리지</p>
-          <p class="mileage">6,600M</p>
+          <p class="mileage">0M</p>
           <p class="operand">+</p>
           <p class="delivery">배송료</p>
           <p class="delivery">3,000원</p>
         </li>
         <li class="total-price-div">
           <p>합계</p>
-          <p>62,400원</p>
+          <p th:text="${totalPrice + 3000}">62,400원</p>
         </li>
       </ul>
       <ul class="button-group">
@@ -46,10 +55,6 @@
   </div>
 </main>
 <body>
-  <div class="box_section" style="width: 600px">
-    <img width="100px" src="https://static.toss.im/illusts/check-blue-spot-ending-frame.png" />
-    <h2>결제를 완료했어요</h2>
-
     <div class="p-grid typography--p" style="margin-top: 50px">
       <div class="p-grid-col text--left"><b>결제금액</b></div>
       <div class="p-grid-col text--right" id="amount"></div>
@@ -88,6 +93,10 @@
 <!-- console.log(window.location.search);
 <!-- 위의 결과는 => ?paymentType=NORMAL&orderId=MC4zMzg3ODUyNDgwNjE5&paymentKey=tgen_20240429142416eOwc6&amount=50000
 
+      function padZero(num) {
+        return num.toString().padStart(2, '0');
+      }
+
       const urlParams = new URLSearchParams(window.location.search);
 
       // 서버로 결제 승인에 필요한 결제 정보를 보내세요.
@@ -109,8 +118,6 @@
         const json = await response.json();
 
         if (!response.ok) {
-          // TODO: 결제 실패 비즈니스 로직을 구현하세요.
-          console.log(json);
           window.location.href = `/fail?message=${json.message}&code=${json.code}`;
         }
 
@@ -120,7 +127,14 @@
       }
 
       confirm().then(function (data) {
+        document.querySelector('.title').innerHTML = '결제 완료(입금 대기중)';
         document.getElementById("response").innerHTML = `<pre>${JSON.stringify(data, null, 4)}</pre>`;
+
+        var date = new Date(data.virtualAccount.dueDate);
+        // 날짜 및 시간을 원하는 형식으로 변환합니다.
+        var formattedDate = `${date.getFullYear()}-${padZero(date.getMonth() + 1)}-${padZero(date.getDate())} ${padZero(date.getHours())}시 ${padZero(date.getMinutes())}분`;
+
+        document.querySelector('.description').innerHTML = `<pre>입금 가상 계좌 : ${data.virtualAccount.accountNumber}\n입금 기한 : ${formattedDate} 까지</pre>`;
       });
 
       const paymentKeyElement = document.getElementById("paymentKey");
