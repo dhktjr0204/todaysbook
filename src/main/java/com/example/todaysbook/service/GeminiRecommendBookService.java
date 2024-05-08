@@ -61,14 +61,8 @@ public class GeminiRecommendBookService { // 설명: GeminiService 클래스는 
 
     private final BookRepository bookRepository;
     private final GeminiRecommendBookRepository geminiRecommendBookRepository;
-    private AdminServiceImpl adminService;
+    private final AdminServiceImpl adminService;
 
-    @Autowired
-    public GeminiRecommendBookService(BookRepository bookRepository, GeminiRecommendBookRepository geminiRecommendBookRepository, AdminServiceImpl adminService) {
-        this.bookRepository = bookRepository;
-        this.geminiRecommendBookRepository = geminiRecommendBookRepository;
-        this.adminService = adminService;
-    }
 
     public String getContents(String prompt) throws UnsupportedEncodingException {
         String requestUrl = apiUrl + "?key=" + geminiApiKey;
@@ -84,6 +78,9 @@ public class GeminiRecommendBookService { // 설명: GeminiService 클래스는 
         return message;
     }
 
+
+    // 나중에 adminService가 아닌 유틸 클래스 만들어 지면 그것을 사용하도록 변경
+    // max 매개변수 설정하는거 기억 (프롬프트 책 15개 이상으로 변경 하려고 하기 때문에)
     public void saveGeminiRecommendBook(String message) throws UnsupportedEncodingException {
         // 책 제목 추출
         List<String> bookTitles = extractBookTitles(message);
