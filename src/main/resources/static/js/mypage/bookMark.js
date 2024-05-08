@@ -21,6 +21,8 @@ async function cancelBookMark(url, button) {
                if(response.status===401){
                    alert(msg);
                    location.href="/login";
+               }else if(response.status === 400){
+                   alert(msg);
                }
             });
         }else{
@@ -45,6 +47,8 @@ async function addBookMark(url, button) {
                 if(response.status===401){
                     alert(msg);
                     location.href="/login";
+                }else if(response.status === 400){
+                    alert(msg);
                 }
             });
         }else{

@@ -15,7 +15,7 @@
         <form class="book-detail book-form" onsubmit="return false" th:object="${book}">
             <div class="book-detail-header">
                 <input type="hidden" class="book-id" th:field="*{id}">
-                <input class="title" th:field="*{title}">
+                <textarea class="title" th:field="*{title}"></textarea>
                 <div class="book-info">
                     <input class="author" th:field="*{author}">
                     <input class="publisher" th:field="*{publisher}">

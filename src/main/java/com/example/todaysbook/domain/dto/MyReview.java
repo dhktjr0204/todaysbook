@@ -13,4 +13,5 @@ public class MyReview {
     private long userId;
     private String title;
     private String content;
+    private int score;
 }

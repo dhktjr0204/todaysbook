@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.todaysbook.repository.RecommendBookMapper">
+    <select id="getRecommendBooks" resultType="com.example.todaysbook.domain.dto.RecommendBookDto">
+        SELECT b.id, b.title, b.author, b.price, b.image_path as imagePath
+        from recommend_book rb
+        inner join book b
+        on rb.recommend_book_id = b.id
+        where rb.book_id = #{bookId};
+    </select>
+
+    <insert id="insertRecommendBookInfo" parameterType="java.util.List">
+        INSERT INTO recommend_book (book_id, recommend_book_id, similarity_score, create_at)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.bookId}, #{item.recommendBookId}, #{item.similarityScore}, now())
+        </foreach>
+    </insert>
+
+    <update id="truncateRecommendBook">
+        TRUNCATE TABLE recommend_book;
+    </update>
+</mapper>

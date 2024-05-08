@@ -1,7 +1,7 @@
 function clickRegistrationButton() {
     const checkBoxes = document.querySelectorAll(".check-box");
 
-    const books=[];
+    const books = [];
 
     checkBoxes.forEach(checkbox => {
         if (checkbox.checked) {
@@ -32,7 +32,7 @@ function clickRegistrationButton() {
         }
     });
 
-    if (books.length>0) {
+    if (books.length > 0) {
         submitForm(books);
     } else {
         alert("선택된 도서가 없습니다.")
@@ -46,17 +46,28 @@ function submitForm(books) {
     if (confirmation) {
         fetch("/admin/book_registration", {
             method: "POST",
-            headers:{
-                "Content-Type":"application/json"
+            headers: {
+                "Content-Type": "application/json"
             },
             body: JSON.stringify(books)
         }).then(response => {
             if (!response.ok) {
-                console.log("실패");
+                return response.text().then(msg => {
+                    if (response.status === 401) {
+                        alert(msg);
+                    }else if(response.status===400){
+                        alert(msg);
+                        throw new Error(msg);
+                    } else if (response.status === 404) {
+                        alert(msg);
+                    }
+                });
             }
             return response.text();
         }).then(msg => {
-            alert(msg);
+            if (msg) {
+                alert(msg);
+            }
             window.location.reload();
         })
     }

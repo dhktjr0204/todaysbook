@@ -2,6 +2,7 @@ package com.example.todaysbook.repository;
 
 import com.example.todaysbook.domain.dto.Review;
 import com.example.todaysbook.domain.dto.ReviewRequestDto;
+import com.example.todaysbook.domain.dto.SimpleReview;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.List;
 public interface ReviewMapper {
 
     List<Review> getReviews(long bookId, long userId, String orderBy);
+    List<SimpleReview> getSimpleReviews();
     int addLikeReview(long userId, long reviewId);
     int addDislikeReview(long userId, long reviewId);
     int deleteLikeReview(long userId, long reviewId);

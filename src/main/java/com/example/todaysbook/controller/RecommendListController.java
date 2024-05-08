@@ -7,11 +7,14 @@ import com.example.todaysbook.domain.dto.RecommendListDetailDto;
 import com.example.todaysbook.domain.entity.UserRecommendList;
 import com.example.todaysbook.exception.user.UserValidateException;
 import com.example.todaysbook.service.RecommendListService;
+import com.example.todaysbook.validate.RecommendListCreateValidator;
+import com.example.todaysbook.validate.RecommendListUpdateValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,7 +40,11 @@ public class RecommendListController {
     }
 
     @GetMapping("/add")
-    public String getWriteForm(Model model) {
+    public String getWriteForm(@AuthenticationPrincipal CustomUserDetails userDetails, Model model) {
+
+        if(userDetails==null){
+            return "error/404";
+        }
 
         model.addAttribute("recommendList", new RecommendListCreateRequestDto());
 
@@ -45,9 +52,19 @@ public class RecommendListController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<String> createRecommnedList(@AuthenticationPrincipal CustomUserDetails userDetails, RecommendListCreateRequestDto request) {
+    public ResponseEntity<String> createRecommnedList(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                      RecommendListCreateRequestDto request,
+                                                      BindingResult result) {
+
+        if(userDetails==null){
+            throw new UserValidateException();
+        }
 
         Long userId = userDetails.getUserId();
+
+        //title 길이, list 길이 검증
+        RecommendListCreateValidator listValidator=new RecommendListCreateValidator();
+        listValidator.validate(request, result);
 
         UserRecommendList save = recommendListService.save(userId, request);
 
@@ -55,9 +72,15 @@ public class RecommendListController {
     }
 
     @GetMapping("/update/{id}")
-    public String getUpdateForm(@PathVariable Long id, Model model) {
+    public String getUpdateForm(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                @PathVariable Long id, Model model) {
 
         RecommendListDetailDto recommendListDetail = recommendListService.getRecommendListDetail(id);
+
+        //리스트 작성 유저와 현재 로그인 된 유저가 다를 시 404페이지 뜸
+        if(userDetails==null || userDetails.getUserId() != recommendListDetail.getUserId()){
+            return "error/404";
+        }
 
         model.addAttribute("recommendList", recommendListDetail);
 
@@ -65,7 +88,13 @@ public class RecommendListController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<String> updateRecommendList(@PathVariable Long id, RecommendListUpdateRequestDto request) {
+    public ResponseEntity<String> updateRecommendList(@PathVariable Long id,
+                                                      RecommendListUpdateRequestDto request,
+                                                      BindingResult result) {
+
+        //title 길이, list 길이 검증
+        RecommendListUpdateValidator listValidator=new RecommendListUpdateValidator();
+        listValidator.validate(request, result);
 
         recommendListService.update(id, request);
 
