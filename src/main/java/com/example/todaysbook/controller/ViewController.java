@@ -1,10 +1,7 @@
 package com.example.todaysbook.controller;
 
-<<<<<<< HEAD
 import com.example.todaysbook.domain.dto.PaymentBookInfoDto;
-=======
 import com.example.todaysbook.domain.dto.CustomUserDetails;
->>>>>>> 357f89b67e50ef3cc0490f77ba9f1fdc642c38f2
 import com.example.todaysbook.domain.entity.CartBook;
 import com.example.todaysbook.service.CartService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -154,23 +151,23 @@ public class ViewController {
 //        return "cart/list";
 //    }
 
-    @GetMapping("/payment/info")
-    public String paymentInfo(Model model,@AuthenticationPrincipal CustomUserDetails userDetails) {
-        // userId로 사용자의 장바구니 목록 조회
-        //0503수정
-        long userId = userDetails.getUserId();
-        List<CartBook> cartBooks = cartService.findCartBooksByUserId(userId);
-        int totalPrice = cartService.calculateTotalPrice(cartBooks); // 총 상품 가격을 계산
-        model.addAttribute("totalPrice", totalPrice); // 모델에 totalPrice를 추가하여 뷰로 전달
-
-        return "payment/info";
-    }
-
-    @GetMapping("/payment/success")
-    public String paymentSuccess(Model model) {
-
-        return "payment/success";
-    }
+//    @GetMapping("/payment/info")
+//    public String paymentInfo(Model model,@AuthenticationPrincipal CustomUserDetails userDetails) {
+//        // userId로 사용자의 장바구니 목록 조회
+//        //0503수정
+//        long userId = userDetails.getUserId();
+//        List<CartBook> cartBooks = cartService.findCartBooksByUserId(userId);
+//        int totalPrice = cartService.calculateTotalPrice(cartBooks); // 총 상품 가격을 계산
+//        model.addAttribute("totalPrice", totalPrice); // 모델에 totalPrice를 추가하여 뷰로 전달
+//
+//        return "payment/info";
+//    }
+//
+//    @GetMapping("/payment/success")
+//    public String paymentSuccess(Model model) {
+//
+//        return "payment/success";
+//    }
 
     @GetMapping("/alan/recommend")
     public String alanRecommend(Model model) {

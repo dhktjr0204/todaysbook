@@ -76,7 +76,11 @@ main {
     display: flex;
     justify-content: right;
     gap: 30px;
+    padding: 10px 20px;
+}
 
+.etc {
+    display: flex;
     padding: 10px 20px;
     margin-bottom: 50px;
 }

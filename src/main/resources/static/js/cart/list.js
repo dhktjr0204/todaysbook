@@ -52,7 +52,7 @@ function postSelectedCartItems() {
 
             // li 태그 내부의 필요한 정보들을 추출합니다.
             const bookName = listItem.querySelector('.book-name').textContent;
-            const quantity = parseInt(listItem.querySelector('.quantity').textContent);
+            const quantity = parseInt(listItem.querySelector('.quantity_count').textContent);
             const price = parseFloat(listItem.querySelector('.price').textContent);
             const mileage = listItem.querySelector('.mileage').textContent;
 

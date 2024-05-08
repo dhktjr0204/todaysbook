@@ -113,6 +113,13 @@ main {
     padding: 10px;
 }
 
+.radio-group {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
 .button-group {
 
     display: flex;
