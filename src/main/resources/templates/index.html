@@ -38,10 +38,6 @@
             </a>
         </article>
         <section class="recommend-list-section">
-
-
-
-
             <article th:unless="${favoriteBooks.isEmpty()}">
                 <div class="recommend-list-header">
                     <div class="recommend-list-title-container">
@@ -78,22 +74,29 @@
                     <p class="recommend-list-title" th:text="'AI 오늘의 추천 리스트'"></p>
                     <p class="more-button" th:text="'더보기'"></p>
                 </div>
-                <ul class="recommend-list">
-                    <li>
-                        &lt;
-                    </li>
-                    <li th:each="book : ${todayRecommendBooks}">
-                        <a th:href="@{'/book/detail/' + ${book.id}}">
-                            <img th:src="${book.imagePath}">
-                        </a>
-                    </li>
-                    <li>
-                        &gt;
-                    </li>
-                </ul>
+                <div class="recommend-list-body">
+                    <button th:class="${todayRecommendBooks.size() > 5 ? 'prev-btn' : 'prev-btn-hidden'}" th:onclick="prevSlide('today', this)">&lt;</button>
+                    <div class="slider-container">
+                        <ul class="recommend-list">
+                            <li class="book-item" th:each="book : ${todayRecommendBooks}" th:value="${book.id}">
+                                <figure class="book-info">
+                                    <a th:href="@{'/book/detail/' + ${book.id}}">
+                                        <img th:src="${book.imagePath}" th:alt="${book.title}">
+                                        <figcaption class="overlay">
+                                            <p class="book-title" th:if="${book.title.length() > 25}" th:text="${#strings.substring(book.title, 0, 25)} + '...'"></p>
+                                            <p class="book-title" th:unless="${book.title.length() > 25}" th:text="${book.title}"></p>
+                                            <p class="author" th:if="${book.author.length() > 25}" th:text="${#strings.substring(book.author, 0, 25)} + '...'"></p>
+                                            <p class="author" th:unless="${book.author.length() > 25}" th:text="${book.author}"></p>
+                                            <p class="price" th:text="${book.price}"></p>
+                                        </figcaption>
+                                    </a>
+                                </figure>
+                            </li>
+                        </ul>
+                    </div>
+                    <button th:if="${todayRecommendBooks.size() > 5}" class="next-btn" th:onclick="nextSlide('today', this)">&gt;</button>
+                </div>
             </article>
-
-
             <article>
                 <div class="recommend-list-header">
                     <p class="recommend-list-title" th:text="'개발자들이 많이 찾는 책'"></p>
