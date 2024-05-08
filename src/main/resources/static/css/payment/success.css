@@ -6,15 +6,30 @@ main {
 }
 
 .title {
-
     font-size: 30px;
+    margin-bottom: 20px;
+}
+
+.description {
+    font-size: 20px;
     margin-bottom: 50px;
+}
+
+.cart-list-header {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+}
+
+.cart-list-header li{
+    display: flex;
+    justify-content: center;
+    padding: 10px;
 }
 
 .payment-info-body {
 
     padding: 10px;
-
     border-top: solid white 1px;
     border-bottom: solid white 1px;
 }
@@ -27,7 +42,6 @@ main {
 }
 
 .quantity {
-
     width: 80px;
 }
 
@@ -62,7 +76,11 @@ main {
     display: flex;
     justify-content: right;
     gap: 30px;
+    padding: 10px 20px;
+}
 
+.etc {
+    display: flex;
     padding: 10px 20px;
     margin-bottom: 50px;
 }

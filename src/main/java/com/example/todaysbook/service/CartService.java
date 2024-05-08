@@ -2,10 +2,7 @@ package com.example.todaysbook.service;
 
 import com.example.todaysbook.domain.dto.CartRequestDto;
 import com.example.todaysbook.domain.dto.CustomUserDetails;
-import com.example.todaysbook.domain.entity.Book;
-import com.example.todaysbook.domain.entity.Cart;
-import com.example.todaysbook.domain.entity.CartBook;
-import com.example.todaysbook.domain.entity.User;
+import com.example.todaysbook.domain.entity.*;
 import com.example.todaysbook.repository.BookRepository;
 import com.example.todaysbook.repository.CartBookRepository;
 import com.example.todaysbook.repository.CartRepository;
@@ -107,11 +104,59 @@ public class CartService {
         return totalPrice;
     }
 
-    // 총 적립 마일리지 계산 메소드 (임시)
-    public int calculateTotalMileage(List<CartBook> cartBooks) {
-        return 0; // 일단은 임시로 0으로 설정
-    }
+    // 각 등급에 따른 적립율 설정
+    private static final double BRONZE_RATE = 0.03;
+    private static final double SILVER_RATE = 0.05;
+    private static final double GOLD_RATE = 0.07;
+    private static final double DIAMOND_RATE = 0.10;
 
+
+    @Transactional
+    public double individualMileage(Role userRole){
+        double mileageRate;
+        switch (userRole) {
+            case ROLE_COMMON_BRONZE:
+                mileageRate = BRONZE_RATE;
+                break;
+            case ROLE_COMMON_SILVER:
+                mileageRate = SILVER_RATE;
+                break;
+            case ROLE_COMMON_GOLD:
+                mileageRate = GOLD_RATE;
+                break;
+            case ROLE_COMMON_DIAMOND:
+                mileageRate = DIAMOND_RATE;
+                break;
+            default:
+                mileageRate = BRONZE_RATE;
+                break;
+        }
+        return mileageRate;
+    }
+    // 총 적립 마일리지 계산 메서드
+    @Transactional
+    public int calculateTotalMileage(List<CartBook> cartBooks, Role userRole) {
+        int totalPrice = calculateTotalPrice(cartBooks);
+        double mileageRate;
+        switch (userRole) {
+            case ROLE_COMMON_BRONZE:
+                mileageRate = BRONZE_RATE;
+                break;
+            case ROLE_COMMON_SILVER:
+                mileageRate = SILVER_RATE;
+                break;
+            case ROLE_COMMON_GOLD:
+                mileageRate = GOLD_RATE;
+                break;
+            case ROLE_COMMON_DIAMOND:
+                mileageRate = DIAMOND_RATE;
+                break;
+            default:
+                mileageRate = BRONZE_RATE;
+                break;
+        }
+        return (int) (totalPrice * mileageRate);
+    }
 
     ///0503~구현중
     @Transactional
