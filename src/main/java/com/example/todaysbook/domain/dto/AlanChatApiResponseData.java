@@ -1,5 +1,6 @@
 package com.example.todaysbook.domain.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,6 +11,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @Data
 public class AlanChatApiResponseData {
-    // AlanChatApiResponseWrapper의 data 필드에 들어갈 데이터를 정의
+    @JsonProperty(required = false)
+    private String name;
+
+    @JsonProperty(required = false)
+    private String speak;
+
     private String content;
 }

@@ -6,9 +6,14 @@ import com.example.todaysbook.domain.dto.AlanChatApiResponseWrapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.ResponseExtractor;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.Scanner;
 
 @Service
 @RequiredArgsConstructor
@@ -16,34 +21,41 @@ public class AlanChatService {
 
     private static final String API_URL = "https://kdt-api-function.azurewebsites.net/api/v1/question/sse-streaming";
 
+    @Value("${alan.client-id}")
+    private String clientId;
+
     private final RestTemplate restTemplate;
-    private final ObjectMapper objectMapper;
 
     public AlanChatApiResponse getResponse(AlanChatApiRequest request) {
-        // API 호출
-        ResponseEntity<String> response = restTemplate.postForEntity(API_URL, request, String.class);
+        String url = API_URL + "?content=" + request.getContent() + "&client_id=" + clientId;
 
-        // 응답 처리 로직 구현
-        String responseBody = response.getBody();
-        AlanChatApiResponse apiResponse = new AlanChatApiResponse();
+        ResponseExtractor<AlanChatApiResponse> responseExtractor = response -> {
+            Scanner scanner = new Scanner(response.getBody(), "UTF-8");
+            StringBuilder contentBuilder = new StringBuilder();
 
-        try {
-            // JSON 문자열을 파싱하여 객체로 변환
-            ObjectMapper objectMapper = new ObjectMapper();
-            AlanChatApiResponseWrapper responseWrapper = objectMapper.readValue(responseBody, AlanChatApiResponseWrapper.class);
+            while (scanner.hasNext()) {
+                String line = scanner.nextLine();
+                if (line.startsWith("data:")) {
+                    String data = line.substring(5).trim();
+                    if (!data.isEmpty()) {
+                        try {
+                            // 작은따옴표를 큰따옴표로 변경
+                            data = data.replace("'", "\"");
+                            AlanChatApiResponseWrapper responseWrapper = new ObjectMapper().readValue(data, AlanChatApiResponseWrapper.class);
+                            contentBuilder.append(responseWrapper.getData().getContent());
+                        } catch (JsonProcessingException e) {
+                            throw new RuntimeException("Failed to parse response data", e);
+                        }
+                    }
+                }
+            }
 
-            // 응답 데이터 추출
-            String content = responseWrapper.getData().getContent();
+            return AlanChatApiResponse.builder()
+                    .content(contentBuilder.toString())
+                    .build();
+        };
 
-            // AlanChatApiResponse 객체에 응답 내용 설정
-            apiResponse.setContent(content);
-
-        } catch (JsonProcessingException e) {
-            // JSON 파싱 실패 시 예외 처리
-            e.printStackTrace();
-            // 예외 처리에 따른 적절한 응답 설정
-            apiResponse.setContent("죄송합니다. 응답을 처리하는 중에 오류가 발생했습니다.");
-        }
+        AlanChatApiResponse apiResponse = restTemplate.execute(url, HttpMethod.GET, null, responseExtractor);
 
         return apiResponse;
     }

@@ -1,27 +1,28 @@
-function sendQuestion() {
-    const questionInput = document.getElementById('questionInput');
-    const question = questionInput.value.trim();
-    if (question !== '') {
-        const userChat = document.querySelector('.user-chat .read-text');
-        userChat.value = question;
-        questionInput.value = '';
+document.addEventListener('DOMContentLoaded', function() {
+    var chatForm = document.getElementById('chatForm');
+    var userInput = document.getElementById('userInput');
+    var chatHistory = document.getElementById('chatHistory');
 
-        const eventSource = new EventSource(`/alan/question?content=${encodeURIComponent(question)}`);
+    chatForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        var userMessage = userInput.value;
 
-        eventSource.onmessage = function (event) {
-            const alanChat = document.querySelector('.alan-chat .read-text');
-            const text = event.data;
-
-            if (text === 'end') {
-                eventSource.close();
-            } else {
-                alanChat.value += text;
-            }
-        };
-
-        eventSource.onerror = function (event) {
-            console.error('EventSource error:', event);
-            eventSource.close();
-        };
-    }
-}
+        fetch('/alan/chat', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({content: userMessage})
+        })
+            .then(function(response) {
+                return response.text();
+            })
+            .then(function(data) {
+                chatHistory.innerHTML = data;
+                userInput.value = '';
+            })
+            .catch(function(error) {
+                console.log('Error:', error);
+            });
+    });
+});
