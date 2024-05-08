@@ -115,16 +115,16 @@ public class CartService {
     public double individualMileage(Role userRole){
         double mileageRate;
         switch (userRole) {
-            case ROLE_COMMON_BRONZE:
+            case ROLE_BRONZE:
                 mileageRate = BRONZE_RATE;
                 break;
-            case ROLE_COMMON_SILVER:
+            case ROLE_SILVER:
                 mileageRate = SILVER_RATE;
                 break;
-            case ROLE_COMMON_GOLD:
+            case ROLE_GOLD:
                 mileageRate = GOLD_RATE;
                 break;
-            case ROLE_COMMON_DIAMOND:
+            case ROLE_DIA:
                 mileageRate = DIAMOND_RATE;
                 break;
             default:
@@ -139,16 +139,16 @@ public class CartService {
         int totalPrice = calculateTotalPrice(cartBooks);
         double mileageRate;
         switch (userRole) {
-            case ROLE_COMMON_BRONZE:
+            case ROLE_BRONZE:
                 mileageRate = BRONZE_RATE;
                 break;
-            case ROLE_COMMON_SILVER:
+            case ROLE_SILVER:
                 mileageRate = SILVER_RATE;
                 break;
-            case ROLE_COMMON_GOLD:
+            case ROLE_GOLD:
                 mileageRate = GOLD_RATE;
                 break;
-            case ROLE_COMMON_DIAMOND:
+            case ROLE_DIA:
                 mileageRate = DIAMOND_RATE;
                 break;
             default:
