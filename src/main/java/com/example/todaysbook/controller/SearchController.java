@@ -37,7 +37,7 @@ public class SearchController {
             @SortDefault(sort = "title", direction = Sort.Direction.ASC)}) Pageable pageable,
                              @RequestParam(value = "keyword") String keyword, Model model) {
 
-        if(keyword.isEmpty()){
+        if (keyword.isEmpty()) {
             return "error/404";
         }
 
@@ -67,7 +67,7 @@ public class SearchController {
                               @AuthenticationPrincipal CustomUserDetails userDetails,
                               Model model) {
 
-        if(keyword.isEmpty()){
+        if (keyword.isEmpty()) {
             return "error/404";
         }
 
@@ -97,7 +97,9 @@ public class SearchController {
     }
 
     @GetMapping("/search/create/list")
-    public ResponseEntity<Page<BookDto>> searchBooks(@PageableDefault(page = 0, size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
+    public ResponseEntity<Page<BookDto>> searchBooks(@PageableDefault(page = 0, size = 10) @SortDefault.SortDefaults({
+            @SortDefault(sort = "publishDate", direction = Sort.Direction.ASC),
+            @SortDefault(sort = "title", direction = Sort.Direction.ASC)}) Pageable pageable,
                                                      @RequestParam(value = "keyword") String keyword, Model model) {
         return ResponseEntity.ok(searchService.searchBookByKeyword(keyword, pageable));
     }

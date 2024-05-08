@@ -7,6 +7,7 @@ import com.example.todaysbook.domain.entity.Book;
 import com.example.todaysbook.domain.entity.GeminiRecommendBook;
 import com.example.todaysbook.repository.BookRepository;
 import com.example.todaysbook.repository.GeminiRecommendBookRepository;
+import com.example.todaysbook.util.AladinApi;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
@@ -25,10 +26,8 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -61,8 +60,9 @@ public class GeminiRecommendBookService { // 설명: GeminiService 클래스는 
 
     private final BookRepository bookRepository;
     private final GeminiRecommendBookRepository geminiRecommendBookRepository;
-    private final AdminServiceImpl adminService;
 
+    private final AladinApi aladinApi;
+    private final AdminServiceImpl adminService;
 
     public String getContents(String prompt) throws UnsupportedEncodingException {
         String requestUrl = apiUrl + "?key=" + geminiApiKey;
@@ -102,18 +102,18 @@ public class GeminiRecommendBookService { // 설명: GeminiService 클래스는 
                 // DB에 책이 없으면 외부 API에서 데이터 가져와서 저장
                 log.info(bookTitle + ":  title로 검색해본 결과 DB에 없습니다. 외부 API에서 검색후 isbn을 가져와 다시 DB에 검색합니다.");
 
-                HashMap<String, ?> response = adminService.getNewBook(bookTitle, 1);
+                HashMap<String, ?> response = aladinApi.getNewBook(bookTitle, 1,1);
                 List<BookDto> bookList = (List<BookDto>) response.get("books");
 
                 if (!bookList.isEmpty()) {
                     BookDto bookDto = bookList.get(0);
-                    Optional<Book> existingBook = bookRepository.findByIsbn(bookDto.getIsbn());
+                    Optional<Book> existingBook = bookRepository.findFirstByIsbn(bookDto.getIsbn());
                     if (existingBook.isPresent()) {
                         bookId = existingBook.get().getId();
                         saveGeminiRecommendBookEntity(bookId);
                     } else {
                         adminService.addNewBook(List.of(bookDto));
-                        Optional<Book> savedBook = bookRepository.findByIsbn(bookDto.getIsbn());
+                        Optional<Book> savedBook = bookRepository.findFirstByIsbn(bookDto.getIsbn());
                         if (savedBook.isPresent()) {
                             bookId = savedBook.get().getId();
                             saveGeminiRecommendBookEntity(bookId);
@@ -208,7 +208,7 @@ public class GeminiRecommendBookService { // 설명: GeminiService 클래스는 
                         .isbn(item.getString("isbn13"))
                         .description(item.getString("description"))
                         .imagePath(item.getString("cover"))
-                        .category(adminService.convertCategoryToCategoryId(item.getString("categoryName")))
+                        .category(aladinApi.convertCategoryToCategoryId(item.getString("categoryName")))
                         .build();
             }
         } catch (IOException e) {
