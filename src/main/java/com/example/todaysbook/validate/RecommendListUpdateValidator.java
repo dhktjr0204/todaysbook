@@ -1,6 +1,5 @@
 package com.example.todaysbook.validate;
 
-import com.example.todaysbook.domain.dto.RecommendListCreateRequestDto;
 import com.example.todaysbook.domain.dto.RecommendListUpdateRequestDto;
 import com.example.todaysbook.exception.recommendList.EmptyTitleException;
 import com.example.todaysbook.exception.recommendList.RecommendListLengthOverException;
@@ -26,10 +25,10 @@ public class RecommendListUpdateValidator implements Validator {
         if(isTitleEmpty(listTitle)){
             throw new EmptyTitleException();
         }
-        if(isTitleLengthLimitOver(listTitle)){
+        if(isTitleLengthOver(listTitle)){
             throw new TitleLengthOverException();
         }
-        if(isListCountLimitOver(bookList)){
+        if(isListCountOver(bookList)){
             throw new RecommendListLengthOverException();
         }
 
@@ -39,11 +38,11 @@ public class RecommendListUpdateValidator implements Validator {
         return title.isEmpty();
     }
 
-    private boolean isTitleLengthLimitOver(String title){
+    private boolean isTitleLengthOver(String title){
         return title.length()>30;
     }
 
-    private boolean isListCountLimitOver(List<Long> booklist){
+    private boolean isListCountOver(List<Long> booklist){
         if(booklist!=null){
             return booklist.size()>10;
         }

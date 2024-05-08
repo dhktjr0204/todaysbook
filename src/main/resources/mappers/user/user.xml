@@ -5,7 +5,7 @@
 <mapper namespace="com.example.todaysbook.repository.UserMapper">
     <update id="updateUserRole">
         UPDATE user u
-            JOIN (
+            LEFT JOIN (
             SELECT o.user_id, SUM(b.price * ob.book_count) AS totalPrice
             FROM `order` o
             INNER JOIN order_book ob ON o.id = ob.order_id
@@ -15,11 +15,11 @@
             ) AS user_total_price ON u.id = user_total_price.user_id
         SET u.role =
             CASE
-            WHEN user_total_price.totalPrice >= 300000 THEN 'DIAMOND'
-            WHEN user_total_price.totalPrice >= 100000 THEN 'GOLD'
-            WHEN user_total_price.totalPrice >= 5000 THEN 'SILVER'
-            ELSE u.role
+            WHEN user_total_price.totalPrice >= 300000 THEN 'ROLE_DIAMOND'
+            WHEN user_total_price.totalPrice >= 100000 THEN 'ROLE_GOLD'
+            WHEN user_total_price.totalPrice >= 50000 THEN 'ROLE_SILVER'
+            ELSE 'ROLE_BRONZE'
         END
-        WHERE u.role != 'ADMIN';
+        WHERE u.role != 'ROLE_ADMIN';
     </update>
 </mapper>

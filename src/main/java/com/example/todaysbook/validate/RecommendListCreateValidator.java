@@ -12,6 +12,7 @@ import java.util.List;
 public class RecommendListCreateValidator implements Validator {
     @Override
     public boolean supports(Class<?> clazz) {
+
         return RecommendListCreateRequestDto.class.isAssignableFrom(clazz);
     }
 
@@ -25,10 +26,10 @@ public class RecommendListCreateValidator implements Validator {
         if(isTitleEmpty(listTitle)){
             throw new EmptyTitleException();
         }
-        if(isTitleLengthLimitOver(listTitle)){
+        if(isTitleLengthOver(listTitle)){
             throw new TitleLengthOverException();
         }
-        if(isListCountLimitOver(bookList)){
+        if(isListCountOver(bookList)){
             throw new RecommendListLengthOverException();
         }
 
@@ -38,11 +39,11 @@ public class RecommendListCreateValidator implements Validator {
         return title.isEmpty();
     }
 
-    private boolean isTitleLengthLimitOver(String title){
+    private boolean isTitleLengthOver(String title){
         return title.length()>30;
     }
 
-    private boolean isListCountLimitOver(List<Long> booklist){
+    private boolean isListCountOver(List<Long> booklist){
         if(booklist!=null){
             return booklist.size()>10;
         }

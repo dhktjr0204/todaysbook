@@ -28,7 +28,6 @@ import java.util.HashMap;
 @RequestMapping("/book")
 public class SearchController {
     private final SearchService searchService;
-    private final int VISIBLE_PAGE = 5;
 
 
     @GetMapping("/search")

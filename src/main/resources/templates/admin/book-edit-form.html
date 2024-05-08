@@ -15,10 +15,24 @@
         <form class="book-detail book-form" onsubmit="return false" th:object="${book}">
             <div class="book-detail-header">
                 <input type="hidden" class="book-id" th:field="*{id}">
-                <textarea class="title" th:field="*{title}"></textarea>
+                <textarea class="title" th:field="*{title}"
+                          onchange="titleWordCount()"
+                          oninput="titleWordCount()"
+                ></textarea>
+                <p class="title-text-count">0/200</p>
                 <div class="book-info">
-                    <input class="author" th:field="*{author}">
-                    <input class="publisher" th:field="*{publisher}">
+                    <div>
+                        <input class="author" th:field="*{author}"
+                               onchange="authorWordCount()"
+                               oninput="authorWordCount()">
+                        <p class="author-text-count">0/200</p>
+                    </div>
+                    <div>
+                        <input class="publisher" th:field="*{publisher}"
+                               onchange="publisherWordCount()"
+                               oninput="publisherWordCount()">
+                        <p class="publisher-text-count">0/20</p>
+                    </div>
                     <p th:text="${#temporals.format(book.publishDate, 'yyyy-MM-dd')}"></p>
                 </div>
             </div>
@@ -29,7 +43,7 @@
                         <p class="price-label" th:text="'판매가'"></p>
                         <div>
                             <input class="price"
-                               th:field="*{price}">
+                                   th:field="*{price}">
                         </div>
                     </div>
                     <div class="count-info">
@@ -41,7 +55,10 @@
             <div class="book-description">
                 <p th:text="'책 소개'"></p>
                 <textarea class="description"
-                   th:field="*{description}"></textarea>
+                          th:field="*{description}"
+                          onchange="descriptionWordCount()"
+                          oninput="descriptionWordCount()"></textarea>
+                <p class="description-text-count">0/300</p>
             </div>
             <div class="button-container">
                 <button type="button" class="edit-button" onclick="clickEditBookButton()">수정</button>
@@ -52,5 +69,6 @@
 </main>
 <div th:replace="~{fragments/footer.html}"></div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script th:src="@{/js/wordCount.js}"></script>
 <script th:src="@{/js/admin/booklist/editForm.js}"></script>
 </html>
