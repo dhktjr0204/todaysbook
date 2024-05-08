@@ -38,7 +38,8 @@
                         </p>
 
                         <p class="price" th:text="${cartBook.book.price * cartBook.count}"></p>
-                        <p class="mileage">적립 마일리지</p>
+                        <p class="mileage" th:text="${#strings.substringBefore(cartBook.book.price * cartBook.count * mileageRate, '.')} + 'M'"></p>
+
                     </li>
                     <li th:if="${cartBooks.size() == 0}">
                         <p class="no-content">
@@ -48,7 +49,8 @@
                 </ul>
                 <ul class="cart-list-bottom">
                     <p th:text="'총 주문 금액 ' + ${totalPrice} + '원'"></p>
-                    <p th:text="'총 적립 마일리지 ' + ${totalMileage} + 'M'"></p>
+                    <p id="totalMileage" th:text="'총 적립 마일리지 ' + ${totalMileage} + 'M'"></p>
+                    <p id="membershipLevel" th:text="'등급: ' + ${membershipLevel}" style="display: none;"></p>
                     <p>배송료 <span id="deliveryFee"></span></p>
                 </ul>
                 <div class="button-group">
