@@ -21,5 +21,5 @@ public class Review {
     private long bookId;
     private long userId;
     private String content;
-    private long score;
+    private int score;
 }

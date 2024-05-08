@@ -24,9 +24,14 @@
                             <a th:href="'/book/detail/'+${book.id}">
                                 <img th:src="${book.image}" th:alt="${book.title}">
                                 <figcaption>
-                                    <p class="book-title" th:text="${book.title}"></p>
-                                    <p class="author" th:text="${book.author}"></p>
-                                    <p class="price" th:text="${book.price}"></p>
+                                    <p class="book-title" th:if="${book.title.length() > 25}"
+                                       th:text="${#strings.substring(book.title, 0, 25)} + '...'"></p>
+                                    <p class="book-title" th:unless="${book.title.length() > 25}"
+                                       th:text="${book.title}"></p>
+                                    <p class="author" th:if="${book.author.length() > 25}" th:text="${#strings.substring(book.author, 0, 25)} + '...'"></p>
+                                    <p class="author" th:unless="${book.author.length() > 25}" th:text="${book.author}"></p>
+                                    <p class="price" th:value="${book.price}"
+                                       th:text="${#numbers.formatInteger(book.price, 3, 'COMMA') + '원'}">가격</p>
                                 </figcaption>
                             </a>
                         </figure>

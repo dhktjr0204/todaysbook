@@ -87,8 +87,18 @@ function createBookItem(bookList) {
         author.classList.add('author');
         price.classList.add('price');
 
-        title.textContent = book.title;
-        author.textContent = book.author;
+        let bookTitle=book.title;
+        if(book.title.length>25){
+            bookTitle=bookTitle.substring(0,25)+ "...";
+        }
+
+        let bookAuthor=book.author;
+        if(book.author.length>25){
+            bookAuthor=bookAuthor.substring(0,25)+ "...";
+        }
+
+        title.textContent = bookTitle;
+        author.textContent = bookAuthor;
         price.textContent = book.price;
 
         bookInfo.appendChild(title);

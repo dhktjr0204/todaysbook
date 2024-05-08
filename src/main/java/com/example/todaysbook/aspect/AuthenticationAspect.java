@@ -23,6 +23,7 @@ public class AuthenticationAspect {
                 if (arg instanceof Model) {
                     Model model = (Model) arg;
                     model.addAttribute("nickName", userDetails.getNickname());
+                    model.addAttribute("loginUserId", userDetails.getUserId());
 
                     break;
                 }

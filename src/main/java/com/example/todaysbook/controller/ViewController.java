@@ -124,11 +124,11 @@ public class ViewController {
         return "admin/delivery";
     }
 
-    @GetMapping("/admin/book_registration")
-    public String addBook(Model model) {
-
-        return "admin/book-registration";
-    }
+//    @GetMapping("/admin/book_registration")
+//    public String addBook(Model model) {
+//
+//        return "admin/book-registration";
+//    }
 
     @GetMapping("/admin/updateinfo")
     public String adminUpdateInfo(Model model) {

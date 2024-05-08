@@ -1,10 +1,11 @@
 package com.example.todaysbook.domain.entity;
 
+
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -18,16 +19,17 @@ public class Book {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private String title;
-    private long price;
+    private Long price;
     private String author;
     private String publisher;
-    private LocalDateTime publishDate;
-    private long stock;
+    private LocalDate publishDate;
+    private Long stock;
     private String isbn;
     private String description;
     private String imagePath;
+    private String categoryId;
 
     public void updateStock(Long stock){
         this.stock=stock;

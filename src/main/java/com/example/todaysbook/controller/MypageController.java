@@ -8,6 +8,7 @@ import com.example.todaysbook.service.FavoriteBookService;
 import com.example.todaysbook.service.RecommendListService;
 import com.example.todaysbook.service.ReviewService;
 import com.example.todaysbook.util.Pagination;
+import com.example.todaysbook.util.UserChecker;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,20 +33,29 @@ public class MypageController {
     private final FavoriteBookService favoriteBookService;
 
     @GetMapping("/my_recommend_list")
-    public String myRecommendList(Model model) {
-        long userId = 1;
+    public String myRecommendList(@AuthenticationPrincipal CustomUserDetails userDetails, Model model) {
+
+        long userId = 0;
+
+        if(userDetails != null) {
+            userId = userDetails.getUserId();
+        }
 
         List<RecommendListDetailDto> myRecommendListAll = recommendListService.getMyRecommendListAll(userId);
 
-        model.addAttribute("login_user_id", userId);
         model.addAttribute("recommendLists", myRecommendListAll);
 
         return "user/mypage/my-recommendlist";
     }
 
     @GetMapping("/my_book_mark_list")
-    public String myBookMarkList(Model model){
-        long userId=1;
+    public String myBookMarkList(@AuthenticationPrincipal CustomUserDetails userDetails, Model model){
+
+        long userId = 0;
+
+        if(userDetails != null) {
+            userId = userDetails.getUserId();
+        }
 
         List<RecommendListDetailDto> myBookMarkListAll = recommendListService.getMyBookMarkListAll(userId);
 
@@ -59,7 +69,7 @@ public class MypageController {
                                @AuthenticationPrincipal CustomUserDetails userDetails,
                                Model model) {
 
-        long userId = userDetails.getUserId();
+        long userId = UserChecker.getUserId(userDetails);
 
         Page<MyReview> reviews = reviewService.getMyReviews(userId, pageable);
 
@@ -84,7 +94,7 @@ public class MypageController {
                                @AuthenticationPrincipal CustomUserDetails userDetails,
                                Model model) {
 
-        long userId = userDetails.getUserId();
+        long userId = UserChecker.getUserId(userDetails);
 
         Page<FavoriteBookDTO> favoriteBooks = favoriteBookService.getFavoriteBooks(userId, pageable);
         int startPage = 0;

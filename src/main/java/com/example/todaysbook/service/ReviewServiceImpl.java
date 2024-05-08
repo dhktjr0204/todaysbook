@@ -3,6 +3,7 @@ package com.example.todaysbook.service;
 import com.example.todaysbook.domain.dto.MyReview;
 import com.example.todaysbook.domain.dto.Review;
 import com.example.todaysbook.domain.dto.ReviewRequestDto;
+import com.example.todaysbook.domain.dto.SimpleReview;
 import com.example.todaysbook.repository.ReviewMapper;
 import com.example.todaysbook.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,12 @@ public class ReviewServiceImpl implements ReviewService {
     public List<Review> getReviews(long bookId, long userId, String orderBy) {
 
         return reviewMapper.getReviews(bookId, userId, orderBy);
+    }
+
+    @Override
+    public List<SimpleReview> getSimpleReviews() {
+
+        return reviewMapper.getSimpleReviews();
     }
 
     @Override

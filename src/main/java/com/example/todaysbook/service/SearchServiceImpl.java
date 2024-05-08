@@ -25,6 +25,7 @@ public class SearchServiceImpl implements SearchService{
 
     @Override
     public Page<BookDto> searchBookByKeyword(String keyword, Pageable pageable) {
+
         Page<Book> searchResult = bookRepository.findByAuthorContainingOrTitleContaining(keyword, keyword, pageable);
 
         if(searchResult.isEmpty()){
@@ -35,6 +36,7 @@ public class SearchServiceImpl implements SearchService{
     }
     @Override
     public Page<RecommendListDetailWithBookMarkDto> searchListByKeyword(String keyword, Long userId, Pageable pageable) {
+
         Page<RecommendListWithBookMarkDto> searchResult= userRecommendListRepository.findUserRecommendListByKeyword(keyword, userId, pageable);
 
         if(searchResult.isEmpty()){
@@ -42,6 +44,7 @@ public class SearchServiceImpl implements SearchService{
         }
 
         List<RecommendListDetailWithBookMarkDto> resultList = new ArrayList<>();
+
         for(RecommendListWithBookMarkDto list:searchResult){
             List<BookDto> bookList = recommendListMapper.getBookDetailByListId(list.getListId());
             RecommendListDetailWithBookMarkDto recommendListDetailDto = convertListDetailDto(list, bookList);

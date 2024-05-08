@@ -17,7 +17,7 @@
     margin-bottom: 50px;
 }
 
-ul ul {
+.aside-body ul {
 
     display: none;
     position: relative;
@@ -26,7 +26,7 @@ ul ul {
     margin-top: 30px;
 }
 
-ul li:hover > ul {
+.aside-body li:hover > ul {
 
     display: block;
 }
@@ -50,4 +50,19 @@ ul li:hover > ul {
 
     display: flex;
     margin-top: 100px;
+}
+
+.sync-div {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.sync-button{
+
+    padding: 4px;
+    border-radius: 5px;
+    background-color: #D54DFE;
+
+    font-size: 10px;
 }
