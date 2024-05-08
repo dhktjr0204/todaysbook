@@ -247,7 +247,7 @@ public class AdminServiceImpl implements AdminService {
         //날짜 + 00:00:00.00000000을 의미
     }
 
-    private String convertCategoryToCategoryId(String category) {
+    public String convertCategoryToCategoryId(String category) {
         //카테고리가 빈값일 때
         if (category.isEmpty()) {
             return "123";
