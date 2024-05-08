@@ -2,6 +2,7 @@ package com.example.todaysbook.controller;
 
 import com.example.todaysbook.domain.dto.CartRequestDto;
 import com.example.todaysbook.domain.dto.CustomUserDetails;
+import com.example.todaysbook.domain.dto.PaymentBookInfoDto;
 import com.example.todaysbook.domain.entity.Book;
 import com.example.todaysbook.domain.entity.Cart;
 
@@ -33,7 +34,7 @@ public class CartController {
     private final CartService cartService;
 
     @GetMapping("/list")
-    public String showMyCartList(Model model, @AuthenticationPrincipal CustomUserDetails userDetails) {
+    public String showMyCartList(Model model, @AuthenticationPrincipal CustomUserDetails userDetails, HttpServletRequest req) {
         // userId로 사용자의 장바구니 목록 조회
 
 
