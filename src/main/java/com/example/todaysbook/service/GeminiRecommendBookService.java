@@ -1,4 +1,5 @@
 package com.example.todaysbook.service;
+
 import com.example.todaysbook.domain.dto.BookDto;
 import com.example.todaysbook.domain.dto.GeminiRecommendApiRequest;
 import com.example.todaysbook.domain.dto.GeminiRecommendApiResponse;
@@ -77,7 +78,7 @@ public class GeminiRecommendBookService { // 설명: GeminiService 클래스는 
 
         String message = response.getCandidates().get(0).getContent().getParts().get(0).getText().toString();
 
-        log.info("-----------------응답 message-----------------\n" + message);
+//        log.info("-----------------응답 message-----------------\n" + message);
 
         saveGeminiRecommendBook(message);
         return message;
