@@ -19,9 +19,11 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig {
+    private final CustomUserDetailsService userDetailService;
 
-    @Autowired
-    private CustomUserDetailsService userDetailService;
+    public SecurityConfig(CustomUserDetailsService userDetailService) {
+        this.userDetailService = userDetailService;
+    }
 
     @Bean
     public WebSecurityCustomizer configure() {
@@ -34,37 +36,27 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity
-            .authorizeHttpRequests(auth ->              // 인증, 인가 설정
-                    auth.requestMatchers(
-                                    "/**"
-                                    ).permitAll()
-                            .requestMatchers(
-                                    "/signup",
-                                    "/book/**",
-                                    "/mypage/**",
-                                    "/cart/**",
-                                    "/payment/**",
-                                    "/alan/**"
-                            ).hasAnyAuthority("BRONZE", "SILVER", "GOLD", "DIAMOND")
-                            .requestMatchers("/admin/**").hasRole("ADMIN")
-                            .anyRequest().permitAll()
-            );
-
-        httpSecurity
+        return httpSecurity
+                .authorizeHttpRequests(auth ->              // 인증, 인가 설정
+                        auth.requestMatchers(
+                                        "/", "/alan/**",
+                                "/book/**", "/signup", "/**").permitAll()
+                                .requestMatchers(
+                                        "/book/**",
+                                        "/mypage/**",
+                                        "/cart/**",
+                                        "/payment/**",
+                                        "/alan/**"
+                                ).hasAnyAuthority("ROLE_BRONZE", "ROLE_SILVER", "ROLE_GOLD", "ROLE_DIA")
+                                .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
+                                .anyRequest().permitAll())
                 .formLogin(auth -> auth.loginPage("/login")
                         .defaultSuccessUrl("/",true))
-                .logout(auth -> auth.logoutSuccessUrl("/login")
-                        .invalidateHttpSession(true))
-                .csrf(auth -> auth.disable());
-
-        httpSecurity
-                .formLogin((auth) -> auth.loginPage("/signup")
-                        .loginProcessingUrl("user/registration")
-                        .permitAll()
-                );
-
-        return httpSecurity.build();
+                .logout(auth -> auth.logoutSuccessUrl("/")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID"))
+                .csrf(AbstractHttpConfigurer::disable)
+                .build();
     }
 
     @Bean

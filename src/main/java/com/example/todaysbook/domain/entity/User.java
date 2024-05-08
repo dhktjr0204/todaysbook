@@ -27,6 +27,7 @@ public class User {
     private String role;
     private String mileage;
     private java.sql.Timestamp expire;
+    private boolean is_expired;
     private String address;
     private String zipcode;
 
