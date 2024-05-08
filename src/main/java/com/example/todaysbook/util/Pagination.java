@@ -5,7 +5,7 @@ import java.util.HashMap;
 public class Pagination {
 
     private static final int VISIBLE_PAGE = 5;
-    static public HashMap<String, Integer> calculatePage(int currentPage, int totalPage) {
+    public static HashMap<String, Integer> calculatePage(int currentPage, int totalPage) {
 
         HashMap<String, Integer> result = new HashMap<>();
 
