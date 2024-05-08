@@ -51,3 +51,18 @@
     display: flex;
     margin-top: 100px;
 }
+
+.sync-div {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.sync-button{
+
+    padding: 4px;
+    border-radius: 5px;
+    background-color: #D54DFE;
+
+    font-size: 10px;
+}

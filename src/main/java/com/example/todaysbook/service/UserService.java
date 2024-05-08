@@ -6,9 +6,9 @@ import com.example.todaysbook.repository.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+
 import java.util.Optional;
 
-import static com.example.todaysbook.domain.entity.Role.ROLE_COMMON_BRONZE;
 
 @Service
 public class UserService {
@@ -36,14 +36,10 @@ public class UserService {
                 .expire(null)
                 .address(request.getAddress())
                 .zipcode(request.getZipcode())
-                .role(ROLE_COMMON_BRONZE.value())
+                .role("ROLE_BRONZE")
                 .build();
 
         return userRepository.save(user);
-    }
-
-    public void withdraw(Long id) {
-        userRepository.deleteById(id);
     }
 
     public boolean isExistEmail(String email) {
@@ -54,12 +50,19 @@ public class UserService {
         return userRepository.isExistNickName(nickName);
     }
 
-    public void update(Long id, UserRequestDto request) {
-        userRepository.updateNickNameById(id, request.getNickName());
+    public void updateNickname(Long id, String nickname) {
+        userRepository.updateNickname(id, nickname);
+    }
+
+    public void updatePassword(Long id, String password) {
+        userRepository.updatePassword(id, password);
     }
 
     public Optional<User> findById(Long id) {
         return userRepository.findById(id);
     }
 
+    public void updateAddressInfoById(Long id, String address, String zipcode) {
+        userRepository.updateAddressInfoById(id, address, zipcode);
+    }
 }

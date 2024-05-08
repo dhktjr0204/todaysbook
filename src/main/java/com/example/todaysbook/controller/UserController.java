@@ -8,31 +8,37 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/user")
+@CrossOrigin
 public class UserController {
     private final UserService userService;
     private final CustomUserDetailsService customUserDetailsService;
     private final AuthenticationManager authenticationManager;
+    private final PasswordEncoder encoder;
 
-    public UserController (UserService userService, CustomUserDetailsService customUserDetailsService,AuthenticationManager authenticationManager) {
+    public UserController (UserService userService, CustomUserDetailsService customUserDetailsService,AuthenticationManager authenticationManager, PasswordEncoder encoder) {
         this.userService = userService;
         this.customUserDetailsService = customUserDetailsService;
         this.authenticationManager = authenticationManager;
+        this.encoder = encoder;
     }
 
     @PostMapping("/register")
@@ -77,8 +83,8 @@ public class UserController {
                 (HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
                         SecurityContextHolder.getContext());
         Cookie cookie = new Cookie("JSESSIONID", session.getId());
-        cookie.setPath("/");
         cookie.setHttpOnly(true);
+        cookie.setPath("/");
         cookie.setDomain("localhost");
         cookie.setMaxAge(30000 * 60);
         response.addCookie(cookie);
@@ -105,25 +111,32 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping ("/update/{id}")
-    public ResponseEntity<?> updateUser(@RequestBody UserRequestDto request, @PathVariable Long id) {
-        if(userService.isExistNickName(request.getNickName())) {
-            return ResponseEntity.badRequest().body("Nickname already exists : " + request.getNickName());
+    @PutMapping ("/update/nickname")
+    public ResponseEntity<?> updateUserNickname(@RequestBody UserRequestDto request, @AuthenticationPrincipal CustomUserDetails userDetails) {
+        String userNickname = userDetails.getNickname();
+
+        if(userNickname.equals(request.getNickName())) {
+            return ResponseEntity.badRequest().body("Same Nickname: " + userNickname);
         }
 
-        if(userService.findById(id).isEmpty()) {
-            return ResponseEntity.badRequest().body("id doesn't exists : " +  id);
-        }
-
-        userService.update(id, request);
+        userService.updateNickname(userDetails.getUserId(), request.getNickName());
 
         return ResponseEntity.ok().build();
     }
 
+    @Transactional
+    @PutMapping ("/update/addressInfo")
+    public ResponseEntity<?> updateUserAddressInfo(@RequestBody UserRequestDto request, @AuthenticationPrincipal CustomUserDetails userDetails) {
+        userService.updateAddressInfoById(userDetails.getUserId(), request.getAddress(), request.getZipcode());
 
-    @DeleteMapping("/withdraw/{id}")
-    public ResponseEntity<?> withdrawUser(@PathVariable Long id) {
-        userService.withdraw(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @Transactional
+    @PutMapping ("/update/password")
+    public ResponseEntity<?> updateUserPassword(@RequestBody UserRequestDto request, @AuthenticationPrincipal CustomUserDetails userDetails) {
+        String password = encoder.encode(request.getPassword());
+        userService.updatePassword(userDetails.getUserId(), password);
 
         return ResponseEntity.ok().build();
     }

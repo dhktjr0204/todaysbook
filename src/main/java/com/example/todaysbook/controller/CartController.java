@@ -7,6 +7,7 @@ import com.example.todaysbook.domain.entity.Book;
 import com.example.todaysbook.domain.entity.Cart;
 
 import com.example.todaysbook.domain.entity.CartBook;
+import com.example.todaysbook.domain.entity.Role;
 import com.example.todaysbook.service.CartService;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -35,19 +36,27 @@ public class CartController {
     @GetMapping("/list")
     public String showMyCartList(Model model, @AuthenticationPrincipal CustomUserDetails userDetails, HttpServletRequest req) {
         // userId로 사용자의 장바구니 목록 조회
+
+
         //0503수정
         long userId = userDetails.getUserId();
         List<CartBook> cartBooks = cartService.findCartBooksByUserId(userId);
 
+        Role userRole = Role.valueOf("ROLE_COMMON_" + userDetails.getAuthorities().iterator().next().getAuthority());
+
+
         // 총 주문 금액 및 적립 마일리지 계산
         int totalPrice = cartService.calculateTotalPrice(cartBooks);
-        int totalMileage = cartService.calculateTotalMileage(cartBooks);
+        int totalMileage = cartService.calculateTotalMileage(cartBooks, userRole);
+        double mileageRate = cartService.individualMileage(userRole);
+
 
         // 모델에 데이터 추가
         model.addAttribute("cartBooks", cartBooks);
         model.addAttribute("totalPrice", totalPrice);
         model.addAttribute("totalMileage", totalMileage);
-
+        model.addAttribute("membershipLevel", userRole.value()); // 등급 정보 추가
+        model.addAttribute("mileageRate", mileageRate);
         return "cart/list"; // 템플릿 이름 리턴
     }
 

@@ -2,9 +2,13 @@ package com.example.todaysbook.controller;
 
 import com.example.todaysbook.domain.dto.AdminUserDto;
 import com.example.todaysbook.domain.dto.BookDto;
+import com.example.todaysbook.domain.dto.SimpleReview;
 import com.example.todaysbook.service.AdminService;
+import com.example.todaysbook.service.RecommendBookService;
+import com.example.todaysbook.service.ReviewService;
 import com.example.todaysbook.util.Pagination;
 import lombok.RequiredArgsConstructor;
+import org.apache.mahout.cf.taste.common.TasteException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -20,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,6 +35,9 @@ import java.util.List;
 public class AdminController {
     private final AdminService adminService;
     private final int VISIBLE_PAGE = 5;
+
+    private final RecommendBookService recommendBookService;
+    private final ReviewService reviewService;
 
     //유저 관리
     @GetMapping("/userlist")
@@ -241,5 +249,13 @@ public class AdminController {
         adminService.addNewBook(books);
 
         return ResponseEntity.ok("등록되었습니다.");
+    }
+    @GetMapping("/sync")
+    public ResponseEntity<?> synchronizationDB() throws IOException, TasteException {
+
+        List<SimpleReview> reviews = reviewService.getSimpleReviews();
+        recommendBookService.GenerateRecommendBookList(reviews);
+
+        return ResponseEntity.ok("추천 정보 동기화 완료");
     }
 }
