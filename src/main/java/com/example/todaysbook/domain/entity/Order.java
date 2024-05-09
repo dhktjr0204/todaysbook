@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
@@ -16,9 +17,9 @@ public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    private long userId;
-    private java.sql.Timestamp orderDate;
-    private long deliveryId;
+    private Long id;
+    private Long userId;
+    private LocalDateTime orderDate;
+    private Long deliveryId;
     private String status;
 }

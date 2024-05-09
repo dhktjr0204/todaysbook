@@ -19,7 +19,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private String name;
     private String nickName;
     private String email;
@@ -27,7 +27,6 @@ public class User {
     private String role;
     private String mileage;
     private java.sql.Timestamp expire;
-    //private boolean is_expired;
     private String address;
     private String zipcode;
 

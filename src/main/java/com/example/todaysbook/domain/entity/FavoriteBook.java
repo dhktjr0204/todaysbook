@@ -17,7 +17,7 @@ public class FavoriteBook {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    private long userId;
-    private long bookId;
+    private Long id;
+    private Long userId;
+    private Long bookId;
 }

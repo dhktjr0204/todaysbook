@@ -7,7 +7,7 @@
         UPDATE user u
             LEFT JOIN (
             SELECT o.user_id, SUM(b.price * ob.book_count) AS totalPrice
-            FROM `order` o
+            FROM orders o
             INNER JOIN order_book ob ON o.id = ob.order_id
             INNER JOIN book b ON ob.book_id = b.id
             WHERE DATE_FORMAT(o.order_date, '%Y-%m') = DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 1 MONTH), '%Y-%m')

@@ -1,5 +1,6 @@
 package com.example.todaysbook.domain.entity;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -12,13 +13,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Entity
 public class OrderBook {
 
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    private long orderId;
-    private long bookId;
-    private long bookCount;
+    private Long id;
+    private Long orderId;
+    private Long bookId;
+    private Long bookCount;
 }

@@ -20,6 +20,8 @@ public class CustomUserDetails implements UserDetails {
         Collection<GrantedAuthority> collection = new ArrayList<>();
         collection.add((GrantedAuthority) user::getRole);
 
+        System.out.println(user.getRole());
+
         return collection;
     }
 
@@ -31,8 +33,19 @@ public class CustomUserDetails implements UserDetails {
         return user.getNickName();
     }
 
-
     public String getMileage() {return user.getMileage();}
+
+    public String getName() {
+        return user.getName();
+    }
+
+    public String getAddress() {
+        return user.getAddress();
+    }
+
+    public String getZipcode() {
+        return user.getZipcode();
+    }
 
     @Override
     public String getPassword() {
