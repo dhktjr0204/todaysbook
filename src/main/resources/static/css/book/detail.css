@@ -12,7 +12,7 @@
     font-size: 24px;
 }
 
-.title, .author, .publisher, .description {
+.title, .book-detail-header .author, .publisher, .description {
 
     white-space: pre-wrap;
     width: 770px;
@@ -226,7 +226,6 @@ figure {
 }
 
 .overlay {
-
     position: absolute;
     top: 0;
     left: 0;
@@ -247,12 +246,12 @@ figure:hover .overlay {
     opacity: 1;
 }
 
-.book-title, .author, .price {
+.recommend-list-body .book-title, .recommend-list-body .author, .recommend-list-body .price {
     color: white;
     background-color: transparent;
 }
 
-.book-title, .author {
+.recommend-list-body .book-title, .recommend-list-body .author {
 
     margin-bottom: 10px;
 }
@@ -286,7 +285,7 @@ figure:hover .overlay {
 
 .review-input {
 
-    width: 710px;
+    width: 100%;
     min-height: 50px;
 
     background-color: white;
@@ -307,6 +306,10 @@ figure:hover .overlay {
 
     padding: 10px;
     border-radius: 5px;
+}
+
+.submit-button{
+    width:50px;
 }
 
 .cancel-button {

@@ -81,7 +81,7 @@
                             <li class="book-item" th:each="book : ${todayRecommendBooks}" th:value="${book.id}">
                                 <figure class="book-info">
                                     <a th:href="@{'/book/detail/' + ${book.id}}">
-                                        <img th:src="${book.imagePath}" th:alt="${book.title}">
+                                        <img th:src="${book.image}" th:alt="${book.title}">
                                         <figcaption class="overlay">
                                             <p class="book-title" th:if="${book.title.length() > 25}" th:text="${#strings.substring(book.title, 0, 25)} + '...'"></p>
                                             <p class="book-title" th:unless="${book.title.length() > 25}" th:text="${book.title}"></p>
