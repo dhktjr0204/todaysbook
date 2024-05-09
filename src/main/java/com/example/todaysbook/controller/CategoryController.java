@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.HashMap;
 
@@ -26,6 +27,7 @@ public class CategoryController {
 
     @GetMapping("/{id}")
     public String getCategoryBooks(@PathVariable("id") String categoryId,
+                                   @RequestParam(defaultValue = "title") String type,
                                    @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
                                    Model model) {
 
@@ -52,6 +54,7 @@ public class CategoryController {
         model.addAttribute("categoryName", categoryName);
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
+        model.addAttribute("type", type);
 
         return "book/categoryBook";
     }
