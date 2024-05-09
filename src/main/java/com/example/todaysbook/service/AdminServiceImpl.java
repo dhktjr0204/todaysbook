@@ -54,7 +54,8 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public Page<BookDto> findBooksByKeyword(String keyword, Pageable pageable) {
-        Page<Book> bookList = bookRepository.findByAuthorContainingOrTitleContaining(keyword, keyword, pageable);
+        Page<Book> bookList =
+                bookRepository.findByAuthorContainingOrTitleContaining(keyword, keyword, pageable);
 
         if (bookList.isEmpty()) {
             return Page.empty();
@@ -127,7 +128,9 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public HashMap<String, ?> getNewBook(String keyword, int page) {
+
         return aladinApi.getNewBook(keyword, page, 10);
+
     }
 
     @Transactional
