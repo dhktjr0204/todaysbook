@@ -31,6 +31,9 @@ public class CustomUserDetails implements UserDetails {
         return user.getNickName();
     }
 
+
+    public String getMileage() {return user.getMileage();}
+
     @Override
     public String getPassword() {
         return user.getPassword();
