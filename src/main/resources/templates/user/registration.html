@@ -15,9 +15,10 @@
             <p class="title">회원 가입</p>
             <form class="registration-form">
                 <ul>
-                    <li th:each="label : ${#strings.arraySplit('이름,이메일,닉네임,비밀번호,비밀번호 확인,주소,우편번호',',')}">
+                    <li th:each="label : ${#strings.arraySplit('이름,이메일,닉네임,비밀번호,비밀번호 확인,주소,상세주소,우편번호',',')}">
                         <p class="label" th:text="${label}"></p>
-                        <input class="input" th:if="${label != '비밀번호' and label != '비밀번호 확인'}" type="text">
+                        <!-- label이 "주소" 또는 "우편번호"인 경우에만 id를 추가 -->
+                        <input class="input" th:if="${label != '비밀번호' and label != '비밀번호 확인'}" type="text" th:id="${label == '주소' ? 'address' : (label == '상세주소' ? 'detailAddress' : (label == '우편번호' ? 'postcode' : ''))}">
                         <input class="input" th:if="${label == '비밀번호' or label == '비밀번호 확인'}" type="password">
                         <button type="button" class="button"
                                 th:if="${label == '이메일' or label == '닉네임'}" th:text="'중복 확인'"></button>
@@ -25,6 +26,8 @@
                                 th:if="${label == '주소'}" th:text="'검색'"></button>
                     </li>
                 </ul>
+
+
                 <div class="button-group">
                     <button class="submit button" th:text="'가입하기'"></button>
                     <button class="cancel button" th:text="'취소'"></button>
@@ -35,4 +38,6 @@
 </main>
 <div th:replace="~{fragments/footer.html}"></div>
 <script th:src="@{/js/user/registration.js}"></script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script th:src="@{/js/payment/daum_address_api.js}"></script>
 </html>
