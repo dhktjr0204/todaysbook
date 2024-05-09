@@ -2,7 +2,6 @@ package com.example.todaysbook.repository;
 
 import com.example.todaysbook.domain.entity.User;
 import jakarta.transaction.Transactional;
-import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -38,9 +37,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Modifying
     @Query("UPDATE User u SET u.password = :password WHERE u.id = :id")
     void updatePassword(@Param("id") Long id, @Param("password") String password);
-
-    @Query("UPDATE User u SET u.expire = CURRENT_DATE, u.is_expired = FALSE WHERE u.id = :id")
-    void withdrawById(@Param("id") Long id);
 
     User findById(long id);
     Page<User> findAll(Pageable pageable);
