@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+
+<th:block layout:fragment="head">
+    <title>책 장르별 찾기</title>
+    <link th:href="@{/css/book/search.css}" rel="stylesheet"/>
+    <link th:href="@{/css/book/category.css}" rel="stylesheet"/>
+</th:block>
+<div th:replace="~{fragments/header.html}"></div>
+<main th:fragment="content">
+    <div class="search-wrap">
+        <section class="search-list-section">
+            <div class="search-list-header">
+                <p class="list-title" th:text="${categoryName}"></p>
+                <select class="user-grade">
+                    <option value="title" th:selected="${type == 'title'}">가나다 순</option>
+                    <option value="bestseller" th:selected="${type == 'bestseller'}">판매 순</option>
+                    <option value="review" th:selected="${type == 'review'}">리뷰 높은 순</option>
+                </select>
+            </div>
+            <div class="search-list">
+                <ul class="row">
+                    <li th:each="book:${dto}">
+                        <figure>
+                            <a th:href="'/book/detail/'+${book.id}">
+                                <img th:src="${book.image}" th:alt="${book.title}">
+                                <figcaption>
+                                    <p class="book-title" th:if="${book.title.length() > 25}"
+                                       th:text="${#strings.substring(book.title, 0, 25)} + '...'"></p>
+                                    <p class="book-title" th:unless="${book.title.length() > 25}"
+                                       th:text="${book.title}"></p>
+                                    <p class="author" th:if="${book.author.length() > 25}"
+                                       th:text="${#strings.substring(book.author, 0, 25)} + '...'"></p>
+                                    <p class="author" th:unless="${book.author.length() > 25}"
+                                       th:text="${book.author}"></p>
+                                    <p class="price"
+                                       th:text="${#numbers.formatInteger(book.price, 3, 'COMMA') + '원'}"></p>
+                                </figcaption>
+                            </a>
+                        </figure>
+                    </li>
+                </ul>
+            </div>
+            <div th:if="${dto.isEmpty()}">
+                <p class="no-content-text">콘텐츠가 없습니다.</p>
+            </div>
+        </section>
+        <section>
+            <div th:replace="~{fragments/page.html}"></div>
+        </section>
+    </div>
+</main>
+<div th:replace="~{fragments/footer.html}"></div>
+<script th:src="@{/js/book/categoryPage.js}"></script>
+</html>

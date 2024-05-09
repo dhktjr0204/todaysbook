@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -27,12 +28,20 @@ import java.util.HashMap;
 @RequestMapping("/book")
 public class SearchController {
     private final SearchService searchService;
-    private final int VISIBLE_PAGE = 5;
+
 
     @GetMapping("/search")
-    public String searchBook(@PageableDefault(page = 0, size = 10, sort = "title", direction = Sort.Direction.ASC) Pageable pageable,
+    public String searchBook(@PageableDefault(page = 0, size = 10) @SortDefault.SortDefaults({
+            @SortDefault(sort = "publishDate", direction = Sort.Direction.ASC),
+            @SortDefault(sort = "title", direction = Sort.Direction.ASC)}) Pageable pageable,
                              @RequestParam(value = "keyword") String keyword, Model model) {
+
+        if (keyword.isEmpty()) {
+            return "error/404";
+        }
+
         Page<BookDto> result = searchService.searchBookByKeyword(keyword, pageable);
+
 
         int startPage = 0;
         int endPage = 0;
@@ -56,9 +65,14 @@ public class SearchController {
                               @RequestParam(value = "keyword") String keyword,
                               @AuthenticationPrincipal CustomUserDetails userDetails,
                               Model model) {
+
+        if (keyword.isEmpty()) {
+            return "error/404";
+        }
+
         long userId = 0;
 
-        if(userDetails != null) {
+        if (userDetails != null) {
             userId = userDetails.getUserId();
         }
 
@@ -82,7 +96,9 @@ public class SearchController {
     }
 
     @GetMapping("/search/create/list")
-    public ResponseEntity<Page<BookDto>> searchBooks(@PageableDefault(page = 0, size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
+    public ResponseEntity<Page<BookDto>> searchBooks(@PageableDefault(page = 0, size = 10) @SortDefault.SortDefaults({
+            @SortDefault(sort = "publishDate", direction = Sort.Direction.ASC),
+            @SortDefault(sort = "title", direction = Sort.Direction.ASC)}) Pageable pageable,
                                                      @RequestParam(value = "keyword") String keyword, Model model) {
         return ResponseEntity.ok(searchService.searchBookByKeyword(keyword, pageable));
     }

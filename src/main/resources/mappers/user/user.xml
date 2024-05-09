@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.todaysbook.repository.UserMapper">
+    <update id="updateUserRole">
+        UPDATE user u
+            LEFT JOIN (
+            SELECT o.user_id, SUM(b.price * ob.book_count) AS totalPrice
+            FROM `order` o
+            INNER JOIN order_book ob ON o.id = ob.order_id
+            INNER JOIN book b ON ob.book_id = b.id
+            WHERE DATE_FORMAT(o.order_date, '%Y-%m') = DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 1 MONTH), '%Y-%m')
+            GROUP BY o.user_id
+            ) AS user_total_price ON u.id = user_total_price.user_id
+        SET u.role =
+            CASE
+            WHEN user_total_price.totalPrice >= 300000 THEN 'ROLE_DIAMOND'
+            WHEN user_total_price.totalPrice >= 100000 THEN 'ROLE_GOLD'
+            WHEN user_total_price.totalPrice >= 50000 THEN 'ROLE_SILVER'
+            ELSE 'ROLE_BRONZE'
+        END
+        WHERE u.role != 'ROLE_ADMIN';
+    </update>
+</mapper>

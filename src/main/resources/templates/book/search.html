@@ -48,7 +48,8 @@
                                        th:text="${book.title}"></p>
                                     <p class="author" th:if="${book.author.length() > 25}" th:text="${#strings.substring(book.author, 0, 25)} + '...'"></p>
                                     <p class="author" th:unless="${book.author.length() > 25}" th:text="${book.author}"></p>
-                                    <p class="price" th:text="${book.price}"></p>
+                                    <p class="price"
+                                       th:text="${#numbers.formatInteger(book.price, 3, 'COMMA') + '원'}"></p>
                                 </figcaption>
                             </a>
                         </figure>

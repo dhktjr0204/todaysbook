@@ -15,7 +15,6 @@ public interface CartBookRepository extends JpaRepository<CartBook, Long> {
 
     CartBook findByCartIdAndBookId(long cartId, long bookId);
 
-
     @Query("SELECT cb FROM CartBook cb WHERE cb.cart.userId = :userId")
     List<CartBook> findCartBooksByUserId(@Param("userId") Long userId);
 }

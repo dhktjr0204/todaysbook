@@ -9,12 +9,20 @@ function clickEditRoleButton(button) {
             method: "PUT",
         }).then(response => {
             if (!response.ok) {
-                console.log("실패");
+                return response.text().then(msg => {
+                    if (response.status === 401) {
+                        alert(msg);
+                    } else if (response.status === 404) {
+                        alert(msg);
+                    }
+                });
             } else {
                 return response.text();
             }
         }).then(msg => {
-            alert(msg);
+            if(msg){
+                alert(msg);
+            }
             location.reload();
         }).catch(error => {
             console.log(error);
