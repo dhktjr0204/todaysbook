@@ -88,10 +88,13 @@ public class ReviewController {
     @PutMapping("/update")
     public String updateReview(@RequestBody ReviewRequestDto requestDto,
                                @AuthenticationPrincipal CustomUserDetails userDetails,
-                               Model model) {
+                               Model model, BindingResult result) {
 
         long userId = userDetails.getUserId();
         String orderBy = "latest";
+
+        ReviewCreateValidator validator = new ReviewCreateValidator();
+        validator.validate(requestDto, result);
 
         requestDto.setUserId(userId);
         int flag = reviewService.updateReview(requestDto);

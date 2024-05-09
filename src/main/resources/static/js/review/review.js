@@ -217,6 +217,11 @@ function updateReview(button) {
     const content = reviewItem.querySelector('.edit-review-input').value;
     const score = parseInt(reviewItem.querySelector('.edit-review-score').textContent);
 
+    if (content.trim() === "") {
+        alert("리뷰 내용을 입력해주세요.");
+        return false;
+    }
+
     $.ajax({
         url: url,
         type: method,
@@ -234,7 +239,13 @@ function updateReview(button) {
             starEvents();
         },
         error: function (error) {
-            throw new Error('리뷰 수정 실패');
+            if (error.status === 400) {
+                alert("Bad Request: "+ error.responseText);
+            }else if(error.status === 401){
+                alert("Unauthorized: "+error.responseText);
+            }else{
+                alert("error: "+error.responseText);
+            } // 에러 응답 본문을 alert 창에 표시
         }
     });
 }
