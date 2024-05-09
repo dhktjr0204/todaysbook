@@ -1,71 +1,63 @@
 package com.example.todaysbook.service;
 
-import com.example.todaysbook.domain.dto.AlanChatApiRequest;
-import com.example.todaysbook.domain.dto.AlanChatApiResponse;
-import com.example.todaysbook.domain.dto.AlanChatApiResponseWrapper;
+
+import com.example.todaysbook.domain.dto.AlanChatData;
+import com.example.todaysbook.domain.dto.AlanChatResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.ClientHttpResponse;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.MediaType;
+import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.ResponseExtractor;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.Scanner;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Service
-@RequiredArgsConstructor
 @Slf4j
 public class AlanChatService {
 
-    private static final String API_URL = "https://kdt-api-function.azurewebsites.net/api/v1/question/sse-streaming";
+    private final WebClient webClient;
+    private final String clientId;
 
-    @Value("${alan.client-id}")
-    private String clientId;
-
-    private final RestTemplate restTemplate;
-    private final ObjectMapper objectMapper;
-
-    public AlanChatApiResponse getResponse(AlanChatApiRequest request) {
-        String url = API_URL + "?content=" + request.getContent() + "&client_id=" + clientId;
-
-        log.info("alan api에 요청: {}");
-
-        ResponseEntity<StreamingResponseBody> responseEntity = restTemplate.exchange(
-                url,
-                HttpMethod.GET,
-                null,
-                StreamingResponseBody.class
-        );
-
-        StreamingResponseBody responseBody = responseEntity.getBody();
-
-        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
-            responseBody.writeTo(outputStream);
-            String responseString = outputStream.toString("UTF-8");
-
-            Scanner scanner = new Scanner(responseString);
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
-                AlanChatApiResponseWrapper apiResponseWrapper = objectMapper.readValue(line, AlanChatApiResponseWrapper.class);
-
-                if (apiResponseWrapper.getType().equals("complete")) {
-                    return new AlanChatApiResponse(apiResponseWrapper.getData().getContent());
-                }
-            }
-        } catch (IOException e) {
-            log.error("응답 처리 중 오류 발생: {}", e.getMessage());
-        }
-
-        return new AlanChatApiResponse("응답을 받을 수 없습니다.");
+    public AlanChatService(WebClient.Builder webClientBuilder, @Value("${alan.client-id}") String clientId) {
+        this.webClient = webClientBuilder.baseUrl("https://kdt-api-function.azurewebsites.net").build();
+        this.clientId = clientId;
     }
 
+    public Flux<ServerSentEvent<String>> streamAlanResponse(String content) {
+        return webClient.get()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/api/v1/question/sse-streaming")
+                        .queryParam("content", content)
+                        .queryParam("client_id", clientId)
+                        .build())
+                .accept(MediaType.TEXT_EVENT_STREAM)
+                .retrieve()
+                .bodyToFlux(String.class)
+                .map(responseString -> {
+                    String eventType = extractEventType(responseString);
+                    String data = extractData(responseString);
+                    return ServerSentEvent.<String>builder()
+                            .event(eventType)
+                            .data(data)
+                            .build();
+                });
+    }
 
+    private String extractEventType(String responseString) {
+        int startIndex = responseString.indexOf("\"type\":") + "\"type\":".length();
+        int endIndex = responseString.indexOf(",", startIndex);
+        return responseString.substring(startIndex, endIndex).trim().replace("\"", "");
+    }
+
+    private String extractData(String responseString) {
+        int startIndex = responseString.indexOf("\"data\":") + "\"data\":".length();
+        int endIndex = responseString.lastIndexOf("}");
+        return responseString.substring(startIndex, endIndex).trim();
+    }
 }

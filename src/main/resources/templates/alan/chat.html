@@ -14,22 +14,6 @@
 
 
 
-    <div id="chatHistory">
-        <table>
-            <tr th:each="history : ${chatHistory}">
-                <td th:text="${history.userInput}"></td>
-                <td th:text="${history.botResponse}"></td>
-            </tr>
-        </table>
-    </div>
-
-    <form id="chatForm">
-        <input type="text" id="userInput" name="userInput" placeholder="메시지를 입력하세요">
-        <button type="submit">전송</button>
-    </form>
-
-
-
 
 
 
