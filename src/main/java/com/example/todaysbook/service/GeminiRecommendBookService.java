@@ -61,14 +61,9 @@ public class GeminiRecommendBookService { // 설명: GeminiService 클래스는 
 
     private final BookRepository bookRepository;
     private final GeminiRecommendBookRepository geminiRecommendBookRepository;
-    private AdminServiceImpl adminService;
+    private final AdminServiceImpl adminService;
 
-    @Autowired
-    public GeminiRecommendBookService(BookRepository bookRepository, GeminiRecommendBookRepository geminiRecommendBookRepository, AdminServiceImpl adminService) {
-        this.bookRepository = bookRepository;
-        this.geminiRecommendBookRepository = geminiRecommendBookRepository;
-        this.adminService = adminService;
-    }
+
 
     public String getContents(String prompt) throws UnsupportedEncodingException {
         String requestUrl = apiUrl + "?key=" + geminiApiKey;
