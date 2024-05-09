@@ -23,7 +23,6 @@ import org.springframework.security.web.context.HttpSessionSecurityContextReposi
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 @RestController
 @RequestMapping("/user")
@@ -137,6 +136,13 @@ public class UserController {
     public ResponseEntity<?> updateUserPassword(@RequestBody UserRequestDto request, @AuthenticationPrincipal CustomUserDetails userDetails) {
         String password = encoder.encode(request.getPassword());
         userService.updatePassword(userDetails.getUserId(), password);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/withdraw")
+    public ResponseEntity<?> withdrawUser(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        userService.withdraw(userDetails.getUserId());
 
         return ResponseEntity.ok().build();
     }

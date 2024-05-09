@@ -127,7 +127,6 @@ public class RecommendServiceImpl implements RecommendListService {
                 .orElseThrow(BookNotFoundException::new);
 
         userRecommendListRepository.delete(userRecommendList);
-        userRecommendBookRepository.deleteAll(userRecommendBooks);
     }
 
 

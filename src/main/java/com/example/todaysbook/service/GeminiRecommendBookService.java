@@ -165,8 +165,7 @@ public class GeminiRecommendBookService {
 
         // book 목록을 BookDto 목록으로 변환
         return books.stream()
-                .map(book -> new BookDto(book.getId(), book.getTitle(), book.getAuthor(), book.getPrice(), book.getImagePath(), book.getPublisher(), book.getPublishDate(), book.getStock(), book.getIsbn(), book.getDescription(), book.getImagePath(), book.getCategoryId()))
+                .map(book -> new BookDto(book.getId(), book.getTitle(), book.getAuthor(), book.getPrice(), book.getImagePath(), book.getPublisher(), book.getPublishDate(), book.getStock(), book.getIsbn(), book.getDescription(), book.getCategoryId()))
                 .collect(Collectors.toList());
     }
-
 }
