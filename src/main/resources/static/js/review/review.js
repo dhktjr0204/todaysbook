@@ -22,7 +22,6 @@ function clickLike(button, reviewId) {
     button.parentElement.classList.toggle('on');
 
     let url = button.classList.contains('liked') ? '/review/add_like' : '/review/delete_like';
-    let userId = 1;
 
     let type = button.classList.contains('liked') ? 'GET' : 'DELETE';
     let message = button.classList.contains('liked') ?
@@ -34,8 +33,7 @@ function clickLike(button, reviewId) {
         type: type,
         url: url,
         data: {
-            reviewId: reviewId,
-            userId: userId
+            reviewId: reviewId
         },
         success: function (response) {
 
@@ -60,7 +58,6 @@ function clickDislike(button, reviewId) {
     button.parentElement.classList.toggle('on');
 
     let url = button.classList.contains('disliked') ? '/review/add_dislike' : '/review/delete_dislike';
-    let userId = 1;
 
     let type = button.classList.contains('disliked') ? 'GET' : 'DELETE';
     let message = button.classList.contains('disliked') ?
@@ -71,8 +68,7 @@ function clickDislike(button, reviewId) {
         type: type,
         url: url,
         data: {
-            reviewId: reviewId,
-            userId: userId
+            reviewId: reviewId
         },
         success: function (response) {
 
