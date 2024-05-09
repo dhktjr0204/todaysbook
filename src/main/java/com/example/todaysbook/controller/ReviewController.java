@@ -4,12 +4,14 @@ import com.example.todaysbook.domain.dto.CustomUserDetails;
 import com.example.todaysbook.domain.dto.Review;
 import com.example.todaysbook.domain.dto.ReviewRequestDto;
 import com.example.todaysbook.service.ReviewService;
+import com.example.todaysbook.validate.ReviewCreateValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,10 +42,13 @@ public class ReviewController {
     @PostMapping("/add")
     public String addNewReview(@RequestBody ReviewRequestDto requestDto,
                                @AuthenticationPrincipal CustomUserDetails userDetails,
-                               Model model) {
+                               Model model, BindingResult result) {
 
         long userId = userDetails.getUserId();
         String orderBy = "latest";
+
+        ReviewCreateValidator validator = new ReviewCreateValidator();
+        validator.validate(requestDto, result);
 
         requestDto.setUserId(userId);
         int flag = reviewService.addReview(requestDto);
@@ -83,10 +88,13 @@ public class ReviewController {
     @PutMapping("/update")
     public String updateReview(@RequestBody ReviewRequestDto requestDto,
                                @AuthenticationPrincipal CustomUserDetails userDetails,
-                               Model model) {
+                               Model model, BindingResult result) {
 
         long userId = userDetails.getUserId();
         String orderBy = "latest";
+
+        ReviewCreateValidator validator = new ReviewCreateValidator();
+        validator.validate(requestDto, result);
 
         requestDto.setUserId(userId);
         int flag = reviewService.updateReview(requestDto);

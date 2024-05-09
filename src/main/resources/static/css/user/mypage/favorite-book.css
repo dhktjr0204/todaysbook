@@ -89,3 +89,15 @@ figure:hover .overlay {
 .select-button{
     color: #D54DFE;
 }
+
+.book-title, .author {
+
+    display: flex;
+    width: 150px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.author, .price {
+    color: grey;
+}

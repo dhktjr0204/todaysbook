@@ -28,19 +28,24 @@ public class BookDetailController {
 
     @RequestMapping("/book/detail/{bookId}")
     public String getBookDetail(@PathVariable Long bookId, Model model,
-                                @AuthenticationPrincipal CustomUserDetails userDetails) throws IOException, TasteException {
+                                @AuthenticationPrincipal CustomUserDetails userDetails) {
 
-        long userId = UserChecker.getUserId(userDetails);
+            long userId = UserChecker.getUserId(userDetails);
 
-        BookDetailDto bookDetailDto = bookDetailService.getBookDetail(bookId, userId);
-        //recommendBookService.GenerateRecommendBookList();
-        List<RecommendBookDto> recommendedBooks = recommendBookService.getRecommendBooks(bookId);
+            BookDetailDto bookDetailDto = bookDetailService.getBookDetail(bookId, userId);
 
-        model.addAttribute("bookDetailDto", bookDetailDto);
-        model.addAttribute("recommendedBooks", recommendedBooks);
-        model.addAttribute("review", new ReviewRequestDto());
-        model.addAttribute("userId", userId);
+            if (bookDetailDto.getBookDetail() == null) {
 
-        return "book/detail";
+                return "error/404";
+            }
+
+            List<RecommendBookDto> recommendedBooks = recommendBookService.getRecommendBooks(bookId);
+
+            model.addAttribute("bookDetailDto", bookDetailDto);
+            model.addAttribute("recommendedBooks", recommendedBooks);
+            model.addAttribute("review", new ReviewRequestDto());
+            model.addAttribute("userId", userId);
+
+            return "book/detail";
     }
 }
