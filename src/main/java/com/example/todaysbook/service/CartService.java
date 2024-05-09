@@ -124,7 +124,7 @@ public class CartService {
             case ROLE_GOLD:
                 mileageRate = GOLD_RATE;
                 break;
-            case ROLE_DIA:
+            case ROLE_DIAMOND:
                 mileageRate = DIAMOND_RATE;
                 break;
             default:
@@ -148,7 +148,7 @@ public class CartService {
             case ROLE_GOLD:
                 mileageRate = GOLD_RATE;
                 break;
-            case ROLE_DIA:
+            case ROLE_DIAMOND:
                 mileageRate = DIAMOND_RATE;
                 break;
             default:

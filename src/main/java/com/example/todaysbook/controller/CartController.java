@@ -42,7 +42,7 @@ public class CartController {
         long userId = userDetails.getUserId();
         List<CartBook> cartBooks = cartService.findCartBooksByUserId(userId);
 
-        Role userRole = Role.valueOf("ROLE_" + userDetails.getAuthorities().iterator().next().getAuthority());
+        Role userRole = Role.valueOf(userDetails.getAuthorities().iterator().next().getAuthority());
 
 
         // 총 주문 금액 및 적립 마일리지 계산

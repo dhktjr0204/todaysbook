@@ -7,6 +7,7 @@ import com.example.todaysbook.service.AdminService;
 import com.example.todaysbook.service.RecommendBookService;
 import com.example.todaysbook.service.ReviewService;
 import com.example.todaysbook.util.Pagination;
+import com.example.todaysbook.validate.AdminUpdateBookValidator;
 import lombok.RequiredArgsConstructor;
 import org.apache.mahout.cf.taste.common.TasteException;
 import org.springframework.data.domain.Page;
@@ -16,6 +17,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,7 +36,6 @@ import java.util.List;
 @RequestMapping("/admin")
 public class AdminController {
     private final AdminService adminService;
-    private final int VISIBLE_PAGE = 5;
 
     private final RecommendBookService recommendBookService;
     private final ReviewService reviewService;
@@ -195,7 +196,10 @@ public class AdminController {
     }
 
     @PutMapping("/booklist/edit")
-    public ResponseEntity<?> updateBook(BookDto bookDto) {
+    public ResponseEntity<?> updateBook(BookDto bookDto, BindingResult result) {
+
+        AdminUpdateBookValidator validator = new AdminUpdateBookValidator();
+        validator.validate(bookDto, result);
 
         adminService.updateBook(bookDto);
 

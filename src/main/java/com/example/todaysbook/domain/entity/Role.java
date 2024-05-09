@@ -12,7 +12,7 @@ public enum Role {
     ROLE_BRONZE("BRONZE"),
     ROLE_SILVER("SILVER"),
     ROLE_GOLD("GOLD"),
-    ROLE_DIA("DIAMOND"),
+    ROLE_DIAMOND("DIAMOND"),
     ROLE_ADMIN("ADMIN");
 
     private String name;
