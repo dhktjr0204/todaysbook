@@ -35,7 +35,6 @@ public class UserService {
                 .email(request.getEmail())
                 .password(encoder.encode(request.getPassword()))
                 .mileage("0")
-                .expire(null)
                 .address(request.getAddress())
                 .zipcode(request.getZipcode())
                 .role("ROLE_BRONZE")
