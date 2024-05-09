@@ -61,23 +61,17 @@ public class GeminiRecommendBookService {
     private final AladinApi aladinApi;
     private final AdminServiceImpl adminService;
 
+
+    // 예외처리하기 (설정한 최대 토큰 제한을 넘어가면 null이 넘어옴. 보통 추천 책 1개당 토큰 10개)(후순위)
     public String getContents(String prompt) throws UnsupportedEncodingException {
         String requestUrl = apiUrl + "?key=" + geminiApiKey;
-
         GeminiRecommendApiRequest request = new GeminiRecommendApiRequest(prompt, candidateCount, maxOutputTokens, temperature);
         GeminiRecommendApiResponse response = restTemplate.postForObject(requestUrl, request, GeminiRecommendApiResponse.class);
-
         String message = response.getCandidates().get(0).getContent().getParts().get(0).getText().toString();
-
-//        log.info("-----------------응답 message-----------------\n" + message);
-
         saveGeminiRecommendBook(message);
         return message;
     }
 
-
-    // 나중에 adminService가 아닌 유틸 클래스 만들어 지면 그것을 사용하도록 변경
-    // max 매개변수 설정하는거 기억 (프롬프트 책 15개 이상으로 변경 하려고 하기 때문에)
     public void saveGeminiRecommendBook(String message) throws UnsupportedEncodingException {
         // 책 제목 추출
         List<String> bookTitles = extractBookTitles(message);
