@@ -126,4 +126,5 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ContentLengthOverException.class)
     public ResponseEntity<String> ReviewContentLengthOverException(ContentLengthOverException ex) {
         return new ResponseEntity<>("리뷰 내용의 길이가 초과되었습니다.", HttpStatus.BAD_REQUEST);
+    }
 }
