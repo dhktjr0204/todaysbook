@@ -13,6 +13,8 @@ import com.example.todaysbook.exception.recommendList.EmptyTitleException;
 import com.example.todaysbook.exception.recommendList.RecommendListLengthOverException;
 import com.example.todaysbook.exception.recommendList.RecommendListNotFoundException;
 import com.example.todaysbook.exception.recommendList.TitleLengthOverException;
+import com.example.todaysbook.exception.review.ContentEmptyException;
+import com.example.todaysbook.exception.review.ContentLengthOverException;
 import com.example.todaysbook.exception.user.NotLoggedInException;
 import com.example.todaysbook.exception.user.UserNotFoundException;
 import com.example.todaysbook.exception.user.UserValidateException;
@@ -108,5 +110,15 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(DescriptionLengthOverException.class)
     public ResponseEntity<String> DescriptionLengthOverException(DescriptionLengthOverException ex) {
         return new ResponseEntity<>("책 설명의 길이가 초과되었습니다.", HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ContentEmptyException.class)
+    public ResponseEntity<String> ReviewContentEmptyException(ContentEmptyException ex) {
+        return new ResponseEntity<>("리뷰 내용을 입력해주세요.", HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ContentLengthOverException.class)
+    public ResponseEntity<String> ReviewContentLengthOverException(ContentLengthOverException ex) {
+        return new ResponseEntity<>("리뷰 내용의 길이가 초과되었습니다.", HttpStatus.BAD_REQUEST);
     }
 }

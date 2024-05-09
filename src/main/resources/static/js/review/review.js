@@ -16,41 +16,6 @@ function editReviewWordCount(textarea){
     countBytes(textarea, commentTextCount, 500);
 }
 
-// function countBytes(editor, containerSelector, limit) {
-//
-//     const content = editor.value;
-//     const byteCount = countUtf8Bytes(content);
-//
-//     containerSelector.textContent = byteCount + "/" + limit;
-//
-//     if (byteCount > limit) {
-//         alert('허용된 글자수가 초과되었습니다.')
-//         const truncatedContent = cutByLen(content, limit);
-//         editor.value = truncatedContent;
-//     }
-// }
-//
-// function countUtf8Bytes(str) {
-//     let byteCount = 0;
-//
-//     for (let i = 0; i < str.length; i++) {
-//         const charCode = str.charCodeAt(i);
-//         (charCode==10) ? byteCount+=2: byteCount+=1;
-//     }
-//
-//     return byteCount;
-// }
-//
-// function cutByLen(str, maxByte) {
-//     for (let b = i = 0; c = str.charCodeAt(i); i++) {
-//
-//         b += c == 10 ? 2 : 1;
-//         if (b > maxByte) break;
-//     }
-//
-//     return str.substring(0, i);
-// }
-
 function clickLike(button, reviewId) {
 
     button.classList.toggle('liked');
@@ -158,7 +123,13 @@ function clickAddReview(button) {
             starEvents();
         },
         error: function (error) {
-            throw new Error('리뷰 등록 실패');
+            if (error.status === 400) {
+                alert("Bad Request: "+ error.responseText);
+            }else if(error.status === 401){
+                alert("Unauthorized: "+error.responseText);
+            }else{
+                alert("error: "+error.responseText);
+            } // 에러 응답 본문을 alert 창에 표시
         }
     });
 }
