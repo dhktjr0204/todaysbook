@@ -23,9 +23,9 @@ public class GeminiRecommendBook {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
-    private long bookId;
+    private Long bookId;
 
     @CreatedDate
     private LocalDateTime date;

@@ -16,9 +16,9 @@ public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    private long userId;
+    private Long id;
+    private Long userId;
     private java.sql.Timestamp orderDate;
-    private long deliveryId;
+    private Long deliveryId;
     private String status;
 }
