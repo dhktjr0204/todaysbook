@@ -6,6 +6,7 @@ import com.example.todaysbook.domain.dto.AlanChatResponse;
 import com.example.todaysbook.service.AlanChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.codec.ServerSentEvent;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 
@@ -21,18 +22,6 @@ public class AlanChatController {
     public Flux<ServerSentEvent<String>> streamAlanResponse(@RequestParam("content") String content) {
         return alanChatService.streamAlanResponse(content);
     }
-
-//    @GetMapping("/chat")
-//    public String chatbotPage(Model model) {
-//        return "alan/chat";
-//    }
-//
-//    @PostMapping("/chat")
-//    public String handleUserInput(Model model) {
-//        return "alan/chat";
-//    }
-
-
 
 
 }
