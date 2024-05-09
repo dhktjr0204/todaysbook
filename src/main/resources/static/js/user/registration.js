@@ -96,11 +96,14 @@ document.addEventListener('DOMContentLoaded', function() {
         const formInputs = document.querySelectorAll('.input');
         const userData = {};
 
-        // 각 입력 필드에서 사용자 입력을 userData 객체에 저장
         formInputs.forEach(function(input, index) {
-            const label = ["name", "email", "nickName", "password", "passwordCheck", "address", "zipcode"];
+            const label = ["name", "email", "nickName", "password", "passwordCheck", "address", "detailAddress", "zipcode"];
 
-            userData[label[index]] = input.value;
+            if (label[index] === 'detailAddress') {
+                userData['address'] += ', ' + input.value;
+            } else {
+                userData[label[index]] = input.value;
+            }
         });
 
         const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&~]{8,}$/;

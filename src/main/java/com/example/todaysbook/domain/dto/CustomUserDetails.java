@@ -33,6 +33,18 @@ public class CustomUserDetails implements UserDetails {
         return user.getNickName();
     }
 
+    public String getName() {
+        return user.getName();
+    }
+
+    public String getAddress() {
+        return user.getAddress();
+    }
+
+    public String getZipcode() {
+        return user.getZipcode();
+    }
+
     @Override
     public String getPassword() {
         return user.getPassword();
