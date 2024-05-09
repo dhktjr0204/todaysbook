@@ -33,6 +33,8 @@ public class CustomUserDetails implements UserDetails {
         return user.getNickName();
     }
 
+    public String getMileage() {return user.getMileage();}
+
     public String getName() {
         return user.getName();
     }

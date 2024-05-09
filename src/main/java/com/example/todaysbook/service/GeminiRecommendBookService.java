@@ -7,7 +7,6 @@ import com.example.todaysbook.domain.entity.Book;
 import com.example.todaysbook.domain.entity.GeminiRecommendBook;
 import com.example.todaysbook.repository.BookRepository;
 import com.example.todaysbook.repository.GeminiRecommendBookRepository;
-import com.example.todaysbook.util.AladinApi;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
@@ -26,8 +25,10 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -57,12 +58,10 @@ public class GeminiRecommendBookService {
 
     private final BookRepository bookRepository;
     private final GeminiRecommendBookRepository geminiRecommendBookRepository;
-
-    private final AladinApi aladinApi;
     private final AdminServiceImpl adminService;
 
-
     // 예외처리하기 (설정한 최대 토큰 제한을 넘어가면 null이 넘어옴. 보통 추천 책 1개당 토큰 10개)(후순위)
+
     public String getContents(String prompt) throws UnsupportedEncodingException {
         String requestUrl = apiUrl + "?key=" + geminiApiKey;
         GeminiRecommendApiRequest request = new GeminiRecommendApiRequest(prompt, candidateCount, maxOutputTokens, temperature);
@@ -93,7 +92,7 @@ public class GeminiRecommendBookService {
                 // DB에 책이 없으면 외부 API에서 데이터 가져와서 저장
                 log.info(bookTitle + ":  title로 검색해본 결과 Book테이블에 없습니다. 외부 API에서 검색후 isbn을 가져와 다시 검색합니다.");
 
-                HashMap<String, ?> response = aladinApi.getNewBook(bookTitle, 1,1);
+                HashMap<String, ?> response = adminService.getNewBook(bookTitle, 1);
                 List<BookDto> bookList = (List<BookDto>) response.get("books");
 
                 if (!bookList.isEmpty()) { // API 호출 결과가 있으면
@@ -107,6 +106,7 @@ public class GeminiRecommendBookService {
                         log.info(bookTitle + ":  isbn으로 검색해본 결과 Book에 없습니다. 외부 API에서 가져온 데이터를 Book에 저장합니다.");
                         aladinApi.addNewBook(bookDto);
                         Optional<Book> savedBook = bookRepository.findFirstByIsbn(bookDto.getIsbn());
+
                         if (savedBook.isPresent()) {
                             bookId = savedBook.get().getId();
                             log.info("bookId(" + bookId + ") Book에 저장 완료");
