@@ -39,11 +39,6 @@ function getUserInfo() {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    const searchButton = document.querySelectorAll('.button')[2];
-    searchButton.addEventListener('click', (event) => {
-        execDaumPostcode();
-    });
-
     const sameInfoWithUserCheckBox = document.querySelector('.check-box');
     if (sameInfoWithUserCheckBox) {
         sameInfoWithUserCheckBox.addEventListener('change', function() {
@@ -53,6 +48,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     document.getElementById('user').value = userInfo.name;
                     document.getElementById('address').value = userInfo.address;
                     document.getElementById('postcode').value = userInfo.zipcode;
+
+                    console.log(userInfo);
                 }).catch(function(error) {
                     console.error('Error fetching user info:', error);
                 });

@@ -106,8 +106,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        alert(userData['address']);
-
         const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&~]{8,}$/;
 
         if(!passwordPattern.test(userData['password'])) {
