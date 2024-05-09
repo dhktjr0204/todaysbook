@@ -22,3 +22,43 @@ function execDaumPostcode() {
         }
     }).open();
 }
+
+function getUserInfo() {
+    return fetch('/getUserInfo', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(function(response) {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        });
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    const sameInfoWithUserCheckBox = document.querySelector('.check-box');
+    if (sameInfoWithUserCheckBox) {
+        sameInfoWithUserCheckBox.addEventListener('change', function() {
+            if (this.checked) {
+                document.querySelector('.detail-address').style.display = 'none';
+                const userInfo = getUserInfo().then(function(userInfo) {
+                    document.getElementById('user').value = userInfo.name;
+                    document.getElementById('address').value = userInfo.address;
+                    document.getElementById('postcode').value = userInfo.zipcode;
+
+                    console.log(userInfo);
+                }).catch(function(error) {
+                    console.error('Error fetching user info:', error);
+                });
+            } else {
+                document.querySelector('.detail-address').style.display = 'flex';
+                document.getElementById('user').value = null;
+                document.getElementById('address').value = null;
+                document.getElementById('postcode').value = null;
+            }
+        });
+    }
+});
