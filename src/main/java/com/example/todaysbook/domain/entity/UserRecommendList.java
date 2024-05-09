@@ -25,8 +25,8 @@ public class UserRecommendList {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    private long userId;
+    private Long id;
+    private Long userId;
     private String title;
 
     @CreatedDate

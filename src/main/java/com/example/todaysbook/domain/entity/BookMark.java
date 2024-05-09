@@ -18,7 +18,7 @@ public class BookMark {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    private long userRecommendListId;
-    private long userId;
+    private Long id;
+    private Long userRecommendListId;
+    private Long userId;
 }
