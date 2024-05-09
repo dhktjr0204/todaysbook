@@ -20,6 +20,8 @@ public class CustomUserDetails implements UserDetails {
         Collection<GrantedAuthority> collection = new ArrayList<>();
         collection.add((GrantedAuthority) user::getRole);
 
+        System.out.println(user.getRole());
+
         return collection;
     }
 
