@@ -33,11 +33,16 @@
                         <p class="user-email" th:text="${user.email}"></p>
                         <p class="nickname" th:text="${user.nickName}"></p>
                         <select class="user-grade">
-                            <option value="BRONZE" th:selected="${user.grade == 'BRONZE'}">bronze</option>
-                            <option value="SILVER" th:selected="${user.grade == 'SILVER'}">silver</option>
-                            <option value="GOLD" th:selected="${user.grade == 'GOLD'}">gold</option>
-                            <option value="DIAMOND" th:selected="${user.grade == 'DIAMOND'}">diamond</option>
-                            <option value="ADMIN" th:selected="${user.grade == 'ADMIN'}">admin</option>
+                            <option value="ROLE_BRONZE"
+                                    th:selected="${user.grade == 'ROLE_BRONZE'}">bronze</option>
+                            <option value="ROLE_SILVER"
+                                    th:selected="${user.grade == 'ROLE_SILVER'}">silver</option>
+                            <option value="ROLE_GOLD"
+                                    th:selected="${user.grade == 'ROLE_GOLD'}">gold</option>
+                            <option value="ROLE_DIAMOND"
+                                    th:selected="${user.grade == 'ROLE_DIAMOND'}">diamond</option>
+                            <option value="ROLE_ADMIN"
+                                    th:selected="${user.grade == 'ROLE_ADMIN'}">admin</option>
                         </select>
                         <button class="edit-button" onclick="clickEditRoleButton(this)">수정</button>
                         <button class="delete-button" onclick="clickDeleteUserButton(this)">삭제</button>
