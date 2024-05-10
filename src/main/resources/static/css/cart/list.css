@@ -20,7 +20,6 @@ main {
 
     display: flex;
     flex-direction: column;
-    align-items: end;
 }
 
 .cart-list-header {

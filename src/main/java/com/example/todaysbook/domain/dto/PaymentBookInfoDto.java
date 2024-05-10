@@ -6,10 +6,11 @@ import lombok.Setter;
 @Getter
 @Setter
 public class PaymentBookInfoDto {
+    private long bookId;
     private String bookName;
-    private int quantity;
-    private int price;
-    private String mileage;
+    private long quantity;
+    private long price;
+    private long mileage;
 
     // Getters and setters
 }

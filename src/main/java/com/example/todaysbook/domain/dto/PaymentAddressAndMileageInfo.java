@@ -11,8 +11,8 @@ public class PaymentAddressAndMileageInfo {
     private String postcode;
     private String address;
     private String detailAddress;
-    private Long usedMileage;
-    private Long totalPrice;
+    private long usedMileage;
+    private long totalPrice;
 
     public Long getUsedMileage() {
         return this.usedMileage != null ? this.usedMileage : 0L;
