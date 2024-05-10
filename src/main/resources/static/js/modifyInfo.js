@@ -102,8 +102,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
         nickname = inputList[0].value;
 
-        if(nickname === null) {
-            alert('한 글자 이상의 닉네임이 필요합니다.');
+        if(nickname < 2) {
+            alert('닉네임의 최소 길이는 2글자입니다.');
+            return;
+        } else if(nickname > 8) {
+            alert('닉네임의 최대 길이는 8글자입니다.');
             return;
         }
 
