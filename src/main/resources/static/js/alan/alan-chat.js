@@ -25,12 +25,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 .then(function(response) {
                     const reader = response.body.getReader();
                     const decoder = new TextDecoder();
+                    let alanResponse = '';
 
                     function processResult(result) {
-                        if (result.done) return;
+                        if (result.done) {
+                            alanResponse = alanResponse.replace(/['"]+/g, '');
+                            alanResponse = formatResponse(alanResponse);
+                            appendMessage('Alan', alanResponse);
+                            return;
+                        }
 
                         const chunk = decoder.decode(result.value, {stream: true});
-                        appendMessage('Alan', chunk);
+                        const cleanedChunk = chunk.replace(/data:/g, '').trim();
+                        alanResponse += cleanedChunk;
                         return reader.read().then(processResult);
                     }
 
@@ -42,9 +49,22 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    function formatResponse(response) {
+        // 줄바꿈 처리
+        response = response.replace(/\\n/g, '<br>');
+
+        // 텍스트 강조 처리
+        response = response.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+        // 각주 처리
+        response = response.replace(/\[(.*?)\]/g, '<sup>$1</sup>');
+
+        return response;
+    }
+
     function appendMessage(sender, message) {
         const messageElement = document.createElement('div');
-        messageElement.textContent = `${sender}: ${message}`;
+        messageElement.innerHTML = `${sender}: ${message}`;
         chatMessages.appendChild(messageElement);
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }

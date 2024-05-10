@@ -42,9 +42,14 @@ public class AlanChatService {
                 .map(responseString -> {
                     String eventType = extractEventType(responseString);
                     String data = extractData(responseString);
+                    String contentString = extractContentString(data);
+//                    log.info("eventType: {},        data: {}", eventType, data);
+//                    log.info("data: {}", data);
+                    log.info("contentString: {}", contentString);
                     return ServerSentEvent.<String>builder()
-                            .event(eventType)
-                            .data(data)
+                            //.event(eventType)
+                            //.data(data)
+                            .data(contentString)
                             .build();
                 });
     }
@@ -56,8 +61,28 @@ public class AlanChatService {
     }
 
     private String extractData(String responseString) {
-        int startIndex = responseString.indexOf("\"data\":") + "\"data\":".length();
+        int startIndex = responseString.indexOf("\"data\":") + "\"data\":".length()+1;
         int endIndex = responseString.lastIndexOf("}");
-        return responseString.substring(startIndex, endIndex).trim();
+        return responseString.substring(startIndex, endIndex).trim(); // 설명: responseString에서 startIndex부터 endIndex까지의 문자열을 반환한다.
     }
+
+    private String extractContentString(String data) {
+        int startIndex = data.indexOf("\'content\':") + "\'content\':".length();
+        int endIndex = data.indexOf("}", startIndex);
+        return data.substring(startIndex, endIndex).trim().replace("\"", "");
+    }
+
+
+
+
+//    private String extractData(String responseString) {
+//        int startIndex = responseString.indexOf("\"data\":") + "\"data\":".length();
+//        int endIndex = responseString.lastIndexOf("}");
+//        String dataString = responseString.substring(startIndex, endIndex).trim();
+//
+//        // 문자열을 JSON 형식으로 가공
+//        String jsonString = "{\"data\":" + dataString + "}";
+//
+//        return jsonString;
+//    }
 }
