@@ -10,7 +10,6 @@ public interface FavoriteBookService {
 
     Page<FavoriteBookDTO> getFavoriteBooks(Long userId, Pageable pageable);
     List<FavoriteBookDTO> getFavoriteBooks(Long userId);
-    List<FavoriteBookDTO> getRecommendBooksByFavoriteBooks(Long userId);
     int addFavoriteBook(Long userId, Long bookId);
     int deleteFavoriteBook(Long userId, Long bookId);
 }

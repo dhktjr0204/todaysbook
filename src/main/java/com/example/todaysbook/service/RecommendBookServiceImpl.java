@@ -48,6 +48,12 @@ public class RecommendBookServiceImpl implements RecommendBookService {
         return recommendBookMapper.getRecommendBooks(bookId);
     }
 
+    @Override
+    public List<RecommendBookDto> getRecommendBooksByFavoriteBooks(Long userId) {
+
+        return recommendBookMapper.getRecommendBooksByFavoriteBooks(userId);
+    }
+
     private void fileWrite(String filePath, List<SimpleReview> reviews) throws IOException {
 
         BufferedWriter bw = new BufferedWriter(new FileWriter(filePath, false));
