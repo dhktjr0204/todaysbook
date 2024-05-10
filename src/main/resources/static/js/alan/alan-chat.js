@@ -36,13 +36,15 @@ document.addEventListener('DOMContentLoaded', function () {
                         chatMessages.appendChild(alanMessageElement);
                         isFirstChunk = false;
                     }
+
                     const contentElement = document.createElement('span');
                     contentElement.innerHTML = formatContent(response.data.content);
                     alanMessageElement.querySelector('.read-text').appendChild(contentElement);
+
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
                 } else if (response.type === 'complete') {
                     eventSource.close();
                 }
-                chatMessages.scrollTop = chatMessages.scrollHeight;
             };
 
             eventSource.onerror = function () {
@@ -73,3 +75,34 @@ document.addEventListener('DOMContentLoaded', function () {
         return content;
     }
 });
+
+
+
+// alanMessageElement = createMessageElement('Alan');
+// const typingElement = document.createElement('div');
+// typingElement.className = 'typing-indicator';
+// typingElement.innerHTML = '<span></span><span></span><span></span>';
+// alanMessageElement.querySelector('.read-text').appendChild(typingElement);
+// chatMessages.appendChild(alanMessageElement);
+// chatMessages.scrollTop = chatMessages.scrollHeight;
+//
+// eventSource = new EventSource(`/alan/sse-streaming?content=${encodeURIComponent(content)}`);
+//
+// eventSource.onmessage = function (event) {
+//     const response = JSON.parse(event.data);
+//     if (response.type === 'continue') {
+//         if (isFirstChunk) {
+//
+//             alanMessageElement.querySelector('.read-text').removeChild(typingElement);
+//             isFirstChunk = false;
+//         }
+//
+//         const contentElement = document.createElement('span');
+//         contentElement.innerHTML = formatContent(response.data.content);
+//         alanMessageElement.querySelector('.read-text').appendChild(contentElement);
+//
+//         chatMessages.scrollTop = chatMessages.scrollHeight;
+//     } else if (response.type === 'complete') {
+//         eventSource.close();
+//     }
+// };
