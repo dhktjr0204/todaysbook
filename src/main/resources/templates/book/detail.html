@@ -84,13 +84,20 @@
                     </div>
                     <div class="count-info">
                         <p class="count-label" th:text="'수량'"></p>
-                        <input class="count-input" type="number" value="1">
+                        <input class="count-input" type="number" value="0">
                     </div>
-                    <div class="button-group">
+                    <div class="button-group"
+                         th:unless="${bookDetailDto.bookDetail.stock == 0 or bookDetailDto.bookDetail.stock == -1}">
                         <button class="cart-button" th:data-id="${bookDetailDto.bookDetail.id}" onclick="addCart(this)"
                                 th:text="'장바구니'"></button>
                         <button class="purchase-button" th:text="'구매하기'"></button>
                     </div>
+                    <div class="button-group"
+                         th:if="${bookDetailDto.bookDetail.stock == 0 or bookDetailDto.bookDetail.stock == -1}">
+                        <p th:text="${bookDetailDto.bookDetail.stock == 0} ? '일시 품절'" style="color: #D54DFE; font-size: 30px;"></p>
+                        <p th:text="${bookDetailDto.bookDetail.stock == -1} ? '입고 예정'" style="color: #D54DFE; font-size: 30px;"></p>
+                    </div>
+
                 </div>
             </div>
             <div class="book-description">

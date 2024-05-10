@@ -1,8 +1,14 @@
 package com.example.todaysbook.service;
 
+import com.example.todaysbook.domain.dto.CustomUserDetails;
 import com.example.todaysbook.domain.dto.UserRequestDto;
 import com.example.todaysbook.domain.entity.User;
 import com.example.todaysbook.repository.UserRepository;
+import jakarta.transaction.Transactional;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +17,7 @@ import java.util.Optional;
 
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder encoder;
@@ -33,13 +39,16 @@ public class UserService {
                 .email(request.getEmail())
                 .password(encoder.encode(request.getPassword()))
                 .mileage("0")
-                .expire(null)
                 .address(request.getAddress())
                 .zipcode(request.getZipcode())
                 .role("ROLE_BRONZE")
                 .build();
 
         return userRepository.save(user);
+    }
+
+    public void withdraw(Long id) {
+        userRepository.deleteById(id);
     }
 
     public boolean isExistEmail(String email) {
@@ -64,5 +73,13 @@ public class UserService {
 
     public void updateAddressInfoById(Long id, String address, String zipcode) {
         userRepository.updateAddressInfoById(id, address, zipcode);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("email not found : "+email));
+        return new CustomUserDetails(user);
     }
 }

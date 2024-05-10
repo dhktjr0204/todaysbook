@@ -21,6 +21,16 @@ public class CategoryServiceImpl implements CategoryService{
         return allByCategoryId.map(this::convertToBookDto);
     }
 
+    @Override
+    public Page<BookDto> getBooksSortByBestSeller(String categoryId, Pageable pageable) {
+        return bookRepository.findBookSortByBestSeller(categoryId, pageable);
+    }
+
+    @Override
+    public Page<BookDto> getBooksSortByReviewScore(String categoryId, Pageable pageable) {
+        return bookRepository.findBookSortByReviewScore(categoryId, pageable);
+    }
+
     private BookDto convertToBookDto(Book book){
         return BookDto.builder()
                 .id(book.getId())

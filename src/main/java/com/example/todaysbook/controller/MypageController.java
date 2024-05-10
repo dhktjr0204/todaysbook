@@ -112,4 +112,10 @@ public class MypageController {
 
         return "user/mypage/favorite-book";
     }
+
+    @GetMapping("/mileage_history")
+    public String mileageHistory() {
+
+        return "user/mypage/mileage";
+    }
 }

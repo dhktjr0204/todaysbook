@@ -14,7 +14,7 @@ public class CartBook {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "cart_id")
@@ -24,7 +24,7 @@ public class CartBook {
     @JoinColumn(name = "book_id")
     private Book book; // Book 엔티티와의 관계
 
-    private long count;
+    private Long count;
 
 
     public static CartBook createCartBook(Cart cart,Book book,long count){

@@ -2,7 +2,10 @@ package com.example.todaysbook.util;
 
 import com.example.todaysbook.domain.CategoryEnum;
 import com.example.todaysbook.domain.dto.BookDto;
+import com.example.todaysbook.domain.entity.Book;
 import com.example.todaysbook.exception.aladinApi.NotValidBook;
+import com.example.todaysbook.exception.book.DuplicateBookException;
+import com.example.todaysbook.repository.BookRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +19,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -24,6 +28,7 @@ public class AladinApi {
     @Value("${aladin.ttbkey}")
     private String aladinKey;
     private final ObjectMapper objectMapper;
+    private final BookRepository bookRepository;
 
     public HashMap<String, ?> getNewBook(String keyword, int page, int size) {
         String url = "http://www.aladin.co.kr/ttb/api/ItemSearch.aspx?Query=" + keyword +
@@ -64,6 +69,27 @@ public class AladinApi {
         return map;
     }
 
+    public void addNewBook(BookDto bookDto) {
+        Optional<Book> existingBook = bookRepository.findFirstByIsbn(bookDto.getIsbn());
+        if (existingBook.isPresent()) {
+            throw new DuplicateBookException();
+        }
+
+        Book newBook = Book.builder()
+                .title(bookDto.getTitle())
+                .price(bookDto.getPrice())
+                .author(bookDto.getAuthor())
+                .description(bookDto.getDescription())
+                .publisher(bookDto.getPublisher())
+                .publishDate(bookDto.getPublishDate())
+                .stock(bookDto.getStock())
+                .isbn(bookDto.getIsbn())
+                .imagePath(bookDto.getImage())
+                .categoryId(bookDto.getCategory())
+                .build();
+
+        bookRepository.save(newBook);
+    }
     private BookDto convertJsonToBookDto(JsonNode itemNode) {
         BookDto book = BookDto.builder()
                 .title(itemNode.get("title").asText())

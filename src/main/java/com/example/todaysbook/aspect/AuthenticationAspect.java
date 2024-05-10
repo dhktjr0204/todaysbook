@@ -24,6 +24,8 @@ public class AuthenticationAspect {
                     Model model = (Model) arg;
                     model.addAttribute("nickName", userDetails.getNickname());
                     model.addAttribute("loginUserId", userDetails.getUserId());
+                    model.addAttribute("role", userDetails.getAuthorities().iterator().next().getAuthority());
+                    model.addAttribute("mileage", userDetails.getMileage());
 
                     break;
                 }

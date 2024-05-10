@@ -2,6 +2,7 @@ package com.example.todaysbook.domain.dto;
 
 import com.example.todaysbook.domain.entity.User;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
@@ -17,10 +18,10 @@ public class CustomUserDetails implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
-        Collection<GrantedAuthority> collection = new ArrayList<>();
-        collection.add((GrantedAuthority) user::getRole);
+        Collection<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(user.getRole()));
 
-        return collection;
+        return authorities;
     }
 
     public long getUserId() {
@@ -31,8 +32,19 @@ public class CustomUserDetails implements UserDetails {
         return user.getNickName();
     }
 
-
     public String getMileage() {return user.getMileage();}
+
+    public String getName() {
+        return user.getName();
+    }
+
+    public String getAddress() {
+        return user.getAddress();
+    }
+
+    public String getZipcode() {
+        return user.getZipcode();
+    }
 
     @Override
     public String getPassword() {

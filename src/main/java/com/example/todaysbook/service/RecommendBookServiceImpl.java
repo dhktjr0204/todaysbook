@@ -1,8 +1,10 @@
 package com.example.todaysbook.service;
 
+import com.example.todaysbook.domain.dto.FavoriteBookDTO;
 import com.example.todaysbook.domain.dto.RecommendBookDto;
 import com.example.todaysbook.domain.dto.ReviewRequestDto;
 import com.example.todaysbook.domain.dto.SimpleReview;
+import com.example.todaysbook.repository.FavoriteBookRepository;
 import com.example.todaysbook.repository.RecommendBookMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.mahout.cf.taste.common.TasteException;
@@ -32,36 +34,12 @@ public class RecommendBookServiceImpl implements RecommendBookService {
     public void GenerateRecommendBookList(List<SimpleReview> reviews) throws TasteException, IOException {
 
         String filePath = "src/main/resources/data/rating.csv";
+        int howMany = 5;
 
         fileWrite(filePath, reviews);
 
-        File dataFile = new File(filePath);
-        DataModel model = new FileDataModel(dataFile);
-
-        TanimotoCoefficientSimilarity similarity = new TanimotoCoefficientSimilarity(model);
-        GenericItemBasedRecommender recommender = new GenericItemBasedRecommender(model, similarity);
-
-        List<Map<String, Object>> items = new ArrayList<>();
-
-        LongPrimitiveIterator itemIDs = model.getItemIDs();
-        while (itemIDs.hasNext()) {
-            long currentItemID = itemIDs.nextLong();
-
-            List<RecommendedItem> recommendedItems = recommender.mostSimilarItems(currentItemID, 5);
-
-            for (RecommendedItem recommendedItem : recommendedItems) {
-                Map<String, Object> item = new HashMap<>();
-
-                item.put("bookId", currentItemID);
-                item.put("recommendBookId", recommendedItem.getItemID());
-                item.put("similarityScore", recommendedItem.getValue());
-
-                items.add(item);
-            }
-        }
-
         recommendBookMapper.truncateRecommendBook();
-        recommendBookMapper.insertRecommendBookInfo(items);
+        recommendBookMapper.insertRecommendBookInfo(makeRecommendList(filePath, howMany));
     }
 
     @Override
@@ -83,5 +61,35 @@ public class RecommendBookServiceImpl implements RecommendBookService {
         }
 
         bw.close();
+    }
+
+    private List<Map<String, Object>> makeRecommendList(String filePath, int howMany) throws IOException, TasteException {
+
+        File dataFile = new File(filePath);
+        DataModel model = new FileDataModel(dataFile);
+
+        TanimotoCoefficientSimilarity similarity = new TanimotoCoefficientSimilarity(model);
+        GenericItemBasedRecommender recommender = new GenericItemBasedRecommender(model, similarity);
+
+        List<Map<String, Object>> items = new ArrayList<>();
+
+        LongPrimitiveIterator itemIDs = model.getItemIDs();
+        while (itemIDs.hasNext()) {
+            long currentItemID = itemIDs.nextLong();
+
+            List<RecommendedItem> recommendedItems = recommender.mostSimilarItems(currentItemID, howMany);
+
+            for (RecommendedItem recommendedItem : recommendedItems) {
+                Map<String, Object> item = new HashMap<>();
+
+                item.put("bookId", currentItemID);
+                item.put("recommendBookId", recommendedItem.getItemID());
+                item.put("similarityScore", recommendedItem.getValue());
+
+                items.add(item);
+            }
+        }
+
+        return items;
     }
 }

@@ -7,6 +7,7 @@ import com.example.todaysbook.domain.entity.Book;
 import com.example.todaysbook.domain.entity.GeminiRecommendBook;
 import com.example.todaysbook.repository.BookRepository;
 import com.example.todaysbook.repository.GeminiRecommendBookRepository;
+import com.example.todaysbook.util.AladinApi;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
@@ -25,17 +26,15 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class GeminiRecommendBookService { // 설명: GeminiService 클래스는 Gemini API를 호출하는 서비스 클래스입니다.
+public class GeminiRecommendBookService {
 
     @Qualifier("geminiRestTemplate")
     @Autowired
@@ -56,25 +55,19 @@ public class GeminiRecommendBookService { // 설명: GeminiService 클래스는 
     @Value("${gemini.generationConfig.temperature}")
     private double temperature;
 
-    @Value("${aladin.ttbkey}")
-    private String ttbkey;
-
     private final BookRepository bookRepository;
     private final GeminiRecommendBookRepository geminiRecommendBookRepository;
+
+    private final AladinApi aladinApi;
     private final AdminServiceImpl adminService;
 
 
-
+    // 예외처리하기 (설정한 최대 토큰 제한을 넘어가면 null이 넘어옴. 보통 추천 책 1개당 토큰 10개)(후순위)
     public String getContents(String prompt) throws UnsupportedEncodingException {
         String requestUrl = apiUrl + "?key=" + geminiApiKey;
-
         GeminiRecommendApiRequest request = new GeminiRecommendApiRequest(prompt, candidateCount, maxOutputTokens, temperature);
         GeminiRecommendApiResponse response = restTemplate.postForObject(requestUrl, request, GeminiRecommendApiResponse.class);
-
         String message = response.getCandidates().get(0).getContent().getParts().get(0).getText().toString();
-
-//        log.info("-----------------응답 message-----------------\n" + message);
-
         saveGeminiRecommendBook(message);
         return message;
     }
@@ -98,30 +91,34 @@ public class GeminiRecommendBookService { // 설명: GeminiService 클래스는 
 
             } else {
                 // DB에 책이 없으면 외부 API에서 데이터 가져와서 저장
-                log.info(bookTitle + ":  title로 검색해본 결과 DB에 없습니다. 외부 API에서 검색후 isbn을 가져와 다시 DB에 검색합니다.");
+                log.info(bookTitle + ":  title로 검색해본 결과 Book테이블에 없습니다. 외부 API에서 검색후 isbn을 가져와 다시 검색합니다.");
 
-                HashMap<String, ?> response = adminService.getNewBook(bookTitle, 1);
+                HashMap<String, ?> response = aladinApi.getNewBook(bookTitle, 1,1);
                 List<BookDto> bookList = (List<BookDto>) response.get("books");
 
-                if (!bookList.isEmpty()) {
-                    BookDto bookDto = bookList.get(0);
-                    Optional<Book> existingBook = bookRepository.findByIsbn(bookDto.getIsbn());
-                    if (existingBook.isPresent()) {
+                if (!bookList.isEmpty()) { // API 호출 결과가 있으면
+                    BookDto bookDto = bookList.get(0); // 첫 번째 결과 사용
+                    Optional<Book> existingBook = bookRepository.findFirstByIsbn(bookDto.getIsbn()); // isbn으로 DB 검색
+                    if (existingBook.isPresent()) { // isbn으로 DB 검색 결과 해당 있으면 해당 bookId 가져오기 (즉, 두번 검색)(첫번째는 제목으로, 두번째는 isbn으로)
+                        log.info(bookTitle + ":  isbn으로 검색해본 결과 Book에 있습니다.");
                         bookId = existingBook.get().getId();
                         saveGeminiRecommendBookEntity(bookId);
                     } else {
-                        adminService.addNewBook(List.of(bookDto));
-                        Optional<Book> savedBook = bookRepository.findByIsbn(bookDto.getIsbn());
+                        log.info(bookTitle + ":  isbn으로 검색해본 결과 Book에 없습니다. 외부 API에서 가져온 데이터를 Book에 저장합니다.");
+                        aladinApi.addNewBook(bookDto);
+                        Optional<Book> savedBook = bookRepository.findFirstByIsbn(bookDto.getIsbn());
                         if (savedBook.isPresent()) {
                             bookId = savedBook.get().getId();
+                            log.info("bookId(" + bookId + ") Book에 저장 완료");
                             saveGeminiRecommendBookEntity(bookId);
                         }
                     }
                 } else {
-                    log.info("API 호출 결과가 없습니다.");
+                    log.info("API 호출 결과가 없습니다. 다음 책으로 넘어갑니다.\n");
                 }
             }
         }
+        log.info("-----------------책 제목 DB 저장 완료-----------------\n");
     }
 
     private void saveGeminiRecommendBookEntity(long bookId) {
@@ -130,7 +127,7 @@ public class GeminiRecommendBookService { // 설명: GeminiService 클래스는 
                 .date(LocalDateTime.now())
                 .build();
         geminiRecommendBookRepository.save(geminiRecommendBook);
-        log.info("bookId(" + bookId + ") GeminiRecommendBook에 저장 완료");
+        log.info("bookId(" + bookId + ") GeminiRecommendBook에 저장 완료\n");
     }
 
 
@@ -152,7 +149,7 @@ public class GeminiRecommendBookService { // 설명: GeminiService 클래스는 
                         today.atStartOfDay(), today.atTime(23, 59, 59))
                 .stream()
                 .distinct()
-                //.limit(10)
+                .limit(10)
                 .toList();
 
 
@@ -163,60 +160,12 @@ public class GeminiRecommendBookService { // 설명: GeminiService 클래스는 
                 .map(bookRepository::findById)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
+                .limit(10)
                 .toList();
 
         // book 목록을 BookDto 목록으로 변환
         return books.stream()
-                .map(book -> new BookDto(book.getId(), book.getTitle(), book.getAuthor(), book.getPrice(), book.getImagePath(), book.getPublisher(), book.getPublishDate(), book.getStock(), book.getIsbn(), book.getDescription(), book.getImagePath(), book.getCategoryId()))
+                .map(book -> new BookDto(book.getId(), book.getTitle(), book.getAuthor(), book.getPrice(), book.getImagePath(), book.getPublisher(), book.getPublishDate(), book.getStock(), book.getIsbn(), book.getDescription(), book.getCategoryId()))
                 .collect(Collectors.toList());
-    }
-
-
-    // 외부 API 호출 결과를 파싱하여 BookDto 객체로 변환하는 메소드
-    private BookDto parseBookData(String apiUrl) {
-        try {
-            // API 호출
-            URL url = new URL(apiUrl);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            conn.setRequestProperty("Content-Type", "application/json");
-
-            // 응답 읽기
-            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            String line;
-            StringBuilder result = new StringBuilder();
-            while ((line = br.readLine()) != null) {
-                result.append(line);
-            }
-            br.close();
-
-            // JSON 파싱
-            JSONObject json = new JSONObject(result.toString());
-            JSONArray items = json.getJSONArray("item");
-            if (!items.isEmpty()) {
-                JSONObject item = items.getJSONObject(0);
-
-                // BookDto 객체에 데이터 저장
-                return BookDto.builder()
-                        .title(item.getString("title"))
-                        .price(item.getLong("priceSales"))
-                        .author(item.getString("author"))
-                        .publisher(item.getString("publisher"))
-                        .publishDate(LocalDate.parse(item.getString("pubDate"))) // LocalDate로 변경
-                        .isbn(item.getString("isbn13"))
-                        .description(item.getString("description"))
-                        .imagePath(item.getString("cover"))
-                        .category(adminService.convertCategoryToCategoryId(item.getString("categoryName")))
-                        .build();
-            }
-        } catch (IOException e) {
-            log.error("API 호출 중 오류가 발생했습니다: " + e.getMessage());
-            return null;
-        } catch (JSONException e) {
-            log.error("JSON 파싱 중 오류가 발생했습니다: " + e.getMessage());
-            return null;
-        }
-
-        return null;
     }
 }

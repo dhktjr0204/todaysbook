@@ -31,7 +31,7 @@ public class CategoryController {
                                    @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
                                    Model model) {
 
-        Page<BookDto> books = categoryService.getBooksByCategoryId(categoryId, pageable);
+        Page<BookDto> books=selectBookSort(type, categoryId, pageable);
 
         int startPage = 0;
         int endPage = 0;
@@ -42,13 +42,7 @@ public class CategoryController {
             endPage = pages.get("endPage");
         }
 
-        String categoryName = "";
-
-        for (CategoryEnum categoryEnum : CategoryEnum.values()) {
-            if (categoryEnum.getKey().equals(categoryId)) {
-                categoryName = categoryEnum.getTitle();
-            }
-        }
+        String categoryName = convertNameToId(categoryId);
 
         model.addAttribute("dto", books);
         model.addAttribute("categoryName", categoryName);
@@ -57,5 +51,26 @@ public class CategoryController {
         model.addAttribute("type", type);
 
         return "book/categoryBook";
+    }
+
+    private Page<BookDto> selectBookSort(String type, String categoryId, Pageable pageable) {
+        if (type.equals("bestseller")) {
+            return categoryService.getBooksSortByBestSeller(categoryId, pageable);
+        }
+
+        if (type.equals("review")) {
+            return categoryService.getBooksSortByReviewScore(categoryId, pageable);
+        }
+
+        return categoryService.getBooksByCategoryId(categoryId, pageable);
+    }
+
+    private String convertNameToId(String categoryId){
+        for (CategoryEnum categoryEnum : CategoryEnum.values()) {
+            if (categoryEnum.getKey().equals(categoryId)) {
+                return categoryEnum.getTitle();
+            }
+        }
+        return null;
     }
 }
