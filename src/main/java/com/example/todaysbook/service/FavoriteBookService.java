@@ -8,8 +8,9 @@ import java.util.List;
 
 public interface FavoriteBookService {
 
-    Page<FavoriteBookDTO> getFavoriteBooks(long userId, Pageable pageable);
-    List<FavoriteBookDTO> getFavoriteBooks(long userId);
-    int addFavoriteBook(long userId, long bookId);
-    int deleteFavoriteBook(long userId, long bookId);
+    Page<FavoriteBookDTO> getFavoriteBooks(Long userId, Pageable pageable);
+    List<FavoriteBookDTO> getFavoriteBooks(Long userId);
+    List<FavoriteBookDTO> getRecommendBooksByFavoriteBooks(Long userId);
+    int addFavoriteBook(Long userId, Long bookId);
+    int deleteFavoriteBook(Long userId, Long bookId);
 }

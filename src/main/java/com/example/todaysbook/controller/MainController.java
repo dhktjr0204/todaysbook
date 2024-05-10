@@ -23,7 +23,7 @@ public class MainController {
     @GetMapping("/")
     public String main(@AuthenticationPrincipal CustomUserDetails userDetails, Model model){
 
-        long userId = UserChecker.getUserId(userDetails);
+        Long userId = UserChecker.getUserId(userDetails);
 
         List<FavoriteBookDTO> favoriteBooks =
                 favoriteBookService.getFavoriteBooks(userId);
@@ -33,10 +33,13 @@ public class MainController {
 
         List<BookDto> todayRecommendBooks = geminiRecommendBookService.getTodayRecommendBooks();
 
+        List<FavoriteBookDTO> recommendBooksByFavoriteBooks =
+                favoriteBookService.getRecommendBooksByFavoriteBooks(userId);
 
         model.addAttribute("favoriteBooks", favoriteBooks);
         model.addAttribute("userRecommendList", randomUserRecommendList);
         model.addAttribute("todayRecommendBooks", todayRecommendBooks);
+        model.addAttribute("recommendBooks", recommendBooksByFavoriteBooks);
 
         return "index";
     }
