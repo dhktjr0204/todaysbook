@@ -14,7 +14,4 @@ public class PaymentAddressAndMileageInfo {
     private long usedMileage;
     private long totalPrice;
 
-    public Long getUsedMileage() {
-        return this.usedMileage != null ? this.usedMileage : 0L;
-    }
 }
