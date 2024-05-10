@@ -26,7 +26,6 @@ public class User {
     private String password;
     private String role;
     private String mileage;
-    private java.sql.Timestamp expire;
     private String address;
     private String zipcode;
 

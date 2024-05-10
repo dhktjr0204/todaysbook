@@ -9,7 +9,7 @@ function clickUpdateButton() {
 
 function clickCancelButton() {
     const listId = document.querySelector('.user-id').value;
-    location.href = "/mypage/my_recommend_list/" + listId;
+    location.href = "/mypage/my_recommend_list";
 }
 
 function handleSubmit(url, method) {
