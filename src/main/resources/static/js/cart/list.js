@@ -54,7 +54,7 @@ function postSelectedCartItems() {
             const bookName = listItem.querySelector('.book-name').textContent;
             const quantity = parseInt(listItem.querySelector('.quantity_count').textContent);
             const price = parseFloat(listItem.querySelector('.price').textContent);
-            const mileage = listItem.querySelector('.mileage').textContent;
+            const mileage = listItem.querySelector('.mileage').textContent.replace('M', '');
 
             // 추출한 정보를 객체로 저장하여 배열에 추가합니다.
             selectedBooks.push({

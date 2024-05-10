@@ -100,6 +100,26 @@
         return num.toString().padStart(2, '0');
       }
 
+      function makeOrder() {
+        fetch('/payment/card/order', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+            // 만약에 추가 헤더가 필요하다면 여기에 추가하세요.
+          }
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          console.log('ccc!');
+        })
+        .catch(error => {
+          // 네트워크 오류나 요청 실패시 에러를 처리하는 코드를 여기에 작성하세요.
+          console.error('There was a problem with your fetch operation:', error);
+        });
+      }
+
       const urlParams = new URLSearchParams(window.location.search);
 
       // 서버로 결제 승인에 필요한 결제 정보를 보내세요.
@@ -130,14 +150,24 @@
       }
 
       confirm().then(function (data) {
-        document.querySelector('.title').innerHTML = '결제 완료(입금 대기중)';
+        let payStatus;
+        if (data.method == '카드') {
+          payStatus = '카드 결제 완료';
+          document.querySelector('.description').innerHTML = '';
+          makeOrder();
+        }
+        else if(data.method == '가상계좌') {
+          payStatus = '입금 대기 중';
+          var date = new Date(data.virtualAccount.dueDate);
+          // 날짜 및 시간을 원하는 형식으로 변환합니다.
+          var formattedDate = `${date.getFullYear()}-${padZero(date.getMonth() + 1)}-${padZero(date.getDate())} ${padZero(date.getHours())}시 ${padZero(date.getMinutes())}분`;
+          document.querySelector('.description').innerHTML = `<pre>입금 가상 계좌 : ${data.virtualAccount.accountNumber}\n입금 기한 : ${formattedDate} 까지</pre>`;
+        }
+
+        document.querySelector('.title').innerHTML = payStatus;
 <!--        document.getElementById("response").innerHTML = `<pre>${JSON.stringify(data, null, 4)}</pre>`;-->
 
-        var date = new Date(data.virtualAccount.dueDate);
-        // 날짜 및 시간을 원하는 형식으로 변환합니다.
-        var formattedDate = `${date.getFullYear()}-${padZero(date.getMonth() + 1)}-${padZero(date.getDate())} ${padZero(date.getHours())}시 ${padZero(date.getMinutes())}분`;
 
-        document.querySelector('.description').innerHTML = `<pre>입금 가상 계좌 : ${data.virtualAccount.accountNumber}\n입금 기한 : ${formattedDate} 까지</pre>`;
       });
 
 <!--      const paymentKeyElement = document.getElementById("paymentKey");-->
