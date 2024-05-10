@@ -14,13 +14,13 @@
 
 
 
-    <div id="chat-container">
-        <div id="chat-messages"></div>
-        <div id="input-container">
-            <input type="text" id="user-input" placeholder="메시지를 입력하세요...">
-            <button id="send-btn">전송</button>
-        </div>
-    </div>
+<!--    <div id="chat-container">-->
+<!--        <div id="chat-messages"></div>-->
+<!--        <div id="input-container">-->
+<!--            <input type="text" id="user-input" placeholder="메시지를 입력하세요...">-->
+<!--            <button id="send-btn">전송</button>-->
+<!--        </div>-->
+<!--    </div>-->
 
 
 
@@ -31,20 +31,12 @@
     <div class="alan-recommend-wrap">
         <section class="chatting-read-area">
             <p class="title">앨런에게 책 추천 받기</p>
-            <div class="user-chat">
-                <textarea class="read-text" readonly></textarea>
-                <img th:src="@{/images/user_chat.png}">
-            </div>
-            <div class="alan-chat">
-                <img th:src="@{/images/alan_chat.png}">
-                <textarea class="read-text" readonly></textarea>
-            </div>
-
+            <div id="chat-messages"></div>
         </section>
         <section class="chatting-write-area">
-            <textarea class="write-text" type="text" id="questionInput"
-                      placeholder="앨런에게 책을 추천 받아보세요"></textarea>
-            <button class="submit" onclick="sendQuestion()">입력</button>
+        <textarea class="write-text" type="text" id="user-input"
+                  placeholder="앨런에게 책을 추천 받아보세요"></textarea>
+            <button class="submit" id="send-btn">입력</button>
         </section>
     </div>
 </main>
