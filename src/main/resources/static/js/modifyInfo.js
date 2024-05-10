@@ -92,6 +92,8 @@ function updateAddressInfo(address, detailAddress, zipcode) {
         });
 }
 
+let nicknameAvailability = false;
+
 document.addEventListener('DOMContentLoaded', function () {
     const nicknameButton = document.querySelectorAll('.button')[0];
     const inputList = document.querySelectorAll('.input');
@@ -102,8 +104,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
         nickname = inputList[0].value;
 
-        if(nickname === null) {
-            alert('한 글자 이상의 닉네임이 필요합니다.');
+        if(nickname.length > 8) {
+            alert('닉네임의 길이는 최대 8글자입니다.');
+            return;
+        } else if(nickname.length < 2 || nickname.value === '') {
+            alert('닉네임의 길이는 최소 2글자입니다.');
             return;
         }
 
@@ -112,8 +117,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 if(data.hasOwnProperty('available')) {
                     if(data.available) {
                         alert('사용 가능한 닉네임입니다.');
+                        nicknameAvailability = true;
                     } else {
                         alert('이미 사용 중인 닉네임입니다.');
+                        inputList[0].value = null;
+                        inputList[0].focus();
                     }
                 } else {
                     throw new Error('Invalid response data');
@@ -127,9 +135,18 @@ document.addEventListener('DOMContentLoaded', function () {
     const submitButton = document.querySelector('.submit');
     submitButton.addEventListener('click', function (event) {
         event.preventDefault();
-        updateNickname(nickname);
-        if(inputList[1].value !== null && inputList[2].value !== null && inputList[3].value !== null) {
+        if(!nicknameAvailability) {
+            alert('닉네임 중복 확인을 해주세요.');
+            return;
+        } else {
+            updateNickname(nickname);
+        }
+
+        if(inputList[1].value !== '' && inputList[2].value !== '' && inputList[3].value !== '') {
             updateAddressInfo(inputList[1].value, inputList[2].value, inputList[3].value);
+        } else {
+            alert('빈 칸을 빠짐없이 작성해주세요');
+            return;
         }
     })
 });

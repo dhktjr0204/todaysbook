@@ -8,7 +8,7 @@ function checkPasswordAvailability(originPassword, newPassword) {
         .then(function (response) {
             if(response.status === 400) {
                 alert('이전 비밀번호가 올바르지 않습니다.');
-                window.location.href = '/mypage/updatepw';
+                return;
             } else if (!(response.ok)) {
                 throw new Error('Network response was not ok');
             }
