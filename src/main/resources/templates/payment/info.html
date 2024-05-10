@@ -15,7 +15,7 @@
         <div class="receiver-info-header">
             <p class="title">받는 사람 정보</p>
             <div class="check-box-div">
-                <input class="check-box" type="checkbox" id="sameUserInfo" onclick="fillUserInfo()">
+                <input class="check-box" type="checkbox" id="sameUserInfo">
                 <p>회원 정보와 동일</p>
             </div>
         </div>
@@ -58,11 +58,11 @@
                 </ul>
                 <ul class="cart-list-body">
                     <li th:each="cartBook : ${cartBooks}">
-                        <p class="book-name" th:text="${cartBook.book.title}"></p>
+                        <p class="book-name" th:text="${cartBook.bookName}"></p>
                         <p class="quantity">
-                            <span class="quantity_count" th:text="${cartBook.count}"></span>
+                            <span class="quantity_count" th:text="${cartBook.quantity}"></span>
                         </p>
-                        <p class="price" th:text="${cartBook.book.price * cartBook.count}"></p>
+                        <p class="price" th:text="${cartBook.price}"></p>
                     </li>
                 </ul>
             </div>

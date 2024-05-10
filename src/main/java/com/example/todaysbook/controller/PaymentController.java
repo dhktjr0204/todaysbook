@@ -3,6 +3,9 @@ package com.example.todaysbook.controller;
 import com.example.todaysbook.domain.dto.CustomUserDetails;
 import com.example.todaysbook.domain.dto.PaymentAddressAndMileageInfo;
 import com.example.todaysbook.domain.dto.PaymentBookInfoDto;
+import com.example.todaysbook.domain.entity.Delivery;
+import com.example.todaysbook.domain.entity.OrderBook;
+import com.example.todaysbook.domain.entity.Orders;
 import com.example.todaysbook.repository.DeliveryRepository;
 import com.example.todaysbook.repository.OrderBookRepository;
 import com.example.todaysbook.repository.OrderRepository;
@@ -27,6 +30,7 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.text.DecimalFormat;
 import java.util.Base64;
 import java.util.List;
 
@@ -104,7 +108,7 @@ public class PaymentController {
         orderName = orderName.substring(0, orderName.length()-1);
         int totalPrice = getTotalPrice(bookDtoList);
         int deliveryCharge = totalPrice >= 20000 ? 0 : 3000;
-        model.addAttribute("totalPrice", totalPrice-addressAndMileageInfo.getUsedMileage() + deliveryCharge);
+        model.addAttribute("totalPrice", totalPrice - addressAndMileageInfo.getUsedMileage() + deliveryCharge);
         model.addAttribute("orderName", orderName);
         model.addAttribute("clientKey", widgetClientKey);
 
@@ -220,10 +224,9 @@ public class PaymentController {
         HttpSession session = req.getSession(false);
         List<PaymentBookInfoDto> bookDtoList = (List<PaymentBookInfoDto>)session.getAttribute(userDetails.getUserId()+"_1");
 
-        List<CartBook> cartBooks = cartService.findCartBooksByUserId(userId);
         model.addAttribute("totalPrice", PaymentController.getTotalPrice(bookDtoList)); // 모델에 totalPrice를 추가하여 뷰로 전달
         model.addAttribute("mileage",userDetails.getMileage()); // 모델에 totalPrice를 추가하여 뷰로 전달
-        model.addAttribute("cartBooks", cartBooks);
+        model.addAttribute("cartBooks", bookDtoList);
 
         return "payment/info";
     }
@@ -239,13 +242,21 @@ public class PaymentController {
     @Transactional
     @PostMapping("/payment/card/order")
     public ResponseEntity<String> makeOrder(@AuthenticationPrincipal CustomUserDetails userDetails, HttpServletRequest request) throws Exception {
-        HttpSession session = request.getSession(true);
+        HttpSession session = request.getSession(false);
         long userId = userDetails.getUserId();
         List<PaymentBookInfoDto> bookDtoList = (List<PaymentBookInfoDto>)session.getAttribute(String.valueOf(userId)+"_1");
         PaymentAddressAndMileageInfo addressAndMileageInfo = (PaymentAddressAndMileageInfo) session.getAttribute(String.valueOf(userId) + "_2");
 
-        Order order = orderRepository.save(Order.builder().userId(userId).status("complete").deliveryId(12345).build());
-//        orderBookRepository.save(OrderBook.builder())
+        Delivery delivery = deliveryRepository.save(Delivery.builder().status("배송중").address(addressAndMileageInfo.getAddress() + "," + addressAndMileageInfo.getDetailAddress())
+                .zipcode(addressAndMileageInfo.getPostcode()).build());
+        Orders order = orderRepository.save(Orders.builder().userId(userId).status("완료").deliveryId(delivery.getId()).build());
+        bookDtoList.forEach(paymentBookInfoDto -> {
+            orderBookRepository.save(OrderBook.builder().bookId(paymentBookInfoDto.getBookId()).orderId(order.getId()).bookCount(paymentBookInfoDto.getQuantity()).build());
+        });
+
+        session.invalidate();
+
+
 
         return ResponseEntity.ok("");
     }

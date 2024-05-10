@@ -51,6 +51,7 @@ function postSelectedCartItems() {
         const listItem = checkbox.closest('li');
 
         // li 태그 내부의 필요한 정보들을 추출합니다.
+        const bookId = listItem.querySelector('input[type="hidden"]').value;
         const bookName = listItem.querySelector('.book-name').textContent;
         const quantity = parseInt(listItem.querySelector('.quantity_count').textContent);
         const price = parseFloat(listItem.querySelector('.price').textContent);
@@ -58,6 +59,7 @@ function postSelectedCartItems() {
 
         // 추출한 정보를 객체로 저장하여 배열에 추가합니다.
         selectedBooks.push({
+            bookId: bookId,
             bookName: bookName,
             quantity: quantity,
             price: price,
@@ -94,7 +96,9 @@ document.addEventListener("DOMContentLoaded", function() {
     updateTotalPrice();
 });
 
-
+function formatNumber(number) {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
 // 체크박스 상태 변경 시 총 주문 금액 업데이트
 // document.querySelectorAll('.cart-list-body input[type="checkbox"]').forEach(function(checkbox) {
 //     checkbox.addEventListener('change', function() {
@@ -174,7 +178,7 @@ function updateTotalPrice() {
     if (totalPrice >= 20000) {
         deliveryFeeElement.textContent = "무료";
     } else {
-        deliveryFeeElement.textContent = "3000원";
+        deliveryFeeElement.textContent = "3,000원";
     }
 
     // 총 주문 금액을 반환
