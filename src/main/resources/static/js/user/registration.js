@@ -53,10 +53,13 @@ function checkNicknameAvailability(nickname) {
         });
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+let emailAvailability = false;
+let nicknameAvailability = false;
 
+document.addEventListener('DOMContentLoaded', function() {
     // 이메일 중복 확인 버튼 클릭 시
     const emailButton = document.querySelectorAll('.button')[0];
+
 
     emailButton.addEventListener('click', function() {
         const emailInput = document.querySelectorAll('.input')[1];
@@ -74,8 +77,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (data.hasOwnProperty('available')) {
                     if (data.available) {
                         alert('사용 가능한 이메일입니다.');
+                        emailAvailability = true;
                     } else {
                         alert('이미 사용 중인 이메일입니다.');
+                        emailInput.value = null;
+                        emailInput.focus();
                     }
                 } else {
                     throw new Error('Invalid response data');
@@ -94,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const nicknameInput = document.querySelectorAll('.input')[2];
         const nickname = nicknameInput.value;
 
-        if(nickname.length > 9) {
+        if(nickname.length > 8) {
             alert('닉네임의 길이는 최대 8글자입니다.');
             return;
         } else if(nickname.length < 2) {
@@ -107,8 +113,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (data.hasOwnProperty('available')) {
                     if (data.available) {
                         alert('사용 가능한 닉네임입니다.');
+                        nicknameAvailability = true;
                     } else {
                         alert('이미 사용 중인 닉네임입니다.');
+                        nicknameInput.value = null;
+                        nicknameInput.focus();
                     }
                 } else {
                     throw new Error('Invalid response data');
@@ -145,6 +154,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 userData[label[index]] = input.value;
             }
         });
+
+        if(!emailAvailability) {
+            alert('이메일 중복 확인을 해주세요');
+            return;
+        }
+
+        if(!nicknameAvailability) {
+            alert('닉네임 중복 확인을 해주세요');
+            return;
+        }
+
+        for(const key in userData) {
+            if(userData.hasOwnProperty(key) && userData[key] === '') {
+                alert('입력 칸을 빠짐없이 채워주세요');
+                return;
+            }
+        }
 
         const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&~]{8,}$/;
 
@@ -188,10 +214,3 @@ document.addEventListener('DOMContentLoaded', function() {
         window.location.href = '/';
     });
 });
-
-
-
-
-
-
-
