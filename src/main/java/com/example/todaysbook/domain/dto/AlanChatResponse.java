@@ -1,16 +1,16 @@
 package com.example.todaysbook.domain.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.*;
+import lombok.Data;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-@JsonIgnoreProperties(ignoreUnknown = true)
+@Data
 public class AlanChatResponse {
     private String type;
-    private AlanChatData data;
-//    private String name;
+    private AlanChatContent data;
+
+    @Data
+    public static class AlanChatContent {
+        private String name;
+        private String speak;
+        private String content;
+    }
 }
