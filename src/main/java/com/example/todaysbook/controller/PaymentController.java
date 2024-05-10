@@ -3,11 +3,10 @@ package com.example.todaysbook.controller;
 import com.example.todaysbook.domain.dto.CustomUserDetails;
 import com.example.todaysbook.domain.dto.PaymentAddressAndMileageInfo;
 import com.example.todaysbook.domain.dto.PaymentBookInfoDto;
-import com.example.todaysbook.domain.entity.Order;
-import com.example.todaysbook.domain.entity.OrderBook;
 import com.example.todaysbook.repository.DeliveryRepository;
 import com.example.todaysbook.repository.OrderBookRepository;
 import com.example.todaysbook.repository.OrderRepository;
+import com.example.todaysbook.domain.entity.CartBook;
 import com.example.todaysbook.service.CartService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -217,9 +216,15 @@ public class PaymentController {
         // userId가 1인 사용자의 장바구니 목록 조회
 //        List<CartBook> cartBooks = cartService.findCartBooksByUserId(1L);
 //        int totalPrice = cartService.calculateTotalPrice(cartBooks); // 총 상품 가격을 계산
+        long userId = userDetails.getUserId();
         HttpSession session = req.getSession(false);
         List<PaymentBookInfoDto> bookDtoList = (List<PaymentBookInfoDto>)session.getAttribute(userDetails.getUserId()+"_1");
+
+        List<CartBook> cartBooks = cartService.findCartBooksByUserId(userId);
         model.addAttribute("totalPrice", PaymentController.getTotalPrice(bookDtoList)); // 모델에 totalPrice를 추가하여 뷰로 전달
+        model.addAttribute("mileage",userDetails.getMileage()); // 모델에 totalPrice를 추가하여 뷰로 전달
+        model.addAttribute("cartBooks", cartBooks);
+
         return "payment/info";
     }
 

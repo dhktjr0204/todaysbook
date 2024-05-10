@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Controller
@@ -50,5 +51,16 @@ public class UserViewController {
         boolean isAvailable = !(encoder.matches(newPassword, userDetails.getPassword()));
 
         return ResponseEntity.ok().body(Map.of("available", isAvailable));
+    }
+
+    @GetMapping("/getUserInfo")
+    @ResponseBody
+    public ResponseEntity<?> getUserInfo(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        Map<String, String> userInfo = new HashMap<>();
+        userInfo.put("name", userDetails.getName());
+        userInfo.put("address", userDetails.getAddress());
+        userInfo.put("zipcode", userDetails.getZipcode());
+
+        return ResponseEntity.ok(userInfo);
     }
 }

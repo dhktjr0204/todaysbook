@@ -5,6 +5,7 @@ import com.example.todaysbook.domain.dto.RecommendListCreateRequestDto;
 import com.example.todaysbook.exception.admin.AuthorLengthOverException;
 import com.example.todaysbook.exception.admin.DescriptionLengthOverException;
 import com.example.todaysbook.exception.admin.EmptyAuthorException;
+import com.example.todaysbook.exception.admin.EmptyPriceException;
 import com.example.todaysbook.exception.admin.EmptyPublisherException;
 import com.example.todaysbook.exception.admin.PublisherLengthOverException;
 import com.example.todaysbook.exception.recommendList.EmptyTitleException;
@@ -30,6 +31,7 @@ public class AdminUpdateBookValidator implements Validator {
         String author = request.getAuthor();
         String publisher = request.getPublisher();
         String description = request.getDescription();
+        Long price=request.getPrice();
 
         if(isTitleEmpty(title)){
             throw new EmptyTitleException();
@@ -51,6 +53,9 @@ public class AdminUpdateBookValidator implements Validator {
         }
         if(isDescriptionLengthOver(description)){
             throw new DescriptionLengthOverException();
+        }
+        if(isPriceEmpty(price)){
+            throw new EmptyPriceException();
         }
     }
 
@@ -81,4 +86,6 @@ public class AdminUpdateBookValidator implements Validator {
     private boolean isDescriptionLengthOver(String description){
         return description.length()>300;
     }
+
+    private boolean isPriceEmpty(Long price){return price==null;}
 }

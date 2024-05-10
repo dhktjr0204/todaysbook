@@ -7,6 +7,7 @@
 <th:block layout:fragment="head">
     <title>결제 하기</title>
     <link href="../../static/css/payment/info.css" th:href="@{/css/payment/info.css}" rel="stylesheet"/>
+    <link th:href="@{/css/cart/list.css}" rel="stylesheet"/>
 </th:block>
 <div th:replace="~{fragments/header.html}"></div>
 <main th:fragment="content">
@@ -14,7 +15,7 @@
         <div class="receiver-info-header">
             <p class="title">받는 사람 정보</p>
             <div class="check-box-div">
-                <input class="check-box" type="checkbox">
+                <input class="check-box" type="checkbox" id="sameUserInfo" onclick="fillUserInfo()">
                 <p>회원 정보와 동일</p>
             </div>
         </div>
@@ -31,23 +32,40 @@
                     <input class="input" type="text" id="user">
                 </li>
                 <li>
-                    <p class="label">우편번호</p>
-                    <input class="input" type="text" id="postcode">
+                    <p class="label">주소</p>
+                    <input class="input" type="text" id="address">
                     <input class="button" type="button" onclick="execDaumPostcode()" value="검색"><br>
                 </li>
-                <li>
-                    <p class="label">주소</p>
-                    <input class="input" type="text" id="address"><br>
-                </li>
-                <li>
+                <li class="detail-address">
                     <p class="label">상세주소</p>
                     <input class="input" type="text" id="detailAddress">
                 </li>
+                <li>
+                    <p class="label">우편번호</p>
+                    <input class="input" type="text" id="postcode">
+                </li>
             </ul>
         </section>
-
-        <section> <!--임시로 위치만 잡아놓은거-->
-           <p>주문상품 목록</p>
+        <p class="title">주문 상품 목록</p>
+        <section>
+            <div class="cart-list">
+                <ul class="cart-list-header">
+                    <li>
+                        <p class="book-name">상품명</p>
+                        <p class="quantity">수량</p>
+                        <p class="price">상품 금액</p>
+                    </li>
+                </ul>
+                <ul class="cart-list-body">
+                    <li th:each="cartBook : ${cartBooks}">
+                        <p class="book-name" th:text="${cartBook.book.title}"></p>
+                        <p class="quantity">
+                            <span class="quantity_count" th:text="${cartBook.count}"></span>
+                        </p>
+                        <p class="price" th:text="${cartBook.book.price * cartBook.count}"></p>
+                    </li>
+                </ul>
+            </div>
         </section>
         <p class="title">결제 정보</p>
         <section class="payment-info">
@@ -58,14 +76,14 @@
                 </li>
                 <li>
                     <p class="label">보유 마일리지</p>
-                    <p>10,000M</p>
+                    <p id="mileage" th:text="${mileage + 'M'}"></p>
                 </li>
                 <li>
                     <p class="label">사용 마일리지</p>
                     <div class="check-box-div">
-                        <input class="check-box" type="checkbox">
+                        <input class="check-box" type="checkbox" id="use-all-mileage-checkbox">
                         <p>전액 사용</p>
-                        <input class="mileage-input">
+                        <input class="mileage-input" type="text" id="mileage-input">
                     </div>
                 </li>
                 <li>

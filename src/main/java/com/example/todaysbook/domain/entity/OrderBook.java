@@ -19,8 +19,8 @@ public class OrderBook {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    private long orderId;
-    private long bookId;
-    private long bookCount;
+    private Long id;
+    private Long orderId;
+    private Long bookId;
+    private Long bookCount;
 }

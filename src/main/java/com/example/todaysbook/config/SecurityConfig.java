@@ -39,23 +39,23 @@ public class SecurityConfig {
         return httpSecurity
                 .authorizeHttpRequests(auth ->              // 인증, 인가 설정
                         auth.requestMatchers(
-                                        "/", "/alan/**",
-                                "/book/**", "/signup", "/**").permitAll()
+                                        "/", "/login", "/alan/**", "user/**", "/category/**",
+                                        "/checkEmailAvailability", "/checkNicknameAvailability", "checkPasswordAvailability",
+                                        "/book/**", "/signup", "/**").permitAll()
                                 .requestMatchers(
-                                        "/book/**",
                                         "/mypage/**",
                                         "/cart/**",
                                         "/payment/**",
                                         "/alan/**"
-                                ).hasAnyAuthority("ROLE_BRONZE", "ROLE_SILVER", "ROLE_GOLD", "ROLE_DIA")
-                                .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
+                                ).hasAnyRole(Role.ROLE_BRONZE.getName(), Role.ROLE_SILVER.getName()
+                                        , Role.ROLE_GOLD.getName(), Role.ROLE_DIAMOND.getName())
+                                .requestMatchers("/admin/**").hasAnyRole(Role.ROLE_ADMIN.getName())
                                 .anyRequest().permitAll())
                 .formLogin(auth -> auth.loginPage("/login")
                         .defaultSuccessUrl("/",true))
                 .logout(auth -> auth.logoutSuccessUrl("/")
-                        .invalidateHttpSession(true)
-                        .deleteCookies("JSESSIONID"))
-                .csrf(AbstractHttpConfigurer::disable)
+                        .invalidateHttpSession(true))
+                .csrf(auth -> auth.disable())
                 .build();
     }
 

@@ -16,48 +16,12 @@ function editReviewWordCount(textarea){
     countBytes(textarea, commentTextCount, 500);
 }
 
-// function countBytes(editor, containerSelector, limit) {
-//
-//     const content = editor.value;
-//     const byteCount = countUtf8Bytes(content);
-//
-//     containerSelector.textContent = byteCount + "/" + limit;
-//
-//     if (byteCount > limit) {
-//         alert('허용된 글자수가 초과되었습니다.')
-//         const truncatedContent = cutByLen(content, limit);
-//         editor.value = truncatedContent;
-//     }
-// }
-//
-// function countUtf8Bytes(str) {
-//     let byteCount = 0;
-//
-//     for (let i = 0; i < str.length; i++) {
-//         const charCode = str.charCodeAt(i);
-//         (charCode==10) ? byteCount+=2: byteCount+=1;
-//     }
-//
-//     return byteCount;
-// }
-//
-// function cutByLen(str, maxByte) {
-//     for (let b = i = 0; c = str.charCodeAt(i); i++) {
-//
-//         b += c == 10 ? 2 : 1;
-//         if (b > maxByte) break;
-//     }
-//
-//     return str.substring(0, i);
-// }
-
 function clickLike(button, reviewId) {
 
     button.classList.toggle('liked');
     button.parentElement.classList.toggle('on');
 
     let url = button.classList.contains('liked') ? '/review/add_like' : '/review/delete_like';
-    let userId = 1;
 
     let type = button.classList.contains('liked') ? 'GET' : 'DELETE';
     let message = button.classList.contains('liked') ?
@@ -69,8 +33,7 @@ function clickLike(button, reviewId) {
         type: type,
         url: url,
         data: {
-            reviewId: reviewId,
-            userId: userId
+            reviewId: reviewId
         },
         success: function (response) {
 
@@ -95,7 +58,6 @@ function clickDislike(button, reviewId) {
     button.parentElement.classList.toggle('on');
 
     let url = button.classList.contains('disliked') ? '/review/add_dislike' : '/review/delete_dislike';
-    let userId = 1;
 
     let type = button.classList.contains('disliked') ? 'GET' : 'DELETE';
     let message = button.classList.contains('disliked') ?
@@ -106,8 +68,7 @@ function clickDislike(button, reviewId) {
         type: type,
         url: url,
         data: {
-            reviewId: reviewId,
-            userId: userId
+            reviewId: reviewId
         },
         success: function (response) {
 
@@ -158,7 +119,13 @@ function clickAddReview(button) {
             starEvents();
         },
         error: function (error) {
-            throw new Error('리뷰 등록 실패');
+            if (error.status === 400) {
+                alert("Bad Request: "+ error.responseText);
+            }else if(error.status === 401){
+                alert("Unauthorized: "+error.responseText);
+            }else{
+                alert("error: "+error.responseText);
+            } // 에러 응답 본문을 alert 창에 표시
         }
     });
 }
@@ -246,6 +213,11 @@ function updateReview(button) {
     const content = reviewItem.querySelector('.edit-review-input').value;
     const score = parseInt(reviewItem.querySelector('.edit-review-score').textContent);
 
+    if (content.trim() === "") {
+        alert("리뷰 내용을 입력해주세요.");
+        return false;
+    }
+
     $.ajax({
         url: url,
         type: method,
@@ -263,7 +235,13 @@ function updateReview(button) {
             starEvents();
         },
         error: function (error) {
-            throw new Error('리뷰 수정 실패');
+            if (error.status === 400) {
+                alert("Bad Request: "+ error.responseText);
+            }else if(error.status === 401){
+                alert("Unauthorized: "+error.responseText);
+            }else{
+                alert("error: "+error.responseText);
+            } // 에러 응답 본문을 alert 창에 표시
         }
     });
 }

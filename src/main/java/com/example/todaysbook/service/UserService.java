@@ -3,6 +3,8 @@ package com.example.todaysbook.service;
 import com.example.todaysbook.domain.dto.UserRequestDto;
 import com.example.todaysbook.domain.entity.User;
 import com.example.todaysbook.repository.UserRepository;
+import jakarta.transaction.Transactional;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -33,13 +35,16 @@ public class UserService {
                 .email(request.getEmail())
                 .password(encoder.encode(request.getPassword()))
                 .mileage("0")
-                .expire(null)
                 .address(request.getAddress())
                 .zipcode(request.getZipcode())
                 .role("ROLE_BRONZE")
                 .build();
 
         return userRepository.save(user);
+    }
+
+    public void withdraw(Long id) {
+        userRepository.deleteById(id);
     }
 
     public boolean isExistEmail(String email) {

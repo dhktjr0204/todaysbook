@@ -1,6 +1,5 @@
 package com.example.todaysbook.repository;
 
-import com.example.todaysbook.domain.entity.Order;
 import com.example.todaysbook.domain.entity.OrderBook;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
