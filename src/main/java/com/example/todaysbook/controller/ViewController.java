@@ -1,18 +1,10 @@
 package com.example.todaysbook.controller;
 
-import com.example.todaysbook.domain.dto.PaymentBookInfoDto;
-import com.example.todaysbook.domain.dto.CustomUserDetails;
-import com.example.todaysbook.domain.entity.CartBook;
 import com.example.todaysbook.service.CartService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -43,7 +35,7 @@ public class ViewController {
         return "book/detail";
     }
 
-    @GetMapping("/login")
+    /*@GetMapping("/login")
     public String login(Model model) {
 
         return "user/login";
@@ -53,7 +45,7 @@ public class ViewController {
     public String registration(Model model) {
 
         return "user/registration";
-    }
+    }*/
 
     @GetMapping("/mypage/updateinfo")
     public String mypageUpdateInfo(Model model) {
