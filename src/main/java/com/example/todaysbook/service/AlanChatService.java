@@ -56,6 +56,6 @@ public class AlanChatService {
                         return null;
                     }
                 })
-                .filter(Objects::nonNull); // 설명: null이 아닌 것만 통과
+                .filter(Objects::nonNull);
     }
 }

@@ -41,10 +41,6 @@ textarea {
     border-radius: 50%;
 }
 
-/*.user-chat {*/
-/*    flex-direction: row-reverse; !* 설명: 사용자의 채팅을 오른쪽에 배치하기 위해 사용*!*/
-/*}*/
-
 .chatting-write-area {
     display: flex;
     gap: 20px;
