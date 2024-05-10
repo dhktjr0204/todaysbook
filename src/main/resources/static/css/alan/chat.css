@@ -1,0 +1,122 @@
+.alan-recommend-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 100px;
+}
+
+.title {
+    font-size: 30px;
+    padding: 20px;
+}
+
+textarea {
+    color: black;
+}
+
+.read-text {
+    color: black;
+    width: 500px;
+    min-height: 96px;
+    background-color: white;
+    border-radius: 10px;
+    padding: 10px;
+    overflow-y: auto;
+}
+
+.alan-chat span {
+    color: black;
+    background-color: white;
+}
+
+.alan-chat, .user-chat {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+}
+
+.alan-chat img, .user-chat img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.chatting-write-area {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    margin-top: 10px;
+    border-top: solid 1px white;
+}
+
+.write-text {
+    width: 500px;
+    height: 96px;
+    background-color: white;
+    border-radius: 10px;
+    padding: 10px;
+    margin-top: 10px;
+    outline: none;
+    resize: none;
+}
+
+.submit {
+    width: 100px;
+    height: 96px;
+    background-color: #D54DFE;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.reset {
+    width: 150px;
+    background-color: purple;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.reset:hover {
+    background-color: darkviolet;
+}
+
+.typing-indicator {
+    display: flex;
+    align-items: center;
+    margin-left: 8px;
+}
+
+.typing-indicator span {
+    width: 6px;
+    height: 6px;
+    margin: 0 2px;
+    background-color: #888;
+    border-radius: 50%;
+    opacity: 0.4;
+    animation: typing-indicator-animation 1s infinite ease-in-out;
+}
+
+.typing-indicator span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-indicator span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes typing-indicator-animation {
+    0% {
+        opacity: 0.4;
+        transform: translateY(0);
+    }
+    50% {
+        opacity: 1;
+        transform: translateY(-4px);
+    }
+    100% {
+        opacity: 0.4;
+        transform: translateY(0);
+    }
+}
