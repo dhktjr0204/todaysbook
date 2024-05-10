@@ -24,8 +24,7 @@ function updateTotalPrice() {
 
 
 ///
-
-// 최대 사용 가능한 마일리지 비율 (총 결제 금액의 30%)
+// 최대 사용 가능한 마일리지 비율 (총 상품 가격의 30%)
 const MAX_MILEAGE_RATIO = 0.3;
 
 // 마일리지 입력란에 입력이 발생할 때마다 호출되는 함수
@@ -42,7 +41,11 @@ function handleMileageInput() {
     let totalPriceElement = document.getElementById("totalOrderAmount");
     let totalPrice = parseInt(totalPriceElement.textContent.replace('원', ''));
 
-    // 최대 사용 가능한 마일리지 계산 (총 결제 금액의 30%)
+    // 배송료를 가져옴
+    let deliveryChargeElement = document.getElementById("deliveryFee");
+    let deliveryCharge = parseInt(deliveryChargeElement.textContent.replace('원', ''));
+
+    // 최대 사용 가능한 마일리지 계산 (총 상품 가격의 30%)
     let maxMileage = totalPrice * MAX_MILEAGE_RATIO;
 
     // 사용된 마일리지가 보유 마일리지를 초과하는 경우
@@ -69,8 +72,13 @@ function handleMileageInput() {
         usedMileage = 0; // 사용된 마일리지를 0으로 설정
     }
 
-    // 총 결제 금액을 계산
-    let totalPriceAfterMileage = isNaN(usedMileage) ? totalPrice : totalPrice - usedMileage;
+    // 배송료가 무료인 경우에는 0으로 설정
+    if (isNaN(deliveryCharge)) {
+        deliveryCharge = 0;
+    }
+
+    // 총 결제 금액을 계산 (마일리지 적용 후 배송료 포함)
+    let totalPriceAfterMileage = isNaN(usedMileage) ? totalPrice + deliveryCharge : totalPrice - usedMileage + deliveryCharge;
 
     // 총 결제 금액을 업데이트
     let totalPriceDisplayElement = document.getElementById("totalPriceDisplay");
@@ -95,12 +103,12 @@ function handleUseAllMileageCheckbox() {
     let totalPriceElement = document.getElementById("totalOrderAmount");
     let totalPrice = parseInt(totalPriceElement.textContent.replace('원', ''));
 
-    // 최대 사용 가능한 마일리지 계산 (총 결제 금액의 30%)
+    // 최대 사용 가능한 마일리지 계산 (총 상품 가격의 30%)
     let maxMileage = totalPrice * MAX_MILEAGE_RATIO;
 
     // 만약 체크박스가 체크되어 있다면,
     if (isChecked) {
-        // 보유 마일리지가 총 결제 금액의 30%보다 작은 경우
+        // 보유 마일리지가 총 상품 가격의 30%보다 작은 경우
         if (totalMileage < maxMileage) {
             // 보유 마일리지를 모두 적용
             let mileageInput = document.getElementById("mileage-input");
