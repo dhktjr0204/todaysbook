@@ -1,5 +1,6 @@
 package com.example.todaysbook.validate;
 
+import com.example.todaysbook.constant.Constant;
 import com.example.todaysbook.domain.dto.ReviewRequestDto;
 import com.example.todaysbook.exception.review.ContentEmptyException;
 import com.example.todaysbook.exception.review.ContentLengthOverException;
@@ -7,9 +8,6 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 public class ReviewCreateValidator implements Validator {
-
-    private int CONTENT_MAX_LENGTH = 500;
-
     @Override
     public boolean supports(Class<?> clazz) {
         return ReviewRequestDto.class.isAssignableFrom(clazz);
@@ -38,6 +36,6 @@ public class ReviewCreateValidator implements Validator {
 
     private boolean isContentLengthOver(String content) {
 
-        return content.length() > CONTENT_MAX_LENGTH;
+        return content.length() > Constant.REVIEW_CONTENT_MAX_LENGTH;
     }
 }
