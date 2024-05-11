@@ -5,15 +5,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.Month;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Data
-public class SalesDto {
+public class SalesDetailDto {
 
-    private Month month;
-    private String categoryName;
+    private Long bookId;
+    private String title;
+    private Long price;
+    private Long count;
     private Long sales;
 }

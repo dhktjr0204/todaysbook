@@ -1,9 +1,9 @@
 package com.example.todaysbook.repository;
 
+import com.example.todaysbook.domain.dto.SalesDetailDto;
 import com.example.todaysbook.domain.dto.SalesDto;
 import org.apache.ibatis.annotations.Mapper;
 
-import java.time.Month;
 import java.time.Year;
 import java.util.List;
 

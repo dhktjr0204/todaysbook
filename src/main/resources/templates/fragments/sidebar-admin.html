@@ -15,6 +15,9 @@
                 <li>
                     <a th:href="@{/admin/sales_category}">카테고리별 매출</a>
                 </li>
+                <li>
+                    <a th:href="@{/admin/sales_book}">상품별 매출</a>
+                </li>
             </ul>
             <a th:if="${label == '회원 조회'}" th:href="@{/admin/userlist}" th:text="${label}"></a>
             <a th:if="${label == '재고 조회'}" th:href="@{/admin/stocklist}" th:text="${label}"></a>

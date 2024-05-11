@@ -68,7 +68,7 @@
                     <div class="delivery-info">
                         <p class="delivery-label" th:text="'배송료'"></p>
                         <div>
-                            <p class="delivery-charge" th:text="'3000원'"></p>
+                            <p class="delivery-charge" th:text="'3,000원'"></p>
                             <p class="delivery-etc" th:text="'(20,000원 이상 주문시 무료 배송)'"></p>
                         </div>
                     </div>
@@ -120,7 +120,7 @@
                                     <p class="book-title" th:unless="${book.title.length() > 25}" th:text="${book.title}"></p>
                                     <p class="author" th:if="${book.author.length() > 25}" th:text="${#strings.substring(book.author, 0, 25)} + '...'"></p>
                                     <p class="author" th:unless="${book.author.length() > 25}" th:text="${book.author}"></p>
-                                    <p class="price" th:text="${book.price}"></p>
+                                    <p class="price" th:text="${#numbers.formatInteger(book.price, 3, 'COMMA') + '원'}"></p>
                                 </figcaption>
                             </a>
                         </figure>

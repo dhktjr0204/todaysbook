@@ -2,6 +2,7 @@ package com.example.todaysbook.controller;
 
 import com.example.todaysbook.domain.dto.AdminUserDto;
 import com.example.todaysbook.domain.dto.BookDto;
+import com.example.todaysbook.domain.dto.SalesDetailDto;
 import com.example.todaysbook.domain.dto.SimpleReview;
 import com.example.todaysbook.service.AdminService;
 import com.example.todaysbook.service.RecommendBookService;
@@ -277,5 +278,27 @@ public class AdminController {
     public String getSalesCategory(Model model) {
 
         return "admin/sales-category";
+    }
+
+    @GetMapping("/sales_book")
+    public String getSalesBook(@PageableDefault(page = 0, size = 10, sort = "id") Pageable pageable,
+                               Model model, String keyword) {
+
+        Page<SalesDetailDto> result = salesService.getSalesByBook(keyword, pageable);
+
+        int startPage = 0;
+        int endPage = 0;
+
+        if (!result.isEmpty()) {
+            HashMap<String, Integer> pages = Pagination.calculatePage(result.getPageable().getPageNumber(), result.getTotalPages());
+            startPage = pages.get("startPage");
+            endPage = pages.get("endPage");
+        }
+
+        model.addAttribute("dto", result);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+
+        return "admin/sales-book";
     }
 }
