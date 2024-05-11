@@ -5,6 +5,7 @@ import com.example.todaysbook.domain.dto.UserRequestDto;
 import com.example.todaysbook.domain.entity.User;
 import com.example.todaysbook.repository.UserRepository;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,15 +18,11 @@ import java.util.Optional;
 
 
 @Service
+@RequiredArgsConstructor
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder encoder;
-
-    public UserService(UserRepository userRepository, BCryptPasswordEncoder encoder) {
-        this.userRepository = userRepository;
-        this.encoder = encoder;
-    }
 
     public User save(UserRequestDto request) {
         if(request == null) {

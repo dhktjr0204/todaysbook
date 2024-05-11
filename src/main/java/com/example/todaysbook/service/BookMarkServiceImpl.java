@@ -2,6 +2,7 @@ package com.example.todaysbook.service;
 
 import com.example.todaysbook.domain.entity.BookMark;
 import com.example.todaysbook.exception.bookMark.AlreadyBookmarkedException;
+import com.example.todaysbook.exception.bookMark.NotBookmarkedYetException;
 import com.example.todaysbook.repository.BookMarkRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,7 @@ public class BookMarkServiceImpl implements BookMarkService{
         Optional<BookMark> bookMark = bookMarkRepository.findByUserIdAndUserRecommendListId(userId, listId);
 
         if(bookMark.isEmpty()){//사용자가 해당 리스트를 북마크로 등록하지 않았다면
-            throw new AlreadyBookmarkedException();
+            throw new NotBookmarkedYetException();
         }
 
         bookMarkRepository.delete(bookMark.get());
