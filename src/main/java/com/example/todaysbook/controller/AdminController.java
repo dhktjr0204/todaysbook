@@ -6,10 +6,12 @@ import com.example.todaysbook.domain.dto.SimpleReview;
 import com.example.todaysbook.service.AdminService;
 import com.example.todaysbook.service.RecommendBookService;
 import com.example.todaysbook.service.ReviewService;
+import com.example.todaysbook.service.SalesService;
 import com.example.todaysbook.util.Pagination;
 import com.example.todaysbook.validate.AdminUpdateBookValidator;
 import lombok.RequiredArgsConstructor;
 import org.apache.mahout.cf.taste.common.TasteException;
+import org.hibernate.grammars.hql.HqlParser;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -27,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,6 +42,7 @@ public class AdminController {
 
     private final RecommendBookService recommendBookService;
     private final ReviewService reviewService;
+    private final SalesService salesService;
 
     //유저 관리
     @GetMapping("/userlist")
@@ -261,5 +265,17 @@ public class AdminController {
         recommendBookService.GenerateRecommendBookList(reviews);
 
         return ResponseEntity.ok("추천 정보 동기화 완료");
+    }
+
+    @GetMapping("/sales")
+    public String getSales(Model model) {
+
+        return "admin/sales";
+    }
+
+    @GetMapping("/sales_category")
+    public String getSalesCategory(Model model) {
+
+        return "admin/sales-category";
     }
 }

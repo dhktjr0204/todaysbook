@@ -6,7 +6,16 @@
         <div class="title-div">
             <a th:href="@{/admin/userlist}">관리자 페이지</a>
         </div>
-        <li th:each="label : ${#strings.arraySplit('회원 조회,재고 조회,배송 관리,신간 등록,책 수정,추천 정보 동기화,정보 수정',',')}">
+        <li th:each="label : ${#strings.arraySplit('매출 조회,회원 조회,재고 조회,배송 관리,신간 등록,책 수정,추천 정보 동기화,정보 수정',',')}">
+            <p th:if="${label == '매출 조회'}" th:text="${label}"></p>
+            <ul th:if="${label == '매출 조회'}">
+                <li>
+                    <a th:href="@{/admin/sales}">월별 매출</a>
+                </li>
+                <li>
+                    <a th:href="@{/admin/sales_category}">카테고리별 매출</a>
+                </li>
+            </ul>
             <a th:if="${label == '회원 조회'}" th:href="@{/admin/userlist}" th:text="${label}"></a>
             <a th:if="${label == '재고 조회'}" th:href="@{/admin/stocklist}" th:text="${label}"></a>
             <a th:if="${label == '배송 관리'}" th:href="@{/admin/delivery}" th:text="${label}"></a>

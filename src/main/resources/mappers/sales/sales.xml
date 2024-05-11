@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.todaysbook.repository.SalesMapper">
+    <select id="getSalesByYear" resultType="com.example.todaysbook.domain.dto.SalesDto">
+        SELECT m.month,
+               COALESCE(SUM(b.price * ob.book_count), 0) AS sales
+        FROM (
+                 SELECT 1 AS month UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION
+                 SELECT 7 UNION SELECT 8 UNION SELECT 9 UNION SELECT 10 UNION SELECT 11 UNION SELECT 12
+             ) AS m
+                 LEFT JOIN orders o ON MONTH(o.order_date) = m.month AND YEAR(o.order_date) = #{year}
+            LEFT JOIN order_book ob ON ob.order_id = o.id
+            LEFT JOIN book b ON b.id = ob.book_id
+        GROUP BY m.month
+        ORDER BY m.month;
+    </select>
+
+    <select id="getSalesByCategory" resultType="com.example.todaysbook.domain.dto.SalesDto">
+        SELECT
+            substr(c.name, 6) as categoryName,
+            SUM(b.price * ob.book_count) AS sales
+        FROM
+            category c
+                LEFT JOIN book b ON c.id = b.category_id
+                LEFT JOIN order_book ob ON b.id = ob.book_id
+                LEFT JOIN orders o ON ob.order_id = o.id
+        WHERE year(o.order_date) = #{year} and month(o.order_date) = #{month}
+        GROUP BY
+            c.name
+        ORDER BY
+            c.id;
+    </select>
+</mapper>
