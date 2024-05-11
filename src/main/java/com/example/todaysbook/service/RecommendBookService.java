@@ -13,4 +13,5 @@ public interface RecommendBookService {
     void GenerateRecommendBookList(List<SimpleReview> reviews) throws TasteException, IOException;
 
     List<RecommendBookDto> getRecommendBooks(Long bookId);
+    List<RecommendBookDto> getRecommendBooksByFavoriteBooks(Long userId);
 }

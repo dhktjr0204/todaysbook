@@ -13,13 +13,4 @@
         FROM favorite_book
         WHERE user_id = #{userId} AND book_id = #{bookId}
     </delete>
-
-    <select id="getRecommendBooksByFavoriteBooks" resultType="com.example.todaysbook.domain.dto.FavoriteBookDTO">
-        select b.id, b.title, b.author, b.price, b.image_path as imagePath
-        from favorite_book fb
-        inner join recommend_book rb on fb.book_id = rb.recommend_book_id
-        inner join book b on b.id = rb.book_id
-        where fb.user_id = #{userId} and rb.book_id not in (select book_id from favorite_book where user_id = #{userId})
-        group by rb.book_id;
-    </select>
 </mapper>

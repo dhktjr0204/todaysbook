@@ -10,6 +10,7 @@ import java.util.Map;
 public interface RecommendBookMapper {
 
     List<RecommendBookDto> getRecommendBooks(Long bookIds);
+    List<RecommendBookDto> getRecommendBooksByFavoriteBooks(Long userId);
     int truncateRecommendBook();
     int insertRecommendBookInfo(List<Map<String, Object>> bookInfos);
 }

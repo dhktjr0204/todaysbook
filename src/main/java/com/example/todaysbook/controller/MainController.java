@@ -3,6 +3,7 @@ package com.example.todaysbook.controller;
 import com.example.todaysbook.domain.dto.*;
 import com.example.todaysbook.service.FavoriteBookService;
 import com.example.todaysbook.service.GeminiRecommendBookService;
+import com.example.todaysbook.service.RecommendBookService;
 import com.example.todaysbook.service.RecommendListService;
 import com.example.todaysbook.util.UserChecker;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ public class MainController {
     private final RecommendListService recommendListService;
     private final FavoriteBookService favoriteBookService;
     private final GeminiRecommendBookService geminiRecommendBookService;
+    private final RecommendBookService recommendBookService;
 
     @GetMapping("/")
     public String main(@AuthenticationPrincipal CustomUserDetails userDetails, Model model){
@@ -33,8 +35,8 @@ public class MainController {
 
         List<BookDto> todayRecommendBooks = geminiRecommendBookService.getTodayRecommendBooks();
 
-        List<FavoriteBookDTO> recommendBooksByFavoriteBooks =
-                favoriteBookService.getRecommendBooksByFavoriteBooks(userId);
+        List<RecommendBookDto> recommendBooksByFavoriteBooks =
+                recommendBookService.getRecommendBooksByFavoriteBooks(userId);
 
         model.addAttribute("favoriteBooks", favoriteBooks);
         model.addAttribute("userRecommendList", randomUserRecommendList);
