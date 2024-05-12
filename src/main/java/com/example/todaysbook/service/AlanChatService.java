@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 
+import java.time.Duration;
 import java.util.Objects;
 
 @Service
@@ -45,7 +46,7 @@ public class AlanChatService {
                     try {
                         return objectMapper.readValue(responseString, AlanChatResponse.class);
                     } catch (Exception e) {
-                        log.error("Error parsing Alan response", e);
+                        log.error("Alan response 파싱 에러", e);
                         return new AlanChatResponse();
                     }
                 })
@@ -56,6 +57,7 @@ public class AlanChatService {
                         return null;
                     }
                 })
-                .filter(Objects::nonNull);
+                .filter(Objects::nonNull)
+                .delayElements(Duration.ofMillis(5));
     }
 }
