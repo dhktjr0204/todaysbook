@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const userInput = document.getElementById('user-input');
     const sendBtn = document.getElementById('send-btn');
     const resetBtn = document.getElementById('reset-btn');
+    const chattingScroll = document.querySelector('.chatting-read-area');
 
     let eventSource = null;
     let isResetting = false;
@@ -62,8 +63,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const contentElement = document.createElement('span');
                     contentElement.innerHTML = formatContent(response.data.content);
                     alanMessageElement.querySelector('.read-text').appendChild(contentElement);
-
-                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                    chattingScroll.scrollTop = chattingScroll.scrollHeight;
                 } else if (response.type === 'complete') {
                     eventSource.close();
                 }
@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const messageElement = createMessageElement(sender);
         messageElement.querySelector('.read-text').textContent = content;
         chatMessages.appendChild(messageElement);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
+        chattingScroll.scrollTop = chattingScroll.scrollHeight;
     }
 
     function createMessageElement(sender) {
@@ -122,37 +122,5 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     }
 
-
-
 });
 
-
-
-// alanMessageElement = createMessageElement('Alan');
-// const typingElement = document.createElement('div');
-// typingElement.className = 'typing-indicator';
-// typingElement.innerHTML = '<span></span><span></span><span></span>';
-// alanMessageElement.querySelector('.read-text').appendChild(typingElement);
-// chatMessages.appendChild(alanMessageElement);
-// chatMessages.scrollTop = chatMessages.scrollHeight;
-//
-// eventSource = new EventSource(`/alan/sse-streaming?content=${encodeURIComponent(content)}`);
-//
-// eventSource.onmessage = function (event) {
-//     const response = JSON.parse(event.data);
-//     if (response.type === 'continue') {
-//         if (isFirstChunk) {
-//
-//             alanMessageElement.querySelector('.read-text').removeChild(typingElement);
-//             isFirstChunk = false;
-//         }
-//
-//         const contentElement = document.createElement('span');
-//         contentElement.innerHTML = formatContent(response.data.content);
-//         alanMessageElement.querySelector('.read-text').appendChild(contentElement);
-//
-//         chatMessages.scrollTop = chatMessages.scrollHeight;
-//     } else if (response.type === 'complete') {
-//         eventSource.close();
-//     }
-// };

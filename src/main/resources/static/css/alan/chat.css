@@ -55,29 +55,10 @@
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent;
-    /*animation: rainbow 1s linear infinite, slide-across 3s linear infinite;*/
     animation: slide-in 1s ease-in-out;
     white-space: nowrap;
 }
 
-@keyframes rainbow {
-    0% { color: #5281ec; }
-    14% { color: #7879da; }
-    28% { color: #9f71c4; }
-    42% { color: #a96fb5; }
-    57% { color: #b56ca3; }
-    71% { color: #c7688a; }
-    85% { color: #d96570; }
-    100% { color: #d66573; }
-}
-@keyframes slide-across {
-    0% {
-        left: 0;
-    }
-    100% {
-        left: calc(100% - 100vw);
-    }
-}
 
 @keyframes slide-in {
     0% {
@@ -198,25 +179,25 @@ textarea {
 }
 
 
-/* 스크롤 막대의 전반적인 스타일 */
+
 .chatting-read-area::-webkit-scrollbar {
-    width: 5px; /* 스크롤의 너비 */
+    width: 5px;
 }
 
-/* 스크롤 트랙 (스크롤바 배경) */
+
 .chatting-read-area::-webkit-scrollbar-track {
     background: black;
 }
 
-/* 스크롤 바 (실제 스크롤을 나타내는 부분) */
+
 .chatting-read-area::-webkit-scrollbar-thumb {
     background: #252525;
     border-radius: 5px;
 }
 
-/* 활성화된 스크롤 바 */
+
 .chatting-read-area::-webkit-scrollbar-thumb:hover {
-    background: #555; /* 마우스를 올렸을 때의 색상 */
+    background: #555;
 }
 
 .alert {
@@ -244,42 +225,3 @@ textarea {
     border: 2px solid #f5c6cb;
 }
 
-
-.typing-indicator {
-    display: flex;
-    align-items: center;
-    margin-left: 8px;
-}
-
-.typing-indicator span {
-    width: 6px;
-    height: 6px;
-    margin: 0 2px;
-    background-color: #888;
-    border-radius: 50%;
-    opacity: 0.4;
-    animation: typing-indicator-animation 1s infinite ease-in-out;
-}
-
-.typing-indicator span:nth-child(2) {
-    animation-delay: 0.2s;
-}
-
-.typing-indicator span:nth-child(3) {
-    animation-delay: 0.4s;
-}
-
-@keyframes typing-indicator-animation {
-    0% {
-        opacity: 0.4;
-        transform: translateY(0);
-    }
-    50% {
-        opacity: 1;
-        transform: translateY(-4px);
-    }
-    100% {
-        opacity: 0.4;
-        transform: translateY(0);
-    }
-}
