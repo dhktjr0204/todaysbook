@@ -92,9 +92,11 @@ document.addEventListener('DOMContentLoaded', function () {
         content = content.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2">$1</a>');
         return content;
     }
-    function resetbutton() {
+    function resetbutton() { // 이유: beforeunload 표시가 되지 않게 하기 위해
         resetState();
-        location.reload();
+        setTimeout(function () {
+            location.reload();
+        }, 500);
     }
     function resetState() {
         isResetting = true;
@@ -111,9 +113,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             })
             .catch(error => {
-                console.error('상태 초기화 중 오류가 발생했습니다.', error);
+                console.error('상태 초기화 오류', error);
                 isResetting = false;
             });
     }
 });
-
