@@ -2,15 +2,29 @@ document.addEventListener('DOMContentLoaded', function () {
     const chatMessages = document.getElementById('chat-messages');
     const userInput = document.getElementById('user-input');
     const sendBtn = document.getElementById('send-btn');
+    const resetBtn = document.getElementById('reset-btn');
 
     let eventSource = null;
 
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const isResetState = urlParams.get('resetState');
+
+    if (isResetState !== 'true') {
+        resetState();
+    }
+
     sendBtn.addEventListener('click', sendMessage);
+    resetBtn.addEventListener('click', resetState);
+
     userInput.addEventListener('keyup', function (event) {
         if (event.key === 'Enter') {
             sendMessage();
         }
     });
+
+
+
 
     function sendMessage() {
         const content = userInput.value.trim();
@@ -73,6 +87,38 @@ document.addEventListener('DOMContentLoaded', function () {
         content = content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
         content = content.replace(/\n/g, '<br>');
         return content;
+    }
+
+    function resetState() {
+        fetch('/alan/reset-state', {
+            method: 'GET'
+        })
+            .then(response => {
+                if (response.ok) {
+                    setTimeout(() => {
+                        window.location.href = window.location.pathname + '?resetState=true';
+                    }, 300);
+                } else {
+                    showAlert('상태 초기화 중 오류가 발생했습니다.', 'error');
+                }
+            })
+            .catch(error => {
+                showAlert('상태 초기화 중 오류가 발생했습니다.', 'error');
+            });
+    }
+
+
+
+
+    function showAlert(message, type) {
+        const alertElement = document.createElement('div');
+        alertElement.textContent = message;
+        alertElement.classList.add('alert', `alert-${type}`);
+        document.body.appendChild(alertElement);
+
+        setTimeout(() => {
+            alertElement.remove();
+        }, 1500);
     }
 });
 

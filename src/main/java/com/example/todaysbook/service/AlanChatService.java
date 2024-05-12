@@ -67,7 +67,7 @@ public class AlanChatService {
     }
 
 
-    // webClient는 delete에 body를 넣을 수 없어서 restTemplate를 사용
+    // webClient는 delete메소드에 body를 넣기가 어려워서 restTemplate를 사용했습니다.
     public void resetState() {
         String url = "https://kdt-api-function.azurewebsites.net/api/v1/reset-state";
 
