@@ -5,16 +5,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const resetBtn = document.getElementById('reset-btn');
 
     let eventSource = null;
-
-
-    const urlParams = new URLSearchParams(window.location.search);
-    const isResetState = urlParams.get('resetState');
-
-    if (isResetState !== 'true') {
-        resetState();
-    }
-
-
     let isResetting = false;
 
     window.onbeforeunload = function (event) {
@@ -24,12 +14,11 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-
-
+    resetState();
 
 
     sendBtn.addEventListener('click', sendMessage);
-    resetBtn.addEventListener('click', resetState);
+    resetBtn.addEventListener('click', resetbutton);
 
     userInput.addEventListener('keyup', function (event) {
         if (event.key === 'Enter') {
@@ -42,6 +31,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function sendMessage() {
         const content = userInput.value.trim();
+
+        const welcomeText = document.getElementById('welcome-text');
+        if (welcomeText) {
+            welcomeText.style.display = 'none';
+        }
 
         if (content !== '') {
             appendMessage('User', content);
@@ -103,6 +97,11 @@ document.addEventListener('DOMContentLoaded', function () {
         return content;
     }
 
+    function resetbutton() {
+        resetState();
+        location.reload();
+    }
+
     function resetState() {
         isResetting = true;
         fetch('/alan/reset-state', {
@@ -110,33 +109,21 @@ document.addEventListener('DOMContentLoaded', function () {
         })
             .then(response => {
                 if (response.ok) {
-                    setTimeout(() => {
-                        window.location.href = window.location.pathname + '?resetState=true';
-                    }, 50);
+                    console.log('상태 초기화 완료');
+                    isResetting = false;
                 } else {
-                    showAlert('상태 초기화 중 오류가 발생했습니다.', 'error');
+                    console.error('상태 초기화 실패');
                     isResetting = false;
                 }
             })
             .catch(error => {
-                showAlert('상태 초기화 중 오류가 발생했습니다.', 'error');
+                console.error('상태 초기화 중 오류가 발생했습니다.', error);
                 isResetting = false;
             });
     }
 
 
 
-
-    function showAlert(message, type) {
-        const alertElement = document.createElement('div');
-        alertElement.textContent = message;
-        alertElement.classList.add('alert', `alert-${type}`);
-        document.body.appendChild(alertElement);
-
-        setTimeout(() => {
-            alertElement.remove();
-        }, 1500);
-    }
 });
 
 

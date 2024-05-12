@@ -11,17 +11,18 @@
 <div th:replace="~{fragments/header.html}"></div>
 <main th:fragment="content">
 
-    <span class="title">Alan ai에게 책을 추천받아 보세요.</span>
+    <span class="title">실시간 검색 앨런</span>
     <button class="reset" id="reset-btn">대화 내용 초기화</button>
 
 
     <div class="chatting-container">
         <div class="chatting-read-area">
             <div id="chat-messages"></div>
+            <div id="welcome-text">안녕하세요.<br>어떤 책을 찾으시나요?</div>
         </div>
         <div class="chatting-write-area">
             <label for="user-input"></label>
-            <textarea class="write-text" type="text" id="user-input" placeholder="어떤 책을 찾으시나요? 무엇이든 물어보세요."></textarea>
+            <textarea class="write-text" type="text" id="user-input" placeholder="앨런에게 무엇이든 물어보세요."></textarea>
             <button class="submit" id="send-btn">↑</button>
         </div>
     </div>

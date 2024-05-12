@@ -45,6 +45,51 @@
     z-index: 10;
 }
 
+#welcome-text {
+    position: absolute;
+    top: 50%;
+    left: 42%;
+    transform: translate(-50%, -50%);
+    font-size: 50px;
+    background: linear-gradient(to right, #5281ec, #7879da, #9f71c4, #a96fb5, #b56ca3, #c7688a, #d96570, #d66573);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    /*animation: rainbow 1s linear infinite, slide-across 3s linear infinite;*/
+    animation: slide-in 1s ease-in-out;
+    white-space: nowrap;
+}
+
+@keyframes rainbow {
+    0% { color: #5281ec; }
+    14% { color: #7879da; }
+    28% { color: #9f71c4; }
+    42% { color: #a96fb5; }
+    57% { color: #b56ca3; }
+    71% { color: #c7688a; }
+    85% { color: #d96570; }
+    100% { color: #d66573; }
+}
+@keyframes slide-across {
+    0% {
+        left: 0;
+    }
+    100% {
+        left: calc(100% - 100vw);
+    }
+}
+
+@keyframes slide-in {
+    0% {
+        opacity: 0;
+        transform: translate(-100%, -50%);
+    }
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
 textarea {
     color: black;
 }
@@ -69,8 +114,7 @@ textarea {
 }
 
 .user-chat .read-text {
-    background: linear-gradient(45deg,
-    #e938c3, #cb38e9, #a338e2, #a338e9, #8c27cf, #8216c8, #6f16c8);
+    background: linear-gradient(30deg, #5281ec, #7879da, #9f71c4, #a96fb5, #b56ca3, #c7688a, #d96570, #d66573);
     border-radius: 17px;
 }
 
