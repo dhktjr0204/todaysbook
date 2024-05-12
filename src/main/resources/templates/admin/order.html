@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+
+<th:block layout:fragment="head">
+    <title>주문 내역 조회</title>
+    <link th:href="@{/css/admin/common.css}" rel="stylesheet"/>
+    <link th:href="@{/css/admin/order.css}" rel="stylesheet"/>
+</th:block>
+<div th:replace="~{fragments/header.html}"></div>
+<main th:fragment="content">
+    <aside th:replace="~{fragments/sidebar-admin.html}"></aside>
+    <div class="mypage-wrap">
+        <p class="mypage-title">주문 내역 조회</p>
+        <section>
+            <input type="date" id="todayDate">
+            <div class="order-list">
+                <ul class="order-list-header">
+                    <li>
+                        <p class="order-id">주문 번호</p>
+                        <p class="order-time">주문 시간</p>
+                        <p class="sales">금액</p>
+                    </li>
+                </ul>
+                <ul class="order-list-body">
+                    <li class="order-item" th:each="order : ${dto}">
+                        <a class="order-id" th:text="${order.id}" th:href="'/admin/order/'+${order.id}"></a>
+                        <p class="order-time" th:text="${#temporals.format(order.orderDate, 'yyyy-MM-dd HH:mm')}"></p>
+                        <p class="sales" th:text="${#numbers.formatInteger(order.sales, 3, 'COMMA') + '원'}"></p>
+                    </li>
+                </ul>
+                <div class="no-content" th:if="${dto.isEmpty()}">
+                    주문 내역이 없습니다.
+                </div>
+            </div>
+            <div th:replace="~{fragments/page.html}"></div>
+        </section>
+    </div>
+</main>
+<div th:replace="~{fragments/footer.html}"></div>
+<script th:src="@{/js/admin/order/date.js}"></script>
+<script th:src="@{/js/admin/order/page.js}"></script>
+</html>

@@ -29,7 +29,7 @@ public class SecurityConfig {
                         auth.requestMatchers(
                                         "/", "/login", "/alan/**", "/user/**", "/category/**",
                                         "/checkEmailAvailability", "/checkNicknameAvailability", "checkPasswordAvailability",
-                                        "/book/**", "/signup","/**").permitAll()
+                                        "/book/**", "/signup").permitAll()
                                 .requestMatchers(
                                         "/mypage/**",
                                         "/cart/**",

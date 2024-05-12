@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.todaysbook.repository.OrderMapper">
+    <select id="getOrderInfo" resultType="com.example.todaysbook.domain.dto.OrderInfo">
+        select o.id, o.order_date as orderDate, u.name as userName, u.address
+        from orders o
+                 inner join user u on u.id = o.user_id
+        where o.id = #{id};
+    </select>
+
+    <select id="getOrders" resultType="com.example.todaysbook.domain.dto.Order">
+        select b.id as bookId, b.title, b.price, ob.book_count as `count`, (b.price*ob.book_count) as totalPrice
+        from order_book ob
+                 inner join book b on b.id = ob.book_id
+        where ob.order_id = #{id};
+    </select>
+
+    <select id="getTotalPrice">
+        select sum(b.price*ob.book_count) as totalPrice
+        from order_book ob
+                 inner join book b on b.id = ob.book_id
+        where ob.order_id = #{id};
+    </select>
+</mapper>

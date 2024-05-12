@@ -1,37 +1,26 @@
 package com.example.todaysbook.controller;
 
-import com.example.todaysbook.domain.dto.AdminUserDto;
-import com.example.todaysbook.domain.dto.BookDto;
-import com.example.todaysbook.domain.dto.SalesDetailDto;
-import com.example.todaysbook.domain.dto.SimpleReview;
-import com.example.todaysbook.service.AdminService;
-import com.example.todaysbook.service.RecommendBookService;
-import com.example.todaysbook.service.ReviewService;
-import com.example.todaysbook.service.SalesService;
+import com.example.todaysbook.domain.dto.*;
+import com.example.todaysbook.service.*;
 import com.example.todaysbook.util.Pagination;
 import com.example.todaysbook.validate.AdminUpdateBookValidator;
 import lombok.RequiredArgsConstructor;
 import org.apache.mahout.cf.taste.common.TasteException;
-import org.hibernate.grammars.hql.HqlParser;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.time.Year;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -44,6 +33,7 @@ public class AdminController {
     private final RecommendBookService recommendBookService;
     private final ReviewService reviewService;
     private final SalesService salesService;
+    private final OrderService orderService;
 
     //유저 관리
     @GetMapping("/userlist")
@@ -300,5 +290,42 @@ public class AdminController {
         model.addAttribute("endPage", endPage);
 
         return "admin/sales-book";
+    }
+
+    @GetMapping("/order")
+    public String getOrders(@PageableDefault(page = 0, size = 10, sort = "id") Pageable pageable,
+                            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date,
+                            Model model) {
+
+        if (date == null) {
+            date = LocalDate.now();
+        }
+
+        Page<DailyOrderDto> result = orderService.getDailyOrders(date, pageable);
+
+        int startPage = 0;
+        int endPage = 0;
+
+        if (!result.isEmpty()) {
+            HashMap<String, Integer> pages = Pagination.calculatePage(result.getPageable().getPageNumber(), result.getTotalPages());
+            startPage = pages.get("startPage");
+            endPage = pages.get("endPage");
+        }
+
+        model.addAttribute("dto", result);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+
+        return "admin/order";
+    }
+
+    @GetMapping("/order/{id}")
+    public String getOrderDetail(@PathVariable Long id,  Model model) {
+
+        OrderDetailDTO orderDetail = orderService.getOrderDetail(id);
+
+        model.addAttribute("orderDetail", orderDetail);
+
+        return "admin/order-detail";
     }
 }

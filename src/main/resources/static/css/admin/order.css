@@ -1,0 +1,64 @@
+.order-list {
+
+    margin-top: 20px;
+}
+
+.order-list-header {
+
+    border-top: solid 1px white;
+}
+
+.order-list-header, .order-list-body {
+
+    border-bottom: solid 1px white;
+}
+
+.order-list-header li {
+
+    display: flex;
+    margin: 10px 0;
+}
+
+.order-list-body li {
+
+    display: flex;
+    align-items: center;
+    min-height: 50px;
+    margin: 20px 0;
+}
+
+.order-id {
+
+    text-align: center;
+    width: 100px;
+}
+
+.order-time {
+
+    text-align: center;
+    width: 180px;
+}
+
+.sales {
+
+    text-align: center;
+    width: 120px;
+}
+
+.page-button-group {
+
+    display: flex;
+    justify-content: center;
+
+    gap: 20px;
+    margin-top: 50px;
+}
+
+.select-button{
+    color: #D54DFE;
+}
+
+.no-content{
+    margin: 20px 0;
+    text-align: center;
+}
