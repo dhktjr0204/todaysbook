@@ -14,6 +14,20 @@ document.addEventListener('DOMContentLoaded', function () {
         resetState();
     }
 
+
+    let isResetting = false;
+
+    window.onbeforeunload = function (event) {
+        if (!isResetting) {
+            event.preventDefault();
+            event.returnValue = '';
+        }
+    }
+
+
+
+
+
     sendBtn.addEventListener('click', sendMessage);
     resetBtn.addEventListener('click', resetState);
 
@@ -90,6 +104,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function resetState() {
+        isResetting = true;
         fetch('/alan/reset-state', {
             method: 'GET'
         })
@@ -97,13 +112,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (response.ok) {
                     setTimeout(() => {
                         window.location.href = window.location.pathname + '?resetState=true';
-                    }, 300);
+                    }, 50);
                 } else {
                     showAlert('상태 초기화 중 오류가 발생했습니다.', 'error');
+                    isResetting = false;
                 }
             })
             .catch(error => {
                 showAlert('상태 초기화 중 오류가 발생했습니다.', 'error');
+                isResetting = false;
             });
     }
 
