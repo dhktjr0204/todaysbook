@@ -7,9 +7,11 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.MediaType;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.http.*;
 import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 
@@ -23,10 +25,13 @@ public class AlanChatService {
     private final WebClient webClient;
     private final String clientId;
     private final ObjectMapper objectMapper;
+    private final RestTemplate restTemplate;
 
-    public AlanChatService(WebClient.Builder webClientBuilder,
+    public AlanChatService(RestTemplateBuilder restTemplateBuilder,
+                           WebClient.Builder webClientBuilder,
                            @Value("${alan.client-id}") String clientId) {
         this.webClient = webClientBuilder.baseUrl("https://kdt-api-function.azurewebsites.net").build();
+        this.restTemplate = restTemplateBuilder.build();
         this.clientId = clientId;
         this.objectMapper = new ObjectMapper()
                 .configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
@@ -59,5 +64,28 @@ public class AlanChatService {
                 })
                 .filter(Objects::nonNull)
                 .delayElements(Duration.ofMillis(5));
+    }
+
+
+    // webClient는 delete에 body를 넣을 수 없어서 restTemplate를 사용
+    public void resetState() {
+        String url = "https://kdt-api-function.azurewebsites.net/api/v1/reset-state";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        String requestBody = String.format("{\"client_id\":\"%s\"}", clientId);
+
+        HttpEntity<String> requestEntity = new HttpEntity<>(requestBody, headers);
+
+        ResponseEntity<Void> responseEntity = restTemplate.exchange(url, HttpMethod.DELETE, requestEntity, Void.class);
+
+        if (responseEntity.getStatusCode().is2xxSuccessful() && responseEntity.getBody() == null) {
+            log.info("상태 초기화가 성공적으로 완료되었습니다.");
+        } else {
+            log.error("상태 초기화 중 오류가 발생했습니다. 응답 코드: {}", responseEntity.getStatusCode());
+        }
+
+        responseEntity.getBody();
     }
 }
