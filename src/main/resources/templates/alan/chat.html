@@ -3,18 +3,14 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/layout}">
-
 <th:block layout:fragment="head">
     <title>책 추천</title>
     <link th:href="@{/css/alan/chat.css}" rel="stylesheet"/>
 </th:block>
 <div th:replace="~{fragments/header.html}"></div>
 <main th:fragment="content">
-
     <span class="title">실시간 검색 앨런<img src="/images/search.png" alt="검색 아이콘"></span>
     <button class="reset" id="reset-btn">대화 내용 초기화</button>
-
-
     <div class="chatting-container">
         <div class="chatting-read-area">
             <div id="chat-messages"></div>

@@ -1,5 +1,3 @@
-
-
 package com.example.todaysbook.service;
 
 import com.example.todaysbook.domain.dto.AlanChatResponse;
@@ -65,7 +63,6 @@ public class AlanChatService {
                 .filter(Objects::nonNull)
                 .delayElements(Duration.ofMillis(5));
     }
-
 
     // webClient는 delete메소드에 body를 넣기가 어려워서 restTemplate를 사용했습니다.
     public void resetState() {

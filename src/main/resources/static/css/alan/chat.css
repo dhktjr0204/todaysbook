@@ -36,7 +36,6 @@
     border-radius: 10px;
 }
 
-
 .title {
     font-size: 20px;
     left: 10px;
@@ -45,6 +44,7 @@
     position: absolute;
     z-index: 10;
 }
+
 .title img {
     width: 26px;
     height: 20px;
@@ -64,7 +64,6 @@
     animation: slide-in 1s ease-in-out;
     white-space: nowrap;
 }
-
 
 @keyframes slide-in {
     0% {
@@ -119,8 +118,6 @@ textarea {
     color: #007bff;
 }
 
-
-
 .write-text {
     position: relative;
     color: white;
@@ -135,7 +132,6 @@ textarea {
     padding: 12px;
     font-size: 17px;
 }
-
 
 .submit {
     position: absolute;
@@ -198,12 +194,10 @@ textarea {
     background: black;
 }
 
-
 .chatting-read-area::-webkit-scrollbar-thumb {
     background: #252525;
     border-radius: 5px;
 }
-
 
 .chatting-read-area::-webkit-scrollbar-thumb:hover {
     background: #555;
