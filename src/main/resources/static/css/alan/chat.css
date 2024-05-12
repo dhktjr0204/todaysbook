@@ -6,6 +6,7 @@
     position: relative;
     padding-top: 40px;
     animation: slide-up 0.3s ease-out;
+    font-weight: 300;
 }
 
 @keyframes slide-up {
@@ -43,6 +44,11 @@
     margin: 10px;
     position: absolute;
     z-index: 10;
+}
+.title img {
+    width: 26px;
+    height: 20px;
+    padding-top: 4px;
 }
 
 #welcome-text {
@@ -108,6 +114,9 @@ textarea {
 .alan-chat span {
     color: white;
     background-color: transparent;
+}
+.alan-chat .read-text a {
+    color: #007bff;
 }
 
 
@@ -225,3 +234,19 @@ textarea {
     border: 2px solid #f5c6cb;
 }
 
+@keyframes typing {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+.alan-chat.typing .read-text::after {
+    content: "입력 중...";
+    animation: typing 1s infinite;
+}

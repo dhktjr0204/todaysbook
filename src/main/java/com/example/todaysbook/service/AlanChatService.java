@@ -81,9 +81,9 @@ public class AlanChatService {
         ResponseEntity<Void> responseEntity = restTemplate.exchange(url, HttpMethod.DELETE, requestEntity, Void.class);
 
         if (responseEntity.getStatusCode().is2xxSuccessful() && responseEntity.getBody() == null) {
-            log.info("상태 초기화가 성공적으로 완료되었습니다.");
+            log.info("대화 내용 초기화 성공");
         } else {
-            log.error("상태 초기화 중 오류가 발생했습니다. 응답 코드: {}", responseEntity.getStatusCode());
+            log.error("대화 내용 초기화 오류. 응답 코드: {}", responseEntity.getStatusCode());
         }
 
         responseEntity.getBody();
