@@ -11,8 +11,9 @@
 <div th:replace="~{fragments/header.html}"></div>
 <main th:fragment="content">
 
+    <span class="title">Alan ai에게 책을 추천받아 보세요.</span>
     <button class="reset" id="reset-btn">이전 데이터 초기화</button>
-    <span class="title">앨런에게 책 추천 받기</span>
+
 
     <div class="chatting-container">
         <div class="chatting-read-area">
@@ -20,7 +21,7 @@
         </div>
         <div class="chatting-write-area">
             <label for="user-input"></label>
-            <textarea class="write-text" type="text" id="user-input" placeholder="앨런에게 책을 추천 받아보세요"></textarea>
+            <textarea class="write-text" type="text" id="user-input" placeholder="어떤 책을 찾으시나요? 무엇이든 물어보세요."></textarea>
             <button class="submit" id="send-btn">↑</button>
         </div>
     </div>

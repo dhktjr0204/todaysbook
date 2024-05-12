@@ -1,13 +1,15 @@
 .chatting-container {
-    height: 600px;
+    height: 560px;
     display: flex;
     flex-direction: column;
     align-items: center;
     position: relative;
+    padding-top: 40px;
+
 }
 
 .chatting-read-area {
-    height: 450px;
+    height: 425px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -26,8 +28,12 @@
 
 
 .title {
-    font-size: 30px;
-    padding: 20px;
+    font-size: 20px;
+    left: 10px;
+    top: 100px;
+    margin: 10px;
+    position: absolute;
+    z-index: 10;
 }
 
 textarea {
@@ -38,7 +44,7 @@ textarea {
     color: white;
     width: 700px;
     min-height: 25px;
-    padding: 10px;
+    padding: 20px;
     overflow-y: auto;
 }
 
@@ -49,18 +55,19 @@ textarea {
 }
 
 .alan-chat .read-text {
-    background: linear-gradient(45deg, #8438e9, #803de6, #7542e0);
-    border-radius: 0 17px 17px 17px;
+    background: #252525;
+    border-radius: 17px;
 }
 
 .user-chat .read-text {
-    background: #252525;
-    border-radius: 17px 0 17px 17px;
+    background: linear-gradient(45deg,
+    #e938c3, #cb38e9, #a338e2, #a338e9, #8c27cf, #8216c8, #6f16c8);
+    border-radius: 17px;
 }
 
 .alan-chat img, .user-chat img {
-    width: 50px;
-    height: 50px;
+    width: 58px;
+    height: 58px;
     border-radius: 50%;
 }
 
@@ -75,12 +82,15 @@ textarea {
     position: relative;
     color: white;
     margin: 0 70px 0 0;
-    width: 620px;
+    width: 650px;
     height: 70px;
     background-color: black;
     border: none;
+    border-radius: 13px;
     outline: none;
     resize: none;
+    padding: 12px;
+    font-size: 17px;
 }
 
 
@@ -89,30 +99,66 @@ textarea {
 
     bottom: 10px;
     right: 10px;
-    background-color: #252525;
+    background-color: #555;
     border-radius: 10px;
     padding: 10px;
     width: 50px;
     height: 50px;
     border: none;
     color: black;
-    font-size: 14px;
+    font-size: 20px;
+    font-weight:bold;
     cursor: pointer;
+}
+
+.submit:hover {
+    background-color: white;
 }
 
 .reset {
     width: 150px;
-    background-color: purple;
+    background-color: #555;
     color: white;
     border: none;
     border-radius: 10px;
     padding: 10px;
+    font-size: 15px;
     cursor: pointer;
+    right: 10px;
+    top: 100px;
+    position: absolute;
+    z-index: 10;
 }
 
 .reset:hover {
-    background-color: darkviolet;
+    background-color: #9d9d9d;
 }
+
+
+
+/* 스크롤 막대의 전반적인 스타일 */
+.chatting-read-area::-webkit-scrollbar {
+    width: 5px; /* 스크롤의 너비 */
+}
+
+/* 스크롤 트랙 (스크롤바 배경) */
+.chatting-read-area::-webkit-scrollbar-track {
+    background: black;
+}
+
+/* 스크롤 바 (실제 스크롤을 나타내는 부분) */
+.chatting-read-area::-webkit-scrollbar-thumb {
+    background: #252525;
+    border-radius: 5px;
+}
+
+/* 활성화된 스크롤 바 */
+.chatting-read-area::-webkit-scrollbar-thumb:hover {
+    background: #555; /* 마우스를 올렸을 때의 색상 */
+}
+
+
+
 
 .typing-indicator {
     display: flex;
