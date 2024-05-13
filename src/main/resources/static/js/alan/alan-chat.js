@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function formatContent(content) {
         content = content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
         content = content.replace(/\n/g, '<br>');
-        content = content.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2">$1</a>');
+        content = content.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank">$1</a>');
         return content;
     }
     function resetbutton() { // 이유: beforeunload 표시가 되지 않게 하기 위해
