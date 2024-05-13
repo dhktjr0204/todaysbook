@@ -27,7 +27,7 @@ public class SecurityConfig {
         return httpSecurity
                 .authorizeHttpRequests(auth ->              // 인증, 인가 설정
                         auth.requestMatchers(
-                                        "/", "/login", "/alan/**", "/user/**", "/category/**",
+                                        "/", "/login", "/alan/**","/gemini/**", "/user/**", "/category/**",
                                         "/checkEmailAvailability", "/checkNicknameAvailability", "checkPasswordAvailability",
                                         "/book/**", "/signup","/bookmark/**").permitAll()
                                 .requestMatchers(

@@ -20,7 +20,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
             "ORDER BY REGEXP_REPLACE(b.title, '[0-9]+.*', ''), " +
             "CAST(REGEXP_REPLACE(REGEXP_SUBSTR(b.title, '[^0-9]+[0-9]+[^+\\-():]*'),'[^0-9]','') AS int)")
     Page<Book> findAllByCategoryId(String categoryId, Pageable pageable);
-    Optional<Book> findByTitle(String bookTitle);
+    Optional<Book> findFirstByTitle(String bookTitle);
     Optional<Book> findFirstByIsbn(String isbn);
 
     @Query("select new com.example.todaysbook.domain.dto.BookDto(" +
