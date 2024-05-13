@@ -41,4 +41,7 @@ public class User {
     public void updateRole(String role){
         this.role=role;
     }
+    public void updateMileage(long mileage) {
+        this.mileage = String.valueOf(Integer.valueOf(this.mileage) + Long.valueOf(mileage));
+    }
 }

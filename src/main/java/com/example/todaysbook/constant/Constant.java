@@ -13,6 +13,8 @@ public class Constant {
     public static Pattern EMAIL_PATTERN = Pattern.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
 
     public static Pattern PASSWORD_PATTERN = Pattern.compile("^(?=.*[a-zA-Z])(?=.*\\d)(?=.*\\W).{8,20}$");
+
+    public static Pattern DEFAULT_ADDRESS_PATTERN = Pattern.compile(", ");
     public static Pattern ZIPCODE_PATTERN = Pattern.compile("^\\d{5}$");
 
     public static int BOOK_TITLE_MAX_LENGTH = 200;
