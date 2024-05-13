@@ -35,11 +35,7 @@ public class MypageController {
     @GetMapping("/my_recommend_list")
     public String myRecommendList(@AuthenticationPrincipal CustomUserDetails userDetails, Model model) {
 
-        long userId = 0;
-
-        if(userDetails != null) {
-            userId = userDetails.getUserId();
-        }
+        long userId = UserChecker.getUserId(userDetails);
 
         List<RecommendListDetailDto> myRecommendListAll = recommendListService.getMyRecommendListAll(userId);
 
@@ -51,11 +47,7 @@ public class MypageController {
     @GetMapping("/my_book_mark_list")
     public String myBookMarkList(@AuthenticationPrincipal CustomUserDetails userDetails, Model model){
 
-        long userId = 0;
-
-        if(userDetails != null) {
-            userId = userDetails.getUserId();
-        }
+        long userId = UserChecker.getUserId(userDetails);
 
         List<RecommendListDetailDto> myBookMarkListAll = recommendListService.getMyBookMarkListAll(userId);
 

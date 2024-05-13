@@ -161,9 +161,9 @@ public class ViewController {
 //        return "payment/success";
 //    }
 
-    @GetMapping("/alan/recommend")
-    public String alanRecommend(Model model) {
-
-        return "alan/recommend";
+    @GetMapping("/alan/chat")
+    public String chatbotPage(Model model) {
+        return "alan/chat";
     }
+
 }

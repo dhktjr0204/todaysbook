@@ -14,6 +14,7 @@ main::before {
 
     background-image: url("../../images/login-background.png");
     background-repeat: no-repeat;
+    background-size: cover;
 
     opacity: 0.25;
     position: absolute;

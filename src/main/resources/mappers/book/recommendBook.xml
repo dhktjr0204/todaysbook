@@ -22,4 +22,23 @@
     <update id="truncateRecommendBook">
         TRUNCATE TABLE recommend_book;
     </update>
+
+    <select id="getRecommendBooksByFavoriteBooks" resultType="com.example.todaysbook.domain.dto.RecommendBookDto">
+        select b.id, b.title, b.author, b.price, b.image_path as imagePath
+        from recommend_book rb
+                 inner join book b
+                            on b.id = rb.recommend_book_id
+        where rb.book_id in (
+            select book_id
+            from favorite_book
+            where user_id = #{userId}
+        ) and b.id not in (
+            select book_id
+            from favorite_book
+            where user_id = #{userId}
+        )
+        group by b.id
+        order by rand()
+            limit 10;
+    </select>
 </mapper>

@@ -1,5 +1,6 @@
 package com.example.todaysbook.validate;
 
+import com.example.todaysbook.constant.Constant;
 import com.example.todaysbook.domain.dto.BookDto;
 import com.example.todaysbook.domain.dto.RecommendListCreateRequestDto;
 import com.example.todaysbook.exception.admin.AuthorLengthOverException;
@@ -64,7 +65,7 @@ public class AdminUpdateBookValidator implements Validator {
     }
 
     private boolean isTitleLengthOver(String title){
-        return title.length()>200;
+        return title.length()> Constant.BOOK_TITLE_MAX_LENGTH;
     }
 
     private boolean isAuthorEmpty(String author){
@@ -72,7 +73,7 @@ public class AdminUpdateBookValidator implements Validator {
     }
 
     private boolean isAuthorLengthOver(String author){
-        return author.length()>200;
+        return author.length()>Constant.AUTHOR_MAX_LENGTH;
     }
 
     private boolean isPublisherEmpty(String publisher){
@@ -80,11 +81,11 @@ public class AdminUpdateBookValidator implements Validator {
     }
 
     private boolean isPublisherLengthOver(String publisher){
-        return publisher.length()>20;
+        return publisher.length()>Constant.PUBLISHER_MAX_LENGTH;
     }
 
     private boolean isDescriptionLengthOver(String description){
-        return description.length()>300;
+        return description.length()>Constant.DESCRIPTION_MAX_LENGTH;
     }
 
     private boolean isPriceEmpty(Long price){return price==null;}

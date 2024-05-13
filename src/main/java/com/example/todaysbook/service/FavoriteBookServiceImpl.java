@@ -29,12 +29,6 @@ public class FavoriteBookServiceImpl implements FavoriteBookService {
     }
 
     @Override
-    public List<FavoriteBookDTO> getRecommendBooksByFavoriteBooks(Long userId) {
-
-        return favoriteBookMapper.getRecommendBooksByFavoriteBooks(userId);
-    }
-
-    @Override
     public int addFavoriteBook(Long userId, Long bookId) {
 
         return favoriteBookMapper.addFavoriteBook(userId, bookId);

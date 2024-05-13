@@ -106,9 +106,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if(nickname.length > 8) {
             alert('닉네임의 길이는 최대 8글자입니다.');
+            inputList[0].focus();
             return;
         } else if(nickname.length < 2 || nickname.value === '') {
             alert('닉네임의 길이는 최소 2글자입니다.');
+            inputList[0].focus();
             return;
         }
 

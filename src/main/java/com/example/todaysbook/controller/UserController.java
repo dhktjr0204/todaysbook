@@ -3,11 +3,17 @@ package com.example.todaysbook.controller;
 import com.example.todaysbook.domain.dto.*;
 import com.example.todaysbook.domain.entity.User;
 import com.example.todaysbook.service.UserService;
+import com.example.todaysbook.validate.UserRegisterValidator;
+import com.example.todaysbook.validate.UserUpdateAddressValidator;
+import com.example.todaysbook.validate.UserUpdateNicknameValidator;
+import com.example.todaysbook.validate.UserUpdatePasswordValidator;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,7 +25,7 @@ public class UserController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody UserRequestDto request) {
+    public ResponseEntity<?> registerUser(@RequestBody UserRequestDto request, BindingResult result) {
         if(userService.isExistEmail(request.getEmail())) {
             return ResponseEntity.badRequest().body("Email already exists : " + request.getEmail());
         }
@@ -28,10 +34,13 @@ public class UserController {
             return ResponseEntity.badRequest().body("Nickname already exists : " + request.getNickName());
         }
 
+        UserRegisterValidator validator = new UserRegisterValidator();
+        validator.validate(request, result);
+
         User user = userService.save(request);
         UserResponseDto response = user.toResponse();
 
-        return ResponseEntity.ok(response);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     /*@PostMapping("/login")
@@ -89,21 +98,28 @@ public class UserController {
     }*/
 
     @PutMapping ("/update/nickname")
-    public ResponseEntity<?> updateUserNickname(@RequestBody UserRequestDto request, @AuthenticationPrincipal CustomUserDetails userDetails) {
+    public ResponseEntity<?> updateUserNickname(@RequestBody UserRequestDto request, @AuthenticationPrincipal CustomUserDetails userDetails, BindingResult result) {
         String userNickname = userDetails.getNickname();
+        String nickname = request.getNickName();
 
-        if(userNickname.equals(request.getNickName())) {
+        if(userNickname.equals(nickname)) {
             return ResponseEntity.badRequest().body("Same Nickname: " + userNickname);
         }
 
-        userService.updateNickname(userDetails.getUserId(), request.getNickName());
+        UserUpdateNicknameValidator validator = new UserUpdateNicknameValidator();
+        validator.validate(request, result);
+
+        userService.updateNickname(userDetails.getUserId(), nickname);
 
         return ResponseEntity.ok().build();
     }
 
     @Transactional
     @PutMapping ("/update/addressInfo")
-    public ResponseEntity<?> updateUserAddressInfo(@RequestBody UserRequestDto request, @AuthenticationPrincipal CustomUserDetails userDetails) {
+    public ResponseEntity<?> updateUserAddressInfo(@RequestBody UserRequestDto request, @AuthenticationPrincipal CustomUserDetails userDetails, BindingResult result) {
+        UserUpdateAddressValidator validator = new UserUpdateAddressValidator();
+        validator.validate(request, result);
+
         userService.updateAddressInfoById(userDetails.getUserId(), request.getAddress(), request.getZipcode());
 
         return ResponseEntity.ok().build();
@@ -111,8 +127,12 @@ public class UserController {
 
     @Transactional
     @PutMapping ("/update/password")
-    public ResponseEntity<?> updateUserPassword(@RequestBody UserRequestDto request, @AuthenticationPrincipal CustomUserDetails userDetails) {
+    public ResponseEntity<?> updateUserPassword(@RequestBody UserRequestDto request, @AuthenticationPrincipal CustomUserDetails userDetails, BindingResult result) {
         String password = encoder.encode(request.getPassword());
+
+        UserUpdatePasswordValidator validator = new UserUpdatePasswordValidator();
+        validator.validate(request, result);
+
         userService.updatePassword(userDetails.getUserId(), password);
 
         return ResponseEntity.ok().build();

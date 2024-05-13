@@ -13,5 +13,5 @@ public class PaymentAddressAndMileageInfo {
     private String detailAddress;
     private long usedMileage;
     private long totalPrice;
-    
+
 }
