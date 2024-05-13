@@ -24,7 +24,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class RecommendServiceImpl implements RecommendListService {
+public class RecommendListServiceImpl implements RecommendListService {
     private final UserRecommendListRepository userRecommendListRepository;
     private final UserRecommendBookRepository userRecommendBookRepository;
     private final RecommendListMapper recommendListMapper;
