@@ -34,6 +34,7 @@ public class RecommendBookServiceImpl implements RecommendBookService {
     @Override
     public void GenerateRecommendBookList(List<SimpleReview> reviews) throws TasteException, IOException {
 
+
         String filePath = System.getProperty("user.dir") + "/src/main/resources/data/rating.csv";
 
         int howMany = 5;
