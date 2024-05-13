@@ -1,6 +1,4 @@
 function postAddressAndMileageInfo() {
-    var paymentMethod = document.querySelector('input[name="payment_method"]:checked').value;
-
     // 받으시는 분의 정보와 우편번호, 주소, 상세주소 값을 가져옴
     var user = document.getElementById('user').value;
     var postcode = document.getElementById('postcode').value;
@@ -20,7 +18,7 @@ function postAddressAndMileageInfo() {
         totalPrice: totalPrice
     };
 
-    fetch('/payment/' + paymentMethod, {
+    fetch('/payment/card', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

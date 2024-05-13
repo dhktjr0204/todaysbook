@@ -9,7 +9,6 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 @Entity
-
 public class CartBook {
 
     @Id

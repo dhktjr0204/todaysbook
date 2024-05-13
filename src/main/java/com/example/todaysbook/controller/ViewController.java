@@ -1,16 +1,21 @@
 package com.example.todaysbook.controller;
 
+import com.example.todaysbook.domain.entity.Orders;
+import com.example.todaysbook.repository.OrderRepository;
 import com.example.todaysbook.service.CartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.List;
+
 @Controller
 @RequiredArgsConstructor
 public class ViewController {
 
     private final CartService cartService;
+    private final OrderRepository orderRepository;
 
     /*@GetMapping("/index")
     public String index(@AuthenticationPrincipal CustomUserDetails customUserDetails, Model model) {
@@ -61,7 +66,8 @@ public class ViewController {
 
     @GetMapping("/mypage/orderlist")
     public String orderList(Model model) {
-
+        List<Orders> all = orderRepository.findAll();
+        model.addAttribute("orderDtos", all);
         return "user/mypage/orderlist";
     }
 
