@@ -1,10 +1,15 @@
 package com.example.todaysbook.controller;
 
 import com.example.todaysbook.domain.dto.CustomUserDetails;
+import com.example.todaysbook.domain.dto.DeliveryDto;
 import com.example.todaysbook.domain.dto.FavoriteBookDTO;
+import com.example.todaysbook.domain.dto.MyPageOrderDto;
 import com.example.todaysbook.domain.dto.MyReview;
+import com.example.todaysbook.domain.dto.OrderDetailDTO;
 import com.example.todaysbook.domain.dto.RecommendListDetailDto;
+import com.example.todaysbook.domain.entity.Orders;
 import com.example.todaysbook.service.FavoriteBookService;
+import com.example.todaysbook.service.OrderService;
 import com.example.todaysbook.service.RecommendListService;
 import com.example.todaysbook.service.ReviewService;
 import com.example.todaysbook.util.Pagination;
@@ -30,6 +35,7 @@ import java.util.List;
 public class MypageController {
     private final RecommendListService recommendListService;
     private final ReviewService reviewService;
+    private final OrderService orderService;
     private final FavoriteBookService favoriteBookService;
 
     @GetMapping("/my_recommend_list")
@@ -109,5 +115,68 @@ public class MypageController {
     public String mileageHistory() {
 
         return "user/mypage/mileage";
+    }
+
+    @GetMapping("/orderlist")
+    public String getOrderList(@PageableDefault(page = 0, size = 10) Pageable pageable,
+                               @AuthenticationPrincipal CustomUserDetails userDetails,
+                               Model model){
+
+        long userId = UserChecker.getUserId(userDetails);
+
+        Page<MyPageOrderDto> myOrders = orderService.getMyOrders(userId, pageable);
+
+        int startPage = 0;
+        int endPage = 0;
+
+        if (!myOrders.isEmpty()) {
+            HashMap<String, Integer> pages = Pagination.calculatePage(myOrders.getPageable().getPageNumber(), myOrders.getTotalPages());
+            startPage = pages.get("startPage");
+            endPage = pages.get("endPage");
+        }
+
+        model.addAttribute("dto", myOrders);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+
+        return "user/mypage/orderlist";
+    }
+
+    @GetMapping("/user/order_detail/{id}")
+    public String getOrderDetail(@PageableDefault(page = 0, size = 10) Pageable pageable,
+                               @AuthenticationPrincipal CustomUserDetails userDetails,
+                               @PathVariable Long id,
+                               Model model){
+        long userId=UserChecker.getUserId(userDetails);
+
+        Orders orders = orderService.getOrders(id);
+        if(orders.getUserId()!=userId){
+            return "error/404";
+        }
+
+        OrderDetailDTO orderDetail = orderService.getOrderDetail(id);
+
+        model.addAttribute("orderDetail", orderDetail);
+
+        return "admin/order-detail";
+    }
+
+    @GetMapping("/user/delivery/{id}")
+    public String getDeliveryDetail(@PageableDefault(page = 0, size = 10) Pageable pageable,
+                                 @AuthenticationPrincipal CustomUserDetails userDetails,
+                                 @PathVariable String id,
+                                 Model model){
+
+        long userId=UserChecker.getUserId(userDetails);
+
+        DeliveryDto deliveryDetail = orderService.getDeliveryDetail(id);
+
+        if(deliveryDetail.getUserId()!=userId){
+            return "error/404";
+        }
+
+        model.addAttribute("deliveryDetail", deliveryDetail);
+
+        return "user/mypage/delivery";
     }
 }

@@ -65,6 +65,17 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    public Page<BookDto> findSoldOutBooks(Pageable pageable) {
+        Page<Book> bookList=bookRepository.findAllSoldOutBook(pageable);
+
+        if(bookList.isEmpty()){
+            return Page.empty();
+        }
+
+        return bookList.map(this::convertBookToDto);
+    }
+
+    @Override
     public BookDto findBookById(Long bookId) {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(BookNotFoundException::new);

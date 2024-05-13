@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -123,6 +122,27 @@ public class AdminController {
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
         model.addAttribute("keyword", keyword);
+
+        return "admin/stocklist";
+    }
+
+    @GetMapping("/stocklist/sold-out")
+    public String searchStockList(@PageableDefault(page = 0, size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
+                                  Model model) {
+        Page<BookDto> booksByKeyword = adminService.findSoldOutBooks(pageable);
+
+        int startPage = 0;
+        int endPage = 0;
+
+        if (!booksByKeyword.isEmpty()) {
+            HashMap<String, Integer> pages = Pagination.calculatePage(booksByKeyword.getPageable().getPageNumber(), booksByKeyword.getTotalPages());
+            startPage = pages.get("startPage");
+            endPage = pages.get("endPage");
+        }
+
+        model.addAttribute("dto", booksByKeyword);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
 
         return "admin/stocklist";
     }
@@ -327,5 +347,47 @@ public class AdminController {
         model.addAttribute("orderDetail", orderDetail);
 
         return "admin/order-detail";
+    }
+
+    //배송 관리
+    @GetMapping("/delivery")
+    public String getDelivery(@PageableDefault(page = 0, size = 5) Pageable pageable,
+                              Model model){
+        Page<DeliveryDto> deliveryDetail = orderService.getDelivery(pageable);
+
+        HashMap<String, Integer> pages = Pagination.calculatePage(deliveryDetail.getPageable().getPageNumber(), deliveryDetail.getTotalPages());
+        int startPage = pages.get("startPage");
+        int endPage = pages.get("endPage");
+
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+        model.addAttribute("dto", deliveryDetail);
+
+        return "admin/delivery";
+    }
+
+    @GetMapping("/delivery/search")
+    public String searchDelivery(@PageableDefault(page = 0, size = 5) Pageable pageable,
+                                 String keyword,
+                                 Model model){
+        Page<DeliveryDto> deliveryDetail = orderService.getDeliveryByKeyword(keyword, pageable);
+
+        HashMap<String, Integer> pages = Pagination.calculatePage(deliveryDetail.getPageable().getPageNumber(), deliveryDetail.getTotalPages());
+        int startPage = pages.get("startPage");
+        int endPage = pages.get("endPage");
+
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+        model.addAttribute("dto", deliveryDetail);
+        model.addAttribute("keyword", keyword);
+
+        return "admin/delivery";
+    }
+
+    @PutMapping("/delivery")
+    public ResponseEntity<?> updateDeliveryStatus(String deliveryId, String status){
+        orderService.updateDeliveryStatus(deliveryId, status);
+
+        return ResponseEntity.ok("배송 상태가 수정되었습니다.");
     }
 }

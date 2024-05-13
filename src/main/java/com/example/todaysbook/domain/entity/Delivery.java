@@ -17,9 +17,12 @@ import lombok.NoArgsConstructor;
 public class Delivery {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
     private String status;
     private String address;
     private String zipcode;
+
+    public void updateStatus(String status) {
+        this.status = status;
+    }
 }
