@@ -1,0 +1,73 @@
+main {
+
+    display: flex;
+}
+
+.mypage-wrap {
+
+    padding-top: 60px;
+    margin: 0 auto;
+}
+
+.order-info, .client-info {
+
+    display: flex;
+    justify-content: space-between;
+
+    margin-bottom: 10px;
+}
+
+.order-list {
+
+    display: flex;
+    flex-direction: column;
+}
+
+.order-list-header {
+
+    border-top: solid 1px white;
+}
+
+.order-list-header, .order-list-body {
+
+    border-bottom: solid 1px white;
+}
+
+.order-list-header li {
+
+    display: flex;
+    margin: 10px 10px;
+}
+
+.order-list-body li {
+
+    display: flex;
+    align-items: baseline;
+    margin: 10px 10px;
+}
+
+.order-list-bottom li {
+
+    text-align: right;
+    padding: 10px;
+}
+
+.quantity {
+
+    width: 50px;
+}
+
+.price, .mileage {
+
+    width: 150px;
+}
+
+.quantity, .price, .mileage {
+
+    text-align: center;
+}
+
+.product-name {
+
+    width: 300px;
+}

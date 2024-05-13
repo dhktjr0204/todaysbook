@@ -18,7 +18,7 @@ main::before {
 
     opacity: 0.25;
     position: absolute;
-    top: -30%;
+    top: 0;
     left: 0;
     right: 0;
     bottom: 0;
