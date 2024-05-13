@@ -52,9 +52,11 @@
             <div class="cart-list">
                 <ul class="cart-list-body">
                     <li th:each="cartBook : ${cartBooks}">
+
                         <p class="book-name" th:text="${cartBook.bookName}"></p>
                         <p class="quantity_count" th:text="${cartBook.quantity}"></p>
                         <p class="price" th:text="${cartBook.price + '원'}"></p>
+
                     </li>
                 </ul>
             </div>

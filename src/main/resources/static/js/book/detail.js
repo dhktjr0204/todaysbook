@@ -62,5 +62,6 @@ function addCart(button) {
     } else {
         // 도서 개수가 0인 경우 알림창 띄우기
         alert('수량을 선택해주세요');
+
     }
 }

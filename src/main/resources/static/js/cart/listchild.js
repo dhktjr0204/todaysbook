@@ -160,7 +160,6 @@ function updateTotalPrice() {
     let totalMileage = parseInt(totalMileageElement.textContent.replace('M', '').replace(/,/g, ''));
     totalMileageElement.textContent = numberWithCommas(totalMileage)+'M';
 
-
     var priceElements = document.getElementsByClassName("price");
     for (var i = 0; i < priceElements.length; i++) {
         var priceText = priceElements[i].textContent.replace('원', '').replace(/,/g, '');
