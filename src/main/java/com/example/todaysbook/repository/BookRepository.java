@@ -28,7 +28,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
             "from Book b " +
             "where b.categoryId=:categoryId " +
             "order by (" +
-            "select sum(b.id * ob.bookCount) " +
+            "select sum(b.price * ob.bookCount) " +
             "from OrderBook ob " +
             "where ob.bookId=b.id) desc, " +
             "REGEXP_REPLACE(b.title, '[0-9]+.*', ''), " +

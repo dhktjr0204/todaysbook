@@ -3,3 +3,8 @@
     display: flex;
     gap: 5px;
 }
+
+#salesChart {
+    width: 800px;
+    height: 500px;
+}
