@@ -22,4 +22,5 @@ public interface OrderRepository extends JpaRepository<Orders, Long> {
             "group by o.id " +
             "order by o.id")
     Page<DailyOrderDto> getOrdersByOrderDate(LocalDate date, Pageable pageable);
+    long count();
 }

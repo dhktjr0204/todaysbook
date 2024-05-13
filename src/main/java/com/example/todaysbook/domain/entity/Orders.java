@@ -23,6 +23,6 @@ public class Orders {
     private long userId;
     @CreatedDate
     private LocalDateTime orderDate;
-    private long deliveryId;
+    private String deliveryId;
     private String status;
 }
