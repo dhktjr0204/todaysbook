@@ -50,16 +50,26 @@ function updateNickname(newNickname) {
         },
         body: JSON.stringify(requestBody)
     })
-        .then(function(response) {
+        .then(response => {
             if (!response.ok) {
-                throw new Error('Failed to update nickname');
+                return response.text().then(msg => {
+                    if(response.status === 401) {
+                        alert(msg);
+                    } else if(response.status === 400) {
+                        alert(msg);
+                        throw new Error(msg);
+                    } else if(response.status === 404) {
+                        alert(msg);
+                    }
+                });
+            } else {
+                return response.text();
             }
         })
-        .then(function(data) {
+        .then(data => {
 
         })
         .catch(function(error) {
-            alert('Error: ' + error.message);
             console.error('Error:', error);
         });
 }
@@ -77,18 +87,27 @@ function updateAddressInfo(address, detailAddress, zipcode) {
         },
         body: JSON.stringify(requestBody)
     })
-        .then(function(response) {
+        .then(response => {
             if (!response.ok) {
-                throw new Error('Failed to update nickname');
+                return response.text().then(msg => {
+                    if(response.status === 401) {
+                        alert(msg);
+                    } else if(response.status === 400) {
+                        alert(msg);
+                        throw new Error(msg);
+                    } else if(response.status === 404) {
+                        alert(msg);
+                    }
+                });
+            } else {
+                return response.text();
             }
         })
-        .then(function(data) {
-            alert('회원정보가 수정되었습니다.');
-            window.location.href = '/';
+        .then(data => {
+
         })
         .catch(function(error) {
-            alert('Error: ' + error.message);
-            console.error('Error:', error);
+            console.error(error);
         });
 }
 
@@ -97,58 +116,59 @@ let nicknameAvailability = false;
 document.addEventListener('DOMContentLoaded', function () {
     const nicknameButton = document.querySelectorAll('.button')[0];
     const inputList = document.querySelectorAll('.input');
-    let nickname;
 
     nicknameButton.addEventListener('click', function(event) {
         event.preventDefault();
 
-        nickname = inputList[0].value;
+        const nickname = inputList[0].value;
 
         if(nickname.length > 8) {
             alert('닉네임의 길이는 최대 8글자입니다.');
             inputList[0].focus();
-            return;
-        } else if(nickname.length < 2 || nickname.value === '') {
+        } else if(nickname.length < 2 || nickname === '') {
             alert('닉네임의 길이는 최소 2글자입니다.');
             inputList[0].focus();
-            return;
-        }
-
-        checkNicknameAvailability(nickname)
-            .then(function(data) {
-                if(data.hasOwnProperty('available')) {
-                    if(data.available) {
-                        alert('사용 가능한 닉네임입니다.');
-                        nicknameAvailability = true;
+        } else if(nickname.length !== 0) {
+            checkNicknameAvailability(nickname)
+                .then(function (data) {
+                    if (data.hasOwnProperty('available')) {
+                        if (data.available) {
+                            alert('사용 가능한 닉네임입니다.');
+                            nicknameAvailability = true;
+                        } else {
+                            alert('이미 사용 중인 닉네임입니다.');
+                            inputList[0].value = null;
+                            inputList[0].focus();
+                        }
                     } else {
-                        alert('이미 사용 중인 닉네임입니다.');
-                        inputList[0].value = null;
-                        inputList[0].focus();
+                        throw new Error('Invalid response data');
                     }
-                } else {
-                    throw new Error('Invalid response data');
-                }
-            })
-            .catch(function (error) {
-                console.error('회원 정보 수정 중 오류가 발생하였습니다.\n' + error.message);
-            });
+                })
+                .catch(function (error) {
+                    console.error('회원 정보 수정 중 오류가 발생하였습니다.\n' + error.message);
+                });
+        }
     });
+});
 
-    const submitButton = document.querySelector('.submit');
-    submitButton.addEventListener('click', function (event) {
-        event.preventDefault();
-        if(!nicknameAvailability) {
-            alert('닉네임 중복 확인을 해주세요.');
-            return;
-        } else {
-            updateNickname(nickname);
-        }
+const submitButton = document.querySelector('.submit');
+submitButton.addEventListener('click', function (event) {
+    event.preventDefault();
+    const inputList = document.querySelectorAll('.input');
 
-        if(inputList[1].value !== '' && inputList[2].value !== '' && inputList[3].value !== '') {
-            updateAddressInfo(inputList[1].value, inputList[2].value, inputList[3].value);
-        } else {
-            alert('빈 칸을 빠짐없이 작성해주세요');
-            return;
-        }
-    })
+    if (Array.from(inputList).some(input => input.value.trim() === '')) {
+        alert('빈 칸을 빠짐없이 작성해주세요');
+        return;
+    }
+
+    if (!nicknameAvailability) {
+        alert('닉네임 중복 확인을 해주세요.');
+        return;
+    }
+
+    updateNickname(inputList[0].value);
+    updateAddressInfo(inputList[1].value, inputList[2].value, inputList[3].value);
+
+    alert('회원 정보가 변경되었습니다.');
+    window.location.href = '/';
 });

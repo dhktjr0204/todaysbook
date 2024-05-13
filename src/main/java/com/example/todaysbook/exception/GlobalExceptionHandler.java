@@ -16,10 +16,7 @@ import com.example.todaysbook.exception.recommendList.RecommendListNotFoundExcep
 import com.example.todaysbook.exception.recommendList.TitleLengthOverException;
 import com.example.todaysbook.exception.review.ContentEmptyException;
 import com.example.todaysbook.exception.review.ContentLengthOverException;
-import com.example.todaysbook.exception.user.NotLoggedInException;
-import com.example.todaysbook.exception.user.UserNotFoundException;
-import com.example.todaysbook.exception.user.UserValidateException;
-import org.apache.mahout.classifier.df.data.DescriptorException;
+import com.example.todaysbook.exception.user.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -43,6 +40,65 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>("해당 유저를 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(EmptyAddressException.class)
+    public ResponseEntity<String> EmptyAddressException(EmptyAddressException ex) {
+        return new ResponseEntity<>("주소를 입력해주세요.", HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(EmptyEmailException.class)
+    public ResponseEntity<String> EmptyEmailException(EmptyEmailException ex) {
+        return new ResponseEntity<>("이메일을 입력해주세요.", HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(EmptyNameException.class)
+    public ResponseEntity<String> EmptyNameException(EmptyNameException ex) {
+        return new ResponseEntity<>("이름을 입력해주세요.", HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(EmptyNicknameException.class)
+    public ResponseEntity<String> EmptyNicknameException(EmptyNicknameException ex) {
+        return new ResponseEntity<>("닉네임을 입력해주세요.", HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(EmptyPasswordException.class)
+    public ResponseEntity<String> EmptyPasswordException(EmptyPasswordException ex) {
+        return new ResponseEntity<>("비밀번호를 입력해주세요.", HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(EmptyZipcodeException.class)
+    public ResponseEntity<String> EmptyZipcodeException(EmptyZipcodeException ex) {
+        return new ResponseEntity<>("우편번호를 입력해주세요.", HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(NicknameLengthOverException.class)
+    public ResponseEntity<String> NicknameLengthOverException(NicknameLengthOverException ex) {
+        return new ResponseEntity<>("닉네임의 길이가 초과되었습니다.", HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(NicknameLengthUnderException.class)
+    public ResponseEntity<String> NicknameLengthUnderException(NicknameLengthUnderException ex) {
+        return new ResponseEntity<>("닉네임의 길이가 부족합니다.", HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(NotSamePasswordException.class)
+    public ResponseEntity<String> NotSamePasswordException(NotSamePasswordException ex) {
+        return new ResponseEntity<>("입력된 비밀번호가 같지 않습니다.", HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(WrongEmailPatternException.class)
+    public ResponseEntity<String> WrongEmailPatternException(WrongEmailPatternException ex) {
+        return new ResponseEntity<>("이메일의 형식이 올바르지 않습니다.", HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(WrongPasswordPatternException.class)
+    public ResponseEntity<String> WrongPasswordPatternException(WrongPasswordPatternException ex) {
+        return new ResponseEntity<>("비밀번호의 형식이 올바르지 않습니다.", HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(WrongZipcodePatternException.class)
+    public ResponseEntity<String> ZipcodeNotANumberException(WrongZipcodePatternException ex) {
+        return new ResponseEntity<>("우편번호의 형식이 올바르지 않습니다.", HttpStatus.BAD_REQUEST);
+    }
     //책 관련 예외처리
     @ExceptionHandler(BookNotFoundException.class)
     public ResponseEntity<String> BookNotFoundException(BookNotFoundException e){

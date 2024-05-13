@@ -4,7 +4,7 @@ import com.example.todaysbook.constant.Constant;
 import com.example.todaysbook.domain.dto.UserRequestDto;
 import com.example.todaysbook.exception.user.EmptyAddressException;
 import com.example.todaysbook.exception.user.EmptyZipcodeException;
-import com.example.todaysbook.exception.user.ZipcodeNotANumberException;
+import com.example.todaysbook.exception.user.WrongZipcodePatternException;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
@@ -28,12 +28,12 @@ public class UserUpdateAddressValidator implements Validator {
             throw new EmptyZipcodeException();
         }
         if(isZipcodeNotANumber(zipcode)) {
-            throw new ZipcodeNotANumberException();
+            throw new WrongZipcodePatternException();
         }
     }
 
     private boolean isAddressEmpty(String address) {
-        return address.isEmpty();
+        return address.isEmpty() || Constant.DEFAULT_ADDRESS_PATTERN.matcher(address).matches();
     }
 
     private boolean isZipcodeEmpty(String zipcode) {
