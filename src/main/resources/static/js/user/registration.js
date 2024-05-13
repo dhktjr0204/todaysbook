@@ -176,10 +176,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if(!passwordPattern.test(userData['password'])) {
             alert('비밀번호는 영어, 숫자, 특수문자를 포함하여 8자 이상이어야 합니다.');
+            formInputs[3].value = null;
+            formInputs[4].value = null;
+            formInputs[3].focus();
             return;
-        }
-        else if(userData['password'] !== userData['passwordCheck']) {
+        } else if(userData['password'] !== userData['passwordCheck']) {
             alert('입력된 비밀번호가 같지 않습니다.');
+            formInputs[3].value = null;
+            formInputs[4].value = null;
+            formInputs[3].focus();
             return;
         }
 

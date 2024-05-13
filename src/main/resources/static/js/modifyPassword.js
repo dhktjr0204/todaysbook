@@ -8,6 +8,8 @@ function checkPasswordAvailability(originPassword, newPassword) {
         .then(function (response) {
             if(response.status === 400) {
                 alert('이전 비밀번호가 올바르지 않습니다.');
+                document.querySelectorAll('.input')[0].value = null;
+                document.querySelectorAll('.input')[0].focus();
                 return;
             } else if (!(response.ok)) {
                 throw new Error('Network response was not ok');
@@ -56,9 +58,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if(!passwordPattern.test(newPassword)) {
             alert('비밀번호는 영어, 숫자, 특수문자를 포함하여 8자 이상이어야 합니다.');
+            passwordInputList[1].value = null;
+            passwordInputList[2].value = null;
+            passwordInputList[1].focus();
             return;
         } else if(newPassword !== newPasswordCheck) {
             alert('입력된 비밀번호가 같지 않습니다.');
+            passwordInputList[1].value = null;
+            passwordInputList[2].value = null;
+            passwordInputList[1].focus();
             return;
         }
 
