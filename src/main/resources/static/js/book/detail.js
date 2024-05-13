@@ -61,6 +61,6 @@ function addCart(button) {
         xhr.send(JSON.stringify({ bookId: bookId ,count: count}));
     } else {
         // 도서 개수가 0인 경우 알림창 띄우기
-        alert('일시 품절 된 상품입니다.');
+        alert('수량을 선택해주세요');
     }
 }
