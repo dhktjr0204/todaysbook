@@ -175,7 +175,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&~]{8,}$/;
 
         if(!passwordPattern.test(userData['password'])) {
-            alert('비밀번호는 영어, 숫자, 특수문자를 포함하여 8자 이상이어야 합니다.');
+            alert('비밀번호는 영어, 숫자, 특수문자를 포함하여 8자 이상, 20자 이하여야 합니다.');
             formInputs[3].value = null;
             formInputs[4].value = null;
             formInputs[3].focus();
@@ -198,9 +198,19 @@ document.addEventListener('DOMContentLoaded', function() {
         })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                    return response.text().then(msg => {
+                        if(response.status === 401) {
+                            alert(msg);
+                        } else if(response.status === 400) {
+                            alert(msg);
+                            throw new Error(msg);
+                        } else if(response.status === 404) {
+                            alert(msg);
+                        }
+                    });
+                } else {
+                    return response.text();
                 }
-                return response.json();
             })
             .then(data => {
                 // 회원가입이 완료되면 로그인페이지로 이동
@@ -208,9 +218,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 window.location.href = '/login';
             })
             .catch(error => {
-                console.error('There was a problem with the fetch operation:', error);
-                // 예: 오류 메시지 표시
-                alert('오류가 발생했습니다: ' + error.message);
+                console.error(error);
             });
     });
 

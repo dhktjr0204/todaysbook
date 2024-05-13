@@ -17,7 +17,6 @@ public class UserUpdateNicknameValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         UserRequestDto request = (UserRequestDto) target;
-
         String nickname = request.getNickName();
 
         if(isEmptyNickname(nickname)) {

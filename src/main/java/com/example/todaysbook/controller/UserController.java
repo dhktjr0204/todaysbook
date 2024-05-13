@@ -100,16 +100,15 @@ public class UserController {
     @PutMapping ("/update/nickname")
     public ResponseEntity<?> updateUserNickname(@RequestBody UserRequestDto request, @AuthenticationPrincipal CustomUserDetails userDetails, BindingResult result) {
         String userNickname = userDetails.getNickname();
-        String nickname = request.getNickName();
 
-        if(userNickname.equals(nickname)) {
+        if(userNickname.equals(request.getNickName())) {
             return ResponseEntity.badRequest().body("Same Nickname: " + userNickname);
         }
 
         UserUpdateNicknameValidator validator = new UserUpdateNicknameValidator();
         validator.validate(request, result);
 
-        userService.updateNickname(userDetails.getUserId(), nickname);
+        userService.updateNickname(userDetails.getUserId(), request.getNickName());
 
         return ResponseEntity.ok().build();
     }
@@ -128,10 +127,10 @@ public class UserController {
     @Transactional
     @PutMapping ("/update/password")
     public ResponseEntity<?> updateUserPassword(@RequestBody UserRequestDto request, @AuthenticationPrincipal CustomUserDetails userDetails, BindingResult result) {
-        String password = encoder.encode(request.getPassword());
-
         UserUpdatePasswordValidator validator = new UserUpdatePasswordValidator();
         validator.validate(request, result);
+
+        String password = encoder.encode(request.getPassword());
 
         userService.updatePassword(userDetails.getUserId(), password);
 

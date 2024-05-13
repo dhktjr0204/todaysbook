@@ -12,6 +12,7 @@ public class UserRequestDto {
     private String email;
     private String nickName;
     private String password;
+    private String passwordCheck;
     private Role role;
     private String address;
     private String zipcode;
