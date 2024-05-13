@@ -1,5 +1,6 @@
 package com.example.todaysbook.validate;
 
+import com.example.todaysbook.constant.Constant;
 import com.example.todaysbook.domain.dto.RecommendListUpdateRequestDto;
 import com.example.todaysbook.exception.recommendList.EmptyTitleException;
 import com.example.todaysbook.exception.recommendList.RecommendListLengthOverException;
@@ -17,34 +18,34 @@ public class RecommendListUpdateValidator implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
-        RecommendListUpdateRequestDto request=(RecommendListUpdateRequestDto) target;
+        RecommendListUpdateRequestDto request = (RecommendListUpdateRequestDto) target;
 
-        String listTitle=request.getTitle();
-        List<Long> bookList=request.getBookIdList();
+        String listTitle = request.getTitle();
+        List<Long> bookList = request.getBookIdList();
 
-        if(isTitleEmpty(listTitle)){
+        if (isTitleEmpty(listTitle)) {
             throw new EmptyTitleException();
         }
-        if(isTitleLengthOver(listTitle)){
+        if (isTitleLengthOver(listTitle)) {
             throw new TitleLengthOverException();
         }
-        if(isListCountOver(bookList)){
+        if (isListCountOver(bookList)) {
             throw new RecommendListLengthOverException();
         }
 
     }
 
-    private boolean isTitleEmpty(String title){
+    private boolean isTitleEmpty(String title) {
         return title.isEmpty();
     }
 
-    private boolean isTitleLengthOver(String title){
-        return title.length()>30;
+    private boolean isTitleLengthOver(String title) {
+        return title.length() > Constant.LIST_TITLE_MAX_LENGTH;
     }
 
-    private boolean isListCountOver(List<Long> booklist){
-        if(booklist!=null){
-            return booklist.size()>10;
+    private boolean isListCountOver(List<Long> booklist) {
+        if (booklist != null) {
+            return booklist.size() > Constant.LIST_SIZE;
         }
         return false;
     }
