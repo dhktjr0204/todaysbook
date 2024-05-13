@@ -53,10 +53,13 @@ function checkNicknameAvailability(nickname) {
         });
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+let emailAvailability = false;
+let nicknameAvailability = false;
 
+document.addEventListener('DOMContentLoaded', function() {
     // 이메일 중복 확인 버튼 클릭 시
     const emailButton = document.querySelectorAll('.button')[0];
+
 
     emailButton.addEventListener('click', function() {
         const emailInput = document.querySelectorAll('.input')[1];
@@ -74,8 +77,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (data.hasOwnProperty('available')) {
                     if (data.available) {
                         alert('사용 가능한 이메일입니다.');
+                        emailAvailability = true;
                     } else {
                         alert('이미 사용 중인 이메일입니다.');
+                        emailInput.value = null;
+                        emailInput.focus();
                     }
                 } else {
                     throw new Error('Invalid response data');
@@ -94,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const nicknameInput = document.querySelectorAll('.input')[2];
         const nickname = nicknameInput.value;
 
-        if(nickname.length > 9) {
+        if(nickname.length > 8) {
             alert('닉네임의 길이는 최대 8글자입니다.');
             return;
         } else if(nickname.length < 2) {
@@ -107,8 +113,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (data.hasOwnProperty('available')) {
                     if (data.available) {
                         alert('사용 가능한 닉네임입니다.');
+                        nicknameAvailability = true;
                     } else {
                         alert('이미 사용 중인 닉네임입니다.');
+                        nicknameInput.value = null;
+                        nicknameInput.focus();
                     }
                 } else {
                     throw new Error('Invalid response data');
@@ -146,14 +155,36 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
+        if(!emailAvailability) {
+            alert('이메일 중복 확인을 해주세요');
+            return;
+        }
+
+        if(!nicknameAvailability) {
+            alert('닉네임 중복 확인을 해주세요');
+            return;
+        }
+
+        for(const key in userData) {
+            if(userData.hasOwnProperty(key) && userData[key] === '') {
+                alert('입력 칸을 빠짐없이 채워주세요');
+                return;
+            }
+        }
+
         const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&~]{8,}$/;
 
         if(!passwordPattern.test(userData['password'])) {
-            alert('비밀번호는 영어, 숫자, 특수문자를 포함하여 8자 이상이어야 합니다.');
+            alert('비밀번호는 영어, 숫자, 특수문자를 포함하여 8자 이상, 20자 이하여야 합니다.');
+            formInputs[3].value = null;
+            formInputs[4].value = null;
+            formInputs[3].focus();
             return;
-        }
-        else if(userData['password'] !== userData['passwordCheck']) {
+        } else if(userData['password'] !== userData['passwordCheck']) {
             alert('입력된 비밀번호가 같지 않습니다.');
+            formInputs[3].value = null;
+            formInputs[4].value = null;
+            formInputs[3].focus();
             return;
         }
 
@@ -167,9 +198,19 @@ document.addEventListener('DOMContentLoaded', function() {
         })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                    return response.text().then(msg => {
+                        if(response.status === 401) {
+                            alert(msg);
+                        } else if(response.status === 400) {
+                            alert(msg);
+                            throw new Error(msg);
+                        } else if(response.status === 404) {
+                            alert(msg);
+                        }
+                    });
+                } else {
+                    return response.text();
                 }
-                return response.json();
             })
             .then(data => {
                 // 회원가입이 완료되면 로그인페이지로 이동
@@ -177,9 +218,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 window.location.href = '/login';
             })
             .catch(error => {
-                console.error('There was a problem with the fetch operation:', error);
-                // 예: 오류 메시지 표시
-                alert('오류가 발생했습니다: ' + error.message);
+                console.error(error);
             });
     });
 
@@ -188,10 +227,3 @@ document.addEventListener('DOMContentLoaded', function() {
         window.location.href = '/';
     });
 });
-
-
-
-
-
-
-

@@ -26,7 +26,6 @@ public class User {
     private String password;
     private String role;
     private String mileage;
-    private java.sql.Timestamp expire;
     private String address;
     private String zipcode;
 
@@ -41,5 +40,8 @@ public class User {
   
     public void updateRole(String role){
         this.role=role;
+    }
+    public void updateMileage(long mileage) {
+        this.mileage = String.valueOf(Integer.valueOf(this.mileage) + Long.valueOf(mileage));
     }
 }

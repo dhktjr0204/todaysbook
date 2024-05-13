@@ -63,7 +63,7 @@ public class UserViewController {
         }
 
         if(!encoder.matches(originPassword, userDetails.getPassword())) {
-            return ResponseEntity.badRequest().body("Entered Origin Password is wrong");
+            return ResponseEntity.badRequest().body("이전 비밀번호가 올바르지 않습니다.");
         }
 
         boolean isAvailable = !(encoder.matches(newPassword, userDetails.getPassword()));

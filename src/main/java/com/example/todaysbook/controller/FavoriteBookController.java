@@ -17,7 +17,7 @@ public class FavoriteBookController {
 
     private final FavoriteBookService favoriteBookService;
 
-    @GetMapping("/add")
+    @PostMapping("/add")
     public ResponseEntity<?> addFavoriteBook(@RequestParam(value = "bookId") long bookId,
                                              @AuthenticationPrincipal CustomUserDetails userDetails) {
 

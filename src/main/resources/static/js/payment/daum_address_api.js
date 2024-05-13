@@ -43,13 +43,17 @@ document.addEventListener('DOMContentLoaded', function () {
     if (sameInfoWithUserCheckBox) {
         sameInfoWithUserCheckBox.addEventListener('change', function() {
             if (this.checked) {
-                document.querySelector('.detail-address').style.display = 'none';
-                const userInfo = getUserInfo().then(function(userInfo) {
-                    document.getElementById('user').value = userInfo.name;
-                    document.getElementById('address').value = userInfo.address;
-                    document.getElementById('postcode').value = userInfo.zipcode;
 
-                    console.log(userInfo);
+                const userInfo = getUserInfo().then(function(userInfo) {
+
+                    let parts = userInfo.address.split(',').map(part => part.trim());
+                    let address = parts[0];
+                    let detailAddress = parts[1];
+
+                    document.getElementById('user').value = userInfo.name;
+                    document.getElementById('address').value = address;
+                    document.getElementById('detailAddress').value = detailAddress;
+                    document.getElementById('postcode').value = userInfo.zipcode;
                 }).catch(function(error) {
                     console.error('Error fetching user info:', error);
                 });
@@ -57,8 +61,38 @@ document.addEventListener('DOMContentLoaded', function () {
                 document.querySelector('.detail-address').style.display = 'flex';
                 document.getElementById('user').value = null;
                 document.getElementById('address').value = null;
+                document.getElementById('detailAddress').value = null;
                 document.getElementById('postcode').value = null;
             }
         });
     }
 });
+//
+//document.addEventListener('DOMContentLoaded', function () {
+//    const sameInfoWithUserCheckBox = document.querySelector('.check-box');
+//    if (sameInfoWithUserCheckBox) {
+//        sameInfoWithUserCheckBox.addEventListener('change', function() {
+//            if (this.checked) {
+//
+//                const userInfo = getUserInfo().then(function(userInfo) {
+//
+//                    let parts = userInfo.address.split(',').map(part => part.trim());
+//                    let address = parts[0];
+//                    let detail-address = parts[1];
+//
+//                    document.getElementById('user').value = userInfo.name;
+//                    document.getElementById('address').value = address;
+//                    document.getElementById('detail-address').value = detail-address;
+//                    document.getElementById('postcode').value = userInfo.zipcode;
+//                }).catch(function(error) {
+//                    console.error('Error fetching user info:', error);
+//                });
+//            } else {
+//                document.querySelector('.detail-address').style.display = 'flex';
+//                document.getElementById('user').value = null;
+//                document.getElementById('address').value = null;
+//                document.getElementById('postcode').value = null;
+//            }
+//        });
+//    }
+//});

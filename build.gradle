@@ -5,10 +5,17 @@ plugins {
 }
 
 group = 'com.example'
-version = '0.0.1-SNAPSHOT'
 
 java {
     sourceCompatibility = '17'
+}
+
+jar {
+    enabled = false
+}
+
+bootJar {
+    duplicatesStrategy = 'exclude'
 }
 
 configurations {
@@ -42,6 +49,7 @@ dependencies {
     testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.3'
     testImplementation 'org.springframework.security:spring-security-test'
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
     implementation 'org.json:json:20231013'
     implementation group: 'org.apache.mahout', name: 'mahout-core', version: '0.9'
     implementation group: 'org.apache.mahout', name: 'mahout-math', version: '0.13.0'

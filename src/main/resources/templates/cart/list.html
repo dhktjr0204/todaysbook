@@ -26,11 +26,12 @@
                 </ul>
                 <ul class="cart-list-body">
                     <li th:each="cartBook : ${cartBooks}">
+                        <input type="hidden" th:value="${cartBook.book.id}" />
                         <div class="select">
                             <input type="checkbox" th:value="${cartBook.id}">
                         </div>
                         <p class="book-name" th:text="${cartBook.book.title}"></p>
-<!--                        0503~ 구현중&ndash;&gt;-->
+                        <!--                        0503~ 구현중&ndash;&gt;-->
                         <p class="quantity">
                             <button class="btn-increase" th:onclick="'decreaseQuantity(' + ${cartBook.id} + ')'">-</button>
                             <span class="quantity_count" th:text="${cartBook.count}"></span>

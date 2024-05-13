@@ -53,11 +53,6 @@ public class ReviewController {
         requestDto.setUserId(userId);
         int flag = reviewService.addReview(requestDto);
 
-        if(errorHandler(flag)) {
-
-            throw new IllegalStateException();
-        }
-
         List<Review> reviews =
                 reviewService.getReviews(requestDto.getBookId(), requestDto.getUserId(), orderBy);
         model.addAttribute("reviews", reviews);

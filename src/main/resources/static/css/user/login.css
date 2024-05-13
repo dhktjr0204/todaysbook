@@ -1,16 +1,51 @@
-.login-wrap {
+main {
 
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
 
-    padding-top: 100px;
-    gap: 150px;
+    position: relative;
+}
+
+main::before {
+
+    content: "";
+
+    background-image: url("../../images/login-background.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    opacity: 0.25;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.login-wrap {
+
+    background-color: transparent;
 }
 
 .title {
 
     margin-bottom: 50px;
+    color: #ffffff;
+    background-color: inherit;
+
+    position: relative;
+}
+
+.login-form {
+
+    position: relative;
+}
+
+.login-form, .login-form ul {
+
+    background-color: inherit;
 }
 
 .login-form li {
@@ -19,11 +54,14 @@
     align-items: center;
 
     margin-bottom: 10px;
+    background-color: inherit;
 }
 
 .label {
 
     width: 150px;
+    color: #ffffff;
+    background-color: inherit;
 }
 
 .input {
@@ -56,6 +94,8 @@
     justify-content: center;
     gap: 10px;
     margin-top: 50px;
+
+    background-color: inherit;
 }
 
 .login {

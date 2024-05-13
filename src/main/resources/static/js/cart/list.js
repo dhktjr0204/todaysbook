@@ -51,13 +51,17 @@ function postSelectedCartItems() {
         const listItem = checkbox.closest('li');
 
         // li 태그 내부의 필요한 정보들을 추출합니다.
+        const bookId = listItem.querySelector('input[type="hidden"]').value;
+        const cartBookId = listItem.querySelector('input[type="checkbox"]').value;
         const bookName = listItem.querySelector('.book-name').textContent;
         const quantity = parseInt(listItem.querySelector('.quantity_count').textContent);
         const price = parseFloat(listItem.querySelector('.price').textContent);
-        const mileage = listItem.querySelector('.mileage').textContent;
+        const mileage = listItem.querySelector('.mileage').textContent.replace('M', '');
 
         // 추출한 정보를 객체로 저장하여 배열에 추가합니다.
         selectedBooks.push({
+            bookId: bookId,
+            cartBookId: cartBookId,
             bookName: bookName,
             quantity: quantity,
             price: price,
@@ -94,7 +98,9 @@ document.addEventListener("DOMContentLoaded", function() {
     updateTotalPrice();
 });
 
-
+function formatNumber(number) {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
 
 function updateTotalPrice() {
     var totalPriceElement = document.querySelector('.cart-list-bottom p:first-child');
@@ -115,7 +121,7 @@ function updateTotalPrice() {
     if (totalPrice >= 20000) {
         deliveryFeeElement.textContent = "무료";
     } else {
-        deliveryFeeElement.textContent = "3000원";
+        deliveryFeeElement.textContent = "3,000원";
     }
 
     // 총 주문 금액을 반환

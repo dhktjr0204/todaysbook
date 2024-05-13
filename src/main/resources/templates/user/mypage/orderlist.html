@@ -25,22 +25,22 @@
                     </li>
                 </ul>
                 <ul class="order-list-body">
-                    <li th:each="dto : ${#numbers.sequence(1,5)}">
+                    <li th:each="dto : ${orderDtos}">
                         <div class="select">
                             <input type="checkbox">
                         </div>
-                        <p class="order-id">주문 번호</p>
+                        <p class="order-id" th:text="${'주문 번호 - ' + dto.id}"></p>
                         <a class="delivery" th:href="@{/mypage/user/delivery}">배송 조회</a>
                         <a class="order-detail" th:href="@{/mypage/user/order_detail}">주문 상세</a>
                     </li>
                 </ul>
                 <button class="delete-button">삭제</button>
             </div>
-            <ul class="page-button-group">
-                <li th:each="num : ${#numbers.sequence(1,5)}">
-                    <button th:text="${num}"></button>
-                </li>
-            </ul>
+<!--            <ul class="page-button-group">-->
+<!--                <li th:each="num : ${#numbers.sequence(1,5)}">-->
+<!--                    <button th:text="${num}"></button>-->
+<!--                </li>-->
+<!--            </ul>-->
         </section>
     </div>
 </main>

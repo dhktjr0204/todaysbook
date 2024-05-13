@@ -17,7 +17,6 @@ public class Cart {
 
     private Long userId;
 
-
     public static Cart createCart(User user){
         Cart cart = new Cart();
         cart.setUserId(user.getId());
