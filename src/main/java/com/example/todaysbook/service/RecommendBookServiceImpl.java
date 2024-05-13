@@ -20,6 +20,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,7 +34,8 @@ public class RecommendBookServiceImpl implements RecommendBookService {
     @Override
     public void GenerateRecommendBookList(List<SimpleReview> reviews) throws TasteException, IOException {
 
-        String filePath = "src/main/resources/data/rating.csv";
+        String filePath = System.getProperty("user.dir") + "/src/main/resources/data/rating.csv";
+
         int howMany = 5;
 
         fileWrite(filePath, reviews);
