@@ -52,6 +52,7 @@ function postSelectedCartItems() {
 
         // li 태그 내부의 필요한 정보들을 추출합니다.
         const bookId = listItem.querySelector('input[type="hidden"]').value;
+        const cartBookId = listItem.querySelector('input[type="checkbox"]').value;
         const bookName = listItem.querySelector('.book-name').textContent;
         const quantity = parseInt(listItem.querySelector('.quantity_count').textContent);
         const price = parseFloat(listItem.querySelector('.price').textContent);
@@ -60,6 +61,7 @@ function postSelectedCartItems() {
         // 추출한 정보를 객체로 저장하여 배열에 추가합니다.
         selectedBooks.push({
             bookId: bookId,
+            cartBookId: cartBookId,
             bookName: bookName,
             quantity: quantity,
             price: price,

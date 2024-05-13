@@ -2,6 +2,7 @@ package com.example.todaysbook.service;
 
 import com.example.todaysbook.domain.dto.CartRequestDto;
 import com.example.todaysbook.domain.dto.CustomUserDetails;
+import com.example.todaysbook.domain.dto.PaymentBookInfoDto;
 import com.example.todaysbook.domain.entity.*;
 import com.example.todaysbook.repository.BookRepository;
 import com.example.todaysbook.repository.CartBookRepository;
@@ -10,11 +11,11 @@ import com.example.todaysbook.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -179,6 +180,7 @@ public class CartService {
             cartBookRepository.deleteById(cartBookId);
         }
     }
+
 
 }
 
