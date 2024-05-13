@@ -22,6 +22,13 @@ main {
 
     margin-bottom: 20px;
 }
+
+.cart-list-body li {
+
+    display: flex;
+    justify-content: space-between;
+}
+
 .book-info, .quantity, .price {
     display: flex;
     align-items: center;
