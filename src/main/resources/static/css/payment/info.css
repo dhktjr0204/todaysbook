@@ -9,6 +9,38 @@ main {
 
     font-size: 30px;
 }
+.cart-list-section{
+    margin:50px 0 30px 0;
+    border-bottom: 1px solid
+}
+
+.cart-list-section li {
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 20px;
+}
+.book-info, .quantity, .price {
+    display: flex;
+    align-items: center;
+}
+
+.book-info {
+    flex: 1; /* 책 이름을 최대한 길게 표시하기 위해 나머지 공간을 채우도록 설정 */
+}
+.book-name {
+    width:300px;
+    word-wrap: break-word;
+    white-space: normal;
+}
+.quantity{
+
+}
+.price {
+
+}
 
 .receiver-info-header, .check-box-div {
 
@@ -25,7 +57,7 @@ main {
 .receiver-info {
 
     padding-bottom: 30px;
-    margin-bottom: 50px;
+    margin-bottom: 30px;
     border-bottom: solid 1px white;
 }
 
@@ -81,7 +113,7 @@ main {
 
 .mileage-input {
 
-    width: 80px;
+    width: 70px;
 
     border: none;
     outline: none;
@@ -93,6 +125,8 @@ main {
     padding: 10px;
 
     margin-left: 10px;
+    margin-right: 5px;
+    text-align: center;
 }
 
 .total-price-div {
