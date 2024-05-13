@@ -3,7 +3,6 @@ package com.example.todaysbook.controller;
 import com.example.todaysbook.domain.dto.CustomUserDetails;
 import com.example.todaysbook.domain.dto.RecommendListCreateRequestDto;
 import com.example.todaysbook.domain.dto.RecommendListUpdateRequestDto;
-import com.example.todaysbook.domain.dto.RecommendListWithBookMarkDto;
 import com.example.todaysbook.domain.entity.User;
 import com.example.todaysbook.service.RecommendListService;
 import org.junit.jupiter.api.DisplayName;
