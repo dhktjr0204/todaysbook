@@ -18,4 +18,8 @@ public class AlanChatController {
     public Flux<ServerSentEvent<AlanChatResponse>> streamAlanResponse(@RequestParam("content") String content) {
         return alanChatService.streamAlanResponse(content);
     }
+    @GetMapping("/reset-state")
+    public void resetState() {
+        alanChatService.resetState();
+    }
 }
