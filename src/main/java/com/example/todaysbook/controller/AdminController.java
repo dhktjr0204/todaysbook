@@ -7,6 +7,7 @@ import com.example.todaysbook.util.Pagination;
 import com.example.todaysbook.util.UserChecker;
 import com.example.todaysbook.validate.AdminUpdateBookValidator;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.mahout.cf.taste.common.TasteException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/admin")
@@ -37,6 +39,7 @@ public class AdminController {
     private final SalesService salesService;
     private final OrderService orderService;
     private final UserService userService;
+    private final GeminiRecommendBookService geminiRecommendBookService;
 
     //유저 관리
     @GetMapping("/userlist")
@@ -411,5 +414,13 @@ public class AdminController {
     public String adminUpdatePw(Model model) {
 
         return "admin/update-password";
+    }
+
+    @GetMapping("/gemini-recommend-book")
+    public String showGeminiRecommendBooks(Model model) {
+        List<BookDto> todayRecommendBooks = geminiRecommendBookService.getTodayRecommendBooks();
+        model.addAttribute("todayRecommendBooks", todayRecommendBooks);
+        log.info("todayRecommendBooks: " + todayRecommendBooks);
+        return "admin/gemini-recommend-book";
     }
 }
