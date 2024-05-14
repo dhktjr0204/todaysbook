@@ -1,6 +1,12 @@
 document.addEventListener("DOMContentLoaded", function () {
     // 페이지 로딩 시 총 상품 가격과 배송료를 업데이트합니다.
     updateTotalPrice();
+    let useAllMileageCheckbox = document.getElementById("use-all-mileage-checkbox");
+    // 체크박스가 체크되었는지 확인
+    if (useAllMileageCheckbox.checked) {
+        console.log("!!@#!@#");
+        updateTotalPrice();
+    }
 });
 
 // 총 주문 금액과 배송료를 업데이트하는 함수
@@ -14,7 +20,7 @@ function updateTotalPrice() {
 
     var totalPriceDisplayElement = document.getElementById("totalPriceDisplay");
     var totalPriceWithDelivery = totalPrice + (deliveryFee === "무료" ? 0 : 3000);
-    totalPriceDisplayElement.textContent = totalPriceWithDelivery + "원";
+    totalPriceDisplayElement.value = totalPriceWithDelivery + "원";
 }
 
 
@@ -82,7 +88,7 @@ function handleMileageInput() {
 
     // 총 결제 금액을 업데이트
     let totalPriceDisplayElement = document.getElementById("totalPriceDisplay");
-    totalPriceDisplayElement.textContent = totalPriceAfterMileage + "원";
+    totalPriceDisplayElement.value = totalPriceAfterMileage + "원";
 }
 
 // 마일리지 입력란에 이벤트 리스너를 추가
