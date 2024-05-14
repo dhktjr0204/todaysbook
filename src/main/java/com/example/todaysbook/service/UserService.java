@@ -76,6 +76,7 @@ public class UserService implements UserDetailsService {
     public User getUserByUserId(Long userId){
         return userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
     }
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
