@@ -55,3 +55,25 @@ button {
     padding: 100px 0;
     gap: 50px;
 }
+
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+
+::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 10px;
+    border: 1px solid #252525;
+}
+
+
+::-webkit-scrollbar-thumb {
+    background: #252525;
+    border-radius: 5px;
+    border: 1px solid #252525;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}

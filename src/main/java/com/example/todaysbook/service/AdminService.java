@@ -13,6 +13,7 @@ public interface AdminService {
     Page<AdminUserDto> findUsersByKeyword(String keyword, Pageable pageable);
     Page<BookDto> findAllBook(Pageable pageable);
     Page<BookDto> findBooksByKeyword(String keyword, Pageable pageable);
+    Page<BookDto> findSoldOutBooks(Pageable pageable);
     BookDto findBookById(Long bookId);
     void updateUserRole(Long userId, String role);
     void deleteUser(Long userId);
