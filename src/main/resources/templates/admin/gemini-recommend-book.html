@@ -31,7 +31,7 @@
                         <th>Publisher</th>
                         <th>Price</th>
                         <th>Stock</th>
-                        <th>Action</th>
+                        <th>삭제</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -42,7 +42,7 @@
                         <td th:text="${recommend.bookDto.price}"></td>
                         <td th:text="${recommend.bookDto.stock}"></td>
                         <td>
-                            <button type="button" class="delete-btn" th:data-id="${recommend.id}" onclick="deleteBook(this)">Delete</button>
+                            <button type="button" class="delete-btn" th:data-id="${recommend.id}" onclick="deleteBook(this)"><img th:src="@{/images/delete.png}"/></button>
                         </td>
                     </tr>
                     </tbody>
