@@ -1,15 +1,4 @@
-<<<<<<< HEAD
-document.addEventListener("DOMContentLoaded", function () {
-    // 페이지 로딩 시 총 상품 가격과 배송료를 업데이트합니다.
-    updateTotalPrice();
-    let useAllMileageCheckbox = document.getElementById("use-all-mileage-checkbox");
-    // 체크박스가 체크되었는지 확인
-    if (useAllMileageCheckbox.checked) {
-        console.log("!!@#!@#");
-        updateTotalPrice();
-    }
-});
-=======
+
 // document.addEventListener("DOMContentLoaded", function () {
 //     // 페이지 로딩 시 총 상품 가격과 배송료를 업데이트합니다.
 //     updateTotalPrice();
@@ -148,8 +137,6 @@ document.addEventListener("DOMContentLoaded", function () {
 // useAllMileageCheckbox.addEventListener('change', handleUseAllMileageCheckbox);
 //
 
->>>>>>> fbd13d3b7dd409e496f755345fabc491b0b9c596
-
 // 총 주문 금액과 배송료를 업데이트하는 함수
 function updateTotalPrice() {
     var totalPriceElement = document.getElementById("totalOrderAmount");
@@ -164,7 +151,7 @@ function updateTotalPrice() {
 
     var totalPriceDisplayElement = document.getElementById("totalPriceDisplay");
     var totalPriceWithDelivery = totalPrice + deliveryFee;
-    totalPriceDisplayElement.textContent = numberWithCommas(totalPriceWithDelivery) + "원";
+    totalPriceDisplayElement.value = numberWithCommas(totalPriceWithDelivery) + "원";
 
 
 
@@ -249,11 +236,7 @@ function handleMileageInput() {
 
     // 총 결제 금액을 업데이트
     let totalPriceDisplayElement = document.getElementById("totalPriceDisplay");
-<<<<<<< HEAD
-    totalPriceDisplayElement.value = totalPriceAfterMileage + "원";
-=======
-    totalPriceDisplayElement.textContent = numberWithCommas(totalPriceAfterMileage) + "원";
->>>>>>> fbd13d3b7dd409e496f755345fabc491b0b9c596
+    totalPriceDisplayElement.value = numberWithCommas(totalPriceAfterMileage) + "원";
 }
 
 // 마일리지 입력란에 이벤트 리스너를 추가
@@ -266,6 +249,7 @@ function handleUseAllMileageCheckbox() {
     let useAllMileageCheckbox = document.getElementById("use-all-mileage-checkbox");
     let isChecked = useAllMileageCheckbox.checked;
 
+    // 보유 마일리지를 가져옴
     // 보유 마일리지를 가져옴
     let totalMileageElement = document.getElementById("mileage");
     let totalMileage = parseInt(totalMileageElement.textContent.replace('M', '').replace(/,/g, ''));
@@ -307,8 +291,6 @@ function handleUseAllMileageCheckbox() {
 // 전액 사용 체크박스에 이벤트 리스너를 추가
 let useAllMileageCheckbox = document.getElementById("use-all-mileage-checkbox");
 useAllMileageCheckbox.addEventListener('change', handleUseAllMileageCheckbox);
-<<<<<<< HEAD
-=======
 
 // 콤마 추가 함수
 function numberWithCommas(x) {
@@ -319,4 +301,4 @@ document.addEventListener("DOMContentLoaded", function () {
     // 페이지 로딩 시 총 상품 가격과 배송료를 업데이트합니다.
     updateTotalPrice();
 });
->>>>>>> fbd13d3b7dd409e496f755345fabc491b0b9c596
+

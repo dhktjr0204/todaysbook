@@ -27,24 +27,24 @@
         <li th:each="dto : ${bookDtoList}">
           <p class="book-name" th:text="${dto.bookName}">상품명</p>
           <p class="quantity" th:text="${dto.quantity}">수량</p>
-          <p class="price" th:text="${dto.price}">상품 금액</p>
-          <p class="mileage" th:text="${dto.mileage}">적립 마일리지</p>
+          <p class="price" th:text="${#numbers.formatInteger(dto.price, 3, 'COMMA') + '원'}">상품 금액</p>
+          <p class="mileage" th:text="${#numbers.formatInteger(dto.mileage, 3, 'COMMA') + 'M'}">적립 마일리지</p>
         </li>
       </ul>
       <ul class="payment-info-bottom">
         <li>
           <p class="total-price">총 상품 금액</p>
-          <p class="total-price" th:text="${totalPrice}">66,000원</p>
+          <p class="total-price" th:text="${#numbers.formatInteger(totalPrice, 3, 'COMMA') + '원'}">66,000원</p>
           <p class="operand">-</p>
           <p class="mileage">사용 마일리지</p>
-          <p class="mileage" th:text="${usedMileage}">0M</p>
+          <p class="mileage" th:text="${#numbers.formatInteger(usedMileage, 3, 'COMMA') + '원'}">0M</p>
           <p class="operand">+</p>
           <p class="delivery">배송료</p>
           <p class="delivery" th:text="${deliveryCharge}">3,000원</p>
         </li>
         <li class="total-price-div">
           <p>합계</p>
-          <p th:text="${totalPrice}">62,400원</p>
+          <p th:text="${#numbers.formatInteger(mileagedTotalPrice, 3, 'COMMA') + '원'}">62,400원</p>
         </li>
         <li class="etc">
           <p th:text="${etc}"></p>

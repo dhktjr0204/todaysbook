@@ -311,7 +311,8 @@ function starEvents() {
     const editReviewStars = document.querySelectorAll('.edit-review-star');
     const editReviewScore = document.querySelector('.edit-review-score');
     let isEditClicked = false;
-    let previousEditValue = editReviewScore.textContent;
+    let previousEditValue = "test";
+//    let previousEditValue = editReviewScore.textContent;
 
     highlightStars(editReviewStars, previousEditValue);
 

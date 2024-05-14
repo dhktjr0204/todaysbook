@@ -137,10 +137,13 @@ public class PaymentController {
         long userId = userDetails.getUserId();
         List<PaymentBookInfoDto> bookDtoList = (List<PaymentBookInfoDto>)session.getAttribute(String.valueOf(userId)+"_1");
         PaymentAddressAndMileageInfo addressAndMileageInfo = (PaymentAddressAndMileageInfo) session.getAttribute(String.valueOf(userId) + "_2");
+        int totalPrice = PaymentController.getTotalPrice(bookDtoList);
         model.addAttribute("bookDtoList", bookDtoList);
         model.addAttribute("usedMileage", addressAndMileageInfo.getUsedMileage());
-        model.addAttribute("totalPrice", addressAndMileageInfo.getTotalPrice());
-        model.addAttribute("deliveryCharge", addressAndMileageInfo.getTotalPrice() >= 20000 ? "0원" : "3000원");
+        model.addAttribute("totalPrice", totalPrice);
+        long deliveryCharge = addressAndMileageInfo.getTotalPrice() >= 20000 ? 0 : 3000;
+        model.addAttribute("mileagedTotalPrice", totalPrice - addressAndMileageInfo.getUsedMileage() + deliveryCharge);
+        model.addAttribute("deliveryCharge", addressAndMileageInfo.getTotalPrice() >= 20000 ? "0원" : "3,000원");
         model.addAttribute("etc", "[" + addressAndMileageInfo.getUser() + "]님을 받는 분으로 하고, (" + addressAndMileageInfo.getPostcode() +
                 ")[" + addressAndMileageInfo.getAddress() + " / " + addressAndMileageInfo.getDetailAddress() + "]을(를) 배송지로 합니다");
         return "payment/success";
