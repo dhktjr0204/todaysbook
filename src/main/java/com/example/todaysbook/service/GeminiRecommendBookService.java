@@ -168,7 +168,6 @@ public class GeminiRecommendBookService {
                         today.atStartOfDay(), today.atTime(23, 59, 59))
                 .stream()
                 .distinct()
-                .limit(10)
                 .toList();
 
         // 오늘 날짜에 해당하는 bookId 목록 가져오기
@@ -178,7 +177,6 @@ public class GeminiRecommendBookService {
                 .map(bookRepository::findById)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
-                .limit(10)
                 .toList();
 
         // book 목록을 BookDto 목록으로 변환

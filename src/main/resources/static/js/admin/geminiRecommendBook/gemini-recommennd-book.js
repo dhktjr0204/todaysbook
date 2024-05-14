@@ -14,6 +14,9 @@ temperatureRange.addEventListener('input', function() {
 function recommendBooks() {
     const quantity = quantityValue.textContent;
     const temperature = temperatureValue.textContent;
+    const loadingModal = document.getElementById('loading-modal');
+
+    loadingModal.style.display = 'block';
 
     $.ajax({
         url: '/gemini/recommendBooks',
@@ -23,11 +26,17 @@ function recommendBooks() {
             temperature: temperature
         },
         success: function(response) {
-            alert('책 추천이 완료되었습니다.');
+            loadingModal.style.display = 'none';
+            setTimeout(() => {
+                alert('책 추천이 완료되었습니다.');
+                location.reload();
+            }, 500);
         },
         error: function(error) {
             console.log(error);
-            alert('책 추천 중 오류가 발생했습니다.');
+            loadingModal.style.display = 'none';
+            // alert('책 추천 중 오류가 발생했습니다.');
+            // location.reload();
         }
     });
 }
