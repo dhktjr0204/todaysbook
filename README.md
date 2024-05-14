@@ -15,12 +15,12 @@ todaysBook은 책을 사랑하는 사람들을 위한 새로운 e-커머스 플�
 <tr>
     <td align="center" style="width: 25%;"><a href="https://github.com/fernandokkang"><img src="src/main/resources/static/images/readMe/sunghoon.jpg" width="130px;" alt=""></a></td>
     <td align="center" style="width: 25%;"><a href="https://github.com/dhktjr0204"><img src="src/main/resources/static/images/readMe/jiwon.jpg" width="130px;" alt=""></a></td>
-    <td align="center" style="width: 25%;"><a href="https://github.com/JuwoenLee"><img src="src/main/resources/static/images/readMe/juwoen.jpg" width="130px;" alt=""></a></td>
+    <td align="center" style="width: 25%;"><a href="https://github.com/kumacooma"><img src="src/main/resources/static/images/readMe/doehoon.jpg" width="130px;" alt=""></a></td>
 </tr>
 <tr>
     <td align="center"><a href="https://github.com/fernandokkang"><b>강성훈</b></a></td>
     <td align="center"><a href="https://github.com/dhktjr0204"><b>정지원</b></a></td>
-    <td align="center"><a href="https://github.com/JuwoenLee"><b>이주원</b></a></td>
+    <td align="center"><a href="https://github.com/kumacooma"><b>이도훈</b></a></td>
 </tr>
 <tr>
     <td align="center">팀장</td>
@@ -34,8 +34,25 @@ todaysBook은 책을 사랑하는 사람들을 위한 새로운 e-커머스 플�
 </tr> 
 <tr> 
     <td align="center">ERD 설계<br>책 추천 리스트 API<br>추천 리스트 북마크 API<br>책 정렬 API<br>책 장르별 조회 API<br>책, 리스트 검색 API<br>주문 내역 및 배송 조회 API<br>유저 관리 API<br>신간 등록 API<br>배송 관리 API<br>책 수량 변경 및 수정 관리 API<br>프로젝트 배포</td>
-    <td align="center">ERD 설계<br>aladin api를 이용한 책 데이터 수집 및 정제<br>책 추천 리스트 API<br>추천 리스트 북마크 API<br>책 정렬 API<br>책 장르별 조회 API<br>책, 리스트 검색 API<br>주문 내역 및 배송 조회 API<br>유저 관리 API<br>신간 등록 API<br>배송 관리 API<br>책 수량 변경 및 수정 관리 API<br>프로젝트 배포</td>
+    <td align="center">ERD 설계<br>aladin api를 이용한 책 데이터 수집 및 정제<br>책 추천 리스트 API<br>추천 리스트 북마크 API<br>책 정렬 API<br>책 장르별 조회 API<br>책, 리스트 검색 API<br>주문 내역 및 배송 조회 API<br>유저 관리 API<br>신간 등록 API<br>배송 관리 API<br>책 수량 변경 및 수정 관리 API<br>JavaScript 개발(관리자, 추천 리스트, 페이징, 검색)<br>프로젝트 배포</td>
     <td align="center">ERD 설계<br>댓글 API 개발<br>관리자 API 개발<br>신고 API 개발<br>등급 자동 부여 API<br>Spring Security<br>UI 개발(메인페이지, 게시물, 댓글, 관리자페이지)<br>JavaScript 개발(댓글, 신고)</td>
+</tr> 
+</table>
+<table style="width: 100%;">
+<tr>
+    <td align="center" style="width: 25%;"><a href="https://github.com/JuwoenLee"><img src="src/main/resources/static/images/readMe/juweon.png" width="130px;" alt=""></a></td>
+</tr>
+<tr>
+    <td align="center"><a href="https://github.com/JuwoenLee"><b>이주원</b></a></td>
+</tr>
+<tr>
+    <td align="center">팀원</td>
+</tr>
+<tr>
+    <td align="center">Backend</td>
+</tr> 
+<tr> 
+    <td align="center">로그인 API 개발<br>회원가입 API 개발<br>회원 정보 수정 API 개발<br>비밀번호 수정 API 개발<br>Spring Security<br>JavaScript 개발 (로그인, 회원가입, 정보 수정)</td>
 </tr> 
 </table>
 
@@ -85,7 +102,7 @@ todaysBook은 책을 사랑하는 사람들을 위한 새로운 e-커머스 플�
 
 # 📊 Flow Chart
 
-![ERD](/src/main/resources/static/images/readMe/flowchart.png)
+![FLOWCHART](/src/main/resources/static/images/readMe/flowchart.png)
 
 # 🖼 UI
 
@@ -123,7 +140,6 @@ todaysBook은 책을 사랑하는 사람들을 위한 새로운 e-커머스 플�
 # 👉 주요 기능
 
 ## 1. 메인 페이지
-![메인 이미지](/src/main/resources/static/img/readMe/메인페이지.gif)
 ### [gemini 추천 기능]
 - 매일 오전 9시에에 gemini가 추천하는 책으로 업데이트됩니다.
 - 추천 책 중 DB에 없는 책들은 aladin API를 사용하여 책을 등록합니다.
@@ -140,7 +156,7 @@ todaysBook은 책을 사랑하는 사람들을 위한 새로운 e-커머스 플�
 <br>
 
 ## 2. Alan 실시간 검색 페이지
-
+![앨런 검색 이미지](/src/main/resources/static/images/readMe/앨런검색.gif)
 ### [Alan 실시간 검색 기능]
 - alan api를 사용하여 alan에게 책을 직접 물어봄으로써 책을 추천 받을 수 있습니다.
 - alan api가 입력된 질문을 분석하여 사용자에게 가장 적합한 책을 추천합니다.
@@ -148,7 +164,7 @@ todaysBook은 책을 사랑하는 사람들을 위한 새로운 e-커머스 플�
 <br>
 
 ## 3. 책 조회 페이지
-
+![책 조회 이미지](/src/main/resources/static/images/readMe/책조회.gif)
 ### [장르별 조회 기능]
 - 장르 별로 책을 조회 할 수 있습니다. 자기계발, 소설/시/희곡, 외국어 등 다양한 주제의 책을 장르별로 쉽게 찾아 볼 수 있습니다.
 - 각 장르는 가나다순, 판매순, 리뷰순으로 정렬하여 조회할 수 있습니다.
@@ -159,7 +175,7 @@ todaysBook은 책을 사랑하는 사람들을 위한 새로운 e-커머스 플�
 <br>
 
 ## 4. 책 상세 페이지
-
+![책 상세 이미지](/src/main/resources/static/images/readMe/책상세.gif)
 - 책 상세 페이지에는 책의 제목, 저자, 출판사, 출판일, 가격을 확인할 수 있습니다.
 
 ### [연관된 책 추천 기능]
