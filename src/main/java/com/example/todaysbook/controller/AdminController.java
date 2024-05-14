@@ -1,8 +1,10 @@
 package com.example.todaysbook.controller;
 
 import com.example.todaysbook.domain.dto.*;
+import com.example.todaysbook.domain.entity.User;
 import com.example.todaysbook.service.*;
 import com.example.todaysbook.util.Pagination;
+import com.example.todaysbook.util.UserChecker;
 import com.example.todaysbook.validate.AdminUpdateBookValidator;
 import lombok.RequiredArgsConstructor;
 import org.apache.mahout.cf.taste.common.TasteException;
@@ -12,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -33,6 +36,7 @@ public class AdminController {
     private final ReviewService reviewService;
     private final SalesService salesService;
     private final OrderService orderService;
+    private final UserService userService;
 
     //유저 관리
     @GetMapping("/userlist")
@@ -389,5 +393,23 @@ public class AdminController {
         orderService.updateDeliveryStatus(deliveryId, status);
 
         return ResponseEntity.ok("배송 상태가 수정되었습니다.");
+    }
+
+
+    @GetMapping("/updateinfo")
+    public String adminUpdateInfo(@AuthenticationPrincipal CustomUserDetails userDetails, Model model) {
+
+        long userId= UserChecker.getUserId(userDetails);
+        User user = userService.getUserByUserId(userId);
+
+        model.addAttribute("user", user);
+
+        return "admin/update-info";
+    }
+
+    @GetMapping("/updatepw")
+    public String adminUpdatePw(Model model) {
+
+        return "admin/update-password";
     }
 }
