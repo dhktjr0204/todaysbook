@@ -2,8 +2,6 @@ package com.example.todaysbook.domain.dto;
 
 import lombok.*;
 
-import java.time.LocalDateTime;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder

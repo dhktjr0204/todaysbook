@@ -16,12 +16,11 @@
     position: relative;
 }
 
-
 .table-area::-webkit-scrollbar {
     width: 8px;
 }
 
-.table-area::-webkit-scrollbar-track { /* 스크롤바 전체 영역 */
+.table-area::-webkit-scrollbar-track {
     background-color: #000000;
 }
 
@@ -45,7 +44,6 @@ thead {
     z-index: 1;
 }
 
-/* 표 헤더 스타일 */
 th {
     padding: 8px;
     text-align: left;
@@ -55,7 +53,6 @@ th {
     white-space: nowrap;
 }
 
-/* 표 셀 스타일 */
 td {
     padding: 8px;
     text-align: left;
@@ -65,7 +62,6 @@ td {
     white-space: nowrap;
 }
 
-/* 마지막 행 가장자리 스타일 없애기 */
 tr:last-child {
     border-bottom: none;
 }
@@ -83,7 +79,6 @@ tr:last-child {
     height: 22px;
 }
 
-
 .setting-area {
     display: flex;
     flex-direction: column;
@@ -95,7 +90,6 @@ tr:last-child {
     padding: 10px;
 }
 
-
 .h-setting-area {
     font-size: 1.45em;
     margin: 10px 0 0 0;
@@ -106,7 +100,6 @@ tr:last-child {
     margin: 9px 0 7px 0;
     white-space: pre-line;
 }
-
 
 .h-set {
     font-size: 1.1em;
@@ -121,8 +114,6 @@ tr:last-child {
 .set-range {
     margin: 0 17px 0 0;
 }
-
-
 
 .gemini-recommend-book-btn {
     margin: 29px 0 0 100px;
@@ -186,6 +177,7 @@ tr:last-child {
     width: 300px;
     text-align: center;
     border-radius: 8px;
+    border: none;
 }
 
 .modal-content p {

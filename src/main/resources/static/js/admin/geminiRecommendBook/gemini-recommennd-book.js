@@ -2,15 +2,12 @@ const quantityRange = document.getElementById('quantityRange');
 const quantityValue = document.getElementById('quantityValue');
 const temperatureRange = document.getElementById('temperatureRange');
 const temperatureValue = document.getElementById('temperatureValue');
-
 quantityRange.addEventListener('input', function() {
     quantityValue.textContent = this.value;
 });
-
 temperatureRange.addEventListener('input', function() {
     temperatureValue.textContent = this.value;
 });
-
 function recommendBooks() {
     const quantity = quantityValue.textContent;
     const temperature = temperatureValue.textContent;
@@ -35,8 +32,10 @@ function recommendBooks() {
         error: function(error) {
             console.log(error);
             loadingModal.style.display = 'none';
-            // alert('책 추천 중 오류가 발생했습니다.');
-            // location.reload();
+            setTimeout(() => {
+                alert('책 추천 중 오류가 발생했습니다.');
+                location.reload();
+            }, 500);
         }
     });
 }

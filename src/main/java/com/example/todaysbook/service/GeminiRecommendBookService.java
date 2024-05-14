@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
-
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -51,11 +50,6 @@ public class GeminiRecommendBookService {
     private final BookRepository bookRepository;
     private final GeminiRecommendBookRepository geminiRecommendBookRepository;
     private final AladinApi aladinApi;
-
-//    private static final int DEFAULT_QUANTITY = 20;
-//    private static final String DEFAULT_NATION = "한국";
-//    private static final String DEFAULT_PROMPT = "%s 기준으로 최근에 많이 팔린 책의 제목 %d개를 추천해 주세요. 신뢰할 수 있는 최신 정보를 바탕으로 정확한 책 제목만 나열하여 주세요. 존재하지 않는 책 제목은 추천하지 마세요. 답변에는 책의 저자, 출처, 참고, 이미지 등 다른 내용은 포함하지 말아주세요.";
-//    private static final double DEFAULT_TEMPERATURE = 0.5;
 
     // 자동으로 책 추천
     public ResponseEntity<String> callScheduledGeminiApi() {
@@ -162,8 +156,7 @@ public class GeminiRecommendBookService {
                 .collect(Collectors.toList());
     }
 
-    // 오늘 추천된 책 목록 가져오기
-    // GeminiRecommendBook 목록에서 date가 오늘에 해당하는 booid를 이용해 해당 book을 반환하는 메소드
+    // 오늘 추천된 책 목록 반한하기
     public List<GeminiRecommendBookDto> getTodayRecommendBooks() {
         LocalDate today = LocalDate.now();
 

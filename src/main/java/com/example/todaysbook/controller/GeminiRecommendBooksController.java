@@ -8,14 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.stream.Collectors;
-
-
-// MainController에서 TodayRecommendBooks를 사용하기 때문에
-// 해당 컨트롤러는 현재 아무곳에서 사용되지 않음. 추후 사용될 수 있음. EX) AJAX 비동기
-
 
 @RestController
 @RequiredArgsConstructor
@@ -23,7 +17,6 @@ import java.util.stream.Collectors;
 public class GeminiRecommendBooksController {
 
     private final GeminiRecommendBookService geminiRecommendBookService;
-
 
     // 하루에 한번 자동으로 책을 추천
     @Scheduled(cron = "${scheduler.cron.expression}")
