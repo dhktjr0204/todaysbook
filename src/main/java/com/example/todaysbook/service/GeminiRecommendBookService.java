@@ -80,7 +80,7 @@ public class GeminiRecommendBookService {
         log.info("-----------------책 제목 DB 저장 시작-----------------");
         for (String bookTitle : bookTitles) {
             // 책 제목으로 DB 검색
-            Optional<Book> bookOptional = bookRepository.findByTitle(bookTitle);
+            Optional<Book> bookOptional = bookRepository.findFirstByTitle(bookTitle);
             long bookId;
             if (bookOptional.isPresent()) {
                 // DB에 책이 있으면 해당 bookId 가져오기
@@ -91,7 +91,7 @@ public class GeminiRecommendBookService {
 
             } else {
                 // DB에 책이 없으면 외부 API에서 데이터 가져와서 저장
-                log.info(bookTitle + ":  title로 검색해본 결과 Book테이블에 없습니다. 외부 API에서 검색후 isbn을 가져와 다시 검색합니다.");
+                log.info(bookTitle + ":  title로 검색해본 결과 Book에 없습니다. 외부 API에서 검색후 isbn을 가져와 다시 검색합니다.");
 
                 HashMap<String, ?> response = aladinApi.getNewBook(bookTitle, 1,1);
                 List<BookDto> bookList = (List<BookDto>) response.get("books");
@@ -114,7 +114,7 @@ public class GeminiRecommendBookService {
                         }
                     }
                 } else {
-                    log.info("API 호출 결과가 없습니다. 다음 책으로 넘어갑니다.\n");
+                    log.info(bookTitle + ":  isbn으로 검색해본 결과 외부 API에서도 없습니다. 다음 책으로 넘어갑니다.\n");
                 }
             }
         }
