@@ -60,9 +60,25 @@ public class GeminiRecommendBookService {
     private final AladinApi aladinApi;
     private final AdminServiceImpl adminService;
 
+    private String defaultPrompt = "오늘 한국 기준으로 최근에 많이 팔린 책의 제목 15개를 추천해 주세요. 신뢰할 수 있는 최신 정보를 바탕으로 정확한 책 제목만 나열하여 주세요. 존재하지 않는 책 제목은 추천하지 마세요. 답변에는 책의 저자, 출처, 참고, 이미지 등 다른 내용은 포함하지 말아주세요.";
+    private int defaultQuantity = 15;
+    private double defaultTemperature = 0.5;
+
     public ResponseEntity<String> callScheduledGeminiApi() {
+        return callGeminiApi(defaultPrompt, defaultQuantity, defaultTemperature);
+    }
+
+    public void recommendAndSaveBooks(Integer quantity, Double temperature) throws UnsupportedEncodingException {
+        quantity = quantity != null ? quantity : defaultQuantity;
+        temperature = temperature != null ? temperature : defaultTemperature;
+
+        String prompt = "한국 기준으로 최근에 많이 팔린 책의 제목 " + quantity + "개를 추천해 주세요. 신뢰할 수 있는 최신 정보를 바탕으로 정확한 책 제목만 나열하여 주세요. 존재하지 않는 책 제목은 추천하지 마세요. 답변에는 책의 저자, 출처, 참고, 이미지 등 다른 내용은 포함하지 말아주세요.";
+        callGeminiApi(prompt, quantity, temperature);
+    }
+
+    private ResponseEntity<String> callGeminiApi(String prompt, int quantity, double temperature) {
         try {
-            String message = getContents("오늘 한국 기준으로 최근에 많이 팔린 책의 제목 15개를 추천해 주세요. 신뢰할 수 있는 최신 정보를 바탕으로 정확한 책 제목만 나열하여 주세요. 존재하지 않는 책 제목은 추천하지 마세요. 답변에는 책의 저자, 출처, 참고, 이미지 등 다른 내용은 포함하지 말아주세요.",0.5);
+            String message = getContents(prompt, temperature);
             saveGeminiRecommendBook(message);
             return ResponseEntity.ok(message);
         } catch (HttpClientErrorException e) {
@@ -71,13 +87,8 @@ public class GeminiRecommendBookService {
             return ResponseEntity.status(500).body("Internal Server Error");
         }
     }
-    public void recommendAndSaveBooks(int quantity, double temperature) throws UnsupportedEncodingException {
-        String prompt = "한국 기준으로 최근에 많이 팔린 책의 제목 " + quantity + "개를 추천해 주세요. 신뢰할 수 있는 최신 정보를 바탕으로 정확한 책 제목만 나열하여 주세요. 존재하지 않는 책 제목은 추천하지 마세요. 답변에는 책의 저자, 출처, 참고, 이미지 등 다른 내용은 포함하지 말아주세요.";
-        String message = getContents(prompt, temperature);
-        saveGeminiRecommendBook(message);
-    }
 
-    public String getContents(String prompt, double temperature) throws UnsupportedEncodingException {
+    private String getContents(String prompt, double temperature) throws UnsupportedEncodingException {
         String requestUrl = apiUrl + "?key=" + geminiApiKey;
         GeminiRecommendApiRequest request = new GeminiRecommendApiRequest(prompt, candidateCount, maxOutputTokens, temperature);
         GeminiRecommendApiResponse response = restTemplate.postForObject(requestUrl, request, GeminiRecommendApiResponse.class);
