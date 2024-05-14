@@ -5,7 +5,7 @@
       layout:decorate="~{layout/layout}">
 
 <th:block layout:fragment="head">
-    <title>배송 조회</title>
+    <title>배송 관리</title>
     <link th:href="@{/css/admin/common.css}" rel="stylesheet"/>
     <link th:href="@{/css/admin/delivery.css}" rel="stylesheet"/>
 </th:block>
@@ -13,7 +13,7 @@
 <main th:fragment="content">
     <aside th:replace="~{fragments/sidebar-admin.html}"></aside>
     <div class="mypage-wrap">
-        <p class="mypage-title" th:text="'배송 조회'"></p>
+        <p class="mypage-title" th:text="'배송 관리'"></p>
         <form class="search-form" action="/admin/delivery/search" onsubmit="return submitForm()">
             <input class="search-input" th:placeholder="'검색할 주문 번호를 입력해주세요.'" th:name="keyword">
             <button class="search-button" th:text="'검색'"></button>

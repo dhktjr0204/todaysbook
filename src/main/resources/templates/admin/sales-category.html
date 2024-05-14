@@ -5,7 +5,7 @@
       layout:decorate="~{layout/layout}">
 
 <th:block layout:fragment="head">
-    <title>매출 조회</title>
+    <title>매출 관리</title>
     <link th:href="@{/css/admin/common.css}" rel="stylesheet"/>
     <link th:href="@{/css/admin/sales.css}" rel="stylesheet"/>
 </th:block>
@@ -13,7 +13,7 @@
 <main th:fragment="content">
     <aside th:replace="~{fragments/sidebar-admin.html}"></aside>
     <div class="mypage-wrap">
-        <p class="mypage-title">카테고리별 매출 조회</p>
+        <p class="mypage-title">카테고리별 매출 관리</p>
         <section>
             <div class="select-div">
                 <select id="yearSelect">

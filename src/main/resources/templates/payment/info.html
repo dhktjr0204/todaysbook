@@ -94,7 +94,8 @@
         </section>
         <div class="total-price-div">
             <p>총 결제 금액</p>
-            <p id = "totalPriceDisplay"></p> <!--수정된 부분-->
+            <input id = "totalPriceDisplay" type="text" style="border: none; width: 15ch; text-align: right;"
+                   onfocus="this.style.outline='none'; this.blur();" >
         </div>
         <div class="button-group">
             <button class="submit button" onclick="postAddressAndMileageInfo()">결제 하기</button>

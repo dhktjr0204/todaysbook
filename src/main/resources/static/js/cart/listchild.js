@@ -1,3 +1,4 @@
+
 // document.addEventListener("DOMContentLoaded", function () {
 //     // 페이지 로딩 시 총 상품 가격과 배송료를 업데이트합니다.
 //     updateTotalPrice();
@@ -136,7 +137,6 @@
 // useAllMileageCheckbox.addEventListener('change', handleUseAllMileageCheckbox);
 //
 
-
 // 총 주문 금액과 배송료를 업데이트하는 함수
 function updateTotalPrice() {
     var totalPriceElement = document.getElementById("totalOrderAmount");
@@ -151,7 +151,7 @@ function updateTotalPrice() {
 
     var totalPriceDisplayElement = document.getElementById("totalPriceDisplay");
     var totalPriceWithDelivery = totalPrice + deliveryFee;
-    totalPriceDisplayElement.textContent = numberWithCommas(totalPriceWithDelivery) + "원";
+    totalPriceDisplayElement.value = numberWithCommas(totalPriceWithDelivery) + "원";
 
 
 
@@ -236,7 +236,7 @@ function handleMileageInput() {
 
     // 총 결제 금액을 업데이트
     let totalPriceDisplayElement = document.getElementById("totalPriceDisplay");
-    totalPriceDisplayElement.textContent = numberWithCommas(totalPriceAfterMileage) + "원";
+    totalPriceDisplayElement.value = numberWithCommas(totalPriceAfterMileage) + "원";
 }
 
 // 마일리지 입력란에 이벤트 리스너를 추가
@@ -249,6 +249,7 @@ function handleUseAllMileageCheckbox() {
     let useAllMileageCheckbox = document.getElementById("use-all-mileage-checkbox");
     let isChecked = useAllMileageCheckbox.checked;
 
+    // 보유 마일리지를 가져옴
     // 보유 마일리지를 가져옴
     let totalMileageElement = document.getElementById("mileage");
     let totalMileage = parseInt(totalMileageElement.textContent.replace('M', '').replace(/,/g, ''));
@@ -300,3 +301,4 @@ document.addEventListener("DOMContentLoaded", function () {
     // 페이지 로딩 시 총 상품 가격과 배송료를 업데이트합니다.
     updateTotalPrice();
 });
+

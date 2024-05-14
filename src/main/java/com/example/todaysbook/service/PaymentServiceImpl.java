@@ -6,10 +6,7 @@ import com.example.todaysbook.domain.entity.Delivery;
 import com.example.todaysbook.domain.entity.OrderBook;
 import com.example.todaysbook.domain.entity.Orders;
 import com.example.todaysbook.domain.entity.User;
-import com.example.todaysbook.repository.DeliveryRepository;
-import com.example.todaysbook.repository.OrderBookRepository;
-import com.example.todaysbook.repository.OrderRepository;
-import com.example.todaysbook.repository.UserRepository;
+import com.example.todaysbook.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +26,8 @@ public class PaymentServiceImpl implements PaymentService {
     private final OrderBookRepository orderBookRepository;
     private final DeliveryRepository deliveryRepository;
     private final UserRepository userRepository;
+
+    private final BookMapper bookMapper;
 
     @Transactional
     @Override
@@ -52,6 +51,16 @@ public class PaymentServiceImpl implements PaymentService {
 
         List<Long> collect = bookDtoList.stream().map(paymentBookInfoDto -> paymentBookInfoDto.getCartBookId()).collect(Collectors.toList());
         cartService.deleteSelectedCartItems(collect);
+    }
+
+    @Transactional
+    @Override
+    public void subtractStock(List<PaymentBookInfoDto> books) {
+
+        for(PaymentBookInfoDto book : books) {
+
+            bookMapper.updateStockOfBook(book.getBookId(), book.getQuantity());
+        }
     }
 
     private String generateDeliveryId(String zipCode, Long orderId) {
