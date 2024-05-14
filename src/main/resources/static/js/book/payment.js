@@ -11,8 +11,10 @@ function purchaseItem() {
         quantity = 1;
 
     // price 추출
-    var priceText = document.querySelector('.price').textContent.trim(); // "1,000원"과 같은 형태일 것으로 가정합니다.
+    var priceText = document.querySelector('.price').textContent.trim();
     var price = parseInt(priceText.replace(/[,원]/g, ''));
+
+    let role = document.querySelector('#role').value;
 
     const selectedBook = [];
     selectedBook.push({
@@ -21,7 +23,7 @@ function purchaseItem() {
         bookName: bookName,
         quantity: quantity,
         price: price * quantity,
-        mileage: 1000
+        mileage: setMileage(price * quantity, role)
     });
 
     // 서버로 선택된 책 정보를 전송합니다. (여기서는 fetch를 사용하여 POST 요청으로 보냅니다.)
@@ -40,4 +42,29 @@ function purchaseItem() {
             // 오류가 발생한 경우 처리합니다.
             console.error('Error sending selected books to server:', error);
         });
+}
+
+function setMileage(price, role) {
+
+    var mileageRate;
+
+    switch (role) {
+        case 'ROLE_BRONZE':
+            mileageRate = 0.03;
+            break;
+        case 'ROLE_SILVER':
+            mileageRate = 0.05;
+            break;
+        case 'ROLE_GOLD':
+            mileageRate = 0.07;
+            break;
+        case 'ROLE_DIAMOND':
+            mileageRate = 0.10;
+            break;
+        default:
+            mileageRate = 0.03; // 기본값은 브론즈
+            break;
+    }
+
+    return price * mileageRate;
 }

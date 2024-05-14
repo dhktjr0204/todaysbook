@@ -250,6 +250,7 @@ public class PaymentController {
 
         session.removeAttribute(userId+"_1");
         session.removeAttribute(userId+"_2");
+
         return ResponseEntity.ok("");
     }
 

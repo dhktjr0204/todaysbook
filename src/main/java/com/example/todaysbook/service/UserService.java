@@ -3,6 +3,7 @@ package com.example.todaysbook.service;
 import com.example.todaysbook.domain.dto.CustomUserDetails;
 import com.example.todaysbook.domain.dto.UserRequestDto;
 import com.example.todaysbook.domain.entity.User;
+import com.example.todaysbook.exception.user.UserNotFoundException;
 import com.example.todaysbook.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -72,6 +73,9 @@ public class UserService implements UserDetailsService {
         userRepository.updateAddressInfoById(id, address, zipcode);
     }
 
+    public User getUserByUserId(Long userId){
+        return userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+    }
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
