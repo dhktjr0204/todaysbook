@@ -9,6 +9,7 @@ import com.example.todaysbook.domain.entity.GeminiRecommendBook;
 import com.example.todaysbook.repository.BookRepository;
 import com.example.todaysbook.repository.GeminiRecommendBookRepository;
 import com.example.todaysbook.util.AladinApi;
+import com.example.todaysbook.constant.Constant;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,23 +52,23 @@ public class GeminiRecommendBookService {
     private final GeminiRecommendBookRepository geminiRecommendBookRepository;
     private final AladinApi aladinApi;
 
-    private static final int DEFAULT_QUANTITY = 20;
-    private static final String DEFAULT_NATION = "한국";
-    private static final String DEFAULT_PROMPT = "%s 기준으로 최근에 많이 팔린 책의 제목 %d개를 추천해 주세요. 신뢰할 수 있는 최신 정보를 바탕으로 정확한 책 제목만 나열하여 주세요. 존재하지 않는 책 제목은 추천하지 마세요. 답변에는 책의 저자, 출처, 참고, 이미지 등 다른 내용은 포함하지 말아주세요.";
-    private static final double DEFAULT_TEMPERATURE = 0.5;
+//    private static final int DEFAULT_QUANTITY = 20;
+//    private static final String DEFAULT_NATION = "한국";
+//    private static final String DEFAULT_PROMPT = "%s 기준으로 최근에 많이 팔린 책의 제목 %d개를 추천해 주세요. 신뢰할 수 있는 최신 정보를 바탕으로 정확한 책 제목만 나열하여 주세요. 존재하지 않는 책 제목은 추천하지 마세요. 답변에는 책의 저자, 출처, 참고, 이미지 등 다른 내용은 포함하지 말아주세요.";
+//    private static final double DEFAULT_TEMPERATURE = 0.5;
 
     // 자동으로 책 추천
     public ResponseEntity<String> callScheduledGeminiApi() {
-        String prompt = String.format(DEFAULT_PROMPT, DEFAULT_NATION, DEFAULT_QUANTITY);
-        return callGeminiApi(prompt, DEFAULT_QUANTITY, DEFAULT_TEMPERATURE);
+        String prompt = String.format(Constant.DEFAULT_PROMPT, Constant.DEFAULT_NATION, Constant.DEFAULT_QUANTITY);
+        return callGeminiApi(prompt, Constant.DEFAULT_QUANTITY, Constant.DEFAULT_TEMPERATURE);
     }
 
     // 수동으로 책 추천
     public void recommendAndSaveBooks(Integer quantity, Double temperature) throws UnsupportedEncodingException {
-        quantity = quantity != null ? quantity : DEFAULT_QUANTITY;
-        temperature = temperature != null ? temperature : DEFAULT_TEMPERATURE;
+        quantity = quantity != null ? quantity : Constant.DEFAULT_QUANTITY;
+        temperature = temperature != null ? temperature : Constant.DEFAULT_TEMPERATURE;
 
-        String prompt = String.format(DEFAULT_PROMPT, DEFAULT_NATION, quantity);
+        String prompt = String.format(Constant.DEFAULT_PROMPT, Constant.DEFAULT_NATION, quantity);
         callGeminiApi(prompt, quantity, temperature);
     }
 
