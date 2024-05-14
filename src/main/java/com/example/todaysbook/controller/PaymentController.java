@@ -60,31 +60,31 @@ public class PaymentController {
 //        }
 //        return totalMileage;
 //    }
-    @GetMapping("/payment/virtual")
-    public String payWithVirtualAccount(@AuthenticationPrincipal CustomUserDetails userDetails, HttpServletRequest request, HttpServletResponse response, Model model) {
-        HttpSession session = request.getSession(false);
-
-        if (session == null) {
-            return "redirect:/";
-        }
-
-        long userId = userDetails.getUserId();
-        List<PaymentBookInfoDto> bookDtoList = (List<PaymentBookInfoDto>)session.getAttribute(String.valueOf(userId)+"_1");
-        PaymentAddressAndMileageInfo addressAndMileageInfo = (PaymentAddressAndMileageInfo) session.getAttribute(String.valueOf(userId) + "_2");
-        String orderName = "";
-
-        for (PaymentBookInfoDto book : bookDtoList) {
-            orderName += (book.getBookName() + " (" + book.getQuantity() + "권)\n");
-        }
-        orderName = orderName.substring(0, orderName.length()-1);
-        int totalPrice = getTotalPrice(bookDtoList);
-        int deliveryCharge = totalPrice >= 20000 ? 0 : 3000;
-        model.addAttribute("totalPrice", totalPrice-addressAndMileageInfo.getUsedMileage() + deliveryCharge);
-        model.addAttribute("orderName", orderName);
-        model.addAttribute("clientKey", widgetClientKey);
-
-        return "payment/pay_virtual";
-    }
+//    @GetMapping("/payment/virtual")
+//    public String payWithVirtualAccount(@AuthenticationPrincipal CustomUserDetails userDetails, HttpServletRequest request, HttpServletResponse response, Model model) {
+//        HttpSession session = request.getSession(false);
+//
+//        if (session == null) {
+//            return "redirect:/";
+//        }
+//
+//        long userId = userDetails.getUserId();
+//        List<PaymentBookInfoDto> bookDtoList = (List<PaymentBookInfoDto>)session.getAttribute(String.valueOf(userId)+"_1");
+//        PaymentAddressAndMileageInfo addressAndMileageInfo = (PaymentAddressAndMileageInfo) session.getAttribute(String.valueOf(userId) + "_2");
+//        String orderName = "";
+//
+//        for (PaymentBookInfoDto book : bookDtoList) {
+//            orderName += (book.getBookName() + " (" + book.getQuantity() + "권)\n");
+//        }
+//        orderName = orderName.substring(0, orderName.length()-1);
+//        int totalPrice = getTotalPrice(bookDtoList);
+//        int deliveryCharge = totalPrice >= 20000 ? 0 : 3000;
+//        model.addAttribute("totalPrice", totalPrice-addressAndMileageInfo.getUsedMileage() + deliveryCharge);
+//        model.addAttribute("orderName", orderName);
+//        model.addAttribute("clientKey", widgetClientKey);
+//
+//        return "payment/pay_virtual";
+//    }
 
     @GetMapping("/payment/card")
     public String payWithCreditCard(@AuthenticationPrincipal CustomUserDetails userDetails, HttpServletRequest request, HttpServletResponse response, Model model) {
@@ -137,10 +137,13 @@ public class PaymentController {
         long userId = userDetails.getUserId();
         List<PaymentBookInfoDto> bookDtoList = (List<PaymentBookInfoDto>)session.getAttribute(String.valueOf(userId)+"_1");
         PaymentAddressAndMileageInfo addressAndMileageInfo = (PaymentAddressAndMileageInfo) session.getAttribute(String.valueOf(userId) + "_2");
+        int totalPrice = PaymentController.getTotalPrice(bookDtoList);
         model.addAttribute("bookDtoList", bookDtoList);
         model.addAttribute("usedMileage", addressAndMileageInfo.getUsedMileage());
-        model.addAttribute("totalPrice", addressAndMileageInfo.getTotalPrice());
-        model.addAttribute("deliveryCharge", addressAndMileageInfo.getTotalPrice() >= 20000 ? "0원" : "3000원");
+        model.addAttribute("totalPrice", totalPrice);
+        long deliveryCharge = addressAndMileageInfo.getTotalPrice() >= 20000 ? 0 : 3000;
+        model.addAttribute("mileagedTotalPrice", totalPrice - addressAndMileageInfo.getUsedMileage() + deliveryCharge);
+        model.addAttribute("deliveryCharge", addressAndMileageInfo.getTotalPrice() >= 20000 ? "0원" : "3,000원");
         model.addAttribute("etc", "[" + addressAndMileageInfo.getUser() + "]님을 받는 분으로 하고, (" + addressAndMileageInfo.getPostcode() +
                 ")[" + addressAndMileageInfo.getAddress() + " / " + addressAndMileageInfo.getDetailAddress() + "]을(를) 배송지로 합니다");
         return "payment/success";

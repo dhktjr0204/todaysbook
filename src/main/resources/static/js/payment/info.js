@@ -4,9 +4,8 @@ function postAddressAndMileageInfo() {
     var postcode = document.getElementById('postcode').value;
     var address = document.getElementById('address').value;
     var detailAddress = document.getElementById('detailAddress').value;
-    var usedMileage = document.querySelector('.mileage-input').value;
-    // 원 제거 하기 위한 정규표현식
-    var totalPrice = document.getElementById('totalPriceDisplay').innerHTML.replace(/\D/g, '');
+    var usedMileage = document.querySelector('.mileage-input').value.replace(/,/g, '');
+    var totalPrice = document.getElementById("totalPriceDisplay").value.replace(/,/g, '').replace('원', '');
 
     // JSON 형식으로 데이터를 구성
     var dataToSend = {

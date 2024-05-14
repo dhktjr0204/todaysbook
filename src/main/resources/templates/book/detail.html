@@ -90,7 +90,7 @@
                          th:unless="${bookDetailDto.bookDetail.stock == 0 or bookDetailDto.bookDetail.stock == -1}">
                         <button class="cart-button" th:data-id="${bookDetailDto.bookDetail.id}" onclick="addCart(this)"
                                 th:text="'장바구니'"></button>
-                        <button class="purchase-button" th:text="'구매하기'"></button>
+                        <button class="purchase-button" th:text="'구매하기'" onclick="purchaseItem()"></button>
                     </div>
                     <div class="button-group"
                          th:if="${bookDetailDto.bookDetail.stock == 0 or bookDetailDto.bookDetail.stock == -1}">
@@ -217,6 +217,7 @@
 </main>
 <div th:replace="~{fragments/footer.html}"></div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script th:src="@{/js/book/payment.js}"></script>
 <script th:src="@{/js/book/detail.js}"></script>
 <script th:src="@{/js/wordCount.js}"></script>
 <script th:src="@{/js/review/review.js}"></script>
