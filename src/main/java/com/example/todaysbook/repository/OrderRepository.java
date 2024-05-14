@@ -23,7 +23,7 @@ public interface OrderRepository extends JpaRepository<Orders, Long> {
             "group by o.id " +
             "order by o.id")
     Page<DailyOrderDto> getOrdersByOrderDate(LocalDate date, Pageable pageable);
-
+    long count();
 
     @Query(value = "select new com.example.todaysbook.domain.dto.MyPageOrderDto(" +
             "o.id, o.deliveryId, o.orderDate, sum(ob.bookCount * b.price) as sales) " +

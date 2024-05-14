@@ -55,8 +55,8 @@ function postSelectedCartItems() {
         const cartBookId = listItem.querySelector('input[type="checkbox"]').value;
         const bookName = listItem.querySelector('.book-name').textContent;
         const quantity = parseInt(listItem.querySelector('.quantity_count').textContent);
-        const price = parseFloat(listItem.querySelector('.price').textContent);
-        const mileage = listItem.querySelector('.mileage').textContent.replace('M', '');
+        const price = parseFloat(listItem.querySelector('.price').textContent.replace(',', '').replace('원', ''));
+        const mileage = listItem.querySelector('.mileage').textContent.replace(',', '').replace('M', '');
 
         // 추출한 정보를 객체로 저장하여 배열에 추가합니다.
         selectedBooks.push({
@@ -109,12 +109,12 @@ function updateTotalPrice() {
     // 체크된 상품의 가격을 합산하여 총 주문 금액 계산
     document.querySelectorAll('.cart-list-body input[type="checkbox"]:checked').forEach(function(item) {
         var cartItem = item.parentElement.parentElement; // 각 상품 리스트 아이템
-        var itemPrice = parseInt(cartItem.querySelector('.price').innerText.replace('원', '')); // 상품 가격
+        var itemPrice = parseInt(cartItem.querySelector('.price').textContent.replace(/[,원]/g, '')); // 상품 가격
         totalPrice += itemPrice;
     });
 
     // 총 주문 금액을 업데이트하여 화면에 표시
-    totalPriceElement.innerText = '총 주문 금액 ' + totalPrice + '원';
+    totalPriceElement.innerText = '총 주문 금액 ' + totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '원';
 
     // 총 주문 금액에 따른 배송료 업데이트
     var deliveryFeeElement = document.getElementById("deliveryFee");
@@ -156,7 +156,7 @@ function updateTotalMileage(totalPrice) {
     var totalMileage = totalPrice * mileageRate;
 
     // 총 마일리지를 화면에 업데이트
-    totalMileageElement.innerText = '총 적립 마일리지 ' + totalMileage + 'M';
+    totalMileageElement.innerText = '총 적립 마일리지 ' + totalMileage.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + 'M';
 }
 
 

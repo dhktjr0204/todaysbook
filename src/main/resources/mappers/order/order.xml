@@ -4,9 +4,10 @@
 
 <mapper namespace="com.example.todaysbook.repository.OrderMapper">
     <select id="getOrderInfo" resultType="com.example.todaysbook.domain.dto.OrderInfo">
-        select o.id, o.order_date as orderDate, u.name as userName, u.address
+        select o.id, o.order_date as orderDate, u.name as userName, d.address
         from orders o
                  inner join user u on u.id = o.user_id
+                 inner join delivery d on d.id = o.delivery_id
         where o.id = #{id};
     </select>
 

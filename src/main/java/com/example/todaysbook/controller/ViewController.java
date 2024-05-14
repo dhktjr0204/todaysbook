@@ -58,17 +58,17 @@ public class ViewController {
         return "user/registration";
     }*/
 
-    @GetMapping("/mypage/updateinfo")
-    public String mypageUpdateInfo(Model model) {
+//    @GetMapping("/mypage/updateinfo")
+//    public String mypageUpdateInfo(Model model) {
+//
+//        return "user/mypage/update-info";
+//    }
 
-        return "user/mypage/update-info";
-    }
-
-    @GetMapping("/mypage/updatepw")
-    public String mypageUpdatePw(Model model) {
-
-        return "user/mypage/update-password";
-    }
+//    @GetMapping("/mypage/updatepw")
+//    public String mypageUpdatePw(Model model) {
+//
+//        return "user/mypage/update-password";
+//    }
 
 //    @GetMapping("/mypage/orderlist")
 //    public String orderList(Model model) {
@@ -137,25 +137,18 @@ public class ViewController {
 //        return "admin/book-registration";
 //    }
 
-    @GetMapping("/admin/updateinfo")
-    public String adminUpdateInfo(Model model) {
+//    @GetMapping("/admin/updateinfo")
+//    public String adminUpdateInfo(Model model) {
+//
+//        return "admin/update-info";
+//    }
 
-        return "admin/update-info";
-    }
+//    @GetMapping("/admin/updatepw")
+//    public String adminUpdatePw(Model model) {
+//
+//        return "admin/update-password";
+//    }
 
-    @GetMapping("/admin/updatepw")
-    public String adminUpdatePw(Model model) {
-
-        return "admin/update-password";
-    }
-
-
-    @GetMapping("/admin/gemini-recommend-book")
-    public String showGeminiRecommendBooks(Model model) {
-        List<GeminiRecommendBookDto> todayRecommendBooks = geminiRecommendBookService.getTodayRecommendBooks();
-        model.addAttribute("todayRecommendBooks", todayRecommendBooks);
-        return "admin/gemini-recommend-book";
-    }
 
 //    @GetMapping("/cart/list")
 //    public String cartList(Model model) {
@@ -181,9 +174,5 @@ public class ViewController {
 //        return "payment/success";
 //    }
 
-    @GetMapping("/alan/chat")
-    public String chatbotPage(Model model) {
-        return "alan/chat";
-    }
 
 }

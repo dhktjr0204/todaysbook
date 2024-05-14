@@ -311,37 +311,41 @@ function starEvents() {
     const editReviewStars = document.querySelectorAll('.edit-review-star');
     const editReviewScore = document.querySelector('.edit-review-score');
     let isEditClicked = false;
-    let previousEditValue = editReviewScore.textContent;
 
-    highlightStars(editReviewStars, previousEditValue);
+    if(editReviewScore) {
 
-    editReviewStars.forEach(star => {
-        star.addEventListener('mousedown', function () {
-            isEditClicked = true;
-            const value = this.getAttribute('data-value');
-            if (value === previousEditValue) {
-                editReviewScore.textContent = '0';
-                highlightStars(editReviewStars, 0);
-                previousEditValue = 0;
-            } else {
-                editReviewScore.textContent = value;
-                highlightStars(editReviewStars, value);
-                previousEditValue = value;
-            }
-        });
+        let previousEditValue = editReviewScore.textContent;
 
-        star.addEventListener('mouseover', function () {
-            if (isEditClicked) {
+        highlightStars(editReviewStars, previousEditValue);
+
+        editReviewStars.forEach(star => {
+            star.addEventListener('mousedown', function () {
+                isEditClicked = true;
                 const value = this.getAttribute('data-value');
-                editReviewScore.textContent = value;
-                highlightStars(editReviewStars, value);
-            }
-        });
+                if (value === previousEditValue) {
+                    editReviewScore.textContent = '0';
+                    highlightStars(editReviewStars, 0);
+                    previousEditValue = 0;
+                } else {
+                    editReviewScore.textContent = value;
+                    highlightStars(editReviewStars, value);
+                    previousEditValue = value;
+                }
+            });
 
-        star.addEventListener('mouseup', function () {
-            isEditClicked = false;
+            star.addEventListener('mouseover', function () {
+                if (isEditClicked) {
+                    const value = this.getAttribute('data-value');
+                    editReviewScore.textContent = value;
+                    highlightStars(editReviewStars, value);
+                }
+            });
+
+            star.addEventListener('mouseup', function () {
+                isEditClicked = false;
+            });
         });
-    });
+    }
 }
 
 function highlightStars(stars, value) {

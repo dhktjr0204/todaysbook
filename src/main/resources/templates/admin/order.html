@@ -5,7 +5,7 @@
       layout:decorate="~{layout/layout}">
 
 <th:block layout:fragment="head">
-    <title>주문 내역 조회</title>
+    <title>주문 내역 관리</title>
     <link th:href="@{/css/admin/common.css}" rel="stylesheet"/>
     <link th:href="@{/css/admin/order.css}" rel="stylesheet"/>
 </th:block>
@@ -13,7 +13,7 @@
 <main th:fragment="content">
     <aside th:replace="~{fragments/sidebar-admin.html}"></aside>
     <div class="mypage-wrap">
-        <p class="mypage-title">주문 내역 조회</p>
+        <p class="mypage-title">주문 내역 관리</p>
         <section>
             <input type="date" id="todayDate">
             <div class="order-list">
