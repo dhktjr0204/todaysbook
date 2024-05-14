@@ -30,11 +30,4 @@ public class GeminiRecommendBook {
     @CreatedDate
     private LocalDateTime date;
 
-    public GeminiRecommendBookDto toDto() {
-        return GeminiRecommendBookDto.builder()
-                .id(id)
-                .bookId(bookId)
-                .date(date)
-                .build();
-    }
 }

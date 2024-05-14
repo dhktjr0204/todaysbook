@@ -10,7 +10,5 @@ import java.time.LocalDateTime;
 @Data
 public class GeminiRecommendBookDto {
     private long id;
-    private long bookId;
-    private LocalDateTime date;
-
+    private BookDto bookDto;
 }

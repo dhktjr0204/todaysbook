@@ -31,15 +31,19 @@
                         <th>Publisher</th>
                         <th>Price</th>
                         <th>Stock</th>
+                        <th>Action</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="book : ${todayRecommendBooks}">
-                        <td th:text="${book.title}"></td>
-                        <td th:text="${book.author}"></td>
-                        <td th:text="${book.publisher}"></td>
-                        <td th:text="${book.price}"></td>
-                        <td th:text="${book.stock}"></td>
+                    <tr th:each="recommend : ${todayRecommendBooks}">
+                        <td th:text="${recommend.bookDto.title}"></td>
+                        <td th:text="${recommend.bookDto.author}"></td>
+                        <td th:text="${recommend.bookDto.publisher}"></td>
+                        <td th:text="${recommend.bookDto.price}"></td>
+                        <td th:text="${recommend.bookDto.stock}"></td>
+                        <td>
+                            <button type="button" class="delete-btn" th:data-id="${recommend.id}" onclick="deleteBook(this)">Delete</button>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
@@ -49,8 +53,7 @@
                 <p class="p-set">ai에게 책을 추천받아 테이블에 누적시킵니다.</p>
 
                 <p class="h-set">Max Quantity</p>
-                <p class="p-set">새롭게 추천 받을 책의 최대 수량입니다.
-                    중복 책을 추천하면 추가하지 않습니다.</p>
+                <p class="p-set">새롭게 추천 받을 책의 최대 수량입니다.</p>
                 <div class="d-set">
                     <input type="range" id="quantityRange" class="set-range" min="1" max="30"/>
                     <span id="quantityValue">15</span>

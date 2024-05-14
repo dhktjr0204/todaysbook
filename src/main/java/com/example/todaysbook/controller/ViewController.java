@@ -1,5 +1,6 @@
 package com.example.todaysbook.controller;
 
+import com.example.todaysbook.domain.dto.GeminiRecommendBookDto;
 import com.example.todaysbook.domain.entity.Orders;
 import com.example.todaysbook.repository.OrderRepository;
 import com.example.todaysbook.service.CartService;
@@ -151,7 +152,7 @@ public class ViewController {
 
     @GetMapping("/admin/gemini-recommend-book")
     public String showGeminiRecommendBooks(Model model) {
-        List<BookDto> todayRecommendBooks = geminiRecommendBookService.getTodayRecommendBooks();
+        List<GeminiRecommendBookDto> todayRecommendBooks = geminiRecommendBookService.getTodayRecommendBooks();
         model.addAttribute("todayRecommendBooks", todayRecommendBooks);
         return "admin/gemini-recommend-book";
     }

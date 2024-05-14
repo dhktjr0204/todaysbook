@@ -40,3 +40,24 @@ function recommendBooks() {
         }
     });
 }
+
+function deleteBook(btn) {
+    const bookId = btn.getAttribute('data-id');
+
+    $.ajax({
+        url: `/gemini/deleteRecommendBook/${bookId}`,
+        type: 'DELETE',
+        success: function(response) {
+            alert('책이 삭제되었습니다.');
+            location.reload();
+        },
+        error: function(xhr, status, error) {
+            if (xhr.status === 404) {
+                alert('삭제할 책을 찾을 수 없습니다.');
+            } else {
+                console.log(error);
+                alert('책 삭제 중 오류가 발생했습니다.');
+            }
+        }
+    });
+}
