@@ -64,12 +64,12 @@ public class ViewController {
         return "user/mypage/update-password";
     }
 
-    @GetMapping("/mypage/orderlist")
-    public String orderList(Model model) {
-        List<Orders> all = orderRepository.findAll();
-        model.addAttribute("orderDtos", all);
-        return "user/mypage/orderlist";
-    }
+//    @GetMapping("/mypage/orderlist")
+//    public String orderList(Model model) {
+//        List<Orders> all = orderRepository.findAll();
+//        model.addAttribute("orderDtos", all);
+//        return "user/mypage/orderlist";
+//    }
 
     @GetMapping("/mypage/mileage")
     public String mileage(Model model) {
@@ -95,11 +95,11 @@ public class ViewController {
         return "user/mypage/delivery";
     }
 
-    @GetMapping("/mypage/user/order_detail")
-    public String userOrderDetail(Model model) {
-
-        return "user/mypage/orderlist-detail";
-    }
+//    @GetMapping("/mypage/user/order_detail")
+//    public String userOrderDetail(Model model) {
+//
+//        return "user/mypage/orderlist-detail";
+//    }
 
     @GetMapping("/mypage/create_recommendlist")
     public String createRecommendList(Model model) {
@@ -119,11 +119,11 @@ public class ViewController {
 //        return "admin/stocklist";
 //    }
 
-    @GetMapping("/admin/delivery")
-    public String adminDelivery(Model model) {
-
-        return "admin/delivery";
-    }
+//    @GetMapping("/admin/delivery")
+//    public String adminDelivery(Model model) {
+//
+//        return "admin/delivery";
+//    }
 
 //    @GetMapping("/admin/book_registration")
 //    public String addBook(Model model) {

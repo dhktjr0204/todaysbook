@@ -6,8 +6,7 @@
 
 <th:block layout:fragment="head">
     <title>주문 내역</title>
-    <link th:href="@{/css/user/mypage/orderlist.css}" href="../../../static/css/user/mypage/orderlist.css"
-          rel="stylesheet"/>
+    <link th:href="@{/css/user/mypage/orderlist.css}" rel="stylesheet"/>
 </th:block>
 <div th:replace="~{fragments/header.html}"></div>
 <main th:fragment="content">
@@ -18,29 +17,27 @@
             <div class="order-list">
                 <ul class="order-list-header">
                     <li>
-                        <p class="select">선택</p>
                         <p class="order-id">주문 번호</p>
                         <p class="delivery">배송 조회</p>
-                        <p class="order-detail">주문 상세</p>
+                        <p class="order-price">주문 금액</p>
+                        <p class="order-date">주문 날짜</p>
                     </li>
                 </ul>
                 <ul class="order-list-body">
-                    <li th:each="dto : ${orderDtos}">
-                        <div class="select">
-                            <input type="checkbox">
-                        </div>
-                        <p class="order-id" th:text="${'주문 번호 - ' + dto.id}"></p>
-                        <a class="delivery" th:href="@{/mypage/user/delivery}">배송 조회</a>
-                        <a class="order-detail" th:href="@{/mypage/user/order_detail}">주문 상세</a>
+                    <li th:each="order : ${dto}">
+                        <a class="order-id" th:text="${order.orderId}" th:href="@{'/mypage/user/order_detail/'+${order.orderId}}"></a>
+                        <a class="delivery" th:text="${order.deliveryId}"
+                           th:href="@{'/mypage/user/delivery/'+${order.deliveryId}}">배송 조회</a>
+                        <p class="order-price"
+                           th:text="${#numbers.formatInteger(order.sales, 3, 'COMMA') + '원'}"></p>
+                        <p class="order-date"
+                           th:text="${#temporals.format(order.orderDate, 'yyyy-MM-dd')}"></p>
                     </li>
                 </ul>
-                <button class="delete-button">삭제</button>
             </div>
-<!--            <ul class="page-button-group">-->
-<!--                <li th:each="num : ${#numbers.sequence(1,5)}">-->
-<!--                    <button th:text="${num}"></button>-->
-<!--                </li>-->
-<!--            </ul>-->
+        </section>
+        <section>
+            <div th:replace="~{fragments/page.html}"></div>
         </section>
     </div>
 </main>

@@ -52,3 +52,7 @@ function clickDeleteBookButton(button) {
         });
     }
 }
+
+function clickGetSoldOutBooksButton(){
+    location.href="/admin/stocklist/sold-out";
+}

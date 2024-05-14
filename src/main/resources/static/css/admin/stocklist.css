@@ -74,3 +74,21 @@
     margin: 20px 0;
     align-self: center;
 }
+
+.stocklist-header{
+    display: flex;
+    justify-content: space-between;
+}
+
+.no-stock-button-container{
+    display: flex;
+    align-items: flex-end;
+}
+
+.search-no-stock-button{
+    background-color: #595959;
+    border-radius: 5px;
+    padding: 10px 15px;
+    margin-bottom: 30px;
+}
+

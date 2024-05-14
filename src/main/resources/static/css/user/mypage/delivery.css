@@ -58,12 +58,7 @@ main {
 
 .delivery-status {
 
-    width: 80px;
-}
-
-.delivery-company, .delivery-status {
-
-    text-align: center;
+    width: 150px;
 }
 
 .delivery-id {

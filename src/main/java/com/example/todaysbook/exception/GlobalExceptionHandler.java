@@ -9,6 +9,8 @@ import com.example.todaysbook.exception.admin.PublisherLengthOverException;
 import com.example.todaysbook.exception.book.DuplicateBookException;
 import com.example.todaysbook.exception.bookMark.AlreadyBookmarkedException;
 import com.example.todaysbook.exception.bookMark.NotBookmarkedYetException;
+import com.example.todaysbook.exception.delivery.DeliveryNotFoundException;
+import com.example.todaysbook.exception.order.OrderNotFoundException;
 import com.example.todaysbook.exception.recommendList.BookNotFoundException;
 import com.example.todaysbook.exception.recommendList.EmptyTitleException;
 import com.example.todaysbook.exception.recommendList.RecommendListLengthOverException;
@@ -183,4 +185,17 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> ReviewContentLengthOverException(ContentLengthOverException ex) {
         return new ResponseEntity<>("리뷰 내용의 길이가 초과되었습니다.", HttpStatus.BAD_REQUEST);
     }
+
+    //배송 관련 예외처리
+    @ExceptionHandler(DeliveryNotFoundException.class)
+    public ResponseEntity<String> DeliveryNotFoundException(DeliveryNotFoundException ex) {
+        return ResponseEntity.notFound().build();
+    }
+
+    //주문 관련 예외처리
+    @ExceptionHandler(OrderNotFoundException.class)
+    public ResponseEntity<String> OrderNotFoundException(OrderNotFoundException ex) {
+        return ResponseEntity.notFound().build();
+    }
+
 }
