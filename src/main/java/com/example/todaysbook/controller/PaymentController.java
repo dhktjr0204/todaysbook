@@ -3,12 +3,6 @@ package com.example.todaysbook.controller;
 import com.example.todaysbook.domain.dto.CustomUserDetails;
 import com.example.todaysbook.domain.dto.PaymentAddressAndMileageInfo;
 import com.example.todaysbook.domain.dto.PaymentBookInfoDto;
-import com.example.todaysbook.domain.entity.*;
-import com.example.todaysbook.repository.DeliveryRepository;
-import com.example.todaysbook.repository.OrderBookRepository;
-import com.example.todaysbook.repository.OrderRepository;
-import com.example.todaysbook.repository.UserRepository;
-import com.example.todaysbook.service.CartService;
 import com.example.todaysbook.service.PaymentService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -21,18 +15,18 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.*;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Controller
@@ -137,6 +131,7 @@ public class PaymentController {
         long userId = userDetails.getUserId();
         List<PaymentBookInfoDto> bookDtoList = (List<PaymentBookInfoDto>)session.getAttribute(String.valueOf(userId)+"_1");
         PaymentAddressAndMileageInfo addressAndMileageInfo = (PaymentAddressAndMileageInfo) session.getAttribute(String.valueOf(userId) + "_2");
+
         int totalPrice = PaymentController.getTotalPrice(bookDtoList);
         model.addAttribute("bookDtoList", bookDtoList);
         model.addAttribute("usedMileage", addressAndMileageInfo.getUsedMileage());
@@ -251,6 +246,7 @@ public class PaymentController {
         PaymentAddressAndMileageInfo addressAndMileageInfo = (PaymentAddressAndMileageInfo) session.getAttribute(String.valueOf(userId) + "_2");
 
         paymentService.createOrder(userId, bookDtoList, addressAndMileageInfo);
+        paymentService.subtractStock(bookDtoList);
 
         session.removeAttribute(userId+"_1");
         session.removeAttribute(userId+"_2");

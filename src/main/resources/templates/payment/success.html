@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
@@ -6,56 +5,55 @@
       layout:decorate="~{layout/layout}">
 
 <th:block layout:fragment="head">
-  <title>결제 완료</title>
-  <link th:href="@{/css/payment/success.css}" rel="stylesheet"/>
+    <title>결제 완료</title>
+    <link th:href="@{/css/payment/success.css}" rel="stylesheet"/>
 </th:block>
 <div th:replace="~{fragments/header.html}"></div>
 <main th:fragment="content">
-  <div class="payment-wrap">
-    <section class="payment-info">
-      <p class="title">결제 중 입니다</p>
-      <p class="description">설명</p>
-      <ul class="cart-list-header">
-        <li>
-          <p class="book-name">상품명</p>
-          <p class="quantity">수량</p>
-          <p class="price">상품 금액</p>
-          <p class="mileage">적립 마일리지</p>
-        </li>
-      </ul>
-      <ul class="payment-info-body">
-        <li th:each="dto : ${bookDtoList}">
-          <p class="book-name" th:text="${dto.bookName}">상품명</p>
-          <p class="quantity" th:text="${dto.quantity}">수량</p>
-          <p class="price" th:text="${#numbers.formatInteger(dto.price, 3, 'COMMA') + '원'}">상품 금액</p>
-          <p class="mileage" th:text="${#numbers.formatInteger(dto.mileage, 3, 'COMMA') + 'M'}">적립 마일리지</p>
-        </li>
-      </ul>
-      <ul class="payment-info-bottom">
-        <li>
-          <p class="total-price">총 상품 금액</p>
-          <p class="total-price" th:text="${#numbers.formatInteger(totalPrice, 3, 'COMMA') + '원'}">66,000원</p>
-          <p class="operand">-</p>
-          <p class="mileage">사용 마일리지</p>
-          <p class="mileage" th:text="${#numbers.formatInteger(usedMileage, 3, 'COMMA') + '원'}">0M</p>
-          <p class="operand">+</p>
-          <p class="delivery">배송료</p>
-          <p class="delivery" th:text="${deliveryCharge}">3,000원</p>
-        </li>
-        <li class="total-price-div">
-          <p>합계</p>
-          <p th:text="${#numbers.formatInteger(mileagedTotalPrice, 3, 'COMMA') + '원'}">62,400원</p>
-        </li>
-        <li class="etc">
-          <p th:text="${etc}"></p>
-        </li>
-      </ul>
-      <ul class="button-group">
-        <button onclick="location.href = '/'" class="main-button" th:text="'메인으로'"></button>
-        <button onclick="location.href = '/mypage/user/delivery'" class="delivery-button" th:text="'배송 조회'"></button>
-      </ul>
-    </section>
-  </div>
+    <div class="payment-wrap">
+        <section class="payment-info">
+            <p class="title">결제 중 입니다</p>
+            <p class="description">설명</p>
+            <ul class="cart-list-header">
+                <li>
+                    <p class="book-name">상품명</p>
+                    <p class="quantity">수량</p>
+                    <p class="price">상품 금액</p>
+                    <p class="mileage">적립 마일리지</p>
+                </li>
+            </ul>
+            <ul class="payment-info-body">
+                <li th:each="dto : ${bookDtoList}">
+                    <p class="book-name" th:text="${dto.bookName}">상품명</p>
+                    <p class="quantity" th:text="${dto.quantity}">수량</p>
+                    <p class="price" th:text="${#numbers.formatInteger(dto.price, 3, 'COMMA') + '원'}">상품 금액</p>
+                    <p class="mileage" th:text="${#numbers.formatInteger(dto.mileage, 3, 'COMMA') + 'M'}">적립 마일리지</p>
+                </li>
+            </ul>
+            <ul class="payment-info-bottom">
+                <li>
+                    <p class="total-price">총 상품 금액</p>
+                    <p class="total-price" th:text="${#numbers.formatInteger(totalPrice, 3, 'COMMA') + '원'}">66,000원</p>
+                    <p class="operand">-</p>
+                    <p class="mileage">사용 마일리지</p>
+                    <p class="mileage" th:text="${#numbers.formatInteger(usedMileage, 3, 'COMMA') + '원'}">0M</p>
+                    <p class="operand">+</p>
+                    <p class="delivery">배송료</p>
+                    <p class="delivery" th:text="${deliveryCharge}">3,000원</p>
+                </li>
+                <li class="total-price-div">
+                    <p>합계</p>
+                    <p th:text="${#numbers.formatInteger(mileagedTotalPrice, 3, 'COMMA') + '원'}">62,400원</p>
+                </li>
+                <li class="etc">
+                    <p th:text="${etc}"></p>
+                </li>
+            </ul>
+            <ul class="button-group">
+                <button onclick="location.href = '/'" class="main-button" th:text="'메인으로'"></button>
+            </ul>
+        </section>
+    </div>
 </main>
 <!--<body>-->
 <!--    <div class="p-grid typography&#45;&#45;p" style="margin-top: 50px">-->
@@ -81,102 +79,78 @@
 <!--    <div id="response" style="white-space: initial"></div>-->
 <!--  </div>-->
 
-    <script>
-<!-- 쿼리 파라미터 값이 결제 요청할 때 보낸 데이터와 동일한지 반드시 확인하세요.-->
-<!-- 쿼리 파라미터의 amount 값과 renderPaymentMethods()의 amount 파라미터의 값이 같은지 반드시 확인하세요. -->
-<!-- 클라이언트에서 결제 금액을 조작하는 행위를 방지할 수 있습니다.-->
-<!-- 만약 값이 다르다면 결제를 취소하고 구매자에게 알려주세요.-->
-<!-- 클라이언트에서 결제 금액을 조작하는 행위를 방지할 수 있습니다.-->
+<script>
 
-<!-- window.location.search는 현재 페이지 URL에서 쿼리 문자열을 나타내는 JavaScript의 속성입니다.-->
-<!-- 쿼리 문자열은 물음표(?)로 시작하며, 그 뒤에는 키/값 쌍이 '&'로 구분되어 연결됩니다. -->
-<!-- 예를 들어, http://www.example.com/page?name=John&age=30와 같은 URL에서, -->
-<!-- window.location.search는 ?name=John&age=30을 반환합니다. -->
-<!-- 이를 통해 JavaScript에서 현재 페이지의 쿼리 매개변수에 접근할 수 있습니다.-->
-<!-- console.log(window.location.search);
-<!-- 위의 결과는 => ?paymentType=NORMAL&orderId=MC4zMzg3ODUyNDgwNjE5&paymentKey=tgen_20240429142416eOwc6&amount=50000
-
-      function padZero(num) {
+    function padZero(num) {
         return num.toString().padStart(2, '0');
-      }
+    }
 
-      function makeOrder() {
+    function makeOrder() {
         fetch('/payment/card/order', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-            // 만약에 추가 헤더가 필요하다면 여기에 추가하세요.
-          }
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+                // 만약에 추가 헤더가 필요하다면 여기에 추가하세요.
+            }
         })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          console.log('ccc!');
-        })
-        .catch(error => {
-          // 네트워크 오류나 요청 실패시 에러를 처리하는 코드를 여기에 작성하세요.
-          console.error('There was a problem with your fetch operation:', error);
-        });
-      }
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+            })
+            .catch(error => {
+                // 네트워크 오류나 요청 실패시 에러를 처리하는 코드를 여기에 작성하세요.
+                console.error('There was a problem with your fetch operation:', error);
+            });
+    }
 
-      const urlParams = new URLSearchParams(window.location.search);
+    const urlParams = new URLSearchParams(window.location.search);
 
-      // 서버로 결제 승인에 필요한 결제 정보를 보내세요.
-      async function confirm() {
+    // 서버로 결제 승인에 필요한 결제 정보를 보내세요.
+    async function confirm() {
         var requestData = {
-          paymentKey: urlParams.get("paymentKey"),
-          orderId: urlParams.get("orderId"),
-          amount: urlParams.get("amount"),
+            paymentKey: urlParams.get("paymentKey"),
+            orderId: urlParams.get("orderId"),
+            amount: urlParams.get("amount"),
         };
 
         const response = await fetch("/payment/confirm", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(requestData),
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(requestData),
         });
 
         const json = await response.json();
 
         if (!response.ok) {
-          window.location.href = `/fail?message=${json.message}&code=${json.code}`;
+            window.location.href = `/fail?message=${json.message}&code=${json.code}`;
         }
 
         // TODO: 결제 성공 비즈니스 로직을 구현하세요.
-<!--        console.log(json);-->
+        <!--        console.log(json);-->
         return json;
-      }
+    }
 
-      confirm().then(function (data) {
+    confirm().then(function (data) {
         let payStatus;
         if (data.method == '카드') {
-          payStatus = '카드 결제 완료';
-          document.querySelector('.description').innerHTML = '';
-          makeOrder();
-        }
-        else if(data.method == '가상계좌') {
-          payStatus = '입금 대기 중';
-          var date = new Date(data.virtualAccount.dueDate);
-          // 날짜 및 시간을 원하는 형식으로 변환합니다.
-          var formattedDate = `${date.getFullYear()}-${padZero(date.getMonth() + 1)}-${padZero(date.getDate())} ${padZero(date.getHours())}시 ${padZero(date.getMinutes())}분`;
-          document.querySelector('.description').innerHTML = `<pre>입금 가상 계좌 : ${data.virtualAccount.accountNumber}\n입금 기한 : ${formattedDate} 까지</pre>`;
+            payStatus = '카드 결제 완료';
+            document.querySelector('.description').innerHTML = '';
+            makeOrder();
+        } else if (data.method == '가상계좌') {
+            payStatus = '입금 대기 중';
+            var date = new Date(data.virtualAccount.dueDate);
+            // 날짜 및 시간을 원하는 형식으로 변환합니다.
+            var formattedDate = `${date.getFullYear()}-${padZero(date.getMonth() + 1)}-${padZero(date.getDate())} ${padZero(date.getHours())}시 ${padZero(date.getMinutes())}분`;
+            document.querySelector('.description').innerHTML = `<pre>입금 가상 계좌 : ${data.virtualAccount.accountNumber}\n입금 기한 : ${formattedDate} 까지</pre>`;
         }
 
         document.querySelector('.title').innerHTML = payStatus;
-<!--        document.getElementById("response").innerHTML = `<pre>${JSON.stringify(data, null, 4)}</pre>`;-->
 
+    });
 
-      });
-
-<!--      const paymentKeyElement = document.getElementById("paymentKey");-->
-<!--      const orderIdElement = document.getElementById("orderId");-->
-<!--      const amountElement = document.getElementById("amount");-->
-
-<!--      orderIdElement.textContent = urlParams.get("orderId");-->
-<!--      amountElement.textContent = urlParams.get("amount") + "원";-->
-<!--      paymentKeyElement.textContent = urlParams.get("paymentKey");-->
-    </script>
-  </body>
+</script>
+</body>
 </html>
