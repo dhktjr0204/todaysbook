@@ -10,9 +10,6 @@ import com.example.todaysbook.repository.GeminiRecommendBookRepository;
 import com.example.todaysbook.util.AladinApi;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,13 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -56,26 +47,29 @@ public class GeminiRecommendBookService {
 
     private final BookRepository bookRepository;
     private final GeminiRecommendBookRepository geminiRecommendBookRepository;
-
     private final AladinApi aladinApi;
-    private final AdminServiceImpl adminService;
 
-    private String defaultPrompt = "오늘 한국 기준으로 최근에 많이 팔린 책의 제목 15개를 추천해 주세요. 신뢰할 수 있는 최신 정보를 바탕으로 정확한 책 제목만 나열하여 주세요. 존재하지 않는 책 제목은 추천하지 마세요. 답변에는 책의 저자, 출처, 참고, 이미지 등 다른 내용은 포함하지 말아주세요.";
-    private int defaultQuantity = 15;
-    private double defaultTemperature = 0.5;
+    private static final int DEFAULT_QUANTITY = 20;
+    private static final String DEFAULT_NATION = "한국";
+    private static final String DEFAULT_PROMPT = "%s 기준으로 최근에 많이 팔린 책의 제목 %d개를 추천해 주세요. 신뢰할 수 있는 최신 정보를 바탕으로 정확한 책 제목만 나열하여 주세요. 존재하지 않는 책 제목은 추천하지 마세요. 답변에는 책의 저자, 출처, 참고, 이미지 등 다른 내용은 포함하지 말아주세요.";
+    private static final double DEFAULT_TEMPERATURE = 0.5;
 
+    // 자동으로 책 추천
     public ResponseEntity<String> callScheduledGeminiApi() {
-        return callGeminiApi(defaultPrompt, defaultQuantity, defaultTemperature);
+        String prompt = String.format(DEFAULT_PROMPT, DEFAULT_NATION, DEFAULT_QUANTITY);
+        return callGeminiApi(prompt, DEFAULT_QUANTITY, DEFAULT_TEMPERATURE);
     }
 
+    // 수동으로 책 추천
     public void recommendAndSaveBooks(Integer quantity, Double temperature) throws UnsupportedEncodingException {
-        quantity = quantity != null ? quantity : defaultQuantity;
-        temperature = temperature != null ? temperature : defaultTemperature;
+        quantity = quantity != null ? quantity : DEFAULT_QUANTITY;
+        temperature = temperature != null ? temperature : DEFAULT_TEMPERATURE;
 
-        String prompt = "한국 기준으로 최근에 많이 팔린 책의 제목 " + quantity + "개를 추천해 주세요. 신뢰할 수 있는 최신 정보를 바탕으로 정확한 책 제목만 나열하여 주세요. 존재하지 않는 책 제목은 추천하지 마세요. 답변에는 책의 저자, 출처, 참고, 이미지 등 다른 내용은 포함하지 말아주세요.";
+        String prompt = String.format(DEFAULT_PROMPT, DEFAULT_NATION, quantity);
         callGeminiApi(prompt, quantity, temperature);
     }
 
+    // Gemini API 호출
     private ResponseEntity<String> callGeminiApi(String prompt, int quantity, double temperature) {
         try {
             String message = getContents(prompt, temperature);
@@ -88,6 +82,7 @@ public class GeminiRecommendBookService {
         }
     }
 
+    // Gemini API 응답
     private String getContents(String prompt, double temperature) throws UnsupportedEncodingException {
         String requestUrl = apiUrl + "?key=" + geminiApiKey;
         GeminiRecommendApiRequest request = new GeminiRecommendApiRequest(prompt, candidateCount, maxOutputTokens, temperature);
@@ -95,10 +90,10 @@ public class GeminiRecommendBookService {
         return response.getCandidates().get(0).getContent().getParts().get(0).getText();
     }
 
+    // 추천된 책 DB에 저장 process
     public void saveGeminiRecommendBook(String message) throws UnsupportedEncodingException {
         // 책 제목 추출
         List<String> bookTitles = extractBookTitles(message);
-
 
         log.info("-----------------책 제목 DB 저장 시작-----------------");
         for (String bookTitle : bookTitles) {
@@ -144,6 +139,7 @@ public class GeminiRecommendBookService {
         log.info("-----------------책 제목 DB 저장 완료-----------------\n");
     }
 
+    // GeminiRecommendBook 저장
     private void saveGeminiRecommendBookEntity(long bookId) {
         GeminiRecommendBook geminiRecommendBook = GeminiRecommendBook.builder()
                 .bookId(bookId)
@@ -153,7 +149,7 @@ public class GeminiRecommendBookService {
         log.info("bookId(" + bookId + ") GeminiRecommendBook에 저장 완료\n");
     }
 
-
+    // 메시지에서 책 제목 추출
     private List<String> extractBookTitles(String message) {
         log.info("---------------책 제목 추출 시작---------------");
         return Arrays.stream(message.split("\n"))
@@ -162,7 +158,7 @@ public class GeminiRecommendBookService {
                 .collect(Collectors.toList());
     }
 
-
+    // 오늘 추천된 책 목록 가져오기
     // GeminiRecommendBook 목록에서 date가 오늘에 해당하는 booid를 이용해 해당 book을 반환하는 메소드
     public List<BookDto> getTodayRecommendBooks() {
         LocalDate today = LocalDate.now();
@@ -174,7 +170,6 @@ public class GeminiRecommendBookService {
                 .distinct()
                 .limit(10)
                 .toList();
-
 
         // 오늘 날짜에 해당하는 bookId 목록 가져오기
         List<Book> books = todayRecommendBooks.stream()

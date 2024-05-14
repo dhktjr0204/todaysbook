@@ -153,7 +153,6 @@ public class ViewController {
     public String showGeminiRecommendBooks(Model model) {
         List<BookDto> todayRecommendBooks = geminiRecommendBookService.getTodayRecommendBooks();
         model.addAttribute("todayRecommendBooks", todayRecommendBooks);
-        log.info("todayRecommendBooks: " + todayRecommendBooks);
         return "admin/gemini-recommend-book";
     }
 

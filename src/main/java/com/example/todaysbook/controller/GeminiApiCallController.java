@@ -14,21 +14,21 @@ public class GeminiApiCallController {
 
     private final GeminiRecommendBookService geminiRecommendBookService;
 
-    @Scheduled(cron = "${scheduler.cron.expression}")
-    @GetMapping("/ApiCall")
-    public ResponseEntity<String> ScheduledGeminiApiCall() {
-        return geminiRecommendBookService.callScheduledGeminiApi();
-    }
-
-    @PostMapping("/recommendBooks")
-    public ResponseEntity<?> recommendBooks(@RequestParam("quantity") int quantity,
-                                            @RequestParam("temperature") double temperature) {
-        try {
-            geminiRecommendBookService.recommendAndSaveBooks(quantity, temperature);
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-        }
-    }
+//    @Scheduled(cron = "${scheduler.cron.expression}")
+//    @GetMapping("/ApiCall")
+//    public ResponseEntity<String> ScheduledGeminiApiCall() {
+//        return geminiRecommendBookService.callScheduledGeminiApi();
+//    }
+//
+//    @PostMapping("/recommendBooks")
+//    public ResponseEntity<?> recommendBooks(@RequestParam("quantity") int quantity,
+//                                            @RequestParam("temperature") double temperature) {
+//        try {
+//            geminiRecommendBookService.recommendAndSaveBooks(quantity, temperature);
+//            return ResponseEntity.ok().build();
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+//        }
+//    }
 
 }
