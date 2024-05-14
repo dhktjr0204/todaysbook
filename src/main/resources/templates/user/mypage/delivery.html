@@ -13,7 +13,7 @@
     <aside th:replace="~{fragments/sidebar-user.html}"></aside>
     <div class="mypage-wrap">
         <section>
-            <p class="mypage-title" th:text="'배송 조회 - 12345678'"></p>
+            <p class="mypage-title" th:text="'배송 조회'"></p>
             <div class="delivery-list">
                 <ul class="delivery-list-header">
                     <li>
@@ -24,9 +24,9 @@
                 </ul>
                 <ul class="delivery-list-body">
                     <li>
-                        <p class="delivery-id">송장 번호</p>
-                        <p class="delivery-company">택배사</p>
-                        <p class="delivery-status">상태</p>
+                        <p class="delivery-id" th:text="${deliveryDetail.deliveryId}"></p>
+                        <p class="delivery-company">롯데 택배</p>
+                        <p class="delivery-status" th:text="${deliveryDetail.status}">상태</p>
                     </li>
                 </ul>
             </div>

@@ -143,9 +143,6 @@ function updateTotalPrice() {
     var totalPrice = parseInt(totalPriceElement.textContent.replace('원', '').replace(/,/g, ''));
     totalPriceElement.textContent = numberWithCommas(totalPrice) + "원";
 
-    // var deliveryFeeElement = document.getElementById("deliveryFee");
-    // var deliveryFee = totalPrice >= 20000 ? "무료" : "3,000원";
-    // deliveryFeeElement.textContent = numberWithCommas(deliveryFee);
 
     var deliveryFeeElement = document.getElementById("deliveryFee");
     var deliveryFeeText = calculateDeliveryFee(totalPrice);
@@ -153,7 +150,7 @@ function updateTotalPrice() {
     deliveryFeeElement.textContent = numberWithCommas(deliveryFee) + "원";
 
     var totalPriceDisplayElement = document.getElementById("totalPriceDisplay");
-    var totalPriceWithDelivery = totalPrice + (deliveryFee === "무료" ? 0 : 3000);
+    var totalPriceWithDelivery = totalPrice + deliveryFee;
     totalPriceDisplayElement.textContent = numberWithCommas(totalPriceWithDelivery) + "원";
 
 
@@ -163,9 +160,12 @@ function updateTotalPrice() {
     let totalMileage = parseInt(totalMileageElement.textContent.replace('M', '').replace(/,/g, ''));
     totalMileageElement.textContent = numberWithCommas(totalMileage)+'M';
 
-    let priceElement = document.getElementById("price");
-    let price =  parseInt(priceElement.textContent.replace('원', '').replace(/,/g, ''));
-    priceElement.textContent = numberWithCommas(price)+'원';
+    var priceElements = document.getElementsByClassName("price");
+    for (var i = 0; i < priceElements.length; i++) {
+        var priceText = priceElements[i].textContent.replace('원', '').replace(/,/g, '');
+        priceElements[i].textContent = numberWithCommas(priceText) + "원";
+    }
+
 }
 function calculateDeliveryFee(totalPrice) {
     return totalPrice >= 20000 ? "무료" : "3,000원";
