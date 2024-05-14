@@ -7,7 +7,7 @@
 <th:block layout:fragment="head">
     <title>결제 하기</title>
     <link href="../../static/css/payment/info.css" th:href="@{/css/payment/info.css}" rel="stylesheet"/>
-    <link th:href="@{/css/cart/list.css}" rel="stylesheet"/>
+<!--    <link th:href="@{/css/cart/list.css}" rel="stylesheet"/>-->
 </th:block>
 <div th:replace="~{fragments/header.html}"></div>
 <main th:fragment="content">
@@ -46,28 +46,22 @@
                 </li>
             </ul>
         </section>
+
         <p class="title">주문 상품 목록</p>
-        <section>
+        <section class = "cart-list-section">
             <div class="cart-list">
-                <ul class="cart-list-header">
-                    <li>
-                        <p class="book-name">상품명</p>
-                        <p class="quantity">수량</p>
-                        <p class="price">상품 금액</p>
-                    </li>
-                </ul>
                 <ul class="cart-list-body">
                     <li th:each="cartBook : ${cartBooks}">
+
                         <p class="book-name" th:text="${cartBook.bookName}"></p>
-                        <p class="quantity">
-                            <span class="quantity_count" th:text="${cartBook.quantity}"></span>
-                        </p>
-                        <p class="price" th:text="${cartBook.price}"></p>
+                        <p class="quantity_count" th:text="${cartBook.quantity}"></p>
+                        <p class="price" th:text="${cartBook.price + '원'}"></p>
+
                     </li>
                 </ul>
             </div>
         </section>
-        <br>
+
         <p class="title">결제 정보</p>
         <section class="payment-info">
             <ul>
@@ -83,8 +77,9 @@
                     <p class="label">사용 마일리지</p>
                     <div class="check-box-div">
                         <input class="check-box" type="checkbox" id="use-all-mileage-checkbox">
-                        <p>전액 사용</p>
+                        <p>최대 사용</p>
                         <input class="mileage-input" type="text" id="mileage-input">
+                        <p>M</p>
                     </div>
 
                 </li>

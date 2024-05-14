@@ -5,10 +5,17 @@ plugins {
 }
 
 group = 'com.example'
-version = '0.0.1-SNAPSHOT'
 
 java {
     sourceCompatibility = '17'
+}
+
+jar {
+    enabled = false
+}
+
+bootJar {
+    duplicatesStrategy = 'exclude'
 }
 
 configurations {
@@ -46,7 +53,6 @@ dependencies {
     implementation 'org.json:json:20231013'
     implementation group: 'org.apache.mahout', name: 'mahout-core', version: '0.9'
     implementation group: 'org.apache.mahout', name: 'mahout-math', version: '0.13.0'
-    implementation 'com.google.code.gson:gson:2.8.8'
 }
 
 tasks.named('test') {

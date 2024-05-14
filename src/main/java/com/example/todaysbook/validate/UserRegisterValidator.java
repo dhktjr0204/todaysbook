@@ -21,6 +21,7 @@ public class UserRegisterValidator implements Validator {
         String nickname = request.getNickName();
         String email = request.getEmail();
         String password = request.getPassword();
+        String passwordCheck = request.getPasswordCheck();
         String address = request.getAddress();
         String zipcode = request.getZipcode();
 
@@ -48,14 +49,17 @@ public class UserRegisterValidator implements Validator {
         if(isWrongPasswordPattern(password)) {
             throw new WrongPasswordPatternException();
         }
+        if(isNotSamePassword(password, passwordCheck)) {
+            throw new NotSamePasswordException();
+        }
         if(isAddressEmpty(address)) {
             throw new EmptyAddressException();
         }
         if(isZipcodeEmpty(zipcode)) {
             throw new EmptyZipcodeException();
         }
-        if(isZipcodeNotANumber(zipcode)) {
-            throw new ZipcodeNotANumberException();
+        if(isWrongZipcodePattern(zipcode)) {
+            throw new WrongZipcodePatternException();
         }
     }
 
@@ -90,15 +94,19 @@ public class UserRegisterValidator implements Validator {
         return !(Constant.PASSWORD_PATTERN.matcher(password).matches());
     }
 
+    private boolean isNotSamePassword(String password, String passwordCheck) {
+        return !(password.equals(passwordCheck));
+    }
+
     private boolean isAddressEmpty(String address) {
-        return address.isEmpty();
+        return address.isEmpty() || Constant.DEFAULT_ADDRESS_PATTERN.matcher(address).matches();
     }
 
     private boolean isZipcodeEmpty(String zipcode) {
         return zipcode.isEmpty();
     }
 
-    private boolean isZipcodeNotANumber(String zipcode) {
+    private boolean isWrongZipcodePattern(String zipcode) {
         return !(Constant.ZIPCODE_PATTERN.matcher(zipcode).matches());
     }
 }

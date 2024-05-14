@@ -6,6 +6,7 @@ import com.example.todaysbook.domain.dto.ReviewRequestDto;
 import com.example.todaysbook.domain.dto.SimpleReview;
 import com.example.todaysbook.repository.FavoriteBookRepository;
 import com.example.todaysbook.repository.RecommendBookMapper;
+import com.example.todaysbook.repository.ReviewMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.mahout.cf.taste.common.TasteException;
 import org.apache.mahout.cf.taste.impl.common.LongPrimitiveIterator;
@@ -14,12 +15,14 @@ import org.apache.mahout.cf.taste.impl.recommender.GenericItemBasedRecommender;
 import org.apache.mahout.cf.taste.impl.similarity.TanimotoCoefficientSimilarity;
 import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.recommender.RecommendedItem;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,10 +33,13 @@ import java.util.Map;
 public class RecommendBookServiceImpl implements RecommendBookService {
 
     private final RecommendBookMapper recommendBookMapper;
+    private final ReviewMapper reviewMapper;
     @Override
     public void GenerateRecommendBookList(List<SimpleReview> reviews) throws TasteException, IOException {
 
-        String filePath = "src/main/resources/data/rating.csv";
+
+        String filePath ="/home/ubuntu/app/src/main/resources/data/rating.csv";
+
         int howMany = 5;
 
         fileWrite(filePath, reviews);
@@ -97,5 +103,20 @@ public class RecommendBookServiceImpl implements RecommendBookService {
         }
 
         return items;
+    }
+
+    @Scheduled(cron = "0 0 0/3 * * ?")
+    private void ScheduledGenerateRecommendBookList() throws TasteException, IOException {
+
+        String filePath ="/home/ubuntu/app/src/main/resources/data/rating.csv";
+
+        int howMany = 5;
+
+        List<SimpleReview> reviews = reviewMapper.getSimpleReviews();
+
+        fileWrite(filePath, reviews);
+
+        recommendBookMapper.truncateRecommendBook();
+        recommendBookMapper.insertRecommendBookInfo(makeRecommendList(filePath, howMany));
     }
 }

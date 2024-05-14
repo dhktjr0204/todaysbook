@@ -11,7 +11,10 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -100,16 +103,20 @@ public class UserController {
     @PutMapping ("/update/nickname")
     public ResponseEntity<?> updateUserNickname(@RequestBody UserRequestDto request, @AuthenticationPrincipal CustomUserDetails userDetails, BindingResult result) {
         String userNickname = userDetails.getNickname();
-        String nickname = request.getNickName();
 
-        if(userNickname.equals(nickname)) {
+        if(userNickname.equals(request.getNickName())) {
             return ResponseEntity.badRequest().body("Same Nickname: " + userNickname);
         }
 
         UserUpdateNicknameValidator validator = new UserUpdateNicknameValidator();
         validator.validate(request, result);
 
-        userService.updateNickname(userDetails.getUserId(), nickname);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        userService.updateNickname(userDetails.getUserId(), request.getNickName());
+
+        Authentication newAuthentication = new UsernamePasswordAuthenticationToken(userDetails, authentication.getCredentials(), authentication.getAuthorities());
+
+        SecurityContextHolder.getContext().setAuthentication(newAuthentication);
 
         return ResponseEntity.ok().build();
     }
@@ -128,10 +135,10 @@ public class UserController {
     @Transactional
     @PutMapping ("/update/password")
     public ResponseEntity<?> updateUserPassword(@RequestBody UserRequestDto request, @AuthenticationPrincipal CustomUserDetails userDetails, BindingResult result) {
-        String password = encoder.encode(request.getPassword());
-
         UserUpdatePasswordValidator validator = new UserUpdatePasswordValidator();
         validator.validate(request, result);
+
+        String password = encoder.encode(request.getPassword());
 
         userService.updatePassword(userDetails.getUserId(), password);
 

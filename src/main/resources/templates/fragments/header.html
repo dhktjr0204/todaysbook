@@ -1,3 +1,5 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <link rel="stylesheet" href="/css/common.css">
 <link rel="stylesheet" href="/css/header.css">
 <link rel="stylesheet" href="/css/footer.css">
@@ -52,8 +54,8 @@
     </ul>
     <ul>
         <li>
-            <div class="dropdown" th:if="${nickName != null and role != 'ROLE_ADMIN'}">
-                <p th:text="${nickName}+'님 안녕하세요'"></p>
+            <div class="dropdown" sec:authorize="hasAnyRole('ROLE_BRONZE', 'ROLE_SILVER', 'ROLE_GOLD', 'ROLE_DIAMOND')">
+                <p th:text="${#authentication.principal.nickname} + '님 안녕하세요'"></p>
                 <ul class="dropdown-options">
                     <li>
                         <a th:href="@{/mypage/orderlist}">마이페이지</a>
@@ -66,18 +68,18 @@
                     </li>
                 </ul>
             </div>
-            <div class="dropdown" th:if="${nickName != null and role == 'ROLE_ADMIN'}">
-                <p th:text="${nickName}+'님 안녕하세요'"></p>
+            <div class="dropdown" sec:authorize="hasAnyRole('ROLE_ADMIN')">
+                <p th:text="${#authentication.principal.nickname} + '님 안녕하세요'"></p>
                 <ul class="dropdown-options">
                     <li>
-                        <a th:href="@{/admin/userlist}">관리자 페이지</a>
+                        <a th:href="@{/admin/order}">관리자 페이지</a>
                     </li>
                     <li>
                         <a th:href="@{/logout}">로그아웃</a>
                     </li>
                 </ul>
             </div>
-            <div class="login" th:if="${nickName == null}">
+            <div class="login" sec:authorize="isAnonymous()">
                 <a th:href="@{/login}">로그인</a>
                 <a th:href="@{/signup}">회원가입</a>
             </div>

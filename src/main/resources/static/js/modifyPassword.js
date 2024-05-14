@@ -30,11 +30,30 @@ async function updateUserPassword(newPassword) {
                 'Content-Type': 'application/json'
             },
             body: requestBody
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to update password');
-        }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(msg => {
+                        if(response.status === 401) {
+                            alert(msg);
+                        } else if(response.status === 400) {
+                            alert(msg);
+                            throw new Error(msg);
+                        } else if(response.status === 404) {
+                            alert(msg);
+                        }
+                    });
+                } else {
+                    return response.text();
+                }
+            })
+            .then(data => {
+                alert('비밀번호가 변경되었습니다.');
+                window.location.href = '/';
+            })
+            .catch(function(error) {
+                console.error('Error:', error);
+            });
 
         const responseData = await response.json();
         console.log('Password updated successfully:', responseData);
@@ -50,6 +69,11 @@ document.addEventListener('DOMContentLoaded', function() {
         event.preventDefault();
         const passwordInputList = document.querySelectorAll('.input');
 
+        if (Array.from(passwordInputList).some(input => input.value.trim() === '')) {
+            alert('빈 칸을 빠짐없이 작성해주세요');
+            return;
+        }
+
         const originPassword = passwordInputList[0].value;
         const newPassword = passwordInputList[1].value;
         const newPasswordCheck = passwordInputList[2].value;
@@ -57,7 +81,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&~]{8,}$/;
 
         if(!passwordPattern.test(newPassword)) {
-            alert('비밀번호는 영어, 숫자, 특수문자를 포함하여 8자 이상이어야 합니다.');
+            alert('비밀번호는 영어, 숫자, 특수문자를 포함하여 8자 이상, 20자 이하이어야 합니다.');
             passwordInputList[1].value = null;
             passwordInputList[2].value = null;
             passwordInputList[1].focus();
@@ -68,24 +92,22 @@ document.addEventListener('DOMContentLoaded', function() {
             passwordInputList[2].value = null;
             passwordInputList[1].focus();
             return;
-        }
-
-        checkPasswordAvailability(originPassword, newPassword)
-            .then(function(data) {
-                if(data.hasOwnProperty('available')) {
-                    if(data.available) {
-                        updateUserPassword(newPassword);
-                        alert('비밀번호가 변경되었습니다.');
-                        window.location.href = '/';
+        } else {
+            checkPasswordAvailability(originPassword, newPassword)
+                .then(function (data) {
+                    if (data.hasOwnProperty('available')) {
+                        if (data.available) {
+                            updateUserPassword(newPassword);
+                        } else {
+                            alert('비밀번호 변경이 실패되었습니다.');
+                        }
                     } else {
-                        alert('비밀번호 변경이 실패되었습니다.');
+                        throw new Error('Invalid response data');
                     }
-                } else {
-                    throw new Error('Invalid response data');
-                }
-            })
-            .catch(function (error) {
-                console.error('비밀번호 변경 중 오류가 발생하였습니다.\n' + error.message);
-            });
+                })
+                .catch(function (error) {
+                    console.error('비밀번호 변경 중 오류가 발생하였습니다.\n' + error.message);
+                });
+        }
     });
 });
