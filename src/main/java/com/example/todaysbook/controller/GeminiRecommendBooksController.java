@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/gemini")
+@RequestMapping("/gemini")
 public class GeminiRecommendBooksController {
 
     private final GeminiRecommendBookService geminiRecommendBookService;
@@ -25,4 +25,6 @@ public class GeminiRecommendBooksController {
     public List<BookDto> getTodayRecommendBooks() {
         return geminiRecommendBookService.getTodayRecommendBooks();
     }
+
+
 }

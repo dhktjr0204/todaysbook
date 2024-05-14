@@ -3,19 +3,24 @@ package com.example.todaysbook.controller;
 import com.example.todaysbook.domain.entity.Orders;
 import com.example.todaysbook.repository.OrderRepository;
 import com.example.todaysbook.service.CartService;
+import com.example.todaysbook.service.GeminiRecommendBookService;
+import com.example.todaysbook.domain.dto.BookDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 public class ViewController {
 
     private final CartService cartService;
     private final OrderRepository orderRepository;
+    private final GeminiRecommendBookService geminiRecommendBookService;
 
     /*@GetMapping("/index")
     public String index(@AuthenticationPrincipal CustomUserDetails customUserDetails, Model model) {
@@ -64,12 +69,12 @@ public class ViewController {
         return "user/mypage/update-password";
     }
 
-    @GetMapping("/mypage/orderlist")
-    public String orderList(Model model) {
-        List<Orders> all = orderRepository.findAll();
-        model.addAttribute("orderDtos", all);
-        return "user/mypage/orderlist";
-    }
+//    @GetMapping("/mypage/orderlist")
+//    public String orderList(Model model) {
+//        List<Orders> all = orderRepository.findAll();
+//        model.addAttribute("orderDtos", all);
+//        return "user/mypage/orderlist";
+//    }
 
     @GetMapping("/mypage/mileage")
     public String mileage(Model model) {
@@ -95,11 +100,11 @@ public class ViewController {
         return "user/mypage/delivery";
     }
 
-    @GetMapping("/mypage/user/order_detail")
-    public String userOrderDetail(Model model) {
-
-        return "user/mypage/orderlist-detail";
-    }
+//    @GetMapping("/mypage/user/order_detail")
+//    public String userOrderDetail(Model model) {
+//
+//        return "user/mypage/orderlist-detail";
+//    }
 
     @GetMapping("/mypage/create_recommendlist")
     public String createRecommendList(Model model) {
@@ -119,11 +124,11 @@ public class ViewController {
 //        return "admin/stocklist";
 //    }
 
-    @GetMapping("/admin/delivery")
-    public String adminDelivery(Model model) {
-
-        return "admin/delivery";
-    }
+//    @GetMapping("/admin/delivery")
+//    public String adminDelivery(Model model) {
+//
+//        return "admin/delivery";
+//    }
 
 //    @GetMapping("/admin/book_registration")
 //    public String addBook(Model model) {
@@ -141,6 +146,15 @@ public class ViewController {
     public String adminUpdatePw(Model model) {
 
         return "admin/update-password";
+    }
+
+
+    @GetMapping("/admin/gemini-recommend-book")
+    public String showGeminiRecommendBooks(Model model) {
+        List<BookDto> todayRecommendBooks = geminiRecommendBookService.getTodayRecommendBooks();
+        model.addAttribute("todayRecommendBooks", todayRecommendBooks);
+        log.info("todayRecommendBooks: " + todayRecommendBooks);
+        return "admin/gemini-recommend-book";
     }
 
 //    @GetMapping("/cart/list")

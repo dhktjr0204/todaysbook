@@ -14,7 +14,10 @@ main {
     display: flex;
     justify-content: space-between;
 
-    margin-bottom: 10px;
+    margin-bottom: 20px;
+}
+.order-info{
+    margin-bottom: 50px;
 }
 
 .order-list {

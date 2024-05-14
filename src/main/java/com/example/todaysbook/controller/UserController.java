@@ -11,7 +11,10 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -108,7 +111,12 @@ public class UserController {
         UserUpdateNicknameValidator validator = new UserUpdateNicknameValidator();
         validator.validate(request, result);
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userService.updateNickname(userDetails.getUserId(), request.getNickName());
+
+        Authentication newAuthentication = new UsernamePasswordAuthenticationToken(userDetails, authentication.getCredentials(), authentication.getAuthorities());
+
+        SecurityContextHolder.getContext().setAuthentication(newAuthentication);
 
         return ResponseEntity.ok().build();
     }
