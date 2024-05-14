@@ -10,8 +10,5 @@ import java.util.List;
 @Repository
 public interface GeminiRecommendBookRepository extends JpaRepository<GeminiRecommendBook, Long> {
 
-
-    List<GeminiRecommendBook> findAllByDate(LocalDateTime now);
-
     List<GeminiRecommendBook> findByDateBetween(LocalDateTime localDateTime, LocalDateTime localDateTime1);
 }

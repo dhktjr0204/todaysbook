@@ -2,14 +2,10 @@ package com.example.todaysbook.controller;
 
 import com.example.todaysbook.service.GeminiRecommendBookService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.HttpClientErrorException;
-
-import java.io.UnsupportedEncodingException;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,15 +16,19 @@ public class GeminiApiCallController {
 
     @Scheduled(cron = "${scheduler.cron.expression}")
     @GetMapping("/ApiCall")
-    public void GeminiApiCall() {
-        try {
-            ResponseEntity.ok().body(geminiRecommendBookService.getContents("오늘 한국 기준으로 최근에 많이 팔린 책의 제목 15개를 추천해 주세요. 신뢰할 수 있는 최신 정보를 바탕으로 정확한 책 제목만 나열하여 주세요. 존재하지 않는 책 제목은 추천하지 마세요. 답변에는 책의 저자, 출처, 참고, 이미지 등 다른 내용은 포함하지 말아주세요."));
-        } catch (HttpClientErrorException e) {
-            ResponseEntity.badRequest().body(e.getMessage());
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
+    public ResponseEntity<String> ScheduledGeminiApiCall() {
+        return geminiRecommendBookService.callScheduledGeminiApi();
     }
 
+    @PostMapping("/recommendBooks")
+    public ResponseEntity<?> recommendBooks(@RequestParam("quantity") int quantity,
+                                            @RequestParam("temperature") double temperature) {
+        try {
+            geminiRecommendBookService.recommendAndSaveBooks(quantity, temperature);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
 
 }

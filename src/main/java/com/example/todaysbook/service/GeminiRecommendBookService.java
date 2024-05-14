@@ -16,7 +16,9 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 
@@ -52,24 +54,34 @@ public class GeminiRecommendBookService {
     @Value("${gemini.generationConfig.max_output_tokens}")
     private int maxOutputTokens;
 
-    @Value("${gemini.generationConfig.temperature}")
-    private double temperature;
-
     private final BookRepository bookRepository;
     private final GeminiRecommendBookRepository geminiRecommendBookRepository;
 
     private final AladinApi aladinApi;
     private final AdminServiceImpl adminService;
 
+    public ResponseEntity<String> callScheduledGeminiApi() {
+        try {
+            String message = getContents("오늘 한국 기준으로 최근에 많이 팔린 책의 제목 15개를 추천해 주세요. 신뢰할 수 있는 최신 정보를 바탕으로 정확한 책 제목만 나열하여 주세요. 존재하지 않는 책 제목은 추천하지 마세요. 답변에는 책의 저자, 출처, 참고, 이미지 등 다른 내용은 포함하지 말아주세요.",0.5);
+            saveGeminiRecommendBook(message);
+            return ResponseEntity.ok(message);
+        } catch (HttpClientErrorException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (UnsupportedEncodingException e) {
+            return ResponseEntity.status(500).body("Internal Server Error");
+        }
+    }
+    public void recommendAndSaveBooks(int quantity, double temperature) throws UnsupportedEncodingException {
+        String prompt = "한국 기준으로 최근에 많이 팔린 책의 제목 " + quantity + "개를 추천해 주세요. 신뢰할 수 있는 최신 정보를 바탕으로 정확한 책 제목만 나열하여 주세요. 존재하지 않는 책 제목은 추천하지 마세요. 답변에는 책의 저자, 출처, 참고, 이미지 등 다른 내용은 포함하지 말아주세요.";
+        String message = getContents(prompt, temperature);
+        saveGeminiRecommendBook(message);
+    }
 
-    // 예외처리하기 (설정한 최대 토큰 제한을 넘어가면 null이 넘어옴. 보통 추천 책 1개당 토큰 10개)(후순위)
-    public String getContents(String prompt) throws UnsupportedEncodingException {
+    public String getContents(String prompt, double temperature) throws UnsupportedEncodingException {
         String requestUrl = apiUrl + "?key=" + geminiApiKey;
         GeminiRecommendApiRequest request = new GeminiRecommendApiRequest(prompt, candidateCount, maxOutputTokens, temperature);
         GeminiRecommendApiResponse response = restTemplate.postForObject(requestUrl, request, GeminiRecommendApiResponse.class);
-        String message = response.getCandidates().get(0).getContent().getParts().get(0).getText().toString();
-        saveGeminiRecommendBook(message);
-        return message;
+        return response.getCandidates().get(0).getContent().getParts().get(0).getText();
     }
 
     public void saveGeminiRecommendBook(String message) throws UnsupportedEncodingException {
