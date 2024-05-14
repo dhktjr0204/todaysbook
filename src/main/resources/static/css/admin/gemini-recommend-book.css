@@ -13,7 +13,9 @@
     overflow-y: auto;
     border: 1px solid #ddd;
     border-radius: 5px;
+    position: relative;
 }
+
 
 .table-area::-webkit-scrollbar {
     width: 8px;
@@ -36,9 +38,15 @@ table {
     table-layout: fixed;
 }
 
+thead {
+    position: sticky;
+    top: 0;
+    background-color: black;
+    z-index: 1;
+}
+
 /* 표 헤더 스타일 */
 th {
-    background-color: black;
     padding: 8px;
     text-align: left;
     border-bottom: 1px solid #ddd;
@@ -61,6 +69,9 @@ td {
 tr:last-child {
     border-bottom: none;
 }
+
+
+
 
 .setting-area {
     display: flex;
