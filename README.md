@@ -53,7 +53,7 @@
 <tr> 
     <td align="center">프로젝트 관리<br>프로젝트 발표<br>ERD 설계<br>aladin API를 이용한 책 데이터 수집 및 정제<br>UI/UX 디자인<br>디자인 파일 html 템플릿화<br>책 상세 정보 API<br>리뷰 작성 API<br>리뷰 추천/비추천 API<br>책 찜하기 API<br>아이템 기반 추천 시스템 설계<br>현재 책 기준 추천 책 제공 API<br>내가 찜한 책 기준 추천 책 제공 API<br>주문 내역 관리 API<br>매출 관리 API<br>차트를 통한 매출 시각화<br>테스트 코드 작성</td>
     <td align="center">ERD 설계<br>aladin api를 이용한 책 데이터 수집 및 정제<br>책 추천 리스트 API<br>추천 리스트 북마크 API<br>책 정렬 API<br>책 장르별 조회 API<br>책, 리스트 검색 API<br>주문 내역 및 배송 조회 API<br>유저 관리 API<br>알라딘 API 활용 신간 등록 API<br>배송 관리 API<br>책 수량 변경 및 수정 관리 API<br>JavaScript 개발(관리자, 추천 리스트, 페이징, 검색)<br>테스트 코드 작성<br>리드미 작성<br>플로우 차트 작성<br>요구사항 명세서 작성<br>프로젝트 배포</td>
-    <td align="center">장바구니 API 개발<br>장바구니 추가 및 삭제API<br>상품 수량 증감 조절 API<br>마일리지 등급별 차등적용 API<br>JavaScript(주문금액,배송료,마일리지,총 결제금액 계산로직 및 실시간 업데이트)</td>
+    <td align="center">장바구니 API 개발<br>장바구니 추가 및 삭제API<br>상품 수량 증감 조절 API<br>마일리지 등급별 차등적용 API<br>JavaScript<br>(주문금액,배송료,마일리지,총 결제금액 계산로직 및 실시간 업데이트)</td>
 </tr> 
 </table>
 <table style="width: 100%;">
