@@ -321,33 +321,35 @@
 
 # 11. UI
 
-|                                   로그인 화면                                    |                                       회원가입 화면                                       |
-|:---------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------:|
-|        ![로그인 이미지](/src/main/resources/static/images/readMe/로그인.jpg)         |           ![회원가입 이미지](/src/main/resources/static/images/readMe/회원가입.jpg)            |
-|                                  <b>메인 화면                                   |                                      <b>책 상세 화면                                     |
-|         ![메인 이미지](/src/main/resources/static/images/readMe/메인.png)          |            ![책 상세 이미지](/src/main/resources/static/images/readMe/책상세.png)            |
-|                                 <b>주문내역 화면                                  |                                    <b>내가 쓴 리뷰 화면                                    |
-|       ![주문내역 이미지](/src/main/resources/static/images/readMe/주문내역.png)        |         ![내가 쓴 리뷰 이미지](/src/main/resources/static/images/readMe/내가쓴리뷰.png)          |
-|                                <b>내가 찜한 책 화면                                |                                 <b>내가 찜한 추천 리스트 화면                                  |
-|     ![내가 찜한 책 이미지](/src/main/resources/static/images/readMe/내가찜한책.png)      |         ![게시글 이미지](/src/main/resources/static/images/readMe/내가찜한추천리스트.png)          |
-|                                  <b>결제 화면                                   |                                  <b>추천 리스트 만들기 화면                                   |
-|        ![결제 이미지](/src/main/resources/static/images/readMe/결제페이지.png)        |       ![추천 리스트 만들기 이미지](/src/main/resources/static/images/readMe/리스트만들기.png)        |
-|                               <b>회원 정보 수정 화면                                |                                    <b>비밀번호 수정 화면                                    |
-|     ![회원 정보 수정 이미지](/src/main/resources/static/images/readMe/회원수정.png)      |         ![비밀번호 수정 이미지](/src/main/resources/static/images/readMe/비밀번호수정.png)         |
-|                                 <b>장바구니 화면                                  |                                     <b>책 검색 화면                                      |
-|       ![장바구니 이미지](/src/main/resources/static/images/readMe/장바구니.png)        |            ![책 검색 이미지](/src/main/resources/static/images/readMe/책검색.png)            |
-|                               <b>앨런 실시간 검색 화면                               |                                <b>앨런 실시간 검색(결과물) 화면                                 |
+|                                   로그인 화면                                    |                                       회원가입 화면                                      |
+|:---------------------------------------------------------------------------:|:----------------------------------------------------------------------------------:|
+|        ![로그인 이미지](/src/main/resources/static/images/readMe/로그인.jpg)         |           ![회원가입 이미지](/src/main/resources/static/images/readMe/회원가입.jpg)           |
+|                                  <b>메인 화면                                   |                                     <b>책 상세 화면                                     |
+|         ![메인 이미지](/src/main/resources/static/images/readMe/메인.png)          |            ![책 상세 이미지](/src/main/resources/static/images/readMe/책상세.png)           |
+|                                 <b>주문내역 화면                                  |                                    <b>내가 쓴 리뷰 화면                                   |
+|       ![주문내역 이미지](/src/main/resources/static/images/readMe/주문내역.png)        |         ![내가 쓴 리뷰 이미지](/src/main/resources/static/images/readMe/내가쓴리뷰.png)         |
+|                                <b>내가 찜한 책 화면                                |                                 <b>내가 찜한 추천 리스트 화면                                 |
+|     ![내가 찜한 책 이미지](/src/main/resources/static/images/readMe/내가찜한책.png)      |         ![게시글 이미지](/src/main/resources/static/images/readMe/내가찜한추천리스트.png)         |
+|                                  <b>결제 화면                                   |                                  <b>추천 리스트 만들기 화면                                  |
+|        ![결제 이미지](/src/main/resources/static/images/readMe/결제페이지.png)        |       ![추천 리스트 만들기 이미지](/src/main/resources/static/images/readMe/리스트만들기.png)       |
+|                               <b>회원 정보 수정 화면                                |                                    <b>비밀번호 수정 화면                                   |
+|     ![회원 정보 수정 이미지](/src/main/resources/static/images/readMe/회원수정.png)      |         ![비밀번호 수정 이미지](/src/main/resources/static/images/readMe/비밀번호수정.png)        |
+|                                 <b>장바구니 화면                                  |                                     <b>책 검색 화면                                     |
+|       ![장바구니 이미지](/src/main/resources/static/images/readMe/장바구니.png)        |            ![책 검색 이미지](/src/main/resources/static/images/readMe/책검색.png)           |
+|                               <b>앨런 실시간 검색 화면                               |                                <b>앨런 실시간 검색(결과물) 화면                                |
 |  ![앨런 실시간 검색 이미지](/src/main/resources/static/images/readMe/앨런실시간검색서비스.png)  | ![앨런 실시간 검색(결과물) 이미지](/src/main/resources/static/images/readMe/앨런실시간검색서비스(결과물).png) |
-|                             <b>내가 만든 추천 리스트 화면                              |                                     <b>결제 모듈 화면                                     |
-| ![내가 만든 추천 리스트 이미지](/src/main/resources/static/images/readMe/내가만든추천리스트.png) |           ![결제 모듈 이미지](/src/main/resources/static/images/readMe/결제모듈.png)           |
-|                                 <b>결제 완료 화면                                 |                                 <b>주문 내역(관리자) 조회 화면                                 |
-|       ![결제 완료 이미지](/src/main/resources/static/images/readMe/결제완료.png)       |      ![주문 내역(관리자) 이미지](/src/main/resources/static/images/readMe/관리자주문내역조회.png)      |
-|                               <b>월 별 매출 조회 화면                               |                                 <b> 카테고리 별 매출 조회 화면                                 |
-|    ![월 별 매출 이미지](/src/main/resources/static/images/readMe/매출조회(월별).png)     |      ![카테고리 별 매출 이미지](/src/main/resources/static/images/readMe/카테고리별매출조회.png)       |
-|                                 <b>회원 조회 화면                                 |                                     <b>재고 조회 화면                                     |
-|       ![회원조회 이미지](/src/main/resources/static/images/readMe/회원조회.png)        |           ![재고 조회 이미지](/src/main/resources/static/images/readMe/재고조회.png)           |
-|                                 <b>배송 조회 화면                                 |                                     <b>신간 등록 화면                                     |
-|       ![배송 조회 이미지](/src/main/resources/static/images/readMe/배송관리.png)       |      ![앨런 실시간 검색(결과물) 이미지](/src/main/resources/static/images/readMe/신간등록.png)       |
+|                             <b>내가 만든 추천 리스트 화면                              |                                     <b>결제 모듈 화면                                    |
+| ![내가 만든 추천 리스트 이미지](/src/main/resources/static/images/readMe/내가만든추천리스트.png) |           ![결제 모듈 이미지](/src/main/resources/static/images/readMe/결제모듈.png)          |
+|                                 <b>결제 완료 화면                                 |                                 <b>주문 내역(관리자) 조회 화면                                |
+|       ![결제 완료 이미지](/src/main/resources/static/images/readMe/결제완료.png)       |      ![주문 내역(관리자) 이미지](/src/main/resources/static/images/readMe/관리자주문내역조회.png)     |
+|                               <b>월 별 매출 조회 화면                               |                                 <b> 카테고리 별 매출 조회 화면                                |
+|    ![월 별 매출 이미지](/src/main/resources/static/images/readMe/매출조회(월별).png)     |      ![카테고리 별 매출 이미지](/src/main/resources/static/images/readMe/카테고리별매출조회.png)      |
+|                                 <b>회원 조회 화면                                 |                                     <b>재고 조회 화면                                    |
+|       ![회원조회 이미지](/src/main/resources/static/images/readMe/회원조회.png)        |           ![재고 조회 이미지](/src/main/resources/static/images/readMe/재고조회.png)          |
+|                                 <b>배송 조회 화면                                 |                                     <b>신간 등록 화면                                    |
+|       ![배송 조회 이미지](/src/main/resources/static/images/readMe/배송관리.png)       |      ![앨런 실시간 검색(결과물) 이미지](/src/main/resources/static/images/readMe/신간등록.png)      |
+|                                <b>ai 추천 책 관리                                |                                                                                    |
+|    ![ai 추천 책 관리 이미지](/src/main/resources/static/images/readMe/ai책관리.png)    |          |
 
 
 <br><br>
