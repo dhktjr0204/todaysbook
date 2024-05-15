@@ -418,9 +418,8 @@ public class AdminController {
 
     @GetMapping("/gemini-recommend-book")
     public String showGeminiRecommendBooks(Model model) {
-        List<BookDto> todayRecommendBooks = geminiRecommendBookService.getTodayRecommendBooks();
+        List<GeminiRecommendBookDto> todayRecommendBooks = geminiRecommendBookService.getTodayRecommendBooks();
         model.addAttribute("todayRecommendBooks", todayRecommendBooks);
-        log.info("todayRecommendBooks: " + todayRecommendBooks);
         return "admin/gemini-recommend-book";
     }
 }
