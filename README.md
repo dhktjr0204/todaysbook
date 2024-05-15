@@ -78,7 +78,7 @@
     <td align="center">Backend, Front</td>
 </tr> 
 <tr> 
-    <td align="center">로그인 API 개발<br>회원가입 API 개발<br>회원 정보 수정 API 개발<br>비밀번호 수정 API 개발<br>Spring Security<br>JavaScript 개발 (로그인, 회원가입, 정보 수정)</td>
+    <td align="center">로그인 API 개발<br>회원가입 API 개발<br>회원 정보 수정 API 개발<br>비밀번호 수정 API 개발<br>Spring Security<br>JavaScript 개발 (로그인, 회원가입, 정보 수정)<br>API 명세서 작성<br>시연 영상 제작</td>
     <td align="center">결제 API연동<br>API 연동을 위해 개발 회사에 질의 응답<br>결제 후 주문 생성 로직 작성<br>결제 페이지 자바스크립트 작성<br>세션을 활용한 데이터 전달<br>결제 페이지 정보 유지 오류 해결을 위한 html, css조작</td>
     <td align="center">ERD 설계<br>Alan API 활용 SSE 실시간 채팅 API<br>Alan 챗봇 동적 채팅 UI<br>Alan 초기화 API 연동<br>Gemini API 활용 스케줄링 자동/수동 책 추천 및 배치 작업<br>Gemini 추천 책 조회 및 관리 API<br>Gemini 추천 책 관리자 페이지 UI<br>알라딘 API 활용 책 정보 검색 및 저장<br></td>
 </tr> 
