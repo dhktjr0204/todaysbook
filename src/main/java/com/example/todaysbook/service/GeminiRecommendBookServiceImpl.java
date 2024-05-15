@@ -100,9 +100,10 @@ public class GeminiRecommendBookServiceImpl implements GeminiRecommendBookServic
     // 오늘 추천된 책 목록 반한하기
     public List<GeminiRecommendBookDto> getTodayRecommendBooks() {
         LocalDate today = LocalDate.now();
+        LocalDate tomorrow = today.plusDays(1);
 
         List<GeminiRecommendBook> todayRecommendBooks = geminiRecommendBookRepository.findByDateBetween(
-                        today.atStartOfDay(), today.atTime(23, 59, 59))
+                        today.atTime(9, 0, 0), tomorrow.atTime(8, 59, 59))
                 .stream()
                 .distinct()
                 .toList();
