@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,38 +25,53 @@ public class GeminiRecommendBooksController {
     @Scheduled(cron = "${scheduler.cron.expression}")
     @GetMapping("/ApiCall")
     public ResponseEntity<String> AutomaticallyGeminiApi() {
-        return geminiApiService.AutomaticallycallGeminiApi();
+        try {
+            return geminiApiService.AutomaticallycallGeminiApi();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred during automatic API call: " + e.getMessage());
+        }
     }
 
     // 관리자 페이지에서 수동으로 책을 추천
     @PostMapping("/recommendBooks")
     public ResponseEntity<?> ManuallyGeminiApi(@RequestParam("quantity") int quantity,
-                                            @RequestParam("temperature") double temperature) {
+                                               @RequestParam("temperature") double temperature) {
         try {
             geminiApiService.ManuallyCallGeminiApi(quantity, temperature);
             return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        } catch (IllegalArgumentException e) { // quantity와 temperature가 범위를 벗어나면
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (Exception e) { // 그 외의 예외
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred during manual API call: " + e.getMessage());
         }
     }
 
     // 관리자 페이지에서 추천된 책 삭제
     @DeleteMapping("/deleteRecommendBook/{id}")
     public ResponseEntity<?> deleteBook(@PathVariable("id") Long id) {
-        boolean deleted = geminiRecommendBookService.deleteBook(id);
-        if (deleted) {
-            return ResponseEntity.ok().build();
-        } else {
-            return ResponseEntity.notFound().build();
+        try {
+            boolean deleted = geminiRecommendBookService.deleteBook(id);
+            if (deleted) {
+                return ResponseEntity.ok().build();
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while deleting the book: " + e.getMessage());
         }
     }
 
     // 추천된 책 리스트 index 페이지에 출력
     @GetMapping("/recommendList")
-    public List<BookDto> getTodayRecommendBooks() {
-        List<GeminiRecommendBookDto> recommendBookDtos = geminiRecommendBookService.getTodayRecommendBooks();
-        return recommendBookDtos.stream()
-                .map(GeminiRecommendBookDto::getBookDto)
-                .collect(Collectors.toList());
+    public ResponseEntity<List<BookDto>> getTodayRecommendBooks() {
+        try {
+            List<GeminiRecommendBookDto> recommendBookDtos = geminiRecommendBookService.getTodayRecommendBooks();
+            List<BookDto> bookDtos = recommendBookDtos.stream()
+                    .map(GeminiRecommendBookDto::getBookDto)
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok(bookDtos);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }
