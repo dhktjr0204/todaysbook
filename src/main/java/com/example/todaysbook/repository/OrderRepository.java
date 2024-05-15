@@ -25,6 +25,9 @@ public interface OrderRepository extends JpaRepository<Orders, Long> {
     Page<DailyOrderDto> getOrdersByOrderDate(LocalDate date, Pageable pageable);
     long count();
 
+    @Query(value = "SELECT id FROM orders ORDER BY id DESC LIMIT 1", nativeQuery = true)
+    Long findLastOrderId();
+
     @Query(value = "select new com.example.todaysbook.domain.dto.MyPageOrderDto(" +
             "o.id, o.deliveryId, o.orderDate, sum(ob.bookCount * b.price) as sales) " +
             "from Orders o " +
