@@ -76,9 +76,9 @@
                     <button th:class="${todayRecommendBooks.size() > 5 ? 'prev-btn' : 'prev-btn-hidden'}" th:onclick="prevSlide('today', this)">&lt;</button>
                     <div class="slider-container">
                         <ul class="recommend-list">
-                            <li class="book-item" th:each="book : ${todayRecommendBooks}" th:value="${book.id}">
+                            <li class="book-item" th:each="book : ${todayRecommendBooks}" th:value="${book.bookDto.id}">
                                 <figure class="book-info">
-                                    <a th:href="@{'/book/detail/' + ${book.id}}">
+                                    <a th:href="@{'/book/detail/' + ${book.bookDto.id}}">
                                         <img th:src="${book.bookDto.image}" th:alt="${book.bookDto.title}">
                                         <figcaption class="overlay">
                                             <p class="book-title" th:if="${book.bookDto.title.length() > 25}" th:text="${#strings.substring(book.bookDto.title, 0, 25)} + '...'"></p>
