@@ -4,6 +4,7 @@ import com.example.todaysbook.domain.dto.CustomUserDetails;
 import com.example.todaysbook.domain.dto.Review;
 import com.example.todaysbook.domain.dto.ReviewRequestDto;
 import com.example.todaysbook.service.ReviewService;
+import com.example.todaysbook.util.UserChecker;
 import com.example.todaysbook.validate.ReviewCreateValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -44,14 +45,14 @@ public class ReviewController {
                                @AuthenticationPrincipal CustomUserDetails userDetails,
                                Model model, BindingResult result) {
 
-        long userId = userDetails.getUserId();
+        long userId = UserChecker.getUserId(userDetails);
         String orderBy = "latest";
+        requestDto.setUserId(userId);
 
         ReviewCreateValidator validator = new ReviewCreateValidator();
         validator.validate(requestDto, result);
 
-        requestDto.setUserId(userId);
-        int flag = reviewService.addReview(requestDto);
+        reviewService.addReview(requestDto);
 
         List<Review> reviews =
                 reviewService.getReviews(requestDto.getBookId(), requestDto.getUserId(), orderBy);

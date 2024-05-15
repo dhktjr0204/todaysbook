@@ -123,9 +123,10 @@ function clickAddReview(button) {
                 alert("Bad Request: "+ error.responseText);
             }else if(error.status === 401){
                 alert("Unauthorized: "+error.responseText);
+                location.href="/login";
             }else{
                 alert("error: "+error.responseText);
-            } // 에러 응답 본문을 alert 창에 표시
+            }
         }
     });
 }
@@ -273,7 +274,6 @@ function reviewOrderBy(orderBy) {
 
 function starEvents() {
 
-    // 리뷰 평가
     const reviewStars = document.querySelectorAll('.review-star');
     const reviewScore = document.querySelector('.review-score');
     let isReviewClicked = false;
@@ -307,7 +307,6 @@ function starEvents() {
         });
     });
 
-    // 리뷰 수정 평가
     const editReviewStars = document.querySelectorAll('.edit-review-star');
     const editReviewScore = document.querySelector('.edit-review-score');
     let isEditClicked = false;
