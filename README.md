@@ -49,9 +49,9 @@ todaysBook은 책을 사랑하는 사람들을 위한 새로운 e-커머스 플�
     <td align="center">Backend</td>
 </tr> 
 <tr> 
-    <td align="center">ERD 설계<br>책 추천 리스트 API<br>추천 리스트 북마크 API<br>책 정렬 API<br>책 장르별 조회 API<br>책, 리스트 검색 API<br>주문 내역 및 배송 조회 API<br>유저 관리 API<br>신간 등록 API<br>배송 관리 API<br>책 수량 변경 및 수정 관리 API<br>프로젝트 배포</td>
-    <td align="center">ERD 설계<br>aladin api를 이용한 책 데이터 수집 및 정제<br>책 추천 리스트 API<br>추천 리스트 북마크 API<br>책 정렬 API<br>책 장르별 조회 API<br>책, 리스트 검색 API<br>주문 내역 및 배송 조회 API<br>유저 관리 API<br>신간 등록 API<br>배송 관리 API<br>책 수량 변경 및 수정 관리 API<br>JavaScript 개발(관리자, 추천 리스트, 페이징, 검색)<br>프로젝트 배포</td>
-    <td align="center">ERD 설계<br>댓글 API 개발<br>관리자 API 개발<br>신고 API 개발<br>등급 자동 부여 API<br>Spring Security<br>UI 개발(메인페이지, 게시물, 댓글, 관리자페이지)<br>JavaScript 개발(댓글, 신고)</td>
+    <td align="center">프로젝트 관리<br>프로젝트 발표<br>ERD 설계<br>aladin API를 이용한 책 데이터 수집 및 정제<br>UI/UX 디자인<br>디자인 파일 html 템플릿화<br>책 상세 정보 API<br>리뷰 작성 API<br>리뷰 추천/비추천 API<br>책 찜하기 API<br>아이템 기반 추천 시스템 설계<br>현재 책 기준 추천 책 제공 API<br>내가 찜한 책 기준 추천 책 제공 API<br>주문 내역 관리 API<br>매출 관리 API<br>차트를 통한 매출 시각화</td>
+    <td align="center">ERD 설계<br>aladin api를 이용한 책 데이터 수집 및 정제<br>책 추천 리스트 API<br>추천 리스트 북마크 API<br>책 정렬 API<br>책 장르별 조회 API<br>책, 리스트 검색 API<br>주문 내역 및 배송 조회 API<br>유저 관리 API<br>신간 등록 API<br>배송 관리 API<br>책 수량 변경 및 수정 관리 API<br>JavaScript 개발(관리자, 추천 리스트, 페이징, 검색)<br>테스트 코드 작성<br>리드미 작성<br>플로우 차트 작성<br>요구사항 명세서 작성<br>프로젝트 배포</td>
+    <td align="center"></td>
 </tr> 
 </table>
 <table style="width: 100%;">
@@ -89,7 +89,8 @@ todaysBook은 책을 사랑하는 사람들을 위한 새로운 e-커머스 플�
 
 ### [기술 - FE]
 
-<img src="https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white"> <img src="https://img.shields.io/badge/css-1572B6?style=for-the-badge&logo=css3&logoColor=white"> <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black">
+<img src="https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white">
+<img src="https://img.shields.io/badge/css-1572B6?style=for-the-badge&logo=css3&logoColor=white"> <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black">
 
 ### [기술 - BE]
 
@@ -104,15 +105,11 @@ todaysBook은 책을 사랑하는 사람들을 위한 새로운 e-커머스 플�
 
 ### [기술 - AI]
 
-<img src="https://img.shields.io/badge/googlegemini-8E75B2?style=for-the-badge&logo=googlegemini&logoColor=white">
-<img src="https://img.shields.io/badge/alan-66CCFF?style=for-the-badge&logoColor=white">
+<img src="https://img.shields.io/badge/googlegemini-8E75B2?style=for-the-badge&logo=googlegemini&logoColor=white"> <img src="https://img.shields.io/badge/alan-66CCFF?style=for-the-badge&logoColor=white">
 
 ### [개발 도구]
 
-<img src="https://img.shields.io/badge/Amazon EC2-FF9900?style=for-the-badge&logo=Amazon EC2&logoColor=white"> 
-<img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=GitHub&logoColor=white"> 
-<img src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=Discord&logoColor=white">
-<img src="https://img.shields.io/badge/JIRA-0052CC?style=for-the-badge&logo=Jira&logoColor=white">
+<img src="https://img.shields.io/badge/Amazon EC2-FF9900?style=for-the-badge&logo=Amazon EC2&logoColor=white">  <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=GitHub&logoColor=white">  <img src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=Discord&logoColor=white">  <img src="https://img.shields.io/badge/JIRA-0052CC?style=for-the-badge&logo=Jira&logoColor=white">
 
 <br>
 
