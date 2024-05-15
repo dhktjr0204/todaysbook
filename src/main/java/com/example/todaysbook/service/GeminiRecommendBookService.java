@@ -51,41 +51,7 @@ public class GeminiRecommendBookService {
     private final GeminiRecommendBookRepository geminiRecommendBookRepository;
     private final AladinApi aladinApi;
 
-    // 자동으로 책 추천
-    public ResponseEntity<String> callScheduledGeminiApi() {
-        String prompt = String.format(Constant.DEFAULT_PROMPT, Constant.DEFAULT_NATION, Constant.DEFAULT_QUANTITY);
-        return callGeminiApi(prompt, Constant.DEFAULT_QUANTITY, Constant.DEFAULT_TEMPERATURE);
-    }
 
-    // 수동으로 책 추천
-    public void recommendAndSaveBooks(Integer quantity, Double temperature) throws UnsupportedEncodingException {
-        quantity = quantity != null ? quantity : Constant.DEFAULT_QUANTITY;
-        temperature = temperature != null ? temperature : Constant.DEFAULT_TEMPERATURE;
-
-        String prompt = String.format(Constant.DEFAULT_PROMPT, Constant.DEFAULT_NATION, quantity);
-        callGeminiApi(prompt, quantity, temperature);
-    }
-
-    // Gemini API 호출
-    private ResponseEntity<String> callGeminiApi(String prompt, int quantity, double temperature) {
-        try {
-            String message = getContents(prompt, temperature);
-            saveGeminiRecommendBook(message);
-            return ResponseEntity.ok(message);
-        } catch (HttpClientErrorException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (UnsupportedEncodingException e) {
-            return ResponseEntity.status(500).body("Internal Server Error");
-        }
-    }
-
-    // Gemini API 응답
-    private String getContents(String prompt, double temperature) throws UnsupportedEncodingException {
-        String requestUrl = apiUrl + "?key=" + geminiApiKey;
-        GeminiRecommendApiRequest request = new GeminiRecommendApiRequest(prompt, candidateCount, maxOutputTokens, temperature);
-        GeminiRecommendApiResponse response = restTemplate.postForObject(requestUrl, request, GeminiRecommendApiResponse.class);
-        return response.getCandidates().get(0).getContent().getParts().get(0).getText();
-    }
 
     // 추천된 책 DB에 저장 process
     public void saveGeminiRecommendBook(String message) throws UnsupportedEncodingException {
@@ -137,6 +103,15 @@ public class GeminiRecommendBookService {
         log.info("-----------------책 제목 DB 저장 완료-----------------\n");
     }
 
+    // 메시지에서 책 제목 추출
+    private List<String> extractBookTitles(String message) {
+        log.info("---------------책 제목 추출 시작---------------");
+        return Arrays.stream(message.split("\n"))
+                .map(line -> line.replaceAll("^\\d+\\.\\s*", "").trim())
+                .peek(log::info)
+                .collect(Collectors.toList());
+    }
+
     // GeminiRecommendBook 저장
     private void saveGeminiRecommendBookEntity(long bookId) {
         GeminiRecommendBook geminiRecommendBook = GeminiRecommendBook.builder()
@@ -147,14 +122,7 @@ public class GeminiRecommendBookService {
         log.info("bookId(" + bookId + ") GeminiRecommendBook에 저장 완료\n");
     }
 
-    // 메시지에서 책 제목 추출
-    private List<String> extractBookTitles(String message) {
-        log.info("---------------책 제목 추출 시작---------------");
-        return Arrays.stream(message.split("\n"))
-                .map(line -> line.replaceAll("^\\d+\\.\\s*", "").trim())
-                .peek(log::info)
-                .collect(Collectors.toList());
-    }
+
 
     // 오늘 추천된 책 목록 반한하기
     public List<GeminiRecommendBookDto> getTodayRecommendBooks() {

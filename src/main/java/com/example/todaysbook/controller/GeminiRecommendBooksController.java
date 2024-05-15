@@ -2,6 +2,7 @@ package com.example.todaysbook.controller;
 
 import com.example.todaysbook.domain.dto.BookDto;
 import com.example.todaysbook.domain.dto.GeminiRecommendBookDto;
+import com.example.todaysbook.service.GeminiApiService;
 import com.example.todaysbook.service.GeminiRecommendBookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,21 +17,22 @@ import java.util.stream.Collectors;
 @RequestMapping("/gemini")
 public class GeminiRecommendBooksController {
 
+    private final GeminiApiService geminiApiService;
     private final GeminiRecommendBookService geminiRecommendBookService;
 
     // 하루에 한번 자동으로 책을 추천
     @Scheduled(cron = "${scheduler.cron.expression}")
     @GetMapping("/ApiCall")
-    public ResponseEntity<String> ScheduledGeminiApiCall() {
-        return geminiRecommendBookService.callScheduledGeminiApi();
+    public ResponseEntity<String> AutomaticallyGeminiApi() {
+        return geminiApiService.AutomaticallycallGeminiApi();
     }
 
     // 관리자 페이지에서 수동으로 책을 추천
     @PostMapping("/recommendBooks")
-    public ResponseEntity<?> recommendBooks(@RequestParam("quantity") int quantity,
+    public ResponseEntity<?> ManuallyGeminiApi(@RequestParam("quantity") int quantity,
                                             @RequestParam("temperature") double temperature) {
         try {
-            geminiRecommendBookService.recommendAndSaveBooks(quantity, temperature);
+            geminiApiService.ManuallyCallGeminiApi(quantity, temperature);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
