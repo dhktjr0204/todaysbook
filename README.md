@@ -1,4 +1,4 @@
-# 🖥 프로젝트 명 'TodaysBook'
+# 🖥 프로젝트 명 '오늘의 책'
 
 ### 목차
 - [1. 프로젝트 소개](#1-프로젝트-소개)
@@ -9,6 +9,8 @@
 - [6. 아키텍처 설계도](#6-아키텍처-설계도)
 - [7. DB 구성도](#7-DB-구성도)
 - [8. 플로우 차트](#8-Flow-Chart)
+- [9. 요구사항 및 기능 명세](#9-요구사항-및-기능명세)
+- [10. API 명세서](#10-API-명세서)
 - [11. UI](#11-UI)
 - [12. 주요 기능](#12-주요-기능)
 - [13. 프로젝트 구조](#13-프로젝트-구조)
@@ -16,7 +18,7 @@
 
 # 1. 프로젝트 소개
 
-todaysBook은 책을 사랑하는 사람들을 위한 새로운 e-커머스 플랫폼입니다.<br>
+오늘의 책은 책을 사랑하는 사람들을 위한 새로운 e-커머스 플랫폼입니다.<br>
 평소에 좋아하던 책들을 공유하고, 다른 사람들 혹은 AI의 추천을 받아보며 새로운 책을 발견해보세요!
 
 <br><br>
@@ -49,31 +51,36 @@ todaysBook은 책을 사랑하는 사람들을 위한 새로운 e-커머스 플�
     <td align="center">Backend</td>
 </tr> 
 <tr> 
-    <td align="center">프로젝트 관리<br>프로젝트 발표<br>ERD 설계<br>aladin API를 이용한 책 데이터 수집 및 정제<br>UI/UX 디자인<br>디자인 파일 html 템플릿화<br>책 상세 정보 API<br>리뷰 작성 API<br>리뷰 추천/비추천 API<br>책 찜하기 API<br>아이템 기반 추천 시스템 설계<br>현재 책 기준 추천 책 제공 API<br>내가 찜한 책 기준 추천 책 제공 API<br>주문 내역 관리 API<br>매출 관리 API<br>차트를 통한 매출 시각화</td>
-    <td align="center">ERD 설계<br>aladin api를 이용한 책 데이터 수집 및 정제<br>책 추천 리스트 API<br>추천 리스트 북마크 API<br>책 정렬 API<br>책 장르별 조회 API<br>책, 리스트 검색 API<br>주문 내역 및 배송 조회 API<br>유저 관리 API<br>신간 등록 API<br>배송 관리 API<br>책 수량 변경 및 수정 관리 API<br>JavaScript 개발(관리자, 추천 리스트, 페이징, 검색)<br>테스트 코드 작성<br>리드미 작성<br>플로우 차트 작성<br>요구사항 명세서 작성<br>프로젝트 배포</td>
-    <td align="center"></td>
+    <td align="center">프로젝트 관리<br>프로젝트 발표<br>ERD 설계<br>aladin API를 이용한 책 데이터 수집 및 정제<br>UI/UX 디자인<br>디자인 파일 html 템플릿화<br>책 상세 정보 API<br>리뷰 작성 API<br>리뷰 추천/비추천 API<br>책 찜하기 API<br>아이템 기반 추천 시스템 설계<br>현재 책 기준 추천 책 제공 API<br>내가 찜한 책 기준 추천 책 제공 API<br>주문 내역 관리 API<br>매출 관리 API<br>차트를 통한 매출 시각화<br>테스트 코드 작성</td>
+    <td align="center">ERD 설계<br>aladin api를 이용한 책 데이터 수집 및 정제<br>책 추천 리스트 API<br>추천 리스트 북마크 API<br>책 정렬 API<br>책 장르별 조회 API<br>책, 리스트 검색 API<br>주문 내역 및 배송 조회 API<br>유저 관리 API<br>알라딘 API 활용 신간 등록 API<br>배송 관리 API<br>책 수량 변경 및 수정 관리 API<br>JavaScript 개발(관리자, 추천 리스트, 페이징, 검색)<br>테스트 코드 작성<br>리드미 작성<br>플로우 차트 작성<br>요구사항 명세서 작성<br>프로젝트 배포</td>
+    <td align="center">장바구니 API 개발<br>장바구니 추가 및 삭제API<br>상품 수량 증감 조절 API<br>마일리지 등급별 차등적용 API<br>JavaScript(주문금액,배송료,마일리지,총 결제금액 계산로직 및 실시간 업데이트)</td>
 </tr> 
 </table>
 <table style="width: 100%;">
 <tr>
     <td align="center" style="width: 25%;"><a href="https://github.com/JuwoenLee"><img src="src/main/resources/static/images/readMe/juweon.png" width="130px;" alt=""></a></td>
-    <td align="center" style="width: 25%;"><a href="https://github.com/udidcs"><img src="src/main/resources/static/images/readMe/jeajung.jpg" width="130px;" alt=""></a></td>
+    <td align="center" style="width: 25%;"><a href="https://github.com/udidcs"><img src="src/main/resources/static/images/readMe/jeajung.jpg" width="130px;" alt=""></a></td>    
+    <td align="center" style="width: 25%;"><a href="https://github.com/BaxDailyGit"><img src="src/main/resources/static/images/readMe/seongjin.jpg" width="130px;" alt=""></a></td>
 </tr>
 <tr>
     <td align="center"><a href="https://github.com/JuwoenLee"><b>이주원</b></a></td>
     <td align="center"><a href="https://github.com/udidcs"><b>변재정</b></a></td>
+    <td align="center"><a href="https://github.com/BaxDailyGit"><b>백승진</b></a></td>
 </tr>
 <tr>
+    <td align="center">팀원</td>
     <td align="center">팀원</td>
     <td align="center">팀원</td>
 </tr>
 <tr>
     <td align="center">Backend</td>
     <td align="center">Backend</td>
+    <td align="center">Backend, Front</td>
 </tr> 
 <tr> 
     <td align="center">로그인 API 개발<br>회원가입 API 개발<br>회원 정보 수정 API 개발<br>비밀번호 수정 API 개발<br>Spring Security<br>JavaScript 개발 (로그인, 회원가입, 정보 수정)</td>
     <td align="center">결제 API연동<br>API 연동을 위해 개발 회사에 질의 응답<br>결제 후 주문 생성 로직 작성<br>결제 페이지 자바스크립트 작성<br>세션을 활용한 데이터 전달<br>결제 페이지 정보 유지 오류 해결을 위한 html, css조작</td>
+    <td align="center">ERD 설계<br>Alan API 활용 SSE 실시간 채팅 API<br>Alan 챗봇 동적 채팅 UI<br>Alan 초기화 API 연동<br>Gemini API 활용 스케줄링 자동/수동 책 추천 및 배치 작업<br>Gemini 추천 책 조회 및 관리 API<br>Gemini 추천 책 관리자 페이지 UI<br>알라딘 API 활용 책 정보 검색 및 저장<br></td>
 </tr> 
 </table>
 
@@ -94,7 +101,7 @@ todaysBook은 책을 사랑하는 사람들을 위한 새로운 e-커머스 플�
 
 ### [기술 - BE]
 
-<img  src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white"> <img alt="Spring Boot" src ="https://img.shields.io/badge/Spring Boot-6DB33F.svg?&style=for-the-badge&logo=springboot&logoColor=white"/> <img src="https://img.shields.io/badge/thymeleaf-005F0F?style=for-the-badge&logo=thymeleaf&logoColor=white">
+<img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white"> <img alt="Spring Boot" src ="https://img.shields.io/badge/Spring Boot-6DB33F.svg?&style=for-the-badge&logo=springboot&logoColor=white"/> <img src="https://img.shields.io/badge/thymeleaf-005F0F?style=for-the-badge&logo=thymeleaf&logoColor=white">
 
 ### [기술 - DB]
 
@@ -135,36 +142,182 @@ todaysBook은 책을 사랑하는 사람들을 위한 새로운 e-커머스 플�
 
 # 9. 요구사항 및 기능명세
 
+![요구사항 및 기능 명세](/src/main/resources/static/images/readMe/요구사항.png)
+
 # 10. API 명세서
 
-### Admin
-| URL                              | HTTP Method | 설명               |   로그인 권한 필요   |  작성자 권한 필요  | Admin 권한 
-|----------------------------------|-------------|------------------|:-------------:|:-----------:|:--------:|
-| '/admin/userlist'                | GET         | 회원 목록 조회         |       ✅       |             |     ✅     |
-| '/admin/userlist/search'         | GET         | 회원 목록 검색         |       ✅       |             |     ✅     |
-| '/admin/userlist'                | PUT         | 회원 등급 수정         |       ✅       |             |     ✅     |
-| '/admin/userlist'                | DELETE      | 회원 삭제            |       ✅       |             |     ✅     |
-| '/admin/stocklist'               | GET         | 책 재고 목록 조회       |       ✅       |             |     ✅     |
-| '/admin/stocklist/search'        | GET         | 책 재고 검색          |       ✅       |             |     ✅     |
-| '/admin/stocklist/sold-out'      | GET         | 책 재고 품절 목록 조회    |       ✅       |             |     ✅     |
-| '/admin/stocklist'               | PUT         | 책 재고 수정          |       ✅       |             |     ✅     |
-| '/admin/stocklist'               | DELETE      | 책 삭제             |       ✅       |             |     ✅     |
-| '/admin/booklist'                | GET         | 전체 책 목록 조회       |       ✅       |             |     ✅     |
-| '/admin/booklist/search'         | GET         | 전체 책 목록 검색       |       ✅       |             |     ✅     |
-| '/admin/booklist/edit'           | GET         | 책 정보 수정 페이지      |       ✅       |             |     ✅     |
-| '/admin/booklist/edit'           | PUT         | 책 정보 수정          |       ✅       |             |     ✅     |
-| '/admin/book_registration'       | GET         | 신간 등록 페이지        |       ✅       |             |     ✅     |
+## Admin
+| URL                               | HTTP Method | 설명               |   로그인 권한 필요   |  작성자 권한 필요  | Admin 권한 
+|-----------------------------------|-------------|------------------|:-------------:|:-----------:|:--------:|
+| '/admin/userlist'                 | GET         | 회원 목록 조회         |       ✅       |             |     ✅     |
+| '/admin/userlist/search'          | GET         | 회원 목록 검색         |       ✅       |             |     ✅     |
+| '/admin/userlist'                 | PUT         | 회원 등급 수정         |       ✅       |             |     ✅     |
+| '/admin/userlist'                 | DELETE      | 회원 삭제            |       ✅       |             |     ✅     |
+| '/admin/stocklist'                | GET         | 책 재고 목록 조회       |       ✅       |             |     ✅     |
+| '/admin/stocklist/search'         | GET         | 책 재고 검색          |       ✅       |             |     ✅     |
+| '/admin/stocklist/sold-out'       | GET         | 책 재고 품절 목록 조회    |       ✅       |             |     ✅     |
+| '/admin/stocklist'                | PUT         | 책 재고 수정          |       ✅       |             |     ✅     |
+| '/admin/stocklist'                | DELETE      | 책 삭제             |       ✅       |             |     ✅     |
+| '/admin/booklist'                 | GET         | 전체 책 목록 조회       |       ✅       |             |     ✅     |
+| '/admin/booklist/search'          | GET         | 전체 책 목록 검색       |       ✅       |             |     ✅     |
+| '/admin/booklist/edit'            | GET         | 책 정보 수정 페이지      |       ✅       |             |     ✅     |
+| '/admin/booklist/edit'            | PUT         | 책 정보 수정          |       ✅       |             |     ✅     |
+| '/admin/book_registration'        | GET         | 신간 등록 페이지        |       ✅       |             |     ✅     |
 | '/admin/book_registration/search' | GET         | 신간 검색            |       ✅       |             |     ✅     |
-| '/admin/book_registration'       | PUT         | 신간 등록            |       ✅       |             |     ✅     |
-| '/admin/sync'                    | GET         | 추천 정보 동기화        |       ✅       |             |     ✅     |
-| '/admin/sales'                   | GET         | 매출 관리 페이지        |       ✅       |             |     ✅     |
-| '/admin/sales_category'          | GET         | 카테고리 별 매출 관리 페이지 |       ✅       |             |     ✅     |
-| '/admin/sales_book'              | GET         | 책 별 매출 관리 페이지    |       ✅       |             |     ✅     |
-| '/admin/order'                   | GET         | 주문 목록 조회         |       ✅       |             |     ✅     |
-| '/admin/order/{id}'              | GET         | 주문 상세 조회         |       ✅       |             |     ✅     |
-| '/admin/delivery'                | GET         | 배송 목록 조회         |       ✅       |             |     ✅     |
-| '/admin/delivery/search'         | GET         | 배송 검색            |       ✅       |             |     ✅     |
-| '/admin/delivery'          | PUT         | 배송 상태 수정         |       ✅       |             |     ✅     |
+| '/admin/book_registration'        | PUT         | 신간 등록            |       ✅       |             |     ✅     |
+| '/admin/sync'                     | GET         | 추천 정보 동기화        |       ✅       |             |     ✅     |
+| '/admin/sales'                    | GET         | 매출 관리 페이지        |       ✅       |             |     ✅     |
+| '/admin/sales_category'           | GET         | 카테고리 별 매출 관리 페이지 |       ✅       |             |     ✅     |
+| '/admin/sales_book'               | GET         | 책 별 매출 관리 페이지    |       ✅       |             |     ✅     |
+| '/admin/order'                    | GET         | 주문 목록 조회         |       ✅       |             |     ✅     |
+| '/admin/order/{id}'               | GET         | 주문 상세 조회         |       ✅       |             |     ✅     |
+| '/admin/delivery'                 | GET         | 배송 목록 조회         |       ✅       |             |     ✅     |
+| '/admin/delivery/search'          | GET         | 배송 검색            |       ✅       |             |     ✅     |
+| '/admin/delivery'                 | PUT         | 배송 상태 수정         |       ✅       |             |     ✅     |
+| '/admin/updateinfo'               | GET         | 관리자 정보 수정 페이지    |       ✅       |       ✅      |     ✅     |
+| '/admin/updatepw'                 | GET         | 관리자 비밀번호 변경 페이지  |       ✅       |       ✅      |     ✅     |
+| '/admin/gemini-recommend-book'    | GET         | 오늘의 추천 도서 목록 페이지 |       ✅       |       ✅      |     ✅     |
+
+## AlanChat
+| URL                   | HTTP Method | 설명              |  로그인 권한 필요   |  작성자 권한 필요  | Admin 권한 
+|-----------------------|-------------|-----------------|:------------:|:-----------:|:--------:|
+| '/alan/see-streaming' | GET         | Alan 챗봇 응답 스트리밍 |              |             |          |
+| '/alan/reset-state'   | GET         | Alan 챗봇 응답 스트리밍 |              |             |          |
+
+## AlanView
+| URL          | HTTP Method | 설명          |  로그인 권한 필요   |  작성자 권한 필요  | Admin 권한 
+|--------------|-------------|-------------|:------------:|:-----------:|:--------:|
+| '/alan/chat' | GET         | Alan 챗봇 페이지 |              |             |          |
+
+## BookDetail
+| URL                     | HTTP Method | 설명      |  로그인 권한 필요   |  작성자 권한 필요  | Admin 권한 
+|-------------------------|-------------|---------|:------------:|:-----------:|:--------:|
+| '/book/detail/{bookId}' | GET         | 책 상세 조회 |              |             |          |
+
+## BookMark
+| URL                | HTTP Method | 설명   |  로그인 권한 필요   |  작성자 권한 필요  | Admin 권한 
+|--------------------|-------------|------|:------------:|:-----------:|:--------:|
+| '/bookmark/add'    | POST        | 찜 추가 |       ✅       |       ✅      |          |
+| '/bookmark/cancel' | POST        | 찜 삭제 |       ✅       |       ✅      |          |
+
+## Cart
+| URL                                    | HTTP Method | 설명          |  로그인 권한 필요   |  작성자 권한 필요  | Admin 권한 
+|----------------------------------------|-------------|-------------|:------------:|:-----------:|:--------:|
+| '/cart/list'                           | GET         | 장바구니 목록 조회  |       ✅       |       ✅      |          |
+| '/cart/add'                            | GET         | 장바구니에 책 추가  |       ✅       |       ✅      |          |
+| '/cart/delete-unselected'              | POST        | 선택 안 된 책 삭제 |       ✅       |       ✅      |          |
+| '/cart/increase-quantity/{cartBookId}' | PUT         | 책 수량 증가     |       ✅       |       ✅      |          |
+| '/cart/decrease-quantity/{cartBookId}' | PUT         | 책 수량 감소     |       ✅       |       ✅      |          |
+
+## Category
+| URL              | HTTP Method | 설명           |  로그인 권한 필요   |  작성자 권한 필요  | Admin 권한 
+|------------------|-------------|--------------|:------------:|:-----------:|:--------:|
+| '/category/{id}' | GET         | 카테고리 별 목록 조회 |              |             |          |
+
+## FavoriteBook
+| URL                     | HTTP Method | 설명          |  로그인 권한 필요   |  작성자 권한 필요  | Admin 권한 
+|-------------------------|-------------|-------------|:------------:|:-----------:|:--------:|
+| '/favorite_book/add'    | POST        | 추천 리스트 찜 추가 |      ✅       |       ✅      |          |
+| '/favorite_book/delete' | POST        | 추천 리스트 찜 삭제 |      ✅       |       ✅      |          |
+
+## GeminiApiCall
+| URL               | HTTP Method | 설명                  |  로그인 권한 필요  |  작성자 권한 필요  | Admin 권한 
+|-------------------|-------------|---------------------|:-----------:|:-----------:|:--------:|
+| '/gemini/ApiCall' | GET         | Gemini API로 책 추천 목록 |             |             |          |
+
+## GeminiRecommendBooks
+| URL                     | HTTP Method | 설명            |  로그인 권한 필요  |  작성자 권한 필요  | Admin 권한 
+|-------------------------|-------------|---------------|:-----------:|:-----------:|:--------:|
+| '/gemini/recommendList' | GET         | 추천 받은 책 목록 조회 |             |             |          |
+
+## Main
+| URL                    | HTTP Method | 설명          |  로그인 권한 필요  |  작성자 권한 필요  | Admin 권한 
+|------------------------|-------------|-------------|:-----------:|:-----------:|:--------:|
+| '/' | GET         | 인덱스 페이지 렌더링 |             |             |          |
+
+## Mypage
+| URL                              | HTTP Method | 설명              |  로그인 권한 필요  |  작성자 권한 필요  | Admin 권한 
+|----------------------------------|-------------|-----------------|:-----------:|:-----------:|:--------:|
+| '/mypage/my_recommend_list'      | GET         | 내가 만든 추천 리스트 조회 |     ✅        |      ✅       |          |
+| '/mypage/my_book_mark_list'      | GET         | 내가 찜한 리스트 조회    |     ✅        |      ✅       |          |
+| '/mypage/review'                 | GET         | 내가 쓴 리뷰 조회      |     ✅        |      ✅       |          |
+| '/mypage/favoritebook'           | GET         | 찜한 책 목록 조회      |     ✅        |      ✅       |          |
+| '/mypage/mileage_history'        | GET         | 마일리지 내역 조회      |     ✅        |      ✅       |          |
+| '/mypage/orderlist'              | GET         | 주문 목록 조회        |     ✅        |      ✅       |          |
+| '/mypage/user/order_detail/{id}' | GET         | 주문 상세 조회        |     ✅        |      ✅       |          |
+| '/mypage/user/delivery/{id}'     | GET         | 배송 상태 조회        |     ✅        |      ✅       |          |
+| '/mypage/updateinfo'             | GET         | 회원 정보 수정 페이지    |     ✅        |      ✅       |          |
+| '/mypage/updatepw'               | GET         | 비밀번호 변경 페이지     |     ✅        |      ✅       |          |
+
+## Payment
+| URL                   | HTTP Method | 설명            |  로그인 권한 필요  |  작성자 권한 필요  | Admin 권한 
+|-----------------------|-------------|---------------|:-----------:|:-----------:|:--------:|
+| '/payment/virtual'    | GET         | 가상 계좌 결제      |     ✅        |      ✅       |          |
+| '/payment/card'       | GET         | 신용카드 결제       |     ✅        |      ✅       |          |
+| '/payment/card'       | POST        | 신용카드 결제 정보 전송 |     ✅        |      ✅       |          |
+| '/payment/success'    | GET         | 결제 성공 페이지     |     ✅        |      ✅       |          |
+| '/payment/fail'       | GET         | 결제 실패 페이지     |     ✅        |      ✅       |          |
+| '/payment/confirm'    | POST        | 결제 확인 요청      |     ✅        |      ✅       |          |
+| '/payment/info'       | GET         | 결제 정보 조회      |     ✅        |      ✅       |          |
+| '/payment/info'       | POST        | 배송 상태 조회      |     ✅        |      ✅       |          |
+| '/payment/card/order' | POST        | 주문 생성 요청      |     ✅        |      ✅       |          |
+| '/payment/webhook'    | POST        | 웹 훅 처리        |     ✅        |      ✅       |          |
+
+## RecommendList
+| URL                      | HTTP Method | 설명            |  로그인 권한 필요  |  작성자 권한 필요  | Admin 권한 
+|--------------------------|-------------|---------------|:-----------:|:-----------:|:--------:|
+| '/recommend/detail'      | GET         | 추천 리스트 상세 조회  |     ✅        |      ✅       |          |
+| '/recommend/add'         | GET         | 추천 리스트 생성 페이지 |     ✅        |      ✅       |          |
+| '/recommend/add'         | POST        | 추천 리스트 생성     |     ✅        |      ✅       |          |
+| '/recommend/update/{id}' | GET         | 추천 리스트 수정 페이지 |     ✅        |      ✅       |          |
+| '/recommend/update/{id}' | PUT         | 추천 리스트 수정     |     ✅        |      ✅       |          |
+| '/recommend/remove/{id}' | DELETE      | 추천 리스트 삭제     |     ✅        |      ✅       |          |
+
+## Review
+| URL                      | HTTP Method | 설명        |  로그인 권한 필요  |  작성자 권한 필요  | Admin 권한 
+|--------------------------|-------------|-----------|:-----------:|:-----------:|:--------:|
+| '/review'                | GET         | 리뷰 조회     |     ✅        |      ✅       |          |
+| '/review/add'            | POST        | 리뷰 작성     |     ✅        |      ✅       |          |
+| '/review/delete'         | DELETE      | 리뷰 삭제     |     ✅        |      ✅       |          |
+| '/review/update'         | PUT         | 리뷰 수정     |     ✅        |      ✅       |          |
+| '/review/add_like'       | POST        | 리뷰 추천 추가  |     ✅        |      ✅       |          |
+| '/review/add_dislike'    | POST        | 리뷰 비추천 추가 |     ✅        |      ✅       |          |
+| '/review/delete_like'    | DELETE      | 리뷰 추천 삭제  |     ✅        |      ✅       |          |
+| '/review/delete_dislike' | DELETE      | 리뷰 비추천 삭제 |     ✅        |      ✅       |          |
+
+## Sales
+| URL               | HTTP Method | 설명          |  로그인 권한 필요  |  작성자 권한 필요  | Admin 권한 
+|-------------------|-------------|-------------|:-----------:|:-----------:|:--------:|
+| '/sales'          | GET         | 연도별 매출 조회   |     ✅        |      ✅       |          |
+| '/sales/category' | GET         | 카테고리별 매출 조회 |     ✅        |      ✅       |          |
+
+## Search
+| URL                        | HTTP Method | 설명        | 로그인 권한 필요  | 작성자 권한 필요  | Admin 권한 
+|----------------------------|-------------|-----------|:----------:|:----------:|:--------:|
+| '/book/search'             | GET         | 책 검색      |            |            |          |
+| '/book/search/list'        | GET         | 리스트 검색    |            |            |          |
+| '/book/search/create/list' | GET         | 책 검색(API) |            |            |          |
+
+## User
+| URL                        | HTTP Method | 설명          | 로그인 권한 필요  | 작성자 권한 필요  | Admin 권한 
+|----------------------------|-------------|-------------|:----------:|:----------:|:--------:|
+| '/user/register'           | POST        | 회원가입        |      ✅      |            |          |
+| '/user/update/nickname'    | PUT         | 회원 닉네임 수정   |      ✅      |            |          |
+| '/user/update/addressinfo' | PUT         | 회원 주소 정보 수정 |      ✅      |            |          |
+| '/user/update/password'    | PUT         | 회원 비밀번호 수정  |      ✅      |            |          |
+| '/user/withdraw'           | DELETE      | 회원 탈퇴       |      ✅      |            |          |
+
+## UserView
+| URL                          | HTTP Method | 설명          | 로그인 권한 필요  | 작성자 권한 필요  | Admin 권한 
+|------------------------------|-------------|-------------|:----------:|:----------:|:--------:|
+| '/login'                     | GET         | 로그인         |      ✅      |            |          |
+| '/logout'                    | GET         | 로그아웃        |      ✅      |            |          |
+| '/signup'                    | GET         | 회원가입        |      ✅      |            |          |
+| '/checkEmailAvailability'    | GET         | 이메일 중복 확인   |      ✅      |            |          |
+| '/checkNicknameAvailability' | GET         | 닉네임 중복 확인   |      ✅      |            |          |
+| '/checkPasswordAvailability' | GET         | 비밀번호 가용성 확인 |      ✅      |            |          |
+| '/getUserInfo'               | GET         | 회원 정보 조회    |      ✅      |            |          |
+
 
 # 11. UI
 
@@ -202,6 +355,7 @@ todaysBook은 책을 사랑하는 사람들을 위한 새로운 e-커머스 플�
 # 12. 주요 기능
 
 ## (1). 메인 페이지
+![메인 이미지](/src/main/resources/static/images/readMe/메인페이지.gif)
 ### [gemini 추천 기능]
 - 매일 오전 9시에에 gemini가 추천하는 책으로 업데이트됩니다.
 - 추천 책 중 DB에 없는 책들은 aladin API를 사용하여 책을 등록합니다.
@@ -251,7 +405,7 @@ todaysBook은 책을 사랑하는 사람들을 위한 새로운 e-커머스 플�
 <br>
 
 ## (5). 추천 리스트 페이지
-
+![추천 리스트 이미지](/src/main/resources/static/images/readMe/추천리스트.gif)
 - 다른 사용자에게 추천하고 싶은 책들을 리스트로 만들 수 있습니다.
 - 만든 추천 리스트들은 메인페이지에 랜덤으로 3개가 노출됩니다
 - 북마크를 통해 다른 사람이 만든 추천 리스트를 저장할 수 있습니다.저장된 추천 리스트는 마이페이지에서 언제든지 확인할 수 있습니다.
@@ -259,7 +413,7 @@ todaysBook은 책을 사랑하는 사람들을 위한 새로운 e-커머스 플�
 <br>
 
 ## (6). 구매 페이지
-
+![구매 이미지](/src/main/resources/static/images/readMe/구매페이지.gif)
 ### [유저 등급 및 마일리지 적립]
 - 유저 등급에 따라 쌓이는 마일리지가 달라집니다. 다이아몬드 회원은 구매금액의 10%를, 골드 회원은 7%를, 실버 회원은 5%를, 브론즈 회원은는 3%를 적립받습니다.
 - 유저의 등급은 매월 1일에 업데이트됩니다. 한 달 동안 30만원 이상 구매시 다이아몬드, 10만원 이상 구매 시 골드, 5만원 이상 구매 시 실버, 그 이하로 구매 시 브론즈 승급되거나 강등됩니다.
@@ -274,7 +428,7 @@ todaysBook은 책을 사랑하는 사람들을 위한 새로운 e-커머스 플�
 <br>
 
 ## (7). 마이 페이지
-
+![마이페이지 이미지](/src/main/resources/static/images/readMe/마이페이지.gif)
 - 보유한 마일리지 확인: 현재 보유한 마일리지를 확인할 수 있습니다.
 - 주문 내역 조회: 사용자가 이전에 주문한 내역을 확인할 수 있습니다. 주문 번호를 클릭하면 해당 주문의 상세 정보를 확인할 수 있습니다. 또한 송장 번호를 클릭하면 현재 배송 상태를 확인할 수 있습니다.
 - 장바구니: 장바구니에 담겨 있는 상품을 확인하고 주문을 진행할 수 있습니다.
@@ -286,7 +440,7 @@ todaysBook은 책을 사랑하는 사람들을 위한 새로운 e-커머스 플�
 <br>
 
 ## (8). 관리자 페이지
-
+![관리자 이미지](/src/main/resources/static/images/readMe/관리자페이지.gif)
 ### [매출 조회 기능]
 - 주문 내역 조회: 하루 동안의 주문 내역을 조회할 수 있습니다. 날짜를 변경하여 각각의 날의 주문 내역을 조회 할 수 있습니다.
 - 월 별 매출 조회: 월별 매출을 확인하여 년간의 매출 흐름을 파악할 수 있습니다.
