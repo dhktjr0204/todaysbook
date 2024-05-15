@@ -86,4 +86,10 @@ public class ReviewServiceImpl implements ReviewService {
 
         return reviewMapper.updateReview(requestDto);
     }
+
+    @Override
+    public Long getReviewOwnerId(Long reviewId) {
+
+        return reviewRepository.findReviewOwnerId(reviewId);
+    }
 }

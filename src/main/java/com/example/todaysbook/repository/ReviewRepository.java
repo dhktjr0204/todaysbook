@@ -28,4 +28,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
             "on b.id = r.bookId " +
             "where r.userId = :userId")
     List<MyReview> findReviewsByUserId(Long userId);
+
+    @Query(value = "select user_id from review where id = :reviewId", nativeQuery = true)
+    Long findReviewOwnerId(Long reviewId);
 }
