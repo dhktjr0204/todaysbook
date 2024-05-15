@@ -107,7 +107,7 @@ public class GeminiRecommendBookServiceImpl implements GeminiRecommendBookServic
         LocalDate tomorrow = today.plusDays(1);
 
         List<GeminiRecommendBook> todayRecommendBooks = geminiRecommendBookRepository.findByDateBetween(
-                        today.atTime(0, 0, 0), tomorrow.atTime(8, 59, 59))
+                        today.atTime(9, 0, 0), tomorrow.atTime(8, 59, 59))
                 .stream()
                 .distinct()
                 .toList();
