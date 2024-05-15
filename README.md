@@ -630,7 +630,7 @@ todaysBook은 책을 사랑하는 사람들을 위한 새로운 e-커머스 플�
    │     │     │  │  ├─ delivery.js
    │     │     │  │  └─ page.js
    │     │     │  ├─ geminiRecommendBook
-   │     │     │  │  └─ gemini-recommennd-book.js
+   │     │     │  │  └─ gemini-recommend-book.js
    │     │     │  ├─ order
    │     │     │  │  ├─ date.js
    │     │     │  │  └─ page.js
