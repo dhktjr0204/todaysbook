@@ -9,11 +9,11 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.*;
 import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import java.time.Duration;
-import java.util.Objects;
 
 @Service
 @Slf4j
@@ -35,35 +35,36 @@ public class AlanChatServiceImpl implements AlanChatService {
     }
 
     public Flux<ServerSentEvent<AlanChatResponse>> streamAlanResponse(String content) {
-        return webClient.get()
-                .uri(uriBuilder -> uriBuilder
-                        .path("/api/v1/question/sse-streaming")
-                        .queryParam("content", content)
-                        .queryParam("client_id", clientId)
-                        .build())
-                .accept(MediaType.TEXT_EVENT_STREAM)
-                .retrieve()
-                .bodyToFlux(String.class)
-                .map(responseString -> {
-                    try {
-                        return objectMapper.readValue(responseString, AlanChatResponse.class);
-                    } catch (Exception e) {
-                        log.error("Alan response 파싱 에러", e);
-                        return new AlanChatResponse();
-                    }
-                })
-                .map(response -> {
-                    if (response != null) {
-                        return ServerSentEvent.builder(response).build();
-                    } else {
-                        return null;
-                    }
-                })
-                .filter(Objects::nonNull)
-                .delayElements(Duration.ofMillis(5));
+        try {
+            return webClient.get()
+                    .uri(uriBuilder -> uriBuilder
+                            .path("/api/v1/question/sse-streaming")
+                            .queryParam("content", content)
+                            .queryParam("client_id", clientId)
+                            .build())
+                    .accept(MediaType.TEXT_EVENT_STREAM)
+                    .retrieve()
+                    .bodyToFlux(String.class)
+                    .map(responseString -> {
+                        try {
+                            return objectMapper.readValue(responseString, AlanChatResponse.class);
+                        } catch (Exception e) {
+                            log.error("Alan response 파싱 에러", e);
+                            throw new RuntimeException("Alan response 파싱 중 오류가 발생했습니다.", e);
+                        }
+                    })
+                    .map(response -> ServerSentEvent.builder(response).build())
+                    .onErrorResume(e -> {
+                        log.error("Alan 응답 스트리밍 중 오류 발생", e);
+                        return Flux.error(e);
+                    })
+                    .delayElements(Duration.ofMillis(5));
+        } catch (Exception e) {
+            log.error("Alan 응답 스트리밍 요청 중 오류 발생", e);
+            return Flux.error(e);
+        }
     }
 
-    // webClient는 delete메소드에 body를 넣기가 어려워서 restTemplate를 사용했습니다.
     public void resetState() {
         String url = "https://kdt-api-function.azurewebsites.net/api/v1/reset-state";
 
@@ -74,14 +75,18 @@ public class AlanChatServiceImpl implements AlanChatService {
 
         HttpEntity<String> requestEntity = new HttpEntity<>(requestBody, headers);
 
-        ResponseEntity<Void> responseEntity = restTemplate.exchange(url, HttpMethod.DELETE, requestEntity, Void.class);
+        try {
+            ResponseEntity<Void> responseEntity = restTemplate.exchange(url, HttpMethod.DELETE, requestEntity, Void.class);
 
-        if (responseEntity.getStatusCode().is2xxSuccessful() && responseEntity.getBody() == null) {
-            log.info("대화 내용 초기화 성공");
-        } else {
-            log.error("대화 내용 초기화 오류. 응답 코드: {}", responseEntity.getStatusCode());
+            if (responseEntity.getStatusCode().is2xxSuccessful() && responseEntity.getBody() == null) {
+                log.info("대화 내용 초기화 성공");
+            } else {
+                log.error("대화 내용 초기화 오류. 응답 코드: {}", responseEntity.getStatusCode());
+                throw new RuntimeException("대화 내용 초기화 중 오류가 발생했습니다.");
+            }
+        } catch (RestClientException e) {
+            log.error("대화 내용 초기화 요청 중 오류 발생", e);
+            throw new RuntimeException("대화 내용 초기화 요청 중 오류가 발생했습니다.", e);
         }
-
-        responseEntity.getBody();
     }
 }
