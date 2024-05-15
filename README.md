@@ -348,7 +348,7 @@
 |                                 <b>배송 조회 화면                                 |                                     <b>신간 등록 화면                                    |
 |       ![배송 조회 이미지](/src/main/resources/static/images/readMe/배송관리.png)       |      ![앨런 실시간 검색(결과물) 이미지](/src/main/resources/static/images/readMe/신간등록.png)      |
 |                                <b>ai 추천 책 관리                                |                                                                                    |
-|    ![ai 추천 책 관리 이미지](/src/main/resources/static/images/readMe/ai책관리.png)    |          |
+|    ![ai 추천 책 관리 이미지](/src/main/resources/static/images/readMe/ai추천책관리.png)    |          |
 
 
 <br><br>
