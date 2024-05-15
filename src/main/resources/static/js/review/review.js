@@ -23,7 +23,7 @@ function clickLike(button, reviewId) {
 
     let url = button.classList.contains('liked') ? '/review/add_like' : '/review/delete_like';
 
-    let type = button.classList.contains('liked') ? 'GET' : 'DELETE';
+    let type = button.classList.contains('liked') ? 'POST' : 'DELETE';
     let message = button.classList.contains('liked') ?
         '추천 완료' : '추천 취소 완료';
 
@@ -47,7 +47,8 @@ function clickLike(button, reviewId) {
         },
         error: function (error) {
 
-            console.error(error);
+            alert("로그인이 필요한 기능입니다.");
+            location.href="/login";
         }
     });
 }
@@ -59,7 +60,7 @@ function clickDislike(button, reviewId) {
 
     let url = button.classList.contains('disliked') ? '/review/add_dislike' : '/review/delete_dislike';
 
-    let type = button.classList.contains('disliked') ? 'GET' : 'DELETE';
+    let type = button.classList.contains('disliked') ? 'POST' : 'DELETE';
     let message = button.classList.contains('disliked') ?
         '비추천 완료' : '비추천 취소 완료';
 
@@ -82,7 +83,8 @@ function clickDislike(button, reviewId) {
         },
         error: function (error) {
 
-            console.error(error);
+            alert("로그인이 필요한 기능입니다.");
+            location.href="/login";
         }
     });
 }
@@ -123,9 +125,10 @@ function clickAddReview(button) {
                 alert("Bad Request: "+ error.responseText);
             }else if(error.status === 401){
                 alert("Unauthorized: "+error.responseText);
+                location.href="/login";
             }else{
                 alert("error: "+error.responseText);
-            } // 에러 응답 본문을 alert 창에 표시
+            }
         }
     });
 }
@@ -143,10 +146,11 @@ function deleteReview(button) {
     $.ajax({
         url: url,
         type: method,
-        data: {
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify({
             bookId: bookId,
             reviewId: reviewId
-        },
+        }),
         success: function (data) {
             alert("리뷰가 삭제 되었습니다.");
             $('.review-area').html(data);
@@ -154,7 +158,14 @@ function deleteReview(button) {
             starEvents();
         },
         error: function (error) {
-            throw new Error('리뷰 삭제 실패');
+            if (error.status === 400) {
+                alert("Bad Request: "+ error.responseText);
+            }else if(error.status === 401){
+                alert("Unauthorized: "+error.responseText);
+                location.href="/login";
+            }else{
+                alert("error: "+error.responseText);
+            }
         }
     });
 }
@@ -241,7 +252,7 @@ function updateReview(button) {
                 alert("Unauthorized: "+error.responseText);
             }else{
                 alert("error: "+error.responseText);
-            } // 에러 응답 본문을 alert 창에 표시
+            }
         }
     });
 }
@@ -273,7 +284,6 @@ function reviewOrderBy(orderBy) {
 
 function starEvents() {
 
-    // 리뷰 평가
     const reviewStars = document.querySelectorAll('.review-star');
     const reviewScore = document.querySelector('.review-score');
     let isReviewClicked = false;
@@ -307,7 +317,6 @@ function starEvents() {
         });
     });
 
-    // 리뷰 수정 평가
     const editReviewStars = document.querySelectorAll('.edit-review-star');
     const editReviewScore = document.querySelector('.edit-review-score');
     let isEditClicked = false;

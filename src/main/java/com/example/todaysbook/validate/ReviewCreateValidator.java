@@ -4,6 +4,7 @@ import com.example.todaysbook.constant.Constant;
 import com.example.todaysbook.domain.dto.ReviewRequestDto;
 import com.example.todaysbook.exception.review.ContentEmptyException;
 import com.example.todaysbook.exception.review.ContentLengthOverException;
+import com.example.todaysbook.exception.review.UnauthorizedUserException;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
@@ -27,6 +28,11 @@ public class ReviewCreateValidator implements Validator {
 
             throw new ContentLengthOverException();
         }
+
+        if(isUnauthorized(requestDto.getUserId())) {
+
+            throw new UnauthorizedUserException();
+        }
     }
 
     private boolean isEmpty(String content) {
@@ -37,5 +43,10 @@ public class ReviewCreateValidator implements Validator {
     private boolean isContentLengthOver(String content) {
 
         return content.length() > Constant.REVIEW_CONTENT_MAX_LENGTH;
+    }
+
+    private boolean isUnauthorized(Long userId) {
+
+        return userId == 0;
     }
 }

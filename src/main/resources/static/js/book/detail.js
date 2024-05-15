@@ -24,7 +24,8 @@ function clickFavorite(button) {
         },
         error: function (error) {
 
-            console.error(error);
+            alert("로그인이 필요한 기능입니다.");
+            location.href="/login";
         }
     });
 }
