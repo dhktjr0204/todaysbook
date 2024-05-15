@@ -6,16 +6,20 @@ import com.example.todaysbook.domain.dto.ReviewRequestDto;
 import com.example.todaysbook.service.ReviewService;
 import com.example.todaysbook.util.UserChecker;
 import com.example.todaysbook.validate.ReviewCreateValidator;
+import com.example.todaysbook.validate.ReviewUpdateDeleteValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -30,7 +34,7 @@ public class ReviewController {
                              @AuthenticationPrincipal CustomUserDetails userDetails,
                              Model model) {
 
-        long userId = userDetails.getUserId();
+        long userId = UserChecker.getUserId(userDetails);
 
         List<Review> reviews =
                 reviewService.getReviews(bookId, userId, orderBy);
@@ -66,12 +70,19 @@ public class ReviewController {
     public String deleteReview(@RequestParam(value = "reviewId") long reviewId,
                                @RequestParam(value = "bookId") long bookId,
                                @AuthenticationPrincipal CustomUserDetails userDetails,
-                               Model model) {
+                               Model model, BindingResult result) {
 
-        long userId = userDetails.getUserId();
+        long userId = UserChecker.getUserId(userDetails);
         String orderBy = "latest";
 
-        int flag = reviewService.deleteReview(reviewId);
+        Map<String, Long> map = new HashMap<>();
+        map.put("userId", userId);
+        map.put("reviewOwnerId", reviewService.getReviewOwnerId(reviewId));
+
+        ReviewUpdateDeleteValidator validator = new ReviewUpdateDeleteValidator();
+        validator.validate(map, result);
+
+        reviewService.deleteReview(reviewId);
 
         List<Review> reviews =
                 reviewService.getReviews(bookId, userId, orderBy);
@@ -89,11 +100,13 @@ public class ReviewController {
         long userId = userDetails.getUserId();
         String orderBy = "latest";
 
-        ReviewCreateValidator validator = new ReviewCreateValidator();
-        validator.validate(requestDto, result);
+        Map<String, Long> map = new HashMap<>();
+        map.put("userId", userId);
+        map.put("reviewOwnerId", requestDto.getReviewId());
 
-        requestDto.setUserId(userId);
-        int flag = reviewService.updateReview(requestDto);
+        ReviewUpdateDeleteValidator validator = new ReviewUpdateDeleteValidator();
+        validator.validate(map, result);
+        reviewService.updateReview(requestDto);
 
         List<Review> reviews =
                 reviewService.getReviews(requestDto.getBookId(), requestDto.getUserId(), orderBy);
@@ -104,7 +117,7 @@ public class ReviewController {
         return "book/review";
     }
 
-    @GetMapping("/add_like")
+    @PostMapping("/add_like")
     public ResponseEntity<?> addLikeReview(@AuthenticationPrincipal CustomUserDetails userDetails,
                                            @RequestParam(value = "reviewId") long reviewId) {
 
@@ -120,7 +133,7 @@ public class ReviewController {
         }
     }
 
-    @GetMapping("/add_dislike")
+    @PostMapping("/add_dislike")
     public ResponseEntity<?> addDislikeReview(@AuthenticationPrincipal CustomUserDetails userDetails,
                                            @RequestParam(value = "reviewId") long reviewId) {
 
@@ -166,10 +179,5 @@ public class ReviewController {
 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
-    }
-
-    private boolean errorHandler(int flag) {
-
-        return flag < 1;
     }
 }

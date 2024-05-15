@@ -23,7 +23,7 @@ function clickLike(button, reviewId) {
 
     let url = button.classList.contains('liked') ? '/review/add_like' : '/review/delete_like';
 
-    let type = button.classList.contains('liked') ? 'GET' : 'DELETE';
+    let type = button.classList.contains('liked') ? 'POST' : 'DELETE';
     let message = button.classList.contains('liked') ?
         '추천 완료' : '추천 취소 완료';
 
@@ -59,7 +59,7 @@ function clickDislike(button, reviewId) {
 
     let url = button.classList.contains('disliked') ? '/review/add_dislike' : '/review/delete_dislike';
 
-    let type = button.classList.contains('disliked') ? 'GET' : 'DELETE';
+    let type = button.classList.contains('disliked') ? 'POST' : 'DELETE';
     let message = button.classList.contains('disliked') ?
         '비추천 완료' : '비추천 취소 완료';
 
@@ -155,7 +155,14 @@ function deleteReview(button) {
             starEvents();
         },
         error: function (error) {
-            throw new Error('리뷰 삭제 실패');
+            if (error.status === 400) {
+                alert("Bad Request: "+ error.responseText);
+            }else if(error.status === 401){
+                alert("Unauthorized: "+error.responseText);
+                location.href="/login";
+            }else{
+                alert("error: "+error.responseText);
+            }
         }
     });
 }
@@ -242,7 +249,7 @@ function updateReview(button) {
                 alert("Unauthorized: "+error.responseText);
             }else{
                 alert("error: "+error.responseText);
-            } // 에러 응답 본문을 alert 창에 표시
+            }
         }
     });
 }
