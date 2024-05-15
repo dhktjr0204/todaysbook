@@ -121,7 +121,7 @@
 
 ### [개발 도구]
 
-<img src="https://img.shields.io/badge/Amazon EC2-FF9900?style=for-the-badge&logo=Amazon EC2&logoColor=white">  <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=GitHub&logoColor=white">  <img src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=Discord&logoColor=white">  <img src="https://img.shields.io/badge/JIRA-0052CC?style=for-the-badge&logo=Jira&logoColor=white">
+<img src="https://img.shields.io/badge/Amazon EC2-FF9900?style=for-the-badge&logo=Amazon EC2&logoColor=white">  <img src="https://img.shields.io/badge/amazon s3-569A31?style=for-the-badge&logo=amazons3&logoColor=white">  <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=GitHub&logoColor=white">  <img src="https://img.shields.io/badge/JIRA-0052CC?style=for-the-badge&logo=Jira&logoColor=white">  <img src="https://img.shields.io/badge/erdcloud-000000?style=for-the-badge&logo=icloud&logoColor=white">  <img src="https://img.shields.io/badge/figma-F24E1E.svg?style=for-the-badge&logo=figma&logoColor=white">  <img src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=Discord&logoColor=white">  <img src="https://img.shields.io/badge/notion-white?style=for-the-badge&logo=notion&logoColor=000000">
 
 <div align="right">
 
