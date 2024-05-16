@@ -80,9 +80,12 @@ function postSelectedCartItems() {
         },
         body: JSON.stringify(selectedBooks)
     })
-        .then(response => response.text()) // 서버로부터의 응답 body를 텍스트로 읽어옴
+        .then(response =>
+                response.text()) // 서버로부터의 응답 body를 텍스트로 읽어옴
         .then(data => {
-            window.location.href = data; // 페이지를 리다이렉트할 URL로 이동
+            if (data) {
+                window.location.href = data; // 페이지를 리다이렉트할 URL로 이동
+            }
         })
         .catch(error => {
             // 오류가 발생한 경우 처리합니다.
@@ -106,7 +109,7 @@ function checkStock(bookId, bookName, quantity) {
             let stock = data.stock;
 
             if (stock == 0) {
-                alert(bookName+' 품절 상태 입니다');
+                alert(bookName + ' 품절 상태 입니다');
                 location.href = url;
             }
             if (quantity == 0) {
@@ -114,7 +117,7 @@ function checkStock(bookId, bookName, quantity) {
                 location.href = url;
             }
             if (quantity > stock) {
-                alert(bookName+ '\n현재 남아 있는 재고는 ' + stock + '개 입니다.\n'
+                alert(bookName + '\n현재 남아 있는 재고는 ' + stock + '개 입니다.\n'
                     + '책을 구매하시려면 ' + (quantity - stock) + '개 줄여 주세요');
 
                 location.href = url;
