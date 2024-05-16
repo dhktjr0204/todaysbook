@@ -24,7 +24,7 @@
 <br><br>
 [클릭하여 페이지를 방문하세요](http://43.203.7.96:8080/)
 <br><br>
-[프로젝트 시연 영상 보러가기](https://drive.google.com/file/d/1XLBgCNwc8cI8zn68KYhxlqnqYYz5tUEY/view?usp=sharing)
+[프로젝트 시연 영상 보러가기](https://drive.google.com/file/d/1UKE7NmfaBCsVVEPXpFwitNbQyLT4Krya/view)
 <br><br>
 
 # 2. 개발 인원 및 역할
