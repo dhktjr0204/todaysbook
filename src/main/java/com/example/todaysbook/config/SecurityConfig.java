@@ -29,11 +29,9 @@ public class SecurityConfig {
                         auth.requestMatchers(
                                         "/", "/login", "/alan/**","/gemini/**", "/user/**", "/category/**",
                                         "/checkEmailAvailability", "/checkNicknameAvailability", "checkPasswordAvailability",
-                                        "/book/**", "/signup","/favorite_book/**","/bookmark/**","/review/**").permitAll()
+                                        "/book/**", "/signup","/favorite_book/**","/cart/**","/bookmark/**","/review/**","/payment/**").permitAll()
                                 .requestMatchers(
                                         "/mypage/**",
-                                        "/cart/**",
-                                        "/payment/**",
                                         "/alan/**",
                                         "/recommend/**"
                                 ).hasAnyRole(Role.ROLE_BRONZE.getName(), Role.ROLE_SILVER.getName()
