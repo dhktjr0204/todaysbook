@@ -400,7 +400,7 @@
 ### [gemini 추천 기능]
 - 매일 오전 9시에 gemini가 추천하는 책으로 업데이트됩니다.
 - 추천 책 중 DB에 없는 책들은 aladin API를 사용하여 책을 등록합니다.
-![제미나이 이미지](src/main/resources/static/images/readMe/시퀀스다이어그램.jpg)
+![제미나이 이미지](src/main/resources/static/images/readMe/gemini시퀀스다이어그램.jpg)
 
 
 ### [찜한 책 조회 기능]
