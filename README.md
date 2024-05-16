@@ -24,7 +24,7 @@
 <br><br>
 [클릭하여 페이지를 방문하세요](http://43.203.7.96:8080/)
 <br><br>
-[프로젝트 시연 영상 보러가기]()
+[프로젝트 시연 영상 보러가기](https://drive.google.com/file/d/1UKE7NmfaBCsVVEPXpFwitNbQyLT4Krya/view)
 <br><br>
 
 # 2. 개발 인원 및 역할
@@ -119,9 +119,13 @@
 
 <img src="https://img.shields.io/badge/googlegemini-8E75B2?style=for-the-badge&logo=googlegemini&logoColor=white"> <img src="https://img.shields.io/badge/alan-66CCFF?style=for-the-badge&logoColor=white">
 
-### [개발 도구]
+### [개발 - DEPLOY]
 
-<img src="https://img.shields.io/badge/Amazon EC2-FF9900?style=for-the-badge&logo=Amazon EC2&logoColor=white">  <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=GitHub&logoColor=white">  <img src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=Discord&logoColor=white">  <img src="https://img.shields.io/badge/JIRA-0052CC?style=for-the-badge&logo=Jira&logoColor=white">
+<img src="https://img.shields.io/badge/Amazon EC2-FF9900?style=for-the-badge&logo=Amazon EC2&logoColor=white">  <img src="https://img.shields.io/badge/amazon s3-569A31?style=for-the-badge&logo=amazons3&logoColor=white">  <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=GitHub&logoColor=white">
+
+### [협업 도구]
+
+<img src="https://img.shields.io/badge/JIRA-0052CC?style=for-the-badge&logo=Jira&logoColor=white">  <img src="https://img.shields.io/badge/erdcloud-000000?style=for-the-badge&logo=icloud&logoColor=white">  <img src="https://img.shields.io/badge/figma-F24E1E.svg?style=for-the-badge&logo=figma&logoColor=white">  <img src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=Discord&logoColor=white">  <img src="https://img.shields.io/badge/notion-white?style=for-the-badge&logo=notion&logoColor=000000">
 
 <div align="right">
 
@@ -396,7 +400,7 @@
 ### [gemini 추천 기능]
 - 매일 오전 9시에 gemini가 추천하는 책으로 업데이트됩니다.
 - 추천 책 중 DB에 없는 책들은 aladin API를 사용하여 책을 등록합니다.
-![제미나이 이미지](src/main/resources/static/images/readMe/gemini-flow.png)
+![제미나이 이미지](src/main/resources/static/images/readMe/gemini시퀀스다이어그램.jpg)
 
 
 ### [찜한 책 조회 기능]
@@ -510,44 +514,46 @@
 
 ```
 📦 
-├─ .github
-│  └─ workflows
+├─ 📁 .github
+│  └─ 📁 workflows
 │     └─ deploy.yml
 ├─ .gitignore
 ├─ README.md
 ├─ appspec.yml
 ├─ build.gradle
-├─ gradle
-│  └─ wrapper
+├─ 📁 gradle
+│  └─ 📁 wrapper
 │     ├─ gradle-wrapper.jar
 │     └─ gradle-wrapper.properties
 ├─ gradlew
 ├─ gradlew.bat
-├─ scripts
+├─ 📁 scripts
 │  ├─ start.sh
 │  └─ stop.sh
 ├─ settings.gradle
-└─ src
-   ├─ main
-   │  ├─ java
-   │  │  └─ com
-   │  │     └─ example
-   │  │        └─ todaysbook
+└─ 📁 src
+   ├─ 📁 main
+   │  ├─ 📁 java
+   │  │  └─ 📁 com
+   │  │     └─ 📁 example
+   │  │        └─ 📁 todaysbook
    │  │           ├─ TodaysbookApplication.java
-   │  │           ├─ config
+   │  │           ├─ 📁 aspect
+   │  │           │  └─ AuthenticationAspect.java
+   │  │           ├─ 📁 config
    │  │           │  ├─ GeminiRestTemplateConfig.java
    │  │           │  └─ SecurityConfig.java
-   │  │           ├─ constant
+   │  │           ├─ 📁 constant
    │  │           │  └─ Constant.java
-   │  │           ├─ controller
+   │  │           ├─ 📁 controller
    │  │           │  ├─ AdminController.java
    │  │           │  ├─ AlanChatController.java
+   │  │           │  ├─ AlanViewController.java
    │  │           │  ├─ BookDetailController.java
    │  │           │  ├─ BookMarkController.java
    │  │           │  ├─ CartController.java
    │  │           │  ├─ CategoryController.java
    │  │           │  ├─ FavoriteBookController.java
-   │  │           │  ├─ GeminiApiCallController.java
    │  │           │  ├─ GeminiRecommendBooksController.java
    │  │           │  ├─ MainController.java
    │  │           │  ├─ MypageController.java
@@ -559,9 +565,9 @@
    │  │           │  ├─ UserController.java
    │  │           │  ├─ UserViewController.java
    │  │           │  └─ ViewController.java
-   │  │           ├─ domain
+   │  │           ├─ 📁 domain
    │  │           │  ├─ CategoryEnum.java
-   │  │           │  ├─ dto
+   │  │           │  ├─ 📁 dto
    │  │           │  │  ├─ AdminUserDto.java
    │  │           │  │  ├─ AlanChatResponse.java
    │  │           │  │  ├─ BookDetail.java
@@ -584,6 +590,7 @@
    │  │           │  │  ├─ OrderInfo.java
    │  │           │  │  ├─ PaymentAddressAndMileageInfo.java
    │  │           │  │  ├─ PaymentBookInfoDto.java
+   │  │           │  │  ├─ PaymentValidInfoDto.java
    │  │           │  │  ├─ RecommendBookDto.java
    │  │           │  │  ├─ RecommendListCreateRequestDto.java
    │  │           │  │  ├─ RecommendListDetailDto.java
@@ -598,7 +605,7 @@
    │  │           │  │  ├─ SimpleReview.java
    │  │           │  │  ├─ UserRequestDto.java
    │  │           │  │  └─ UserResponseDto.java
-   │  │           │  └─ entity
+   │  │           │  └─ 📁 entity
    │  │           │     ├─ Book.java
    │  │           │     ├─ BookMark.java
    │  │           │     ├─ Cart.java
@@ -616,36 +623,41 @@
    │  │           │     ├─ User.java
    │  │           │     ├─ UserRecommendBook.java
    │  │           │     └─ UserRecommendList.java
-   │  │           ├─ exception
+   │  │           ├─ 📁 exception
+   │  │           │  ├─ CustomFailureHandler.java
    │  │           │  ├─ GlobalExceptionHandler.java
-   │  │           │  ├─ admin
+   │  │           │  ├─ 📁 admin
    │  │           │  │  ├─ AuthorLengthOverException.java
    │  │           │  │  ├─ DescriptionLengthOverException.java
    │  │           │  │  ├─ EmptyAuthorException.java
    │  │           │  │  ├─ EmptyPriceException.java
    │  │           │  │  ├─ EmptyPublisherException.java
    │  │           │  │  └─ PublisherLengthOverException.java
-   │  │           │  ├─ aladinApi
+   │  │           │  ├─ 📁 aladinApi
    │  │           │  │  └─ NotValidBook.java
-   │  │           │  ├─ book
+   │  │           │  ├─ 📁 book
+   │  │           │  │  ├─ BookNotFoundException.java
    │  │           │  │  └─ DuplicateBookException.java
-   │  │           │  ├─ bookMark
+   │  │           │  ├─ 📁 bookMark
    │  │           │  │  ├─ AlreadyBookmarkedException.java
    │  │           │  │  └─ NotBookmarkedYetException.java
-   │  │           │  ├─ delivery
+   │  │           │  ├─ 📁 delivery
    │  │           │  │  └─ DeliveryNotFoundException.java
-   │  │           │  ├─ order
+   │  │           │  ├─ 📁 geminiRecommendBook
+   │  │           │  │  ├─ GeminiApiException.java
+   │  │           │  │  └─ GeminiRecommendBookNotFoundException.java
+   │  │           │  ├─ 📁 order
    │  │           │  │  └─ OrderNotFoundException.java
-   │  │           │  ├─ recommendList
+   │  │           │  ├─ 📁 recommendList
    │  │           │  │  ├─ BookNotFoundException.java
    │  │           │  │  ├─ EmptyTitleException.java
    │  │           │  │  ├─ RecommendListLengthOverException.java
    │  │           │  │  ├─ RecommendListNotFoundException.java
    │  │           │  │  └─ TitleLengthOverException.java
-   │  │           │  ├─ review
+   │  │           │  ├─ 📁 review
    │  │           │  │  ├─ ContentEmptyException.java
    │  │           │  │  └─ ContentLengthOverException.java
-   │  │           │  └─ user
+   │  │           │  └─ 📁 user
    │  │           │     ├─ EmptyAddressException.java
    │  │           │     ├─ EmptyEmailException.java
    │  │           │     ├─ EmptyNameException.java
@@ -661,8 +673,9 @@
    │  │           │     ├─ WrongEmailPatternException.java
    │  │           │     ├─ WrongPasswordPatternException.java
    │  │           │     └─ WrongZipcodePatternException.java
-   │  │           ├─ repository
+   │  │           ├─ 📁 repository
    │  │           │  ├─ BookDetailMapper.java
+   │  │           │  ├─ BookMapper.java
    │  │           │  ├─ BookMarkRepository.java
    │  │           │  ├─ BookRepository.java
    │  │           │  ├─ CartBookRepository.java
@@ -683,10 +696,11 @@
    │  │           │  ├─ UserRecommendBookRepository.java
    │  │           │  ├─ UserRecommendListRepository.java
    │  │           │  └─ UserRepository.java
-   │  │           ├─ service
+   │  │           ├─ 📁 service
    │  │           │  ├─ AdminService.java
    │  │           │  ├─ AdminServiceImpl.java
    │  │           │  ├─ AlanChatService.java
+   │  │           │  ├─ AlanChatServiceImpl.java
    │  │           │  ├─ BookDetailService.java
    │  │           │  ├─ BookDetailServiceImpl.java
    │  │           │  ├─ BookMarkService.java
@@ -696,7 +710,10 @@
    │  │           │  ├─ CategoryServiceImpl.java
    │  │           │  ├─ FavoriteBookService.java
    │  │           │  ├─ FavoriteBookServiceImpl.java
+   │  │           │  ├─ GeminiApiService.java
+   │  │           │  ├─ GeminiApiServiceImpl.java
    │  │           │  ├─ GeminiRecommendBookService.java
+   │  │           │  ├─ GeminiRecommendBookServiceImpl.java
    │  │           │  ├─ OrderService.java
    │  │           │  ├─ OrderServiceImpl.java
    │  │           │  ├─ PaymentService.java
@@ -713,11 +730,11 @@
    │  │           │  ├─ SearchServiceImpl.java
    │  │           │  ├─ UserService.java
    │  │           │  └─ upgradeUserRoleService.java
-   │  │           ├─ util
+   │  │           ├─ 📁 util
    │  │           │  ├─ AladinApi.java
    │  │           │  ├─ Pagination.java
    │  │           │  └─ UserChecker.java
-   │  │           └─ validate
+   │  │           └─ 📁 validate
    │  │              ├─ AdminUpdateBookValidator.java
    │  │              ├─ RecommendListCreateValidator.java
    │  │              ├─ RecommendListUpdateValidator.java
@@ -726,28 +743,29 @@
    │  │              ├─ UserUpdateAddressValidator.java
    │  │              ├─ UserUpdateNicknameValidator.java
    │  │              └─ UserUpdatePasswordValidator.java
-   │  └─ resources
-   │     ├─ data
+   │  └─ 📁 resources
+   │     ├─ 📁 data
    │     │  └─ rating.csv
-   │     ├─ mappers
-   │     │  ├─ book
+   │     ├─ 📁 mappers
+   │     │  ├─ 📁 book
+   │     │  │  ├─ book.xml
    │     │  │  ├─ bookDetail.xml
    │     │  │  └─ recommendBook.xml
-   │     │  ├─ favorite
+   │     │  ├─ 📁 favorite
    │     │  │  └─ favoriteBook.xml
-   │     │  ├─ order
+   │     │  ├─ 📁 order
    │     │  │  └─ order.xml
-   │     │  ├─ recommendList
+   │     │  ├─ 📁 recommendList
    │     │  │  └─ recommendList.xml
-   │     │  ├─ review
+   │     │  ├─ 📁 review
    │     │  │  └─ review.xml
-   │     │  ├─ sales
+   │     │  ├─ 📁 sales
    │     │  │  └─ sales.xml
-   │     │  └─ user
+   │     │  └─ 📁 user
    │     │     └─ user.xml
-   │     ├─ static
-   │     │  ├─ css
-   │     │  │  ├─ admin
+   │     ├─ 📁 static
+   │     │  ├─ 📁 css
+   │     │  │  ├─ 📁 admin
    │     │  │  │  ├─ book-registration.css
    │     │  │  │  ├─ booklist-edit-form.css
    │     │  │  │  ├─ booklist.css
@@ -762,32 +780,32 @@
    │     │  │  │  ├─ update-info.css
    │     │  │  │  ├─ update-password.css
    │     │  │  │  └─ userlist.css
-   │     │  │  ├─ alan
+   │     │  │  ├─ 📁 alan
    │     │  │  │  └─ chat.css
-   │     │  │  ├─ book
+   │     │  │  ├─ 📁 book
    │     │  │  │  ├─ category.css
    │     │  │  │  ├─ detail.css
    │     │  │  │  └─ search.css
-   │     │  │  ├─ cart
+   │     │  │  ├─ 📁 cart
    │     │  │  │  └─ list.css
    │     │  │  ├─ common.css
    │     │  │  ├─ footer.css
    │     │  │  ├─ header.css
    │     │  │  ├─ index.css
-   │     │  │  ├─ list
+   │     │  │  ├─ 📁 list
    │     │  │  │  ├─ detail.css
    │     │  │  │  ├─ list.css
    │     │  │  │  └─ listForm.css
-   │     │  │  ├─ payment
+   │     │  │  ├─ 📁 payment
    │     │  │  │  ├─ info.css
    │     │  │  │  ├─ pay.css
    │     │  │  │  ├─ style.css
    │     │  │  │  └─ success.css
    │     │  │  ├─ sidebar-admin.css
    │     │  │  ├─ sidebar-user.css
-   │     │  │  └─ user
+   │     │  │  └─ 📁 user
    │     │  │     ├─ login.css
-   │     │  │     ├─ mypage
+   │     │  │     ├─ 📁 mypage
    │     │  │     │  ├─ create-recommendlist.css
    │     │  │     │  ├─ delivery.css
    │     │  │     │  ├─ favorite-book.css
@@ -801,15 +819,16 @@
    │     │  │     │  └─ users-recommendlist.css
    │     │  │     └─ registration.css
    │     │  ├─ favicon.ico
-   │     │  ├─ images
+   │     │  ├─ 📁 images
    │     │  │  ├─ alan-2.gif
    │     │  │  ├─ alan.gif
    │     │  │  ├─ alan.png
    │     │  │  ├─ alan_chat.png
    │     │  │  ├─ blank_star.png
+   │     │  │  ├─ delete.png
    │     │  │  ├─ dislike.png
    │     │  │  ├─ dragndrop.png
-   │     │  │  ├─ error
+   │     │  │  ├─ 📁 error
    │     │  │  │  └─ 404error.gif
    │     │  │  ├─ gemini-api-call-btn.png
    │     │  │  ├─ github-icon.png
@@ -820,44 +839,45 @@
    │     │  │  ├─ star.png
    │     │  │  ├─ triangle-down.svg
    │     │  │  └─ user_chat.png
-   │     │  └─ js
-   │     │     ├─ admin
-   │     │     │  ├─ bookRegistration
+   │     │  └─ 📁 js
+   │     │     ├─ 📁 admin
+   │     │     │  ├─ 📁 bookRegistration
    │     │     │  │  ├─ bookRegistration.js
    │     │     │  │  └─ page.js
-   │     │     │  ├─ booklist
+   │     │     │  ├─ 📁 booklist
    │     │     │  │  ├─ booklist.js
    │     │     │  │  ├─ editForm.js
    │     │     │  │  └─ page.js
-   │     │     │  ├─ delivery
+   │     │     │  ├─ 📁 delivery
    │     │     │  │  ├─ delivery.js
    │     │     │  │  └─ page.js
-   │     │     │  ├─ geminiRecommendBook
+   │     │     │  ├─ 📁 geminiRecommendBook
    │     │     │  │  └─ gemini-recommend-book.js
-   │     │     │  ├─ order
+   │     │     │  ├─ 📁 order
    │     │     │  │  ├─ date.js
    │     │     │  │  └─ page.js
-   │     │     │  ├─ sales
+   │     │     │  ├─ 📁 sales
    │     │     │  │  ├─ category-chart.js
    │     │     │  │  ├─ chart.js
    │     │     │  │  └─ page.js
-   │     │     │  ├─ search.js
-   │     │     │  ├─ stocklist
+   │     │     │  ├─ 📁 search.js
+   │     │     │  ├─ 📁 stocklist
    │     │     │  │  ├─ page.js
    │     │     │  │  └─ stocklist.js
    │     │     │  ├─ sync.js
-   │     │     │  └─ userlist
+   │     │     │  └─ 📁 userlist
    │     │     │     ├─ page.js
    │     │     │     └─ userlist.js
-   │     │     ├─ alan
+   │     │     ├─ 📁 alan
    │     │     │  └─ alan-chat.js
-   │     │     ├─ book
+   │     │     ├─ 📁 book
    │     │     │  ├─ categoryPage.js
-   │     │     │  └─ detail.js
-   │     │     ├─ cart
+   │     │     │  ├─ detail.js
+   │     │     │  └─ payment.js
+   │     │     ├─ 📁 cart
    │     │     │  ├─ list.js
    │     │     │  └─ listchild.js
-   │     │     ├─ list
+   │     │     ├─ 📁 list
    │     │     │  ├─ dragAndDrop.js
    │     │     │  ├─ page.js
    │     │     │  ├─ search.js
@@ -865,29 +885,31 @@
    │     │     │  └─ titleWordCount.js
    │     │     ├─ modifyInfo.js
    │     │     ├─ modifyPassword.js
-   │     │     ├─ mypage
+   │     │     ├─ 📁 mypage
    │     │     │  ├─ bookMark.js
    │     │     │  ├─ myBookMarkRecommendList.js
    │     │     │  ├─ myRecommendList.js
    │     │     │  ├─ page.js
    │     │     │  └─ withdraw.js
-   │     │     ├─ payment
+   │     │     ├─ 📁 payment
    │     │     │  ├─ daum_address_api.js
    │     │     │  └─ info.js
-   │     │     ├─ review
+   │     │     ├─ 📁 review
    │     │     │  └─ review.js
-   │     │     ├─ search
-   │     │     │  ├─ book
+   │     │     ├─ 📁 search
+   │     │     │  ├─ 📁 book
    │     │     │  │  └─ page.js
-   │     │     │  ├─ list
+   │     │     │  ├─ 📁 list
    │     │     │  │  └─ page.js
    │     │     │  └─ search.js
-   │     │     ├─ user
+   │     │     ├─ 📁 user
    │     │     │  ├─ login.js
-   │     │     │  └─ registration.js
+   │     │     │  ├─ orderPage.js
+   │     │     │  ├─ registration.js
+   │     │     │  └─ reviewPage.js
    │     │     └─ wordCount.js
-   │     └─ templates
-   │        ├─ admin
+   │     └─ 📁 templates
+   │        ├─ 📁 admin
    │        │  ├─ book-edit-form.html
    │        │  ├─ book-registration.html
    │        │  ├─ booklist.html
@@ -902,19 +924,19 @@
    │        │  ├─ update-info.html
    │        │  ├─ update-password.html
    │        │  └─ userlist.html
-   │        ├─ alan
+   │        ├─ 📁 alan
    │        │  └─ chat.html
-   │        ├─ book
+   │        ├─ 📁 book
    │        │  ├─ categoryBook.html
    │        │  ├─ detail.html
    │        │  ├─ review.html
    │        │  ├─ search.html
    │        │  └─ search_list.html
-   │        ├─ cart
+   │        ├─ 📁 cart
    │        │  └─ list.html
-   │        ├─ error
+   │        ├─ 📁 error
    │        │  └─ 404.html
-   │        ├─ fragments
+   │        ├─ 📁 fragments
    │        │  ├─ footer.html
    │        │  ├─ head.html
    │        │  ├─ header.html
@@ -924,20 +946,19 @@
    │        │  ├─ sidebar-admin.html
    │        │  └─ sidebar-user.html
    │        ├─ index.html
-   │        ├─ layout
+   │        ├─ 📁 layout
    │        │  └─ layout.html
    │        ├─ login.html
-   │        ├─ payment
+   │        ├─ 📁 payment
    │        │  ├─ fail.html
    │        │  ├─ info.html
    │        │  ├─ pay_card.html
-   │        │  ├─ pay_virtual.html
    │        │  └─ success.html
-   │        ├─ recommendList
+   │        ├─ 📁 recommendList
    │        │  └─ recommend-list-detail.html
    │        ├─ registration.html
-   │        └─ user
-   │           └─ mypage
+   │        └─ 📁 user
+   │           └─ 📁 mypage
    │              ├─ create-recommendlist.html
    │              ├─ delivery.html
    │              ├─ favorite-book.html
@@ -950,20 +971,20 @@
    │              ├─ update-password.html
    │              ├─ update-recommendlist.html
    │              └─ users-recommendlist.html
-   └─ test
-      └─ java
-         └─ com
-            └─ example
-               └─ todaysbook
+   └─ 📁 test
+      └─ 📁 java
+         └─ 📁 com
+            └─ 📁 example
+               └─ 📁 todaysbook
                   ├─ TodaysbookApplicationTests.java
-                  ├─ controller
+                  ├─ 📁 controller
                   │  ├─ AdminControllerTest.java
                   │  ├─ BookMarkControllerTest.java
                   │  ├─ FavoriteBookControllerTest.java
                   │  ├─ RecommendListControllerTest.java
                   │  ├─ ReviewControllerTest.java
                   │  └─ SearchControllerTest.java
-                  └─ service
+                  └─ 📁 service
                      ├─ AdminServiceImplTest.java
                      ├─ BookMarkServiceImplTest.java
                      ├─ FavoriteBookServiceImplTest.java
