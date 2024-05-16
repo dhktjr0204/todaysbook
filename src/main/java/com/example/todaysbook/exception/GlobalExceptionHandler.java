@@ -18,6 +18,7 @@ import com.example.todaysbook.exception.recommendList.RecommendListNotFoundExcep
 import com.example.todaysbook.exception.recommendList.TitleLengthOverException;
 import com.example.todaysbook.exception.review.ContentEmptyException;
 import com.example.todaysbook.exception.review.ContentLengthOverException;
+import com.example.todaysbook.exception.review.UnauthorizedUserException;
 import com.example.todaysbook.exception.user.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -175,7 +176,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> EmptyPriceException(EmptyPriceException ex) {
         return new ResponseEntity<>("책 가격을 입력해주세요.", HttpStatus.BAD_REQUEST);
     }
-  
+
+    @ExceptionHandler(UnauthorizedUserException.class)
+    public ResponseEntity<String> UnauthorizedUserOfUser(UnauthorizedUserException ex) {
+        return new ResponseEntity<>("로그인이 필요한 기능입니다.",HttpStatus.valueOf(401));
+    }
+
     @ExceptionHandler(ContentEmptyException.class)
     public ResponseEntity<String> ReviewContentEmptyException(ContentEmptyException ex) {
         return new ResponseEntity<>("리뷰 내용을 입력해주세요.", HttpStatus.BAD_REQUEST);
