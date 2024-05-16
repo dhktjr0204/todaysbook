@@ -47,7 +47,6 @@ public class CartController {
 
         Role userRole = Role.valueOf(userDetails.getAuthorities().iterator().next().getAuthority());
 
-
         // 총 주문 금액 및 적립 마일리지 계산
         int totalPrice = cartService.calculateTotalPrice(cartBooks);
         int totalMileage = cartService.calculateTotalMileage(cartBooks, userRole);

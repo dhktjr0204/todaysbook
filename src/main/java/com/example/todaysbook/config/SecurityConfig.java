@@ -35,7 +35,7 @@ public class SecurityConfig {
                                         "/alan/**",
                                         "/recommend/**"
                                 ).hasAnyRole(Role.ROLE_BRONZE.getName(), Role.ROLE_SILVER.getName()
-                                        , Role.ROLE_GOLD.getName(), Role.ROLE_DIAMOND.getName())
+                                        , Role.ROLE_GOLD.getName(), Role.ROLE_DIAMOND.getName(), Role.ROLE_ADMIN.getName())
                                 .requestMatchers("/admin/**").hasAnyRole(Role.ROLE_ADMIN.getName())
                                 .anyRequest().authenticated())
                 .formLogin(auth -> auth.loginPage("/login")
