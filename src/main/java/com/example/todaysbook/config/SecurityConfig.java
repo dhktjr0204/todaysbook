@@ -29,11 +29,13 @@ public class SecurityConfig {
                         auth.requestMatchers(
                                         "/", "/login", "/alan/**","/gemini/**", "/user/**", "/category/**",
                                         "/checkEmailAvailability", "/checkNicknameAvailability", "checkPasswordAvailability",
-                                        "/book/**", "/signup","/favorite_book/**","/cart/**","/bookmark/**","/review/**","/payment/**").permitAll()
+                                        "/book/**", "/signup","/favorite_book/**","/cart/**","/bookmark/**","/review/**","/payment/stock/**","/payment/info").permitAll()
                                 .requestMatchers(
                                         "/mypage/**",
                                         "/alan/**",
-                                        "/recommend/**"
+                                        "/recommend/**",
+                                        "/payment/card" ,"/payment/success", "/payment/fail",
+                                        "/payment/confirm", "/payment/card/order"
                                 ).hasAnyRole(Role.ROLE_BRONZE.getName(), Role.ROLE_SILVER.getName()
                                         , Role.ROLE_GOLD.getName(), Role.ROLE_DIAMOND.getName(), Role.ROLE_ADMIN.getName())
                                 .requestMatchers("/admin/**").hasAnyRole(Role.ROLE_ADMIN.getName())
