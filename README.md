@@ -78,7 +78,9 @@
     <td align="center">Backend, Front</td>
 </tr> 
 <tr> 
-    <td align="center">로그인 API 개발<br>회원가입 API 개발<br>회원 정보 수정 API 개발<br>비밀번호 수정 API 개발<br>Spring Security<br>JavaScript 개발 (로그인, 회원가입, 정보 수정)<br>API 명세서 작성<br>시연 영상 제작</td>
+    <td align="center">로그인 API 개발<br>회원 가입 API 개발<br>회원 탈퇴 API 개발<br>닉네임 수정 API 개발<br>주소 수정 API 개발<br>비밀번호 수정 API 개발<br>회원 정보 제공 API 개발<br>카카오맵 API 연동<br>Spring Security<br>JavaScript 개발 (로그인, 회원가입, 닉네임 수정, 주소 수정, 비밀번호 수정, 회원 탈퇴, 배송 정보 회원 동일, 카카오맵)<br>
+API 명세서 작성<br>
+시연 영상 제작</td>
     <td align="center">결제 API연동<br>API 연동을 위해 개발 회사에 질의 응답<br>결제 후 주문 생성 로직 작성<br>결제 페이지 자바스크립트 작성<br>세션을 활용한 데이터 전달<br>결제 페이지 정보 유지 오류 해결을 위한 html, css조작</td>
     <td align="center">ERD 설계<br>Alan API 활용 SSE 실시간 채팅 API<br>Alan 챗봇 동적 채팅 UI<br>Alan 초기화 API 연동<br>Gemini API 활용 스케줄링 자동/수동 책 추천 및 배치 작업<br>Gemini 추천 책 조회 및 관리 API<br>Gemini 추천 책 관리자 페이지 UI<br>알라딘 API 활용 책 정보 검색 및 저장<br></td>
 </tr> 
@@ -415,7 +417,7 @@
 <br>
 
 ## (2). Alan 실시간 검색 페이지
-![앨런 검색 이미지](/src/main/resources/static/images/readMe/앨런검색.gif)
+![alanchat.gif](src/main/resources/static/images/readMe/alanchat.gif)
 ### [Alan 실시간 검색 기능]
 - alan api를 사용하여 alan에게 책을 직접 물어봄으로써 책을 추천 받을 수 있습니다.
 - alan api가 입력된 질문을 분석하여 사용자에게 가장 적합한 책을 추천합니다.
@@ -487,18 +489,27 @@
 <br>
 
 ## (8). 관리자 페이지
-![관리자 이미지](/src/main/resources/static/images/readMe/관리자페이지.gif)
+
 ### [매출 조회 기능]
+
+![관리자_주문매출조회.gif](src/main/resources/static/images/readMe/관리자_주문매출조회.gif)
+
 - 주문 내역 조회: 하루 동안의 주문 내역을 조회할 수 있습니다. 날짜를 변경하여 각각의 날의 주문 내역을 조회 할 수 있습니다.
 - 월 별 매출 조회: 월별 매출을 확인하여 년간의 매출 흐름을 파악할 수 있습니다.
 - 카테고리 별 매출 조회: 각 장르의 판매량을 확인하여 어떤 장르가 인기 있는지 파악할 수 있습니다.
 - 상품 별 매출 조회: 각 상품의 판매량을 확인하여 인기 상품을 파악할 수 있습니다.
 
 ### [관리 기능]
+
+![관리자_회원관리에서신간등록까지.gif](src/main/resources/static/images/readMe/관리자_회원관리에서신간등록까지.gif)
+
 - 회원 관리: 유저 등급을 조정하고, 회원의 정보를 조회하고 관리할 수 있습니다.
 - 재고 관리: 책의 재고량을 확인하고 관리할 수 있습니다. 재고 없는 책을 쉽게 파악할 수 있습니다.
 - 배송 관리: 주문의 배송 상태를 확인하고 관리할 수 있습니다. 배송 준비중, 배송 중, 배송 완료 등의 상태를 변경할 수 있습니다.
 - 신간 등록: Aladin API를 이용하여 원하는 책을 검색하고, 선택하여 신간으로 등록할 수 있습니다.
+- 
+![관리자_책수정부터끝까지.gif](src/main/resources/static/images/readMe/관리자_책수정부터끝까지.gif)
+
 - 책 정보 수정: 책의 제목, 저자, 출판사, 가격, 설명 등의 정보를 수정할 수 있습니다.
 - 관리자 정보 수정: 관리자의 닉네임이나 비밀번호를 변경할 수 있습니다.
 - ai 추천 책 관리: gemini AI를 통해 매일 업데이트되는 추천책을 수동으로 관리할 수 있습니다.
