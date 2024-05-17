@@ -78,7 +78,7 @@
     <td align="center">Backend, Front</td>
 </tr> 
 <tr> 
-    <td align="center">로그인 API 개발<br>회원 가입 API 개발<br>회원 탈퇴 API 개발<br>닉네임 수정 API 개발<br>주소 수정 API 개발<br>비밀번호 수정 API 개발<br>회원 정보 제공 API 개발<br>카카오맵 API 연동<br>Spring Security<br>JavaScript 개발 (로그인, 회원가입, 닉네임 수정, 주소 수정, 비밀번호 수정, 회원 탈퇴, 배송 정보 회원 동일, 카카오맵)<br>
+    <td align="center">로그인 API 개발<br>회원 가입 API 개발<br>회원 탈퇴 API 개발<br>닉네임 수정 API 개발<br>주소 수정 API 개발<br>비밀번호 수정 API 개발<br>회원 정보 제공 API 개발<br>카카오맵 API 연동<br>Spring Security<br>JavaScript 개발 (로그인, 회원가입, 닉네임 수정,<br>주소 수정, 비밀번호 수정, 회원 탈퇴, 배송 정보 회원 동일,<br>카카오맵)
 API 명세서 작성<br>
 시연 영상 제작</td>
     <td align="center">결제 API연동<br>API 연동을 위해 개발 회사에 질의 응답<br>결제 후 주문 생성 로직 작성<br>결제 페이지 자바스크립트 작성<br>세션을 활용한 데이터 전달<br>결제 페이지 정보 유지 오류 해결을 위한 html, css조작</td>
