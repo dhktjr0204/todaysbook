@@ -417,7 +417,8 @@ API 명세서 작성<br>
 <br>
 
 ## (2). Alan 실시간 검색 페이지
-![alanchat.gif](src/main/resources/static/images/readMe/alanchat.gif)
+![실시간_검색_앨런.gif](src/main/resources/static/images/readMe/실시간_검색_앨런.gif)
+
 ### [Alan 실시간 검색 기능]
 - alan api를 사용하여 alan에게 책을 직접 물어봄으로써 책을 추천 받을 수 있습니다.
 - alan api가 입력된 질문을 분석하여 사용자에게 가장 적합한 책을 추천합니다.
