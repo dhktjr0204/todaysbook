@@ -1,5 +1,8 @@
 let draggedItem=null;
 
+const newBookList=[];
+const deleteBookList=[];
+
 function dragStart(event){
     draggedItem=event.target;
 }
@@ -45,6 +48,13 @@ function drop(event){
             if(itemLength+1>5){
                 slideNextPage(userList);
             }
+
+            newBookList.push(parseInt(draggedItemId, 10));
+
+            const deleteBookIndex=deleteBookList.indexOf(parseInt(draggedItemId, 10));
+            if(deleteBookIndex!==-1){
+                deleteBookList.splice(deleteBookIndex,1);
+            }
         }
 
         draggedItem = null;
@@ -77,6 +87,26 @@ function slideNextPage(userList){
     const newPosition = -1 * listWidth;
     userList.style.transform = `translateX(${newPosition}px)`;
     searchSlideIndex[1]=1;
+}
+
+function deleteBook(button) {
+    const bookItem = button.closest('.book-item');
+
+    const confirmation = confirm("정말 삭제하시겠습니까?");
+    if (confirmation) {
+        bookItem.remove();
+
+        const bookId=parseInt(bookItem.getAttribute('value'),10);
+        deleteBookList.push(bookId);
+
+
+        //만약 삭제한 id가 새로 추가된 리스트에 있을때 id 삭제
+        const newBookIndex=newBookList.indexOf(bookId);
+        if(newBookIndex!==-1){
+            newBookList.splice(newBookIndex,1);
+        }
+
+    }
 }
 
 // 드롭 영역에 이벤트 리스너 추가

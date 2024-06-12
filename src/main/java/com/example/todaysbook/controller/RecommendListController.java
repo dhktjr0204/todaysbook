@@ -10,6 +10,7 @@ import com.example.todaysbook.service.RecommendListService;
 import com.example.todaysbook.validate.RecommendListCreateValidator;
 import com.example.todaysbook.validate.RecommendListUpdateValidator;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/recommend")
@@ -74,7 +76,6 @@ public class RecommendListController {
     @GetMapping("/update/{id}")
     public String getUpdateForm(@AuthenticationPrincipal CustomUserDetails userDetails,
                                 @PathVariable Long id, Model model) {
-
         RecommendListDetailDto recommendListDetail = recommendListService.getRecommendListDetail(id);
 
         //리스트 작성 유저와 현재 로그인 된 유저가 다를 시 404페이지 뜸

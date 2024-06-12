@@ -1,5 +1,6 @@
 package com.example.todaysbook.domain.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,4 +22,10 @@ public class UserRecommendBook {
     private Long id;
     private Long userRecommendListId;
     private Long bookId;
+    @Column(name = "`order`")
+    private Integer order;
+
+    public void updateOrder(int order){
+        this.order=order;
+    }
 }

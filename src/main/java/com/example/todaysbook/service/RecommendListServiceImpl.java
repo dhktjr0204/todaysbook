@@ -16,14 +16,17 @@ import com.example.todaysbook.repository.RecommendListMapper;
 import com.example.todaysbook.repository.UserRecommendBookRepository;
 import com.example.todaysbook.repository.UserRecommendListRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class RecommendListServiceImpl implements RecommendListService {
     private final UserRecommendListRepository userRecommendListRepository;
     private final UserRecommendBookRepository userRecommendBookRepository;
@@ -76,10 +79,11 @@ public class RecommendListServiceImpl implements RecommendListService {
 
         UserRecommendList saveUserRecommendList = userRecommendListRepository.save(userRecommendList);
 
-        for (long bookId : request.getBookIdList()) {
+        for(int i=0; i<request.getBookIdList().size();i++){
             UserRecommendBook userRecommendBook = UserRecommendBook.builder()
                     .userRecommendListId(saveUserRecommendList.getId())
-                    .bookId(bookId)
+                    .bookId(request.getBookIdList().get(i))
+                    .order(i+1)
                     .build();
 
             userRecommendBookRepository.save(userRecommendBook);
@@ -93,25 +97,45 @@ public class RecommendListServiceImpl implements RecommendListService {
     public void update(Long listId, RecommendListUpdateRequestDto request) {
         UserRecommendList userRecommendList = userRecommendListRepository.findById(listId)
                 .orElseThrow(RecommendListNotFoundException::new);
-        List<UserRecommendBook> userRecommendBooks = userRecommendBookRepository.findByUserRecommendListId(listId)
+        List<UserRecommendBook> userRecommendBooks = userRecommendBookRepository.findByUserRecommendListIdOrderByOrder(listId)
                 .orElseThrow(BookNotFoundException::new);
+
+        List<Long> existingBookIds= userRecommendBooks.stream().map(UserRecommendBook::getBookId).collect(Collectors.toList());
 
         //list 만든 사용자 id와 응답으로 받은 사용자 id(현재 로그인된 유저)가 다를 때
         if(request.getUserId()==null || userRecommendList.getUserId()!=request.getUserId()){
             throw new UserValidateException();
         }
 
-        //리스트에 저장된 책들 전부 삭제
-        userRecommendBookRepository.deleteAll(userRecommendBooks);
+        int lastOrder = userRecommendBooks.get(userRecommendBooks.size()-1).getOrder();
 
-        //리스트에 새로 추가
-        for(Long bookId: request.getBookIdList()){
-            UserRecommendBook book = UserRecommendBook.builder()
-                    .userRecommendListId(listId)
-                    .bookId(bookId)
-                    .build();
+        //리스트에 새로 추가할거 추가하고 수정할 거 수정하기
+        if(request.getNewBookList()!=null){
+            for (int i = 0; i < request.getNewBookList().size(); i++) {
+                long bookId = request.getNewBookList().get(i);
 
-            userRecommendBookRepository.save(book);
+                //기존 책인데 순서만 바뀌었다면 순서만 업데이트
+                if (existingBookIds.contains(bookId)) {
+                    int bookIndex = existingBookIds.indexOf(bookId);
+                    UserRecommendBook userRecommendBook = userRecommendBooks.get(bookIndex);
+                    userRecommendBook.updateOrder(lastOrder + i + 1);
+                } else {
+                    UserRecommendBook book = UserRecommendBook.builder()
+                            .userRecommendListId(listId)
+                            .bookId(bookId)
+                            .order(lastOrder + i + 1)
+                            .build();
+
+                    userRecommendBookRepository.save(book);
+                }
+            }
+        }
+
+        //삭제될 책들 삭제
+        if(request.getNewBookList()!=null){
+            for (Long deleteBookId : request.getDeleteBookList()) {
+                userRecommendBookRepository.deleteByBookIdAndUserRecommendListId(deleteBookId, listId);
+            }
         }
 
         //제목 수정
@@ -123,8 +147,6 @@ public class RecommendListServiceImpl implements RecommendListService {
     public void delete(Long listId) {
         UserRecommendList userRecommendList = userRecommendListRepository.findById(listId)
                 .orElseThrow(RecommendListNotFoundException::new);
-        List<UserRecommendBook> userRecommendBooks = userRecommendBookRepository.findByUserRecommendListId(listId)
-                .orElseThrow(BookNotFoundException::new);
 
         userRecommendListRepository.delete(userRecommendList);
     }
