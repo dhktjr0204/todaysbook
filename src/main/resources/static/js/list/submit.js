@@ -26,10 +26,14 @@ function handleSubmit(url, method) {
         alert("책을 1개 이상 등록해주세요.");
         return false;
     }
-
-    bookItems.forEach(bookItem => {
-        formData.append('bookIdList', bookItem.getAttribute('value'));
-    });
+    if (url === "/recommend/add") {
+        bookItems.forEach(bookItem => {
+            formData.append('bookIdList', bookItem.getAttribute('value'));
+        });
+    }else{
+        formData.append('newBookList', newBookList);
+        formData.append('deleteBookList', deleteBookList);
+    }
 
     fetch(url, {
         method: method,

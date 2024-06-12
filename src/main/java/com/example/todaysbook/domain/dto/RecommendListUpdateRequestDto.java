@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Getter
@@ -16,5 +17,6 @@ import java.util.List;
 public class RecommendListUpdateRequestDto {
     private Long userId;
     private String title;
-    private List<Long> bookIdList;
+    private List<Long> newBookList;
+    private List<Long> deleteBookList;
 }

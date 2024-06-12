@@ -133,6 +133,7 @@ function listFormPrevSlide(type, button) {
 
 function listFormNextSlide(type, button) {
     let currentIndex = searchSlideIndex[type] || 0; // 해당 게시물의 슬라이드 인덱스를 가져오거나, 없으면 0으로 초기화
+    console.log("현재 페이지: "+currentIndex);
 
     const bookItemLength = button.closest('.recommend-list-body').querySelectorAll('.book-item').length
     let page = 1;
@@ -144,10 +145,10 @@ function listFormNextSlide(type, button) {
     if (button.closest('.recommend-list-body').querySelector('.search-list')) {
         // 현재 위치에서 1칸 이동, 만약 뒤에 더 이미지가 없다면 처음으로 이동
         if ((currentIndex + 1) % page === 0) {
-            if (currentLastPage <= page) {
+            if (currentLastPage <= Math.ceil(page/2)) {
                 alert("마지막 페이지입니다.");
             } else {
-                searchBook(currentKeyword, page);
+                searchBook(currentKeyword, page/2);
                 listFormMoveSlide(type, page, button);
             }
         } else {
@@ -177,13 +178,4 @@ function listFormMoveSlide(type, newIndex, button) {
     const newPosition = -newIndex * listWidth;
     targetList.style.transform = `translateX(${newPosition}px)`;
     searchSlideIndex[type] = newIndex; // 해당 게시물의 슬라이드 인덱스 업데이트
-}
-
-function deleteBook(button) {
-    const bookItem = button.closest('.book-item');
-
-    const confirmation = confirm("정말 삭제하시겠습니까?");
-    if (confirmation) {
-        bookItem.remove();
-    }
 }

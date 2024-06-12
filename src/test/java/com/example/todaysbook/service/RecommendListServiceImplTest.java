@@ -53,7 +53,7 @@ class RecommendListServiceImplTest {
         return RecommendListUpdateRequestDto.builder()
                 .userId(userId)
                 .title(title)
-                .bookIdList(bookList)
+                .newBookList(bookList)
                 .build();
     }
 
@@ -108,7 +108,7 @@ class RecommendListServiceImplTest {
         List<UserRecommendBook> userRecommendBook = createDummyUserRecommendBook(listId, Arrays.asList(1L, 2L, 3L));
 
         when(userRecommendListRepository.findById(any())).thenReturn(Optional.ofNullable(userRecommendList));
-        when(userRecommendBookRepository.findByUserRecommendListId(any())).thenReturn(Optional.of(userRecommendBook));
+        when(userRecommendBookRepository.findByUserRecommendListIdOrderByOrder(any())).thenReturn(Optional.of(userRecommendBook));
 
         //when
         recommendService.update(listId, request);
@@ -141,7 +141,7 @@ class RecommendListServiceImplTest {
         List<UserRecommendBook> userRecommendBook = createDummyUserRecommendBook(listId, Arrays.asList(1L, 2L, 3L));
 
         when(userRecommendListRepository.findById(any())).thenReturn(Optional.ofNullable(userRecommendList));
-        when(userRecommendBookRepository.findByUserRecommendListId(any())).thenReturn(Optional.of(userRecommendBook));
+        when(userRecommendBookRepository.findByUserRecommendListIdOrderByOrder(any())).thenReturn(Optional.of(userRecommendBook));
 
         // when & then
         assertThrows(UserValidateException.class, () -> recommendService.update(listId, request));
@@ -158,7 +158,7 @@ class RecommendListServiceImplTest {
         List<UserRecommendBook> userRecommendBook = createDummyUserRecommendBook(listId, Arrays.asList(1L, 2L, 3L));
 
         when(userRecommendListRepository.findById(any())).thenReturn(Optional.ofNullable(userRecommendList));
-        when(userRecommendBookRepository.findByUserRecommendListId(any())).thenReturn(Optional.of(userRecommendBook));
+        when(userRecommendBookRepository.findByUserRecommendListIdOrderByOrder(any())).thenReturn(Optional.of(userRecommendBook));
 
         //when
         recommendService.delete(listId);

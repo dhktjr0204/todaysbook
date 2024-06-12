@@ -9,5 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface UserRecommendBookRepository extends JpaRepository<UserRecommendBook,Long> {
-    Optional<List<UserRecommendBook>> findByUserRecommendListId(Long id);
+    Optional<List<UserRecommendBook>> findByUserRecommendListIdOrderByOrder(Long id);
+    Long deleteByBookIdAndUserRecommendListId(Long bookId, Long listId);
 }

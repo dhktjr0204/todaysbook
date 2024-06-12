@@ -21,7 +21,7 @@ public class RecommendListUpdateValidator implements Validator {
         RecommendListUpdateRequestDto request = (RecommendListUpdateRequestDto) target;
 
         String listTitle = request.getTitle();
-        List<Long> bookList = request.getBookIdList();
+        List<Long> bookList = request.getNewBookList();
 
         if (isTitleEmpty(listTitle)) {
             throw new EmptyTitleException();

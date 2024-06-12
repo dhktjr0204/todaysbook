@@ -100,6 +100,7 @@ public class SearchController {
             @SortDefault(sort = "publishDate", direction = Sort.Direction.ASC),
             @SortDefault(sort = "title", direction = Sort.Direction.ASC)}) Pageable pageable,
                                                      @RequestParam(value = "keyword") String keyword, Model model) {
+
         return ResponseEntity.ok(searchService.searchBookByKeyword(keyword, pageable));
     }
 }
